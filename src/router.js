@@ -10,8 +10,7 @@ import {
     VerifyAccount,
     Error403,
     Error404,
-    Error500,
-    DownloadRekhta
+    Error500
 } from "./pages";
 
 import LibrariesHome from './pages/libraries'
@@ -33,16 +32,18 @@ const Router = () => {
     return (<BrowserRouter>
         <Routes>
             <Route element={<LayoutWithHeader />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/libraries/" element={<LibrariesHome />} />
-                <Route path="/libraries/:libraryId" element={<LibraryHome />} />
-                <Route path="/libraries/:libraryId/books" element={<BooksHomePage />} />
-                <Route path="/libraries/:libraryId/books/:bookId" element={<BookPage />} />
-                <Route path="/libraries/:libraryId/authors" element={<AuthorsHomePage />} />
-                <Route path="/libraries/:libraryId/authors/:authorId" element={<AuthorPage />} />
-                <Route path="/libraries/:libraryId/series" element={<SeriesHomePage />} />
-                <Route path="/libraries/:libraryId/series/:seriesId" element={<SeriesPage />} />
-                <Route path="/libraries/:libraryId/periodicals" element={<PeriodicalsHomePage />} />
+                <Route element={<SecurePage />}>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/libraries/" element={<LibrariesHome />} />
+                    <Route path="/libraries/:libraryId" element={<LibraryHome />} />
+                    <Route path="/libraries/:libraryId/books" element={<BooksHomePage />} />
+                    <Route path="/libraries/:libraryId/books/:bookId" element={<BookPage />} />
+                    <Route path="/libraries/:libraryId/authors" element={<AuthorsHomePage />} />
+                    <Route path="/libraries/:libraryId/authors/:authorId" element={<AuthorPage />} />
+                    <Route path="/libraries/:libraryId/series" element={<SeriesHomePage />} />
+                    <Route path="/libraries/:libraryId/series/:seriesId" element={<SeriesPage />} />
+                    <Route path="/libraries/:libraryId/periodicals" element={<PeriodicalsHomePage />} />
+                </Route>
                 <Route path="/500" element={<Error500 />} />
                 <Route path="/403" element={<Error403 />} />
                 <Route path="*" element={<Error404 />} />
@@ -57,8 +58,6 @@ const Router = () => {
                 <Route path="/account/forgot-password" element={<ForgotPassword />} />
                 <Route path="/account/reset-password" element={<ResetPassword />} />
                 <Route path="/account/verify" element={<VerifyAccount />} />
-                <Route path="/download/rekhta" element={<DownloadRekhta />} />
-
             </Route>
         </Routes>
     </BrowserRouter>);

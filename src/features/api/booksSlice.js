@@ -50,6 +50,48 @@ export const booksApi = createApi({
             },
             transformResponse: (response) => parseResponse(response)
         }),
+        getMyBooks: builder.query({
+            query: ({ libraryId,
+                query = null,
+                author = null,
+                categories = null,
+                series = null,
+                sortBy = null,
+                sortDirection = null,
+                favorite = null,
+                read = null,
+                status = null,
+                pageNumber = 1,
+                pageSize = 12 }) => {
+                let queryVal = query ? `&query=${query}` : '';
+                if (author) {
+                    queryVal += `&authorId=${author}`;
+                }
+                if (categories) {
+                    queryVal += `&categoryId=${categories}`;
+                }
+                if (series) {
+                    queryVal += `&seriesId=${series}`;
+                }
+                if (sortBy) {
+                    queryVal += `&sortBy=${sortBy}`;
+                }
+                if (favorite) {
+                    queryVal += '&favorite=true';
+                }
+                if (read !== undefined && read !== null) {
+                    queryVal += `&read=${read}`;
+                }
+                if (status) {
+                    queryVal += `&status=${status}`;
+                }
+                if (sortDirection) {
+                    queryVal += `&sortDirection=${sortDirection}`;
+                }
+                return ({ url: `/libraries/${libraryId}/my/books?pageNumber=${pageNumber}&pageSize=${pageSize}${queryVal}`, method: 'get' })
+            },
+            transformResponse: (response) => parseResponse(response)
+        }),
         getBook: builder.query({
             query: ({ libraryId, bookId }) => ({ url: `/libraries/${libraryId}/books/${bookId}`, method: 'get' }),
             transformResponse: (response) => parseResponse(response)
@@ -70,4 +112,4 @@ export const booksApi = createApi({
 })
 
 
-export const { useGetBooksQuery, useGetBookQuery, useGetBookChaptersQuery, useGetChapterQuery, useGetChapterContentsQuery } = booksApi
+export const { useGetBooksQuery, useGetMyBooksQuery, useGetBookQuery, useGetBookChaptersQuery, useGetChapterQuery, useGetChapterContentsQuery } = booksApi

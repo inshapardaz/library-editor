@@ -6,13 +6,14 @@ import { NavLink, useParams } from "react-router-dom";
 // 3rd party imports
 import { Menu, Button, theme, Drawer, Row, Col } from 'antd';
 import { FaBook, FaPenFancy, FaFeatherAlt, FaTags, FaTag, FaHome, FaBars } from 'react-icons/fa';
-import { ImBooks, ImLibrary, ImNewspaper } from 'react-icons/im';
+import { ImBooks, ImNewspaper } from 'react-icons/im';
 
 // Local Imports
 import styles from '../../styles/common.module.scss'
 import LanguageSwitcher from "../languageSwitcher";
 import DarkModeToggle from "../darkModeToggle";
 import { Logo } from "./logo";
+import { LibrariesDropdown } from "../libraries/librariesDropDown";
 import ProfileMenu from "./profileMenu";
 import { useGetLibraryQuery } from '../../features/api/librariesSlice'
 import { useGetCategoriesQuery } from '../../features/api/categoriesSlice'
@@ -106,17 +107,7 @@ function AppHeader () {
     }
   }
   else {
-    items = [{
-      label: (
-        <NavLink to='/libraries'>
-          {t("header.libraries")}
-        </NavLink>
-      ),
-      key: 'libraries',
-      icon: <ImLibrary />,
-    },{
-      type: 'divider'
-    }];
+    items = [];
   }
 
   const menu = (<Menu
@@ -132,9 +123,10 @@ function AppHeader () {
   if (isMobile) {
     return (
       <Row className={styles.header} style={{ backgroundColor : token.colorBgContainer}}>
-        <Col><Logo t={t} library={library} /></Col>
+        <Col><Logo /></Col>
         <Col flex="auto"></Col>
         <Col>
+          <LibrariesDropdown t={t} library={library} />
           <DarkModeToggle />
           <LanguageSwitcher arrow round/>
           <ProfileMenu />
@@ -154,12 +146,13 @@ function AppHeader () {
 
   return (<Row className={styles.header} gutter={{ m:8, s:4 }} style={{ backgroundColor : token.colorBgContainer}}>
       <Col>
-        <Logo t={t} library={library} />
+        <Logo />
       </Col>
       <Col flex="auto">{menu}</Col>
       <Col>
         <SearchBox />
       </Col>
+      <Col><LibrariesDropdown t={t} library={library} /></Col>
       <Col>
         <DarkModeToggle />
       </Col>

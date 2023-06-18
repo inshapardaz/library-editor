@@ -43,7 +43,7 @@
 	"forgotPassword" : {
 		"title" : "Forgot Password",
 		"submit" : "Get Password",
-		"email" : { 
+		"email" : {
 			"title" : "Email",
 			"error" : "Email is invalid",
 			"required" : "Email is required"
@@ -168,6 +168,12 @@
 		"read" : {
 			"title" : "Read books"
 		},
+        "BeingTyped": {
+            "title" : "Books you are typing"
+		},
+        "ProofRead": {
+            "title" : "Books you are proof reading"
+        },
 		"title"  : "Books",
 		"empty" : "No latest book found",
 		"loadingError": "Unable to load books"
@@ -188,17 +194,17 @@
 	"chapters" : {
 		"title": "Chapters"
 	},
-	
+
 	"reader" : {
 		"settings": "Theme & Settings",
 		"font" : "Font",
-		"fontSize": "Font Size", 
+		"fontSize": "Font Size",
 		"lineSpacing": "Line Spacing",
 		"view" : {
 			"title" : "View",
 			"vertical": "Vertical",
 			"singlePage": "Single Page",
-			"flipBook": "Flip Book" 
+			"flipBook": "Flip Book"
 		}
 	},
 	"authors" : {

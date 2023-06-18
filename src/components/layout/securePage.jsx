@@ -13,7 +13,7 @@ const SecurePage = () => {
 
     useEffect(() => {
         if (!isUserLoggedIn) {
-            navigate('/403')
+            navigate('/account/login')
         }
     }, [isUserLoggedIn, navigate])
 
