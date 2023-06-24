@@ -204,7 +204,8 @@
         },
         "authors": {
             "label" : "Authors",
-            "placeholder" : "Select authors of the book"
+            "placeholder" : "Select authors of the book",
+            "required" : "Author is required"
         },
         "status": {
             "label": "Status",
@@ -225,7 +226,8 @@
         },
         "language": {
             "label" : "Language",
-            "placeholder" : "Select language for book"
+            "placeholder" : "Select language for book",
+            "required" : "Language is required"
         },
         "yearPublished": {
             "label" : "Publish Year"

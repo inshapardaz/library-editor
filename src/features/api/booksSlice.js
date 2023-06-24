@@ -122,6 +122,21 @@ export const booksApi = createApi({
                 payload: removeLinks(payload)
             })
         }),
+        updateBookImage: builder.mutation({
+            query: ({ libraryId, bookId, payload }) => {
+                const formData = new FormData();
+                formData.append('file', payload, payload.fileName);
+                return ({
+                    url: `/libraries/${libraryId}/books/${bookId}/image`,
+                    method: 'PUT',
+                    payload: formData,
+                    formData: true,
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                });
+            }
+        }),
     }),
 })
 
@@ -134,4 +149,5 @@ export const {
     useGetChapterQuery,
     useGetChapterContentsQuery,
     useAddBookMutation,
-    useUpdateBookMutation } = booksApi
+    useUpdateBookMutation,
+    useUpdateBookImageMutation } = booksApi

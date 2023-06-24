@@ -1,4 +1,4 @@
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // 3rd party libraries
@@ -22,9 +22,11 @@ function AuthorsHomePage() {
     const pageSize = searchParams.get("pageSize");
 
     const addButton = (
-        <Button type="dashed" icon={<FaPlus />}>
-            {t("authors.actions.add")}
-        </Button>
+        <Link to={`/libraries/${libraryId}/authors/add`}>
+            <Button type="dashed" icon={<FaPlus />}>
+                {t("authors.actions.add")}
+            </Button>
+        </Link>
     );
     return (
         <>

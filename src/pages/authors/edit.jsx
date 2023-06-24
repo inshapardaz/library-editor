@@ -42,7 +42,7 @@ const AuthorEditPage = () => {
         if (authorId) {
             updateAuthor({ libraryId, authorId, payload: author })
                 .unwrap()
-                .then(() => uploadImage())
+                .then(() => uploadImage(authorId))
                 .then(() => message.success(t("author.save.success")))
                 .then(() => navigate(`/libraries/${libraryId}/authors/${authorId}`))
                 .catch((_) => message.error(t("author.save.error")));
@@ -51,19 +51,16 @@ const AuthorEditPage = () => {
             addAuthor({ libraryId, payload: author })
                 .unwrap()
                 .then((r) => (response = r))
-                .then(() => uploadImage())
+                .then(() => uploadImage(response.id))
                 .then(() => message.success(t("author.save.success")))
                 .then(() => navigate(`/libraries/${libraryId}/authors/${response.id}`))
                 .catch((_) => message.error(t("author.save.error")));
-            await uploadImage();
-            message.success(t("author.save.success"));
-            navigate(`/libraries/${libraryId}/authors/${response.id}`);
         }
     };
 
-    const uploadImage = async () => {
+    const uploadImage = async (newAuthorId) => {
         if (fileList && fileList.length > 0) {
-            await updateAuthorImage({ libraryId, authorId, payload: fileList[0] }).unwrap();
+            await updateAuthorImage({ libraryId, newAuthorId, payload: fileList[0] }).unwrap();
         }
     };
 
@@ -99,9 +96,9 @@ const AuthorEditPage = () => {
             <ContentsContainer>
                 <Row gutter={16}>
                     <Col l={4} md={6} xs={24}>
-                        <ImgCrop rotationSlider modalTitle={t("actions.resizeImage")}>
+                        <ImgCrop modalTitle={t("actions.resizeImage")}>
                             <Dragger fileList={fileList} beforeUpload={onImageChange} showUploadList={false}>
-                                <img src={getCoverSrc()} height="300" alt={author.name} />
+                                <img src={getCoverSrc()} height="300" alt={author && author.name} onError={helpers.setDefaultBookImage} />
                             </Dragger>
                         </ImgCrop>
                     </Col>
