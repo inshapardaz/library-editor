@@ -42,4 +42,50 @@ const parseResponse = (source) => {
     return source;
 };
 
-export { parseResponse }
+const removeLinks = (source) => {
+    if (source) {
+        if (source.links) {
+            source = (({ links, ...o }) => o)(source)
+        }
+
+        if (source.data) {
+            const newItems = [];
+            source.data.forEach((item) => newItems.push(removeLinks(item)));
+            source.data = newItems;
+        }
+
+        if (source.files) {
+            const newItems = [];
+            source.files.forEach((item) => newItems.push(removeLinks(item)));
+            source.files = newItems;
+        }
+
+        if (source.contents) {
+            const newItems = [];
+            source.contents.forEach((item) => newItems.push(removeLinks(item)));
+            source.contents = newItems;
+        }
+
+        if (source.authors) {
+            const newItems = [];
+            source.authors.forEach((item) => newItems.push(removeLinks(item)));
+            source.authors = newItems;
+        }
+
+        if (source.categories) {
+            const newItems = [];
+            source.categories.forEach((item) => newItems.push(removeLinks(item)));
+            source.categories = newItems;
+        }
+
+        if (Array.isArray(source)) {
+            const newItems = [];
+            source.forEach((item) => newItems.push(removeLinks(item)));
+            return newItems;
+        }
+    }
+
+    return source;
+};
+
+export { parseResponse, removeLinks }

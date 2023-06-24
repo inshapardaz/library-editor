@@ -21,7 +21,9 @@
 		"yes" : "Yes",
 		"no" : "No",
 		"close": "Close",
-		"retry": "Retry"
+		"retry": "Retry",
+        "save": "Save",
+        "cancel": "Cancel"
 	},
 	"login" : {
 		"title" : "Login",
@@ -179,8 +181,49 @@
 		"loadingError": "Unable to load books"
 	},
 	"book" : {
-		"series": "Book of {{name}} series",
-		"seriesAndIndex": "Book {{index}} of {{name}} series",
+        "title" : {
+            "label": "Title",
+		    "placeholder" : "Title of book",
+            "required" : "Book title is required"
+        },
+        "description" : {
+            "label": "Description",
+            "placeholder" : "Some description of book"
+        },
+        "public": {
+            "label": "Public"
+        },
+        "copyrights": {
+            "label": "Copyrights"
+        },
+        "authors": {
+            "label" : "Authors",
+            "placeholder" : "Select authors of the book"
+        },
+        "status": {
+            "label": "Status",
+            "placeholder" : "Select Book Status"
+        },
+        "categories": {
+            "label" : "Categories",
+            "placeholder" : "Select categories"
+        },
+        "series": {
+            "label" : "Series",
+            "placeholder" : "Select series",
+            "indexLabel": "Book of {{name}} series",
+            "seriesAndIndexLabel": "Book {{index}} of {{name}} series"
+        },
+        "seriesIndex": {
+            "label" : "Sequence in series"
+        },
+        "language": {
+            "label" : "Language",
+            "placeholder" : "Select language for book"
+        },
+        "yearPublished": {
+            "label" : "Publish Year"
+        },
 		"chapterCount_one" : "1 chapter",
 		"chapterCount_other": "{{count}} chapters",
 		"pageCount_one" : "1 page",
@@ -189,7 +232,11 @@
 		"noDescription" : "No details...",
 		"chapters" : {
 			"title" : "Chapters"
-		}
+		},
+        "save": {
+            "success" :"Book saved",
+		    "error" :"Error saving book"
+        }
 	},
 	"chapters" : {
 		"title": "Chapters"
@@ -276,5 +323,20 @@
 			"images" : "Images"
 		},
 		"error" : "Unable to download book. Please make sure you have provided link where you can read the book pages."
-	}
+	},
+    "copyrights": {
+        "Copyright": "Rights Reserved",
+        "PublicDomain": "Public Domain",
+        "Open": "Open",
+        "CreativeCommons": "Creative Commons",
+        "Unknown": "Unknown Copyrights"
+    },
+    "bookStatus": {
+        "Published" : "Published",
+        "AvailableForTyping": "Ready for typing",
+        "BeingTyped": "Being Typed",
+        "ReadyForProofRead" : "Ready for proof reading",
+        "ProofRead" : "Proof Read"
+    }
+
 }

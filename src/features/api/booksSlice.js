@@ -2,7 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react'
 
 import { axiosBaseQuery } from '../../helpers/axios.helpers'
 
-import { parseResponse } from '../../helpers/parseResponse';
+import { parseResponse, removeLinks } from '../../helpers/parseResponse';
 // ----------------------------------------------
 export const booksApi = createApi({
     reducerPath: 'books',
@@ -107,9 +107,31 @@ export const booksApi = createApi({
         getChapterContents: builder.query({
             query: ({ libraryId, bookId, chapterId }) => ({ url: `/libraries/${libraryId}/books/${bookId}/chapters/${chapterId}/contents`, method: 'get' }),
             transformResponse: (response) => parseResponse(response)
-        })
+        }),
+        addBook: builder.mutation({
+            query: ({ libraryId, payload }) => ({
+                url: `/libraries/${libraryId}/books`,
+                method: 'POST',
+                payload: removeLinks(payload)
+            })
+        }),
+        updateBook: builder.mutation({
+            query: ({ libraryId, bookId, payload }) => ({
+                url: `/libraries/${libraryId}/books/${bookId}`,
+                method: 'PUT',
+                payload: removeLinks(payload)
+            })
+        }),
     }),
 })
 
 
-export const { useGetBooksQuery, useGetMyBooksQuery, useGetBookQuery, useGetBookChaptersQuery, useGetChapterQuery, useGetChapterContentsQuery } = booksApi
+export const {
+    useGetBooksQuery,
+    useGetMyBooksQuery,
+    useGetBookQuery,
+    useGetBookChaptersQuery,
+    useGetChapterQuery,
+    useGetChapterContentsQuery,
+    useAddBookMutation,
+    useUpdateBookMutation } = booksApi

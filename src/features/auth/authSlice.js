@@ -149,6 +149,8 @@ export const authSlice = createSlice({
                 window.localStorage.user = JSON.stringify(action.payload)
             })
             .addCase(refreshToken.rejected, (state, action) => {
+                state.user = null
+                window.localStorage.user = null
                 state.tokenStatus = 'failed'
                 state.tokenError = action.error.message
             })

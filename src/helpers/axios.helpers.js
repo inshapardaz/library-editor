@@ -28,11 +28,17 @@ axiosPrivate.interceptors.request.use(
 );
 
 
-export const axiosBaseQuery =
-  ({ baseUrl } = { baseUrl: process.env.REACT_APP_API_URL }) =>
-    async ({ url, method, data, params }) => {
-      try {
-        const result = await axiosPrivate({ url: baseUrl + url, method, data, params })
+export const axiosBaseQuery = () =>
+    async ({ url, method, payload, params }) => {
+        try {
+          const result = await axiosPrivate(url, {
+              method,
+              data: payload,
+              headers: {
+                'content-type': 'application/json'
+              },
+              params
+          })
         return result
       } catch (axiosError) {
         let err = axiosError

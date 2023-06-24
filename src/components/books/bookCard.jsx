@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 // 3rd Party Libraries
 import { Avatar, Card, Typography } from 'antd'
-import { FiLayers } from 'react-icons/fi';
+import { FiEdit, FiTrash } from 'react-icons/fi';
 import { AiOutlineCopy } from 'react-icons/ai';
 
 // Local Imports
@@ -27,12 +27,12 @@ function BookCard({ libraryId, book, t })
   </Avatar.Group>);
   const description = book.description ? (<Paragraph ellipsis>{book.description}</Paragraph>)
                   :(<Text type="secondary">{t('book.noDescription')}</Text>);
-  const chapterCount = (<Link to={`/libraries/${libraryId}/books/${book.id}`}>
-      <IconText icon={FiLayers} text={t('book.chapterCount', { count: book.chapterCount })} key="book-chapter-count" />
+  const edit = (<Link to={`/libraries/${libraryId}/books/${book.id}/edit`}>
+        <FiEdit />
       </Link>);
-  const pageCount = (<IconText icon={AiOutlineCopy} text={t('book.pageCount', { count: book.pageCount })} key="book-page-count" />);
+  const deleteAction = (<FiTrash />);
   return (<Link to={`/libraries/${libraryId}/books/${book.id}`}>
-    <Card key={book.id} cover={cover} hoverable actions={[chapterCount, pageCount]}>
+    <Card key={book.id} cover={cover} hoverable actions={[edit, deleteAction]}>
       <Card.Meta
           avatar={avatar}
           title={book.title}

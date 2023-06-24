@@ -21,7 +21,9 @@
 		"yes" : "جی ہاں",
 		"no" : "نہیں",
 		"close": "بند کریں",
-		"retry": "دوبارہ کوشش کریں"
+		"retry": "دوبارہ کوشش کریں",
+        "save": "تبدیلی محفوظ کریں",
+        "cancel": "اخراج"
 	},
 	"login" : {
 		"title" : "داخل ہوں",
@@ -181,17 +183,62 @@
 		"loadingError": "کتابوں کے حصول میں ناکامی ہوئی"
 	},
 	"book" : {
-		"series": "{{name}} سلسلے کی کتاب",
-	    "seriesAndIndex": "{{name}} سلسلے کی کتاب {{index}}",
+        "title" : {
+            "label": "نام",
+		    "placeholder" : "کتاب کا نام",
+            "required" : "کتاب کا نام ضروری ہے"
+        },
+        "description" : {
+            "label": "تفصیل",
+            "placeholder" : "کتاب کے مترلق کچھ تفڈیل"
+        },
+        "public": {
+            "label": "عوامی کتاب"
+        },
+        "authors": {
+            "label" : "مصنّفین",
+            "placeholder" : "کتاب کے مصنّفین کا نام"
+        },
+        "copyrights": {
+            "label": "حقوق"
+        },
+        "status": {
+            "label": "کیفیت",
+            "placeholder" : "کتاب کی کیفیت چنیں"
+        },
+        "categories": {
+            "label" : "زمرہ",
+            "placeholder" : "زمرہ چنیں"
+        },
+        "language": {
+            "label" : "زبان",
+            "placeholder" : "کتاب کی زبان چنیں"
+        },
+        "yearPublished": {
+            "label" : "سنِ اشاعت"
+        },
+        "series": {
+            "label" : "سلسلہ",
+            "placeholder" : "کتاب  کس سلسے سے ہے",
+            "indexLabel": "{{name}} سلسلے کی کتاب",
+            "seriesAndIndexLabel": "{{name}} سلسلے کی کتاب {{index}}"
+        },
+        "seriesIndex": {
+            "label" : "سلسلے میں ترتیب"
+        },
 		"chapterCount_one" : "1 باب",
 		"chapterCount_other": "{{count}} ابواب",
 		"pageCount_one" : "1 صفحہ",
 		"pageCount_other" : "{{count}} صفحات",
 		"publishLabel" : "{{year}} میں شائع ہوئی",
 		"noDescription" : "تفصیل دستیاب نہیں۔۔۔",
-		"chapters" : {
-			"title" : "ابواب"
-		}
+		"chapters": {
+			"title": "ابواب"
+		},
+        "save": {
+            "success": "کتاب محفوظ کر دی گئی ہے",
+		    "error": "کتاب محفوظ نہیں کی جا سکی"
+        }
 	},
 	"chapters" : {
 		"title": "ابواب"
@@ -277,5 +324,20 @@
 			"images" : "صفحات"
 		},
 		"error" : "کتاب حاصل  نہیں کر سکے۔ کیا آپ نے کتاب کا درست ربط استعمال کیا ہے؟ برائے مہربانی دوبارہ کوشش کیجیے۔"
-	}
+	},
+    "copyrights": {
+        "Copyright": "جملہ حقوق محفوظ",
+        "PublicDomain": "مفت عوامی کتاب",
+        "Open": "آزاد",
+        "CreativeCommons":	"کریئیٹو کامن",
+        "Unknown": "حقوق نا معلوم"
+    },
+    "bookStatus": {
+        "Published" : "شائع ہو چکی ہے",
+        "AvailableForTyping": "ٹائپ کے لیے دستیاب",
+        "BeingTyped": "ٹائپنگ",
+        "ReadyForProofRead" : "ٹائپنگ مکمل",
+        "ProofRead" : "پروف خوانی",
+        "Completed" : "مکمل"
+    }
 }
