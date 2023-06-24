@@ -261,7 +261,10 @@
 		}
 	},
 	"authors" : {
-		"title" : "مصنّفین"
+		"title" : "مصنّفین",
+        "actions" : {
+            "add": "مصنّف کا اضافہ"
+        }
 	},
 	"author" : {
 		"writer" : "لکھاری",
@@ -270,7 +273,26 @@
 		"bookCount_other" : "{{count}} کتابیں",
 		"writingCount_one" : "1 تصنیف",
 		"writingCount_other" : "{{count}} تصنیفات",
-		"noDescription" : "تفصیل دستیاب نہیں۔۔۔"
+		"noDescription" : "تفصیل دستیاب نہیں۔۔۔",
+        "name": {
+            "label": "نام",
+            "placeholder": "مصنّف کا نام",
+            "required": "مصنف کے لیے نام ضروری ہے"
+        },
+        "description": {
+            "label": "تفصیل"
+        },
+        "type": {
+            "label": "قسم",
+            "placeholder": "مصنف کی قسم",
+            "required": "مصنّف کی قسم ضروری ہے",
+            "writer": "لکھاری",
+            "poet": "شاعر"
+        },
+        "save": {
+            "success":"مصنّف میں تبدیلیاں محفوظ ہو گئی ہیں۔",
+            "error":"مصنّف میں تبدیلیاں محفوظ نہیں ہوئں۔"
+        }
 	},
 	"series" : {
 		"title" : "سیریز",

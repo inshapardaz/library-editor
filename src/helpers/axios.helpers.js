@@ -29,14 +29,14 @@ axiosPrivate.interceptors.request.use(
 
 
 export const axiosBaseQuery = () =>
-    async ({ url, method, payload, params }) => {
+    async ({ url, method, payload, params, headers = {
+                'content-type': 'application/json'
+              }}) => {
         try {
           const result = await axiosPrivate(url, {
               method,
               data: payload,
-              headers: {
-                'content-type': 'application/json'
-              },
+              headers,
               params
           })
         return result

@@ -260,7 +260,10 @@
 		}
 	},
 	"authors" : {
-		"title" : "Authors"
+		"title" : "Authors",
+        "actions" : {
+            "add": "Add new author"
+        }
 	},
 	"author" : {
 		"writer" : "Writer",
@@ -269,7 +272,26 @@
 		"bookCount_other" : "{{count}} books",
 		"writingCount_one" : "1 writing",
 		"writingCount_other" : "{{count}} writings",
-		"noDescription" : "No details..."
+		"noDescription" : "No details...",
+        "name": {
+            "label": "Name",
+            "placeholder": "Name of the author",
+            "required": "Name is required for author"
+        },
+        "description": {
+            "label": "Description"
+        },
+        "type": {
+            "label": "Type",
+            "placeholder": "Type of the author",
+            "required": "Type is required for author",
+            "writer": "Writer",
+            "poet": "Poet"
+        },
+        "save": {
+            "success":"Author saved successfully.",
+            "error":"Unable to save author."
+        }
 	},
 	"series" : {
 		"title" : "Series",

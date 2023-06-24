@@ -2,7 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react'
 
 import { axiosBaseQuery } from '../../helpers/axios.helpers'
 
-import { parseResponse } from '../../helpers/parseResponse';
+import { parseResponse, removeLinks } from '../../helpers/parseResponse';
 // ----------------------------------------------
 export const authorsApi = createApi({
     reducerPath: 'authors',
@@ -23,8 +23,41 @@ export const authorsApi = createApi({
                 ({ url: `/libraries/${libraryId}/authors/${authorId}`, method: 'get' }),
             transformResponse: (response) => parseResponse(response)
         }),
+        addAuthor: builder.mutation({
+            query: ({ libraryId, payload }) => ({
+                url: `/libraries/${libraryId}/authors`,
+                method: 'POST',
+                payload: removeLinks(payload)
+            })
+        }),
+        updateAuthor: builder.mutation({
+            query: ({ libraryId, authorId, payload }) => ({
+                url: `/libraries/${libraryId}/authors/${authorId}`,
+                method: 'PUT',
+                payload: removeLinks(payload)
+            })
+        }),
+        updateAuthorImage: builder.mutation({
+            query: ({ libraryId, authorId, payload }) => {
+                const formData = new FormData();
+                formData.append('file', payload, payload.fileName);
+                return ({
+                    url: `/libraries/${libraryId}/authors/${authorId}/image`,
+                    method: 'PUT',
+                    payload: formData,
+                    formData: true,
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                });
+            }
+        }),
     }),
 })
 
 
-export const { useGetAuthorsQuery, useGetAuthorByIdQuery } = authorsApi
+export const { useGetAuthorsQuery,
+    useGetAuthorByIdQuery,
+    useAddAuthorMutation,
+    useUpdateAuthorMutation,
+    useUpdateAuthorImageMutation } = authorsApi
