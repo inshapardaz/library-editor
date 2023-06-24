@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 // 3rd party imports
 import { Menu } from "antd";
 import { FaTags, FaTag, FaRegHeart, FaBookOpen } from "react-icons/fa";
-import { MdNewReleases } from "react-icons/md";
+import { MdNewReleases, MdAdd } from "react-icons/md";
 
 // Local Imports
 import { useGetCategoriesQuery } from '../../features/api/categoriesSlice'
@@ -35,6 +35,14 @@ function BooksSideBar({ libraryId,
         }))
 
         const items =  [{
+            key: 'sidebar-bar-new',
+            icon: <MdAdd />,
+            label: (<Link to={`/libraries/${libraryId}/books/add`}>
+                {t('books.actions.add')}
+            </Link>)
+            },{
+                type: 'divider',
+            },{
             key: 'sidebar-bar-latest',
             icon: <MdNewReleases />,
             label: (<Link to={`/libraries/${libraryId}/books?sortBy=DateCreated&sortDirection=descending`}>
@@ -52,7 +60,7 @@ function BooksSideBar({ libraryId,
 
         if (isUserLoggedIn)
         {
-            items.splice(1, 0, {
+            items.splice(3, 0, {
                 key: 'sidebar-bar-favorites',
                 icon: <FaRegHeart />,
                 label: (<Link to={`/libraries/${libraryId}/books?favorites=true`}>
@@ -60,7 +68,7 @@ function BooksSideBar({ libraryId,
                 </Link>)
             });
 
-            items.splice(2, 0, {
+            items.splice(4, 0, {
                 key: 'sidebar-bar-read',
                 icon: <FaBookOpen />,
                 label: (<Link to={`/libraries/${libraryId}/books?read=true`}>

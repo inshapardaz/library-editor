@@ -23,6 +23,8 @@
 		"close": "Close",
 		"retry": "Retry",
         "save": "Save",
+        "edit": "Edit",
+        "delete": "Delete",
         "cancel": "Cancel"
 	},
 	"login" : {
@@ -178,7 +180,10 @@
         },
 		"title"  : "Books",
 		"empty" : "No latest book found",
-		"loadingError": "Unable to load books"
+		"loadingError": "Unable to load books",
+        "actions" : {
+            "add": "Add new book"
+        }
 	},
 	"book" : {
         "title" : {

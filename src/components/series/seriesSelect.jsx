@@ -8,7 +8,7 @@ import { useGetSeriesQuery } from '../../features/api/seriesSlice'
 
 // -------------------------------------------------
 
-const SeriesSelect = ({ libraryId, value, onChange, placeholder }) => {
+const SeriesSelect = ({ libraryId, label, value, onChange, placeholder }) => {
     const [query, setQuery] = useState('')
     const { data: series, error, isFetching } = useGetSeriesQuery({ libraryId, query, pageNumber: 1, pageSize: 10})
     const onChangeHandler = (v) => onChange(v)
@@ -19,7 +19,7 @@ const SeriesSelect = ({ libraryId, value, onChange, placeholder }) => {
         placeholder={placeholder}
         loading={isFetching}
         error={error}
-        defaultValue={ value ? ({ value: value.id, label: value.name }): null }
+        defaultValue={({ value, label })}
         defaultActiveFirstOption={false}
         filterOption={false}
         notFoundContent={null}

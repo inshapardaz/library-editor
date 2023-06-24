@@ -62,8 +62,9 @@ const BookEditPage = () => {
         }
     };
 
+    const title = book ? book.title : t('books.actions.add');
     return (<>
-        <PageHeader title={book.title} icon={<ImBooks style={{ width: 36, height: 36 }} />} />
+        <PageHeader title={title} icon={<ImBooks style={{ width: 36, height: 36 }} />} />
         <ContentsContainer>
           <Row gutter={16}>
                 <Col l={4} md={6} xs={24}>
@@ -104,12 +105,16 @@ const BookEditPage = () => {
                             <Form.Item name="yearPublished" label={t('book.yearPublished.label')}>
                                 <InputNumber min={1} />
                             </Form.Item>
-                            <Form.Item name="seriesId" label={t('book.series.label')}>
-                                <SeriesSelect placeholder={t('book.series.placeholder')}
-                                    libraryId={libraryId}/>
-                            </Form.Item>
-                            <Form.Item name="seriesIndex" label={t('book.seriesIndex.label')}>
-                                <InputNumber min={1} />
+                            <Form.Item label={t('book.series.label')}>
+                                <Space.Compact>
+                                    <Form.Item name="seriesId" noStyle>
+                                        <SeriesSelect placeholder={t('book.series.placeholder')}
+                                            libraryId={libraryId} label={book.seriesName} />
+                                    </Form.Item>
+                                    <Form.Item name="seriesIndex" noStyle>
+                                        <InputNumber min={1} />
+                                    </Form.Item>
+                                </Space.Compact>
                             </Form.Item>
                             <Form.Item name="copyrights" label={t('book.copyrights.label')}>
                                 <CopyrightSelect t={t} />
@@ -121,7 +126,7 @@ const BookEditPage = () => {
                             <Form.Item {...buttonItemLayout}>
                                 <Space direction="horizontal" size="middle" style={{ width: '100%' }}>
                                     <Button type="primary" htmlType="submit" size="large" block>{t('actions.save') }</Button>
-                                    <Button type="secondary" size="large" block>{t('actions.cancel') }</Button>
+                                    <Button size="large" onClick={() => navigate(-1)} block>{t('actions.cancel') }</Button>
                                 </Space>
                             </Form.Item>
                         </Form>

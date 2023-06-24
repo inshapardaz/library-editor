@@ -8,21 +8,21 @@ import { useGetAuthorsQuery } from '../../features/api/authorsSlice'
 
 // -------------------------------------------------
 
-const AuthorsSelect = ({ libraryId, value, onChange, placeholder }) => {
+const AuthorsSelect = ({ libraryId, value = [], onChange, placeholder }) => {
     const [query, setQuery] = useState('')
     const { data: authors, error, isFetching } = useGetAuthorsQuery({ libraryId, query, pageNumber: 1, pageSize: 10})
-    const onChangeHandler = (value) => {
-        onChange(value.map(v => ({ id: v })))
+    const onChangeHandler = (val) => {
+        onChange(val.map(v => ({ id: v })))
     }
 
-    const onSearchHandler = (value) => {
-        setQuery(value)
+    const onSearchHandler = (val) => {
+        setQuery(val)
     }
 
     return (<Select mode="multiple" loading={isFetching}
         error={error}
         filterOption={false}
-        defaultValue={ value ? value.map(a => ({ value: a.id, label: a.name })): null }
+        defaultValue={ value ? value.map(a => ({ value: a.id, label: a.name })): "" }
         onSearch={ onSearchHandler }
         onChange={ onChangeHandler }
         placeholder={placeholder}>

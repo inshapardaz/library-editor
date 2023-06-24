@@ -3,14 +3,12 @@ import { Link } from 'react-router-dom';
 // 3rd Party Libraries
 import { Avatar, Card, Typography } from 'antd'
 import { FiEdit, FiTrash } from 'react-icons/fi';
-import { AiOutlineCopy } from 'react-icons/ai';
 
 // Local Imports
 import styles from '../../styles/common.module.scss'
 import { AuthorAvatar } from '../author/authorAvatar';
 import helpers from '../../helpers/index';
 import { BookSeriesInfo } from './bookSeriesInfo';
-import { IconText } from '../common/iconText';
 // ------------------------------------------------------
 
 const {Text, Paragraph} = Typography;

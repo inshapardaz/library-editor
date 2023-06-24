@@ -10,7 +10,7 @@ import helpers from '../../helpers/index';
 
 // --------------------------------------------------
 export function AuthorAvatar({ author, libraryId, t }) {
-  const avatar = (author.links.image ? <Avatar src={author.links.image} onError={helpers.setDefaultAuthorImage}></Avatar> :
+  const avatar = (author.links.image ? <Avatar src={author.links.image} ></Avatar> :
     <Avatar src={helpers.defaultAuthorImage}></Avatar>);
   const popoverTitle = (<Space>
     { avatar }

@@ -8,14 +8,14 @@ import { useGetCategoriesQuery } from '../../features/api/categoriesSlice'
 
 // -------------------------------------------------
 
-const CategoriesSelect = ({ libraryId, value, onChange, placeholder }) => {
+const CategoriesSelect = ({ libraryId, value = [], onChange, placeholder }) => {
     const { data : categories, error, isFetching } = useGetCategoriesQuery({libraryId})
-    const onChangeHandler = (value) => {
-        onChange(categories.data.filter((cat) => value.indexOf(cat.id) > -1))
+    const onChangeHandler = (val) => {
+        onChange(categories.data.filter((cat) => val.indexOf(cat.id) > -1))
     }
 
     return (<Select  mode="multiple" loading={isFetching} error={error}
-        defaultValue={value.map(c => c.id)}
+        defaultValue={value ? value.map(c => c.id) : ""}
         onChange={onChangeHandler} placeholder={placeholder}>
         {categories && categories.data.map((category) => (
         <Select.Option key={category.id} value={category.id}>
