@@ -1,4 +1,4 @@
-{
+const en = {
     "app" : "Nawishta",
     "slogan": "Read something new today",
 	"header" : {
@@ -372,3 +372,5 @@
         "imageRequired": "Only image files are expected. Please select an image file."
     }
 }
+
+export default en;

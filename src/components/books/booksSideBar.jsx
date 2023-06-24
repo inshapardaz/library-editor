@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 // 3rd party imports
 import { Menu } from "antd";
 import { FaTags, FaTag, FaRegHeart, FaBookOpen } from "react-icons/fa";
-import { MdNewReleases, MdAdd } from "react-icons/md";
+import { MdNewReleases } from "react-icons/md";
 
 // Local Imports
 import { useGetCategoriesQuery } from "../../features/api/categoriesSlice";
