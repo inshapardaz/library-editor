@@ -25,7 +25,8 @@
         "save": "Save",
         "edit": "Edit",
         "delete": "Delete",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "resizeImage": "Resize Image"
 	},
 	"login" : {
 		"title" : "Login",
@@ -364,6 +365,8 @@
         "BeingTyped": "Being Typed",
         "ReadyForProofRead" : "Ready for proof reading",
         "ProofRead" : "Proof Read"
+    },
+    "errors" : {
+        "imageRequired": "Only image files are expected. Please select an image file."
     }
-
 }

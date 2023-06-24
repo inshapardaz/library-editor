@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { Button, Col, Form, Input, Row, App, Space, Spin, Select, Upload } from "antd";
 import { FaFeatherAlt } from "react-icons/fa";
+import ImgCrop from "antd-img-crop";
 
 // Local imports
 import { useGetAuthorByIdQuery, useAddAuthorMutation, useUpdateAuthorMutation, useUpdateAuthorImageMutation } from "../../features/api/authorsSlice";
@@ -39,35 +40,39 @@ const AuthorEditPage = () => {
 
     const onSubmit = async (author) => {
         if (authorId) {
-            try {
-                const response = await updateAuthor({ libraryId, authorId, payload: author }).unwrap();
-                await uploadImage();
-                message.success(t("author.save.success"));
-                // navigate(`/libraries/${libraryId}/authors/${response.id}`);
-            } catch {
-                message.error(t("author.save.error"));
-            }
+            updateAuthor({ libraryId, authorId, payload: author })
+                .unwrap()
+                .then(() => uploadImage())
+                .then(() => message.success(t("author.save.success")))
+                .then(() => navigate(`/libraries/${libraryId}/authors/${authorId}`))
+                .catch((_) => message.error(t("author.save.error")));
         } else {
-            try {
-                const response = await addAuthor({ libraryId, payload: author }).unwrap();
-                await uploadImage();
-                message.success(t("author.save.success"));
-                // navigate(`/libraries/${libraryId}/authors/${response.id}`);
-            } catch {
-                message.error(t("author.save.error"));
-            }
+            let response = null;
+            addAuthor({ libraryId, payload: author })
+                .unwrap()
+                .then((r) => (response = r))
+                .then(() => uploadImage())
+                .then(() => message.success(t("author.save.success")))
+                .then(() => navigate(`/libraries/${libraryId}/authors/${response.id}`))
+                .catch((_) => message.error(t("author.save.error")));
+            await uploadImage();
+            message.success(t("author.save.success"));
+            navigate(`/libraries/${libraryId}/authors/${response.id}`);
         }
     };
 
     const uploadImage = async () => {
-        console.log(fileList);
         if (fileList && fileList.length > 0) {
-            console.log("uploading file");
             await updateAuthorImage({ libraryId, authorId, payload: fileList[0] }).unwrap();
         }
     };
 
     const onImageChange = (file) => {
+        const isImage = ["image/png", "image/jpeg"].includes(file.type);
+        if (!isImage) {
+            message.error(t("errors.imageRequired"));
+            return;
+        }
         setFileList([file]);
         const fileReader = new FileReader();
         fileReader.addEventListener("load", () => {
@@ -94,9 +99,11 @@ const AuthorEditPage = () => {
             <ContentsContainer>
                 <Row gutter={16}>
                     <Col l={4} md={6} xs={24}>
-                        <Dragger fileList={fileList} beforeUpload={onImageChange} showUploadList={false}>
-                            <img src={getCoverSrc()} width="136" height="300" alt={author.name} />
-                        </Dragger>
+                        <ImgCrop rotationSlider modalTitle={t("actions.resizeImage")}>
+                            <Dragger fileList={fileList} beforeUpload={onImageChange} showUploadList={false}>
+                                <img src={getCoverSrc()} height="300" alt={author.name} />
+                            </Dragger>
+                        </ImgCrop>
                     </Col>
                     <Col l={20} md={18} xs={24}>
                         <Spin spinning={isFetching || isAdding || isUpdating || isUpdatingImage}>
