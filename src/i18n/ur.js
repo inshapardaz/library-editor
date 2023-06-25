@@ -324,20 +324,44 @@ const ur = {
 		"loadingError": "زمرہ جات کے حصول میں ناکامی ہوئی"
 	},
 	"periodicals" : {
-		"title" : "جرائد"
+		"title" : "جرائد",
+        "actions" : {
+            "add": "جریدے کا اضافہ"
+        }
 	},
 	"periodical" : {
 		"issueCount_one" : "1 شمارہ",
 		"issueCount_other" : "{{count}} شمارے",
 		"noDescription" : "تفصیل دستیاب نہیں۔۔۔",
-		"frequency": {
+        "frequency": {
+            "label": "اشاعت",
+            "placeholder": "اشاعت کی تعداد",
+            "required": "جریدے کے لیے اشاعت ضروری ہے",
 			"annually": "سالانہ",
 			"quarterly": "سہ ماہی",
 			"monthly": "ماہانہ",
 			"fortnightly" : "پندرواڑہ",
 			"weekly": "ہفتہ وار",
-			"daily": "روز نامہ"
-		}
+			"daily": "روز نامہ",
+			"unknown": "نا معلوم"
+        },
+        "title": {
+            "label": "نام",
+            "placeholder": "جریدے کا نام",
+            "required": "جریدے کے لیے نام ضروری ہے"
+        },
+        "description": {
+            "label": "تفصیل"
+        },
+        "language": {
+            "label" : "زبان",
+            "placeholder" : "جریدے کی زبان چنیں",
+            "required" : "جریدے کی زبان ضروری ہے۔"
+        },
+        "save": {
+            "success":"جریدے میں تبدیلیاں محفوظ ہو گئی ہیں۔",
+            "error":"جریدے میں تبدیلیاں محفوظ نہیں ہوئں۔"
+        }
 	},
 	"fonts" : {
 		"alviLahoriNastaleeq": "علوی لاہوری نستعلیق",

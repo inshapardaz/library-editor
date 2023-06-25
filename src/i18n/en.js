@@ -323,20 +323,44 @@ const en = {
 		"loadingError": "Unable to load categories"
 	},
 	"periodicals" : {
-		"title" : "Periodical"
+		"title" : "Periodical",
+        "actions" : {
+            "add": "Create new periodical"
+        }
 	},
 	"periodical" : {
 		"issueCount_one" : "1 issue",
 		"issueCount_other" : "{{count}} issues",
 		"noDescription" : "No details...",
 		"frequency": {
+            "label": "Frequency",
+            "placeholder": "Select frequency of the periodical",
+            "required": "Frequency is required for periodical",
 			"annually": "Annually",
 			"quarterly": "Quarterly",
 			"monthly": "Monthly",
 			"fortnightly" : "Fortnightly",
 			"weekly": "Weekly",
-			"daily": "Daily"
-		}
+            "daily": "Daily",
+			"unknown": "Unknown"
+        },
+        "title": {
+            "label": "Name",
+            "placeholder": "Name of the periodical",
+            "required": "Name is required for periodical"
+        },
+        "description": {
+            "label": "Description"
+        },
+        "language": {
+            "label" : "Language",
+            "placeholder" : "Select language for periodical",
+            "required" : "Language is required"
+        },
+        "save": {
+            "success":"Periodical saved successfully.",
+            "error":"Periodical to save series."
+        }
 	},
 	"fonts" : {
 		"alviLahoriNastaleeq": "Alvi Lahori Nastaleeq",
