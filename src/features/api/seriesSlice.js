@@ -2,7 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react'
 
 import { axiosBaseQuery } from '../../helpers/axios.helpers'
 
-import { parseResponse } from '../../helpers/parseResponse';
+import { parseResponse, removeLinks } from '../../helpers/parseResponse';
 // ----------------------------------------------
 export const seriesApi = createApi({
     reducerPath: 'series',
@@ -20,8 +20,42 @@ export const seriesApi = createApi({
                 ({ url: `/libraries/${libraryId}/series/${seriesId}`, method: 'get' }),
             transformResponse: (response) => parseResponse(response)
         }),
+        addSeries: builder.mutation({
+            query: ({ libraryId, payload }) => ({
+                url: `/libraries/${libraryId}/series`,
+                method: 'POST',
+                payload: removeLinks(payload)
+            })
+        }),
+        updateSeries: builder.mutation({
+            query: ({ libraryId, seriesId, payload }) => ({
+                url: `/libraries/${libraryId}/series/${seriesId}`,
+                method: 'PUT',
+                payload: removeLinks(payload)
+            })
+        }),
+        updateSeriesImage: builder.mutation({
+            query: ({ libraryId, seriesId, payload }) => {
+                const formData = new FormData();
+                formData.append('file', payload, payload.fileName);
+                return ({
+                    url: `/libraries/${libraryId}/series/${seriesId}/image`,
+                    method: 'PUT',
+                    payload: formData,
+                    formData: true,
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                });
+            }
+        }),
     }),
 })
 
 
-export const { useGetSeriesQuery, useGetSeriesByIdQuery } = seriesApi
+export const {
+    useGetSeriesQuery,
+    useGetSeriesByIdQuery,
+    useAddSeriesMutation,
+    useUpdateSeriesMutation,
+    useUpdateSeriesImageMutation } = seriesApi

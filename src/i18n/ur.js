@@ -298,10 +298,25 @@ const ur = {
         }
 	},
 	"series" : {
-		"title" : "سیریز",
+		"title" : "سلسلے",
 		"bookCount_one" : "1 کتاب",
 		"bookCount_other" : "{{count}} کتابیں",
-		"noDescription" : "تفصیل دستیاب نہیں۔۔۔"
+        "noDescription": "تفصیل دستیاب نہیں۔۔۔",
+        "name": {
+            "label": "نام",
+            "placeholder": "سلسلے کا نام",
+            "required": "سلسلے کے لیے نام ضروری ہے"
+        },
+        "description": {
+            "label": "تفصیل"
+        },
+        "save": {
+            "success":"سلسلے میں تبدیلیاں محفوظ ہو گئی ہیں۔",
+            "error":"سلسلے میں تبدیلیاں محفوظ نہیں ہوئں۔"
+        },
+        "actions" : {
+            "add": "سلسے کا اضافہ"
+        }
 	},
 	"categories" : {
 		"title": "زمرے",

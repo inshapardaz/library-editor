@@ -300,7 +300,22 @@ const en = {
 		"title" : "Series",
 		"bookCount_one" : "1 book",
 		"bookCount_other" : "{{count}} books",
-		"noDescription" : "No details..."
+        "noDescription": "No details...",
+        "name": {
+            "label": "Name",
+            "placeholder": "Name of the series",
+            "required": "Name is required for series"
+        },
+        "description": {
+            "label": "Description"
+        },
+        "save": {
+            "success":"Series saved successfully.",
+            "error":"Unable to save series."
+        },
+        "actions" : {
+            "add": "Create new series"
+        }
 	},
 	"categories" : {
 		"title": "Categories",

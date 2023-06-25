@@ -4,12 +4,12 @@ import { useNavigate, useParams } from "react-router-dom";
 
 // 3rd party libraries
 
-import { Button, Col, Form, Input, Row, App, Space, Spin, Select, Upload } from "antd";
+import { Button, Col, Form, Input, Row, App, Space, Spin, Upload } from "antd";
 import { FaFeatherAlt } from "react-icons/fa";
 import ImgCrop from "antd-img-crop";
 
 // Local imports
-import { useGetAuthorByIdQuery, useAddAuthorMutation, useUpdateAuthorMutation, useUpdateAuthorImageMutation } from "../../features/api/authorsSlice";
+import { useGetSeriesByIdQuery, useAddSeriesMutation, useUpdateSeriesMutation, useUpdateSeriesImageMutation } from "../../features/api/seriesSlice";
 import ContentsContainer from "../../components/layout/contentContainer";
 import PageHeader from "../../components/layout/pageHeader";
 import Error from "../../components/common/error";
@@ -23,44 +23,44 @@ const { Dragger } = Upload;
 const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 14 } };
 const buttonItemLayout = { wrapperCol: { span: 14, offset: 4 } };
 
-const AuthorEditPage = () => {
+const SeriesEditPage = () => {
     const { message } = App.useApp();
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { libraryId, authorId } = useParams();
-    const [addAuthor, { isLoading: isAdding }] = useAddAuthorMutation();
-    const [updateAuthor, { isLoading: isUpdating }] = useUpdateAuthorMutation();
-    const [updateAuthorImage, { isLoading: isUpdatingImage }] = useUpdateAuthorImageMutation();
-    const { data: author, error, isFetching } = useGetAuthorByIdQuery({ libraryId, authorId }, { skip: !libraryId || !authorId });
+    const { libraryId, seriesId } = useParams();
+    const [addSeries, { isLoading: isAdding }] = useAddSeriesMutation();
+    const [updateSeries, { isLoading: isUpdating }] = useUpdateSeriesMutation();
+    const [updateSeriesImage, { isLoading: isUpdatingImage }] = useUpdateSeriesImageMutation();
+    const { data: series, error, isFetching } = useGetSeriesByIdQuery({ libraryId, seriesId }, { skip: !libraryId || !seriesId });
     const [previewImage, setPreviewImage] = useState(null);
     const [fileList, setFileList] = useState([]);
 
     if (isFetching) return <Loading />;
     if (error) return <Error />;
 
-    const onSubmit = async (author) => {
-        if (authorId) {
-            updateAuthor({ libraryId, authorId, payload: author })
+    const onSubmit = async (series) => {
+        if (seriesId) {
+            updateSeries({ libraryId, seriesId, payload: series })
                 .unwrap()
-                .then(() => uploadImage(authorId))
-                .then(() => message.success(t("author.save.success")))
-                .then(() => navigate(`/libraries/${libraryId}/authors/${authorId}`))
-                .catch((_) => message.error(t("author.save.error")));
+                .then(() => uploadImage(seriesId))
+                .then(() => message.success(t("series.save.success")))
+                .then(() => navigate(`/libraries/${libraryId}/series/${seriesId}`))
+                .catch((_) => message.error(t("series.save.error")));
         } else {
             let response = null;
-            addAuthor({ libraryId, payload: author })
+            addSeries({ libraryId, payload: series })
                 .unwrap()
                 .then((r) => (response = r))
                 .then(() => uploadImage(response.id))
-                .then(() => message.success(t("author.save.success")))
-                .then(() => navigate(`/libraries/${libraryId}/authors/${response.id}`))
-                .catch((_) => message.error(t("author.save.error")));
+                .then(() => message.success(t("series.save.success")))
+                .then(() => navigate(`/libraries/${libraryId}/series/${response.id}`))
+                .catch((_) => message.error(t("series.save.error")));
         }
     };
 
-    const uploadImage = async (newAuthorId) => {
+    const uploadImage = async (newSeriesId) => {
         if (fileList && fileList.length > 0) {
-            await updateAuthorImage({ libraryId, authorId: newAuthorId, payload: fileList[0] }).unwrap();
+            await updateSeriesImage({ libraryId, seriesId: newSeriesId, payload: fileList[0] }).unwrap();
         }
     };
 
@@ -82,13 +82,13 @@ const AuthorEditPage = () => {
     const getCoverSrc = () => {
         if (previewImage) {
             return previewImage;
-        } else if (author && author.links.image) {
-            return author.links.image;
+        } else if (series && series.links.image) {
+            return series.links.image;
         }
 
-        return helpers.defaultAuthorImage;
+        return helpers.defaultSeriesImage;
     };
-    const title = author ? author.name : t("authors.actions.add");
+    const title = series ? series.name : t("series.actions.add");
 
     return (
         <>
@@ -98,44 +98,28 @@ const AuthorEditPage = () => {
                     <Col l={4} md={6} xs={24}>
                         <ImgCrop modalTitle={t("actions.resizeImage")}>
                             <Dragger fileList={fileList} beforeUpload={onImageChange} showUploadList={false}>
-                                <img src={getCoverSrc()} height="300" alt={author && author.name} onError={helpers.setDefaultBookImage} />
+                                <img src={getCoverSrc()} height="300" alt={series && series.name} onError={helpers.setDefaultSeriesImage} />
                             </Dragger>
                         </ImgCrop>
                     </Col>
                     <Col l={20} md={18} xs={24}>
                         <Spin spinning={isFetching || isAdding || isUpdating || isUpdatingImage}>
-                            <Form name="login" onFinish={onSubmit} {...formItemLayout} layout="horizontal" initialValues={author}>
+                            <Form name="login" onFinish={onSubmit} {...formItemLayout} layout="horizontal" initialValues={series}>
                                 <Form.Item
                                     name="name"
-                                    label={t("author.name.label")}
+                                    label={t("series.name.label")}
                                     rules={[
                                         {
                                             required: true,
-                                            message: t("author.name.required"),
+                                            message: t("series.name.required"),
                                         },
                                     ]}
                                 >
-                                    <Input placeholder={t("author.name.placeholder")} />
+                                    <Input placeholder={t("series.name.placeholder")} />
                                 </Form.Item>
-                                <Form.Item name="description" label={t("author.description.label")}>
+                                <Form.Item name="description" label={t("series.description.label")}>
                                     <Input.TextArea rows={4} />
                                 </Form.Item>
-                                <Form.Item
-                                    name="authorType"
-                                    label={t("author.type.label")}
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: t("author.type.required"),
-                                        },
-                                    ]}
-                                >
-                                    <Select placeholder={t("author.type.placeholder")}>
-                                        <Select.Option value="Writer">{t("author.type.writer")}</Select.Option>
-                                        <Select.Option value="Poet">{t("author.type.poet")}</Select.Option>
-                                    </Select>
-                                </Form.Item>
-
                                 <Form.Item {...buttonItemLayout}>
                                     <Space direction="horizontal" size="middle" style={{ width: "100%" }}>
                                         <Button type="primary" htmlType="submit" size="large" block>
@@ -155,4 +139,4 @@ const AuthorEditPage = () => {
     );
 };
 
-export default AuthorEditPage;
+export default SeriesEditPage;
