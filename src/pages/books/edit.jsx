@@ -50,8 +50,8 @@ const BookEditPage = () => {
             updateBook({ libraryId, bookId, payload: book })
                 .unwrap()
                 .then(() => uploadImage(bookId))
-                .then(() => message.success(t("book.save.success")))
                 .then(() => navigate(`/libraries/${libraryId}/books/${bookId}`))
+                .then(() => message.success(t("book.save.success")))
                 .catch((_) => message.error(t("book.save.error")));
         } else {
             let response = null;
@@ -59,8 +59,8 @@ const BookEditPage = () => {
                 .unwrap()
                 .then((r) => (response = r))
                 .then(() => uploadImage(response.id))
-                .then(() => message.success(t("book.save.success")))
                 .then(() => navigate(`/libraries/${libraryId}/books/${response.id}`))
+                .then(() => message.success(t("book.save.success")))
                 .catch((_) => message.error(t("book.save.error")));
         }
     };
@@ -102,18 +102,18 @@ const BookEditPage = () => {
         <>
             <PageHeader title={title} icon={<ImBooks style={{ width: 36, height: 36 }} />} />
             <ContentsContainer>
-                <Row gutter={16}>
-                    <Col l={4} md={6} xs={24}>
+                <Spin spinning={isFetching || isAdding || isUpdating || isUpdatingImage}>
+                    <Row gutter={16}>
                         <Col l={4} md={6} xs={24}>
-                            <ImgCrop aspect={262 / 400} rotationSlider modalTitle={t("actions.resizeImage")}>
-                                <Dragger fileList={fileList} beforeUpload={onImageChange} showUploadList={false}>
-                                    <img src={getCoverSrc()} height="300" className="ant-upload-drag-icon" alt={book && book.title} onError={helpers.setDefaultBookImage} />
-                                </Dragger>
-                            </ImgCrop>
+                            <Col l={4} md={6} xs={24}>
+                                <ImgCrop aspect={262 / 400} rotationSlider modalTitle={t("actions.resizeImage")}>
+                                    <Dragger fileList={fileList} beforeUpload={onImageChange} showUploadList={false}>
+                                        <img src={getCoverSrc()} height="300" className="ant-upload-drag-icon" alt={book && book.title} onError={helpers.setDefaultBookImage} />
+                                    </Dragger>
+                                </ImgCrop>
+                            </Col>
                         </Col>
-                    </Col>
-                    <Col l={20} md={18} xs={24}>
-                        <Spin spinning={isFetching || isAdding || isUpdating || isUpdatingImage}>
+                        <Col l={20} md={18} xs={24}>
                             <Form name="login" onFinish={onSubmit} {...formItemLayout} layout="horizontal" initialValues={book}>
                                 <Form.Item
                                     name="title"
@@ -169,7 +169,7 @@ const BookEditPage = () => {
                                             <SeriesSelect placeholder={t("book.series.placeholder")} libraryId={libraryId} label={book && book.seriesName} />
                                         </Form.Item>
                                         <Form.Item name="seriesIndex" noStyle>
-                                            <InputNumber min={1} />
+                                            <InputNumber min={1} style={{ width: "50%" }} />
                                         </Form.Item>
                                     </Space.Compact>
                                 </Form.Item>
@@ -191,9 +191,9 @@ const BookEditPage = () => {
                                     </Space>
                                 </Form.Item>
                             </Form>
-                        </Spin>
-                    </Col>
-                </Row>
+                        </Col>
+                    </Row>
+                </Spin>
             </ContentsContainer>
         </>
     );

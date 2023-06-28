@@ -27,6 +27,7 @@ import SeriesEditPage from './pages//series/edit';
 import PeriodicalsHomePage from './pages/periodicals/index';
 import PeriodicalPage from './pages/periodicals/periodical';
 import PeriodicalEditPage from './pages/periodicals/edit';
+import IssueEditPage from './pages/periodicals/issues/edit';
 import BookReader from './pages/books/reader'
 
 import LayoutWithHeader from './components/layout/layoutWithHeader'
@@ -57,6 +58,8 @@ const Router = () => {
                     <Route path="/libraries/:libraryId/periodicals/add" element={<PeriodicalEditPage />} />
                     <Route path="/libraries/:libraryId/periodicals/:periodicalId" element={<PeriodicalPage />} />
                     <Route path="/libraries/:libraryId/periodicals/:periodicalId/edit" element={<PeriodicalEditPage />} />
+                    <Route path="/libraries/:libraryId/periodicals/:periodicalId/issues/add" element={<IssueEditPage />} />
+                    <Route path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber/issues/:issueNumber/edit" element={<IssueEditPage />} />
                 </Route>
                 <Route path="/500" element={<Error500 />} />
                 <Route path="/403" element={<Error403 />} />

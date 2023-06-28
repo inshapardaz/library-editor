@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 // 3rd party libraries
 
 import { Button, Col, Form, Input, Row, App, Space, Spin, Upload } from "antd";
-import { FaFeatherAlt } from "react-icons/fa";
+import { ImBooks } from "react-icons/im";
 import ImgCrop from "antd-img-crop";
 
 // Local imports
@@ -92,7 +92,7 @@ const SeriesEditPage = () => {
 
     return (
         <>
-            <PageHeader title={title} icon={<FaFeatherAlt style={{ width: 36, height: 36 }} />} />
+            <PageHeader title={title} icon={<ImBooks style={{ width: 36, height: 36 }} />} />
             <ContentsContainer>
                 <Row gutter={16}>
                     <Col l={4} md={6} xs={24}>

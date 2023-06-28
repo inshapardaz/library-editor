@@ -357,11 +357,41 @@ const en = {
             "placeholder" : "Select language for periodical",
             "required" : "Language is required"
         },
+        "categories": {
+            "label" : "Categories",
+            "placeholder" : "Select categories for periodical"
+        },
         "save": {
             "success":"Periodical saved successfully.",
+            "error":"Unable to save Periodical."
+        }
+    },
+    "issues": {
+        "title" : "Issues",
+        "actions" : {
+            "add": "Create new issue"
+        }
+    },
+    "issue": {
+        "volumeNumber": {
+            "label": "Volume Number",
+            "placeholder": "Volume number for issue",
+            "required": "Volume number is required for issue. If there is no volume number, enter 0.",
+        },
+        "issueNumber": {
+            "label": "Issue Number",
+            "placeholder": "Issue number for issue",
+            "required": "Issue number is required for issue.",
+        },
+        "issueDate": {
+            "label": "Issue Date",
+            "required": "Issue date is required for issue",
+        },
+        "save": {
+            "success":"Issue saved successfully.",
             "error":"Periodical to save series."
         }
-	},
+    },
 	"fonts" : {
 		"alviLahoriNastaleeq": "Alvi Lahori Nastaleeq",
         "fajerNooriNastalique": "Fajer Noori Nastaleeq",

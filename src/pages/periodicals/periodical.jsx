@@ -3,12 +3,12 @@ import { useTranslation } from "react-i18next";
 
 // 3rd party libraries
 import { Button, Layout } from "antd";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaPlus } from "react-icons/fa";
 import { ImBooks } from "react-icons/im";
 
 // Local Imports
 import PageHeader from "../../components/layout/pageHeader";
-import BooksList from "../../components/books/booksList";
+import IssuesList from "../../components/periodicals/issues/issuesList";
 import ContentsContainer from "../../components/layout/contentContainer";
 import { useGetPeriodicalByIdQuery } from "../../features/api/periodicalsSlice";
 import Loading from "../../components/common/loader";
@@ -41,11 +41,22 @@ function PeriodicalPage() {
             </Button>
         </Link>
     );
+
+    const addIssueButton = (
+        <Link to={`/libraries/${libraryId}/periodicals/${periodicalId}/issues/add`}>
+            <Button type="dashed" icon={<FaPlus />}>
+                {t("issues.actions.add")}
+            </Button>
+        </Link>
+    );
+
     return (
         <>
-            <PageHeader title={periodical.title} icon={<ImBooks style={{ width: 36, height: 36 }} />} actions={editButton} />
+            <PageHeader title={periodical.title} icon={<ImBooks style={{ width: 36, height: 36 }} />} actions={[editButton, addIssueButton]} />
             <ContentsContainer>
-                <Content style={{ padding: "0 24px", minHeight: 280 }}>{/* <BooksList libraryId={libraryId} query={query} periodicalId={periodicalId} sortBy={sortBy} sortDirection={sortDirection} status={status} pageNumber={pageNumber} pageSize={pageSize} /> */}</Content>
+                <Content style={{ padding: "0 24px", minHeight: 280 }}>
+                    <IssuesList libraryId={libraryId} query={query} periodicalId={periodicalId} sortBy={sortBy} sortDirection={sortDirection} status={status} pageNumber={pageNumber} pageSize={pageSize} />
+                </Content>
             </ContentsContainer>
         </>
     );

@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 // 3rd party libraries
 
 import { Button, Col, Form, Input, Row, App, Space, Select, Spin, Upload } from "antd";
-import { FaFeatherAlt } from "react-icons/fa";
+import { ImNewspaper } from "react-icons/im";
 import ImgCrop from "antd-img-crop";
 
 // Local imports
@@ -13,6 +13,7 @@ import { useGetPeriodicalByIdQuery, useAddPeriodicalMutation, useUpdatePeriodica
 import ContentsContainer from "../../components/layout/contentContainer";
 import PageHeader from "../../components/layout/pageHeader";
 import LanguageSelect from "../../components/languageSelect";
+import CategoriesSelect from "../../components/categories/categoriesSelect";
 import Error from "../../components/common/error";
 import Loading from "../../components/common/loader";
 import helpers from "../../helpers";
@@ -44,8 +45,8 @@ const PeriodicalEditPage = () => {
             updatePeriodical({ libraryId, periodicalId, payload: periodical })
                 .unwrap()
                 .then(() => uploadImage(periodicalId))
-                .then(() => message.success(t("periodical.save.success")))
                 .then(() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}`))
+                .then(() => message.success(t("periodical.save.success")))
                 .catch((_) => message.error(t("periodicalI.save.error")));
         } else {
             let response = null;
@@ -53,8 +54,8 @@ const PeriodicalEditPage = () => {
                 .unwrap()
                 .then((r) => (response = r))
                 .then(() => uploadImage(response.id))
-                .then(() => message.success(t("periodical.save.success")))
                 .then(() => navigate(`/libraries/${libraryId}/periodicals/${response.id}`))
+                .then(() => message.success(t("periodical.save.success")))
                 .catch((_) => message.error(t("periodical.save.error")));
         }
     };
@@ -93,7 +94,7 @@ const PeriodicalEditPage = () => {
 
     return (
         <>
-            <PageHeader title={title} icon={<FaFeatherAlt style={{ width: 36, height: 36 }} />} />
+            <PageHeader title={title} icon={<ImNewspaper style={{ width: 36, height: 36 }} />} />
             <ContentsContainer>
                 <Row gutter={16}>
                     <Col l={4} md={6} xs={24}>
@@ -135,7 +136,7 @@ const PeriodicalEditPage = () => {
                                         <Select.Option value="Annually">{t("periodical.frequency.annually")}</Select.Option>
                                         <Select.Option value="Quarterly">{t("periodical.frequency.quarterly")}</Select.Option>
                                         <Select.Option value="Monthly">{t("periodical.frequency.monthly")}</Select.Option>
-                                        <Select.Option value="FortNightly">{t("periodical.frequency.fortnightly")}</Select.Option>
+                                        <Select.Option value="Fortnightly">{t("periodical.frequency.fortnightly")}</Select.Option>
                                         <Select.Option value="Weekly">{t("periodical.frequency.weekly")}</Select.Option>
                                         <Select.Option value="Daily">{t("periodical.frequency.daily")}</Select.Option>
                                     </Select>
@@ -151,6 +152,9 @@ const PeriodicalEditPage = () => {
                                     ]}
                                 >
                                     <LanguageSelect placeholder={t("periodical.language.placeholder")} />
+                                </Form.Item>
+                                <Form.Item name="categories" label={t("periodical.categories.label")}>
+                                    <CategoriesSelect libraryId={libraryId} placeholder={t("periodical.categories.placeholder")} />
                                 </Form.Item>
                                 <Form.Item {...buttonItemLayout}>
                                     <Space direction="horizontal" size="middle" style={{ width: "100%" }}>

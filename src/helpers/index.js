@@ -269,7 +269,23 @@ const helpers = {
             return false;
         }
         return true;
+    },
+    getDateFormatFromFrequency: (frequency) => {
+    switch (frequency) {
+        case "Weekly":
+            return "week";
+        case "Monthly":
+            return "MMMM YYYY";
+        case "Quarterly":
+            return "Q YYYY";
+        case "Annually":
+            return "YYYY";
+        case "Daily":
+        case "FortNightly":
+        default:
+            return "LL";
     }
+}
 };
 
 export default helpers;

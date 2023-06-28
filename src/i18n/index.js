@@ -10,7 +10,7 @@ i18n
     .init({
         lng: window.localStorage.i18nextLng || "ur",
         fallbackLng: 'en',
-        debug: true,
+        // debug: true,
         interpolation: {
             escapeValue: false,
         },
