@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 // 3rd party libraries
 
-import { Button, Col, Form, InputNumber, Row, App, Space, DatePicker, Spin, Upload, Input } from "antd";
+import { Button, Col, Form, InputNumber, Row, App, Space, Spin, Upload } from "antd";
 import { FiLayers } from "react-icons/fi";
 import ImgCrop from "antd-img-crop";
 
