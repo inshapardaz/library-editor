@@ -251,6 +251,37 @@ const ur = {
 	"chapters" : {
 		"title": "ابواب"
 	},
+    "chapter" : {
+        "title" : {
+            "label": "عنوان",
+            "placeholder" : "باب کا عنوان",
+            "required" : "باب کا عنوان ضروری ہے"
+        },
+        "status": {
+            "label": "کیفیت",
+            "placeholder" : "باب کی کیفیت چنیں",
+            "required" : "باب کی کیفیت ضروری ہے"
+        },
+        "actions": {
+            "add": {
+                "label": "نیا باب بنائیں",
+                "title": "نیا باب",
+                "success" :"نیا باب محفوظ کر دیا گیا ہے۔",
+                "error" :"نیا باب محفوظ نہیں کیا جا سکا۔"
+            },
+            "edit": {
+                "title": "باب '{{title}}' کی ترمیم کریں",
+                "success": "باب محفوظ کر دیا گیا ہے",
+                "error": "باب محفوظ نہیں کیا جا سکا"
+            },
+            "delete": {
+                "title" : "باب حذف کریں",
+                "message": "کیا آپ باب '{{title}}' کو حذف کرنا چاہتے ہیں؟",
+                "success" :"باب حذف کر دیا گیا ہے۔",
+                "error" :"باب حذف نہیں کیا جا سکا۔"
+            }
+        },
+    },
 	"reader" : {
 		"settings" : "بصری ترجیحات",
 		"font": "خط",
@@ -437,6 +468,13 @@ const ur = {
         "BeingTyped": "ٹائپنگ",
         "ReadyForProofRead" : "ٹائپنگ مکمل",
         "ProofRead" : "پروف خوانی",
+        "Completed" : "مکمل"
+    },
+    "editingStatus": {
+        "Available" : "دستیاب",
+        "Typing": "ٹائپنگ",
+        "Typed": "ٹائپنگ مکمل",
+        "InReview" : "پروف خوانی",
         "Completed" : "مکمل"
     },
     "errors" : {

@@ -48,7 +48,8 @@ export const booksApi = createApi({
                 }
                 return ({ url: `/libraries/${libraryId}/books?pageNumber=${pageNumber}&pageSize=${pageSize}${queryVal}`, method: 'get' })
             },
-            transformResponse: (response) => parseResponse(response)
+            transformResponse: (response) => parseResponse(response),
+            providesTags: [ 'Books' ]
         }),
         getMyBooks: builder.query({
             query: ({ libraryId,
@@ -90,37 +91,44 @@ export const booksApi = createApi({
                 }
                 return ({ url: `/libraries/${libraryId}/my/books?pageNumber=${pageNumber}&pageSize=${pageSize}${queryVal}`, method: 'get' })
             },
-            transformResponse: (response) => parseResponse(response)
+            transformResponse: (response) => parseResponse(response),
+            providesTags: [ 'Books' ]
         }),
         getBook: builder.query({
             query: ({ libraryId, bookId }) => ({ url: `/libraries/${libraryId}/books/${bookId}`, method: 'get' }),
-            transformResponse: (response) => parseResponse(response)
+            transformResponse: (response) => parseResponse(response),
+            providesTags: [ 'Books' ]
         }),
         getBookChapters: builder.query({
             query: ({ libraryId, bookId }) => ({ url: `/libraries/${libraryId}/books/${bookId}/chapters`, method: 'get' }),
-            transformResponse: (response) => parseResponse(response)
+            transformResponse: (response) => parseResponse(response),
+            providesTags: [ 'Chapters' ]
         }),
         getChapter: builder.query({
             query: ({ libraryId, bookId, chapterId }) => ({ url: `/libraries/${libraryId}/books/${bookId}/chapters/${chapterId}`, method: 'get' }),
-            transformResponse: (response) => parseResponse(response)
+            transformResponse: (response) => parseResponse(response),
+            providesTags: [ 'Chapters' ]
         }),
         getChapterContents: builder.query({
             query: ({ libraryId, bookId, chapterId }) => ({ url: `/libraries/${libraryId}/books/${bookId}/chapters/${chapterId}/contents`, method: 'get' }),
-            transformResponse: (response) => parseResponse(response)
+            transformResponse: (response) => parseResponse(response),
+            providesTags: [ 'ChapterContents' ]
         }),
         addBook: builder.mutation({
             query: ({ libraryId, payload }) => ({
                 url: `/libraries/${libraryId}/books`,
                 method: 'POST',
                 payload: removeLinks(payload)
-            })
+            }),
+            invalidatesTags: [ 'Books' ]
         }),
         updateBook: builder.mutation({
             query: ({ libraryId, bookId, payload }) => ({
                 url: `/libraries/${libraryId}/books/${bookId}`,
                 method: 'PUT',
                 payload: removeLinks(payload)
-            })
+            }),
+            invalidatesTags: [ 'Books' ]
         }),
         updateBookImage: builder.mutation({
             query: ({ libraryId, bookId, payload }) => {
@@ -135,7 +143,31 @@ export const booksApi = createApi({
                         'content-type': 'multipart/form-data'
                     }
                 });
-            }
+            },
+            invalidatesTags: [ 'Books' ]
+        }),
+        addChapter: builder.mutation({
+            query: ({ libraryId, bookId, payload }) => ({
+                url: `/libraries/${libraryId}/books/${bookId}/chapters`,
+                method: 'POST',
+                payload: removeLinks(payload)
+            }),
+            invalidatesTags: [ 'Chapters' ]
+        }),
+        updateChapter: builder.mutation({
+            query: ({ libraryId, bookId, chapterNumber, payload }) => ({
+                url: `/libraries/${libraryId}/books/${bookId}/chapters/${chapterNumber}`,
+                method: 'PUT',
+                payload: removeLinks(payload)
+            }),
+            invalidatesTags: [ 'Chapters' ]
+        }),
+        deleteChapter: builder.mutation({
+            query: ({ libraryId, bookId, chapterNumber }) => ({
+                url: `/libraries/${libraryId}/books/${bookId}/chapters/${chapterNumber}`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: [ 'Chapters' ]
         }),
     }),
 })
@@ -150,4 +182,8 @@ export const {
     useGetChapterContentsQuery,
     useAddBookMutation,
     useUpdateBookMutation,
-    useUpdateBookImageMutation } = booksApi
+    useUpdateBookImageMutation,
+    useAddChapterMutation,
+    useUpdateChapterMutation,
+    useDeleteChapterMutation
+ } = booksApi

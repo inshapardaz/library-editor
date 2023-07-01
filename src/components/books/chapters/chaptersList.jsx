@@ -1,32 +1,32 @@
-
 // 3rd party libraries
-import { List, Skeleton } from 'antd';
+import { Col, List, Row, Skeleton, Typography } from "antd";
 
 // Internal Imports
-import { useGetBookChaptersQuery } from '../../../features/api/booksSlice';
-import Error from '../../common/error';
-import ChapterListItem from './chapterListItem';
+import { useGetBookChaptersQuery } from "../../../features/api/booksSlice";
+import Error from "../../common/error";
+import ChapterListItem from "./chapterListItem";
+import ChapterEditor from "./ChapterEditor";
 
 // ------------------------------------------------------
 
-const ChaptersList = ({libraryId, bookId, t, selectedChapterNumber = null, size = 'default', hideTitle = false }) => {
-    const { data : chapters, error, isFetching } = useGetBookChaptersQuery({libraryId, bookId}, { skip : !libraryId || !bookId })
+const ChaptersList = ({ libraryId, bookId, t, selectedChapterNumber = null, size = "default", hideTitle = false }) => {
+    const { data: chapters, error, isFetching } = useGetBookChaptersQuery({ libraryId, bookId }, { skip: !libraryId || !bookId });
 
-    if (error) return (<Error t={t} />)
+    if (error) return <Error t={t} />;
 
-    const title = hideTitle ? null : (<div>{t('book.chapters.title')}</div>)
+    const title = hideTitle ? null : <div>{t("book.chapters.title")}</div>;
 
-    if (isFetching) return <Skeleton />
+    if (isFetching) return <Skeleton />;
 
-    return (<List
-            size={size}
-            itemLayout="vertical"
-            dataSource={chapters ? chapters.data : []}
-            header={title}
-            renderItem={(chapter) => (
-                <ChapterListItem key={chapter.id} selected={selectedChapterNumber === chapter.chapterNumber} libraryId={libraryId} bookId={bookId} chapter={chapter} />
-            )}
-        />);
-}
+    const header = (<Row>
+        <Col flex="auto">
+            <Typography level={3}>{title}</Typography>
+        </Col>
+        <Col>
+            <ChapterEditor libraryId={libraryId} bookId={bookId} t={t} buttonType="dashed" />
+        </Col>
+    </Row>)
+    return <List size={size} itemLayout="horizontal" dataSource={chapters ? chapters.data : []} header={header} renderItem={(chapter) => <ChapterListItem key={chapter.id} t={t} selected={selectedChapterNumber === chapter.chapterNumber} libraryId={libraryId} bookId={bookId} chapter={chapter} />} />;
+};
 
 export default ChaptersList;

@@ -249,7 +249,39 @@ const en = {
 	"chapters" : {
 		"title": "Chapters"
 	},
-
+    "chapter" : {
+        "title" : {
+            "label": "Title",
+            "placeholder" : "Title of chapter",
+            "required" : "Chapter title is required"
+        },
+        "status": {
+            "label": "Status",
+            "placeholder" : "Select Chapter Status",
+            "required" : "Chapter status is required"
+        },
+        "actions": {
+            "add": {
+                "label": "Add new chapter",
+                "title": "New Chapter",
+                "success" :"Chapter created successfully.",
+                "error" :"Error creating chapter"
+            },
+            "edit": {
+                "title": "Editing '{{title}}'",
+                "success" :"Chapter saved succssfully.",
+                "error" :"Error saving chapter."
+            },
+            "delete": {
+                "title" : "Delete Chapter?",
+                "message": "Are you sure you want to delete chapter '{{title}}'?",
+                "success" :"Chapter deleted successfully.",
+                "error" :"Error deleting chapter."
+            }
+        },
+        "save": {
+        }
+    },
 	"reader" : {
 		"settings": "Theme & Settings",
 		"font" : "Font",
@@ -436,6 +468,13 @@ const en = {
         "BeingTyped": "Being Typed",
         "ReadyForProofRead" : "Ready for proof reading",
         "ProofRead" : "Proof Read"
+    },
+    "editingStatus": {
+        "Available" : "Available",
+        "Typing": "Being Typed",
+        "Typed": "Typed",
+        "InReview" : "In Review",
+        "Completed" : "Completed"
     },
     "errors" : {
         "imageRequired": "Only image files are expected. Please select an image file."
