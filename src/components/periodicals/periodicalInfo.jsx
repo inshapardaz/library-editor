@@ -1,9 +1,7 @@
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // 3rd party libraries
 import { Button, Space, Typography } from "antd";
-import { FaFeatherAlt } from "react-icons/fa";
-import { ImBooks } from "react-icons/im";
 import { FiEdit } from "react-icons/fi";
 
 // Local imports

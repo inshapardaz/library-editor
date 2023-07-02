@@ -2,7 +2,7 @@ import { useParams, useSearchParams, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // 3rd party libraries
-import { Button, Col, Layout, Row } from "antd";
+import { Button, Col, Row } from "antd";
 import { FaEdit } from "react-icons/fa";
 import { ImBooks } from "react-icons/im";
 
@@ -15,8 +15,6 @@ import Loading from "../../components/common/loader";
 import Error from "../../components/common/error";
 import SeriesInfo from "../../components/series/seriesInfo";
 
-//--------------------------------------------------------
-const { Content } = Layout;
 //--------------------------------------------------------
 
 function SeriesPage() {

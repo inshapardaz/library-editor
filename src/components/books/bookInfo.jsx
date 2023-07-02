@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 // 3rd party imports
 import { Button, Space, Typography } from "antd";
-import { FiEdit, FiTrash } from 'react-icons/fi';
+import { FiEdit } from 'react-icons/fi';
 
 // Local imports
 import helpers from "../../helpers";
