@@ -1,9 +1,11 @@
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
-import { List, Switch } from "antd";
+import { Button, List, Switch } from "antd";
+import { FaPlus } from "react-icons/fa";
+import { ImNewspaper } from "react-icons/im";
 
 // Local Imports
 import helpers from '../../helpers';
@@ -35,7 +37,7 @@ function PeriodicalsList({ libraryId,
     const navigate = useNavigate()
     const [showList, setShowList] = useLocalStorage('periodicals-list-view', false);
 
-    const { data: periodicals, error, isFetching } = useGetPeriodicalsQuery({
+    const { refetch, data: periodicals, error, isFetching } = useGetPeriodicalsQuery({
         libraryId,
         query,
         sortBy,
@@ -71,6 +73,16 @@ function PeriodicalsList({ libraryId,
     return (<DataContainer
         busy={isFetching}
         error={error}
+        errorTitle={t('periodicals.errors.loading.title')}
+        errorSubTitle={t('periodicals.errors.loading.subTitle')}
+        errorAction={<Button type="default" onClick={refetch}>{t('actions.retry')}</Button>}
+        emptyImage={<ImNewspaper size="5em"/>}
+            emptyDescription={t('periodicals.empty.title')}
+            emptyContent={<Link to={`/libraries/${libraryId}/periodicals/add`}>
+                    <Button type="dashed" icon={<FaPlus />}>
+                        {t("periodical.actions.add.label")}
+                    </Button>
+                </Link>}
         empty={periodicals && periodicals.data && periodicals.data.length < 1}
         actions={(<Switch checkedChildren={t('actions.list')} unCheckedChildren={t('actions.card')} checked={showList} onChange={toggleView} />)}>
         <List

@@ -10,6 +10,7 @@ import { SlCalender } from "react-icons/sl";
 import styles from "../../styles/common.module.scss";
 import helpers from "../../helpers/index";
 import { IconText } from "../common/iconText";
+import PeriodicalDeleteButton from "./periodicalDeleteButton";
 // ------------------------------------------------------
 
 const { Text, Paragraph } = Typography;
@@ -31,10 +32,11 @@ function PeriodicalCard({ libraryId, periodical, t }) {
         </Link>
     );
     const frequency = <IconText icon={SlCalender} text={t(`periodical.frequency.${periodical.frequency.toLowerCase()}`, { count: periodical.frequency })} key="book-page-count" />;
+    const deletePeriodical = (<PeriodicalDeleteButton libraryId={libraryId} periodical={periodical} t={t} type="ghost" size="small" />);
 
     return (
         <Link to={`/libraries/${libraryId}/periodicals/${periodical.id}`}>
-            <Card key={periodical.id} cover={cover} hoverable actions={[editLink, issueCount, frequency]}>
+            <Card key={periodical.id} cover={cover} hoverable actions={[editLink, deletePeriodical, issueCount, frequency]}>
                 <Card.Meta title={periodical.title} description={description} />
             </Card>
         </Link>

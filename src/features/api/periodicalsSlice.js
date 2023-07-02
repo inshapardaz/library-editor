@@ -10,26 +10,37 @@ export const periodicalsApi = createApi({
     endpoints: (builder) => ({
         getPeriodicals: builder.query({
             query: ({ libraryId }) => ({ url: `/libraries/${libraryId}/periodicals`, method: 'get' }),
-            transformResponse: (response) => parseResponse(response)
+            transformResponse: (response) => parseResponse(response),
+            providesTags: [ 'Periodicals' ]
         }),
         getPeriodicalById: builder.query({
             query: ({ libraryId, periodicalId }) =>
-                ({ url: `/libraries/${libraryId}/periodicals/${periodicalId}`, method: 'get' }),
-            transformResponse: (response) => parseResponse(response)
+            ({ url: `/libraries/${libraryId}/periodicals/${periodicalId}`, method: 'get' }),
+            transformResponse: (response) => parseResponse(response),
+            providesTags: [ 'Periodicals' ]
         }),
         addPeriodical: builder.mutation({
             query: ({ libraryId, payload }) => ({
                 url: `/libraries/${libraryId}/periodicals`,
                 method: 'POST',
                 payload: removeLinks(payload)
-            })
+            }),
+            invalidatesTags: [ 'Periodicals' ]
         }),
         updatePeriodical: builder.mutation({
             query: ({ libraryId, periodicalId, payload }) => ({
                 url: `/libraries/${libraryId}/periodicals/${periodicalId}`,
                 method: 'PUT',
                 payload: removeLinks(payload)
-            })
+            }),
+            invalidatesTags: [ 'Periodicals' ]
+        }),
+        deletePeriodical: builder.mutation({
+            query: ({ libraryId, periodicalId }) => ({
+                url: `/libraries/${libraryId}/periodicals/${periodicalId}`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: [ 'Periodicals' ]
         }),
         updatePeriodicalImage: builder.mutation({
             query: ({ libraryId, periodicalId, payload }) => {
@@ -44,7 +55,8 @@ export const periodicalsApi = createApi({
                         'content-type': 'multipart/form-data'
                     }
                 });
-            }
+            },
+            invalidatesTags: [ 'Periodicals' ]
         }),
     }),
 })
@@ -55,4 +67,5 @@ export const {
     useGetPeriodicalByIdQuery,
     useAddPeriodicalMutation,
     useUpdatePeriodicalMutation,
+    useDeletePeriodicalMutation,
     useUpdatePeriodicalImageMutation } = periodicalsApi

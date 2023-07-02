@@ -2,9 +2,9 @@ import { useParams, useSearchParams, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // 3rd party libraries
-import { Button, Layout } from "antd";
+import { Button, Col, Row } from "antd";
 import { FaEdit, FaPlus } from "react-icons/fa";
-import { ImBooks } from "react-icons/im";
+import { ImNewspaper } from "react-icons/im";
 
 // Local Imports
 import PageHeader from "../../components/layout/pageHeader";
@@ -13,9 +13,8 @@ import ContentsContainer from "../../components/layout/contentContainer";
 import { useGetPeriodicalByIdQuery } from "../../features/api/periodicalsSlice";
 import Loading from "../../components/common/loader";
 import Error from "../../components/common/error";
+import PeriodicalInfo from "../../components/periodicals/periodicalInfo";
 
-//--------------------------------------------------------
-const { Content } = Layout;
 //--------------------------------------------------------
 
 function PeriodicalPage() {
@@ -45,18 +44,23 @@ function PeriodicalPage() {
     const addIssueButton = (
         <Link to={`/libraries/${libraryId}/periodicals/${periodicalId}/issues/add`}>
             <Button type="dashed" icon={<FaPlus />}>
-                {t("issues.actions.add")}
+                {t("issue.actions.add.label")}
             </Button>
         </Link>
     );
 
     return (
         <>
-            <PageHeader title={periodical.title} icon={<ImBooks style={{ width: 36, height: 36 }} />} actions={[editButton, addIssueButton]} />
+            <PageHeader title={periodical.title} icon={<ImNewspaper style={{ width: 36, height: 36 }} />} actions={[editButton, addIssueButton]} />
             <ContentsContainer>
-                <Content style={{ padding: "0 24px", minHeight: 280 }}>
-                    <IssuesList libraryId={libraryId} query={query} periodicalId={periodicalId} sortBy={sortBy} sortDirection={sortDirection} status={status} pageNumber={pageNumber} pageSize={pageSize} />
-                </Content>
+                <Row gutter={16}>
+                    <Col l={4} md={6} xs={24}>
+                        <PeriodicalInfo libraryId={libraryId} periodical={periodical} t={t} />
+                    </Col>
+                    <Col l={20} md={18} xs={24}>
+                        <IssuesList libraryId={libraryId} query={query} periodicalId={periodicalId} sortBy={sortBy} sortDirection={sortDirection} status={status} pageNumber={pageNumber} pageSize={pageSize} />
+                    </Col>
+                </Row>
             </ContentsContainer>
         </>
     );

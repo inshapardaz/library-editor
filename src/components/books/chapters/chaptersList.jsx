@@ -5,7 +5,7 @@ import { Col, List, Row, Skeleton, Typography } from "antd";
 import { useGetBookChaptersQuery } from "../../../features/api/booksSlice";
 import Error from "../../common/error";
 import ChapterListItem from "./chapterListItem";
-import ChapterEditor from "./ChapterEditor";
+import ChapterEditor from "./chapterEditor";
 
 // ------------------------------------------------------
 

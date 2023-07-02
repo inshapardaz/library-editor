@@ -1,9 +1,10 @@
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
-import { List, Switch } from "antd";
+import { Button, List, Switch } from "antd";
+import { FaFeatherAlt, FaPlus } from "react-icons/fa";
 
 // Local Imports
 import DataContainer from "../layout/dataContainer"
@@ -30,7 +31,7 @@ function AuthorsList({libraryId, query, authorType, pageNumber, pageSize}) {
     const navigate = useNavigate()
     const [showList, setShowList] = useLocalStorage('author-list-view', false);
 
-    const { data : authors, error, isFetching } = useGetAuthorsQuery({libraryId, query, authorType, pageNumber, pageSize})
+    const { refetch, data : authors, error, isFetching } = useGetAuthorsQuery({libraryId, query, authorType, pageNumber, pageSize})
 
     const toggleView = (checked) => {
         setShowList(checked);
@@ -58,6 +59,16 @@ function AuthorsList({libraryId, query, authorType, pageNumber, pageSize}) {
         return (<DataContainer
             busy={isFetching}
             error={error}
+            errorTitle={t('authors.errors.loading.title')}
+            errorSubTitle={t('authors.errors.loading.subTitle')}
+            errorAction={<Button type="default" onClick={refetch}>{t('actions.retry')}</Button>}
+            emptyImage={<FaFeatherAlt size="5em"/>}
+            emptyDescription={t('authors.empty.title')}
+            emptyContent={<Link to={`/libraries/${libraryId}/authors/add`}>
+                    <Button type="dashed" icon={<FaPlus />}>
+                        {t("author.actions.add.label")}
+                    </Button>
+                </Link>}
             empty={authors && authors.data && authors.data.length < 1}
             actions={(<Switch checkedChildren={t('actions.list')} unCheckedChildren={t('actions.card')} checked={showList} onChange={toggleView} />) }>
             <List

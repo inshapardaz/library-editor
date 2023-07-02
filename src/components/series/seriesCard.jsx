@@ -9,6 +9,7 @@ import { ImBooks } from "react-icons/im";
 import styles from "../../styles/common.module.scss";
 import { IconText } from "../common/iconText";
 import helpers from "../../helpers/index";
+import SeriesDeleteButton from "./seriesDeleteButton";
 
 // ------------------------------------------------------
 
@@ -37,9 +38,10 @@ function SeriesCard({ libraryId, series, t }) {
         </Link>
     );
 
+    const deleteSeries = (<SeriesDeleteButton libraryId={libraryId} series={series} t={t} type="ghost" size="small" />);
     return (
         <Link to={`/libraries/${libraryId}/series/${series.id}`}>
-            <Card key={series.id} cover={cover} hoverable actions={[editButton, seriesCount]}>
+            <Card key={series.id} cover={cover} hoverable actions={[editButton, deleteSeries, seriesCount]}>
                 <Card.Meta title={series.name} description={description} />
             </Card>
         </Link>

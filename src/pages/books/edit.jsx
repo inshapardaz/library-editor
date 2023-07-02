@@ -51,8 +51,8 @@ const BookEditPage = () => {
                 .unwrap()
                 .then(() => uploadImage(bookId))
                 .then(() => navigate(`/libraries/${libraryId}/books/${bookId}`))
-                .then(() => message.success(t("book.save.success")))
-                .catch((_) => message.error(t("book.save.error")));
+                .then(() => message.success(t("book.actions.edit.success")))
+                .catch((_) => message.error(t("book.actions.edit.error")));
         } else {
             let response = null;
             addBook({ libraryId, payload: book })
@@ -60,13 +60,12 @@ const BookEditPage = () => {
                 .then((r) => (response = r))
                 .then(() => uploadImage(response.id))
                 .then(() => navigate(`/libraries/${libraryId}/books/${response.id}`))
-                .then(() => message.success(t("book.save.success")))
-                .catch((_) => message.error(t("book.save.error")));
+                .then(() => message.success(t("book.actions.add.success")))
+                .catch((_) => message.error(t("book.actions.add.error")));
         }
     };
 
     const uploadImage = async (newBookId) => {
-        console.log(newBookId);
         if (fileList && fileList.length > 0) {
             await updateBookImage({ libraryId, bookId: newBookId, payload: fileList[0] }).unwrap();
         }
@@ -97,7 +96,7 @@ const BookEditPage = () => {
         return helpers.defaultBookImage;
     };
 
-    const title = book ? book.title : t("books.actions.add");
+    const title = book ? book.title : t("book.actions.add.title");
     return (
         <>
             <PageHeader title={title} icon={<ImBooks style={{ width: 36, height: 36 }} />} />
@@ -143,7 +142,7 @@ const BookEditPage = () => {
                                         },
                                     ]}
                                 >
-                                    <AuthorsSelect placeholder={t("book.authors.placeholder")} libraryId={libraryId} />
+                                    <AuthorsSelect placeholder={t("book.authors.placeholder")} t={t} libraryId={libraryId} />
                                 </Form.Item>
                                 <Form.Item name="categories" label={t("book.categories.label")}>
                                     <CategoriesSelect libraryId={libraryId} placeholder={t("book.categories.placeholder")} />

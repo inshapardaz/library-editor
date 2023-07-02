@@ -180,10 +180,14 @@ const en = {
             "title" : "Books you are proof reading"
         },
 		"title"  : "Books",
-		"empty" : "No latest book found",
-		"loadingError": "Unable to load books",
-        "actions" : {
-            "add": "Add new book"
+        "errors": {
+            "loading": {
+                "title": "Error",
+                "subTitle": "Unable to load books.",
+            }
+        },
+        "empty" : {
+            "title" : "No latest book found",
         }
 	},
 	"book" : {
@@ -241,9 +245,24 @@ const en = {
 		"chapters" : {
 			"title" : "Chapters"
 		},
-        "save": {
-            "success" :"Book saved",
-		    "error" :"Error saving book"
+        "actions": {
+            "add": {
+                "label": "Add new book",
+                "title": "New Book",
+                "success" :"Book created successfully.",
+		        "error" :"Error creating book."
+            },
+            "edit": {
+                "title": "Editing '{{title}}'",
+                "success" :"Book saved successfully.",
+                "error" :"Error saving book"
+            },
+            "delete": {
+                "title" : "Delete book?",
+                "message": "Are you sure you want to delete book '{{title}}'? It will remove all of its contents including chapters, pages and files.",
+                "success" :"Book deleted successfully.",
+                "error" :"Error deleting book."
+            }
         }
 	},
 	"chapters" : {
@@ -279,7 +298,14 @@ const en = {
                 "error" :"Error deleting chapter."
             }
         },
-        "save": {
+        "errors": {
+            "loading": {
+                "title": "Error",
+                "subTitle": "Unable to load books.",
+            }
+        },
+        "empty" : {
+            "title" : "No Books"
         }
     },
 	"reader" : {
@@ -296,8 +322,14 @@ const en = {
 	},
 	"authors" : {
 		"title" : "Authors",
-        "actions" : {
-            "add": "Add new author"
+        "errors": {
+            "loading": {
+                "title": "Error",
+                "subTitle": "Unable to load authors.",
+            }
+        },
+        "empty" : {
+            "title" : "No Authors"
         }
 	},
 	"author" : {
@@ -323,9 +355,24 @@ const en = {
             "writer": "Writer",
             "poet": "Poet"
         },
-        "save": {
-            "success":"Author saved successfully.",
-            "error":"Unable to save author."
+        "actions": {
+            "add": {
+                "label": "Add new author",
+                "title": "New Author",
+                "success" :"Author created successfully.",
+		        "error" :"Error creating author."
+            },
+            "edit": {
+                "title": "Editing '{{name}}'",
+                "success" :"Author saved successfully.",
+                "error" :"Error saving author"
+            },
+            "delete": {
+                "title" : "Delete author?",
+                "message": "Are you sure you want to delete author '{{name}}'? It will remove all of its contents including books, writing and files.",
+                "success" :"Author deleted successfully.",
+                "error" :"Error deleting author."
+            }
         }
 	},
 	"series" : {
@@ -345,8 +392,33 @@ const en = {
             "success":"Series saved successfully.",
             "error":"Unable to save series."
         },
-        "actions" : {
-            "add": "Create new series"
+        "actions": {
+            "add": {
+                "label": "Add new series",
+                "title": "New Series",
+                "success" :"Series created successfully.",
+                "error" :"Error creating series"
+            },
+            "edit": {
+                "title": "Editing '{{name}}'",
+                "success" :"Series saved successfully.",
+                "error" :"Error saving series."
+            },
+            "delete": {
+                "title" : "Delete Series?",
+                "message": "Are you sure you want to delete series '{{name}}'?",
+                "success" :"Series deleted successfully.",
+                "error" :"Error deleting series."
+            }
+        },
+        "errors": {
+            "loading": {
+                "title": "Error",
+                "subTitle": "Unable to load series.",
+            }
+        },
+        "empty" : {
+            "title" : "No Series"
         }
 	},
 	"categories" : {
@@ -356,8 +428,14 @@ const en = {
 	},
 	"periodicals" : {
 		"title" : "Periodical",
-        "actions" : {
-            "add": "Create new periodical"
+        "errors": {
+            "loading": {
+                "title": "Error",
+                "subTitle": "Unable to load periodical",
+            }
+        },
+        "empty" : {
+            "title" : "No Periodicals"
         }
 	},
 	"periodical" : {
@@ -393,15 +471,36 @@ const en = {
             "label" : "Categories",
             "placeholder" : "Select categories for periodical"
         },
-        "save": {
-            "success":"Periodical saved successfully.",
-            "error":"Unable to save Periodical."
+        "actions": {
+            "add": {
+                "label": "Add new periodical",
+                "title": "New Periodical",
+                "success" :"Periodical created successfully.",
+		        "error" :"Error creating periodical."
+            },
+            "edit": {
+                "title": "Editing '{{name}}'",
+                "success" :"Periodical saved successfully.",
+                "error" :"Error saving periodical"
+            },
+            "delete": {
+                "title" : "Delete periodical?",
+                "message": "Are you sure you want to delete periodical '{{name}}'? It will remove all of its contents including issue, articles and files.",
+                "success" :"Periodical deleted successfully.",
+                "error" :"Error deleting periodical."
+            }
         }
     },
     "issues": {
         "title" : "Issues",
-        "actions" : {
-            "add": "Create new issue"
+        "errors": {
+            "loading": {
+                "title": "Error",
+                "subTitle": "Unable to load issues.",
+            }
+        },
+        "empty" : {
+            "title" : "No issues"
         }
     },
     "issue": {
@@ -419,9 +518,24 @@ const en = {
             "label": "Issue Date",
             "required": "Issue date is required for issue",
         },
-        "save": {
-            "success":"Issue saved successfully.",
-            "error":"Periodical to save series."
+        "actions": {
+            "add": {
+                "label": "Add new issue",
+                "title": "New issue",
+                "success" :"Issue created successfully.",
+		        "error" :"Error creating issue."
+            },
+            "edit": {
+                "title": "Editing '{{name}}'",
+                "success" :"Issue saved successfully.",
+                "error" :"Error saving issue"
+            },
+            "delete": {
+                "title" : "Delete issue?",
+                "message": "Are you sure you want to delete issue '{{name}}'? It will remove all of its contents.",
+                "success" :"Issue deleted successfully.",
+                "error" :"Error deleting issue."
+            }
         }
     },
 	"fonts" : {

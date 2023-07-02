@@ -37,7 +37,7 @@ function BooksHomePage() {
     const addButton = (
         <Link to={`/libraries/${libraryId}/books/add`}>
             <Button type="dashed" icon={<FaPlus />}>
-                {t("books.actions.add")}
+                {t("book.actions.add.label")}
             </Button>
         </Link>
     );

@@ -4,10 +4,11 @@ import { useNavigate, Link } from "react-router-dom";
 import { Button, Space, Typography } from "antd";
 import { FaFeatherAlt } from "react-icons/fa";
 import { ImBooks } from "react-icons/im";
-import { FiEdit, FiTrash } from "react-icons/fi";
+import { FiEdit } from "react-icons/fi";
 
 // Local imports
 import helpers from "../../helpers";
+import AuthorDeleteButton from "./authorDeleteButton";
 
 // -----------------------------------------
 const { Title, Paragraph } = Typography;
@@ -33,9 +34,10 @@ const AuthorInfo = ({ libraryId, author, t }) => {
                 <Button block icon={<FiEdit />} onClick={() => navigate(`/libraries/${libraryId}/authors/${author.id}/edit`)}>
                     {t("actions.edit")}
                 </Button>
-                <Button block danger icon={<FiTrash />}>
-                    {t("actions.delete")}
-                </Button>
+                <AuthorDeleteButton block danger libraryId={libraryId} author={author} t={t}
+                    onDeleted={() => navigate(`/libraries/${libraryId}/authors`)}>
+                        {t('actions.delete')}
+                </AuthorDeleteButton>
             </Space>
         </>
     );

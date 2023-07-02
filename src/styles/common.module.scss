@@ -257,7 +257,6 @@
     height : 400px;
 
     &--small {
-      width: 98px;
       height: 150px;
     }
   }
@@ -315,4 +314,9 @@
   @include when-mobile-device {
       padding: 20px 10px;
   }
+}
+
+
+.home {
+    margin-top: 50px;
 }

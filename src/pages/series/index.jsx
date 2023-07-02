@@ -22,7 +22,7 @@ function SeriesHomePage() {
     const addButton = (
         <Link to={`/libraries/${libraryId}/series/add`}>
             <Button type="dashed" icon={<FaPlus />}>
-                {t("series.actions.add")}
+                {t("series.actions.add.label")}
             </Button>
         </Link>
     );

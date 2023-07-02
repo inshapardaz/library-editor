@@ -1,9 +1,11 @@
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
-import { List, Switch } from "antd";
+import { Button, List, Switch } from "antd";
+import { FaPlus } from "react-icons/fa";
+import { ImBooks } from "react-icons/im";
 
 // Local Imports
 import DataContainer from "../layout/dataContainer"
@@ -30,7 +32,7 @@ function SeriesList({libraryId, query, pageNumber, pageSize}) {
     const navigate = useNavigate()
     const [showList, setShowList] = useLocalStorage('series-list-view', false);
 
-    const { data : series, error, isFetching } = useGetSeriesQuery({libraryId, query, pageNumber, pageSize})
+    const { refetch, data : series, error, isFetching } = useGetSeriesQuery({libraryId, query, pageNumber, pageSize})
 
     const toggleView = (checked) => {
         setShowList(checked);
@@ -57,6 +59,16 @@ function SeriesList({libraryId, query, pageNumber, pageSize}) {
         return (<DataContainer
             busy={isFetching}
             error={error}
+            errorTitle={t('series.errors.loading.title')}
+            errorSubTitle={t('series.errors.loading.subTitle')}
+            errorAction={<Button type="default" onClick={refetch}>{t('actions.retry')}</Button>}
+            emptyImage={<ImBooks size="5em"/>}
+            emptyDescription={t('series.empty.title')}
+            emptyContent={<Link to={`/libraries/${libraryId}/series/add`}>
+                    <Button type="dashed" icon={<FaPlus />}>
+                        {t("series.actions.add.label")}
+                    </Button>
+                </Link>}
             empty={series && series.data && series.data.length < 1}
             actions={(<Switch checkedChildren={t('actions.list')} unCheckedChildren={t('actions.card')} checked={showList} onChange={toggleView} />) }>
             <List

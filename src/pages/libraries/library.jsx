@@ -9,6 +9,7 @@ import LatestBooks from "../../components/books/latestBooks";
 import EditingBooks from "../../components/books/editingBooks";
 import { useGetLibraryQuery }  from '../../features/api/librariesSlice'
 
+import styles from '../../styles/common.module.scss'
 // -------------------------------------------------------
 
 const LibraryHome = () => {
@@ -20,6 +21,7 @@ const LibraryHome = () => {
   }
 
   return (<>
+    <div className={styles.home}/>
     <ContentsContainer>
       <EditingBooks status="BeingTyped" />
       <EditingBooks status="ProofRead" />

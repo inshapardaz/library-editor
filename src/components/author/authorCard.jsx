@@ -9,6 +9,7 @@ import { FaPenFancy, FaEdit } from "react-icons/fa";
 import styles from "../../styles/common.module.scss";
 import { IconText } from "../common/iconText";
 import helpers from "../../helpers/index";
+import AuthorDeleteButton from "./authorDeleteButton";
 
 // ------------------------------------------------------
 
@@ -38,13 +39,15 @@ function AuthorCard({ libraryId, author, t }) {
 
     const editLink = (
         <Link to={`/libraries/${libraryId}/authors/${author.id}/edit`}>
-            <IconText icon={FaEdit} text={t("actions.edit")} key="author-edit" />
+            <FaEdit />
         </Link>
     );
 
+    const deleteAuthor = (<AuthorDeleteButton libraryId={libraryId} author={author} t={t} type="ghost" size="small" />)
+
     return (
         <Link to={`/libraries/${libraryId}/authors/${author.id}`}>
-            <Card key={author.id} cover={cover} hoverable actions={[editLink, bookCount, writingsCount]}>
+            <Card key={author.id} cover={cover} hoverable actions={[editLink, deleteAuthor, bookCount, writingsCount]}>
                 <Card.Meta title={author.name} description={description} />
             </Card>
         </Link>

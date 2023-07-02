@@ -48,8 +48,8 @@ const IssueEditPage = () => {
                 .unwrap()
                 .then(() => uploadImage(periodicalId, issue.volumeNumber, issue.issueNumber))
                 .then(() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}/issues`))
-                .then(() => message.success(t("issue.save.success")))
-                .catch((_) => message.error(t("issue.save.error")));
+                .then(() => message.success(t("issue.actions.edit.success")))
+                .catch((_) => message.error(t("issue.actions.edit.error")));
         } else {
             let response = null;
             addIssue({ libraryId, periodicalId, volumeNumber: issue.volumeNumber, issueNumber: issue.issueNumber, payload: issue })
@@ -57,8 +57,8 @@ const IssueEditPage = () => {
                 .then((r) => (response = r))
                 .then(() => uploadImage(periodicalId, response.volumeNumber, response.issueNumber))
                 .then(() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}/issues/${response.id}`))
-                .then(() => message.success(t("issue.save.success")))
-                .catch((_) => message.error(t("issue.save.error")));
+                .then(() => message.success(t("issue.actions.add.success")))
+                .catch((_) => message.error(t("issue.actions.add.error")));
         }
     };
 
@@ -92,7 +92,7 @@ const IssueEditPage = () => {
 
         return helpers.defaultIssueImage;
     };
-    const title = issue ? moment(issue.issueDate).format(helpers.getDateFormatFromFrequency(issue.frequency)) : t("issues.actions.add");
+    const title = issue ? moment(issue.issueDate).format(helpers.getDateFormatFromFrequency(issue.frequency)) : t("issue.actions.add.label");
 
     return (
         <>

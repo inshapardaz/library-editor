@@ -6,8 +6,8 @@ import { Avatar, Button, List, Typography } from "antd";
 import { MdOutlineAssignmentInd } from 'react-icons/md';
 
 // Local Import
-import ChapterEditor from "./ChapterEditor";
-import ChapterDelete from "./ChapterDelete";
+import ChapterEditor from "./chapterEditor";
+import ChapterDeleteButton from "./chapterDeleteButton";
 
 // ------------------------------------------------------
 
@@ -21,7 +21,7 @@ function ChapterListItem({ libraryId, bookId, chapter, selected = false, t, onDe
     );
 
     const edit = <ChapterEditor libraryId={libraryId} bookId={bookId} chapter={chapter} t={t} />;
-    const deleteBtn = <ChapterDelete libraryId={libraryId} bookId={bookId} chapter={chapter} t={t} onDeleted={onDeleted} />;
+    const deleteBtn = <ChapterDeleteButton libraryId={libraryId} bookId={bookId} chapter={chapter} t={t} onDeleted={onDeleted} />;
     const assign = <Button type="text"><MdOutlineAssignmentInd /></Button>;
     return (
         <List.Item actions={[edit, deleteBtn, assign]}>

@@ -16,26 +16,37 @@ export const authorsApi = createApi({
                 }
                 return ({ url: `/libraries/${libraryId}/authors?pageNumber=${pageNumber}&pageSize=${pageSize}${queryVal}`, method: 'get' })
             },
-            transformResponse: (response) => parseResponse(response)
+            transformResponse: (response) => parseResponse(response),
+            providesTags: [ 'Authors' ]
         }),
         getAuthorById: builder.query({
             query: ({ libraryId, authorId }) =>
                 ({ url: `/libraries/${libraryId}/authors/${authorId}`, method: 'get' }),
-            transformResponse: (response) => parseResponse(response)
+            transformResponse: (response) => parseResponse(response),
+            providesTags: [ 'Authors' ]
         }),
         addAuthor: builder.mutation({
             query: ({ libraryId, payload }) => ({
                 url: `/libraries/${libraryId}/authors`,
                 method: 'POST',
                 payload: removeLinks(payload)
-            })
+            }),
+            invalidatesTags: [ 'Authors' ]
         }),
         updateAuthor: builder.mutation({
             query: ({ libraryId, authorId, payload }) => ({
                 url: `/libraries/${libraryId}/authors/${authorId}`,
                 method: 'PUT',
                 payload: removeLinks(payload)
-            })
+            }),
+            invalidatesTags: [ 'Authors' ]
+        }),
+        deleteAuthor: builder.mutation({
+            query: ({ libraryId, authorId }) => ({
+                url: `/libraries/${libraryId}/authors/${authorId}`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: [ 'Authors' ]
         }),
         updateAuthorImage: builder.mutation({
             query: ({ libraryId, authorId, payload }) => {
@@ -50,7 +61,8 @@ export const authorsApi = createApi({
                         'content-type': 'multipart/form-data'
                     }
                 });
-            }
+            },
+            invalidatesTags: [ 'Authors' ]
         }),
     }),
 })
@@ -60,4 +72,5 @@ export const { useGetAuthorsQuery,
     useGetAuthorByIdQuery,
     useAddAuthorMutation,
     useUpdateAuthorMutation,
+    useDeleteAuthorMutation,
     useUpdateAuthorImageMutation } = authorsApi

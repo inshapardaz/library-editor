@@ -10,6 +10,7 @@ import { ImBooks } from "react-icons/im";
 import styles from "../../styles/common.module.scss";
 import helpers from "../../helpers/index";
 import { IconText } from "../common/iconText";
+import SeriesDeleteButton from "./seriesDeleteButton";
 
 // ------------------------------------------------------
 
@@ -39,8 +40,10 @@ function SeriesListItem({ libraryId, series, t }) {
         </Link>
     );
 
+    const deleteSeries = <SeriesDeleteButton libraryId={libraryId} series={series} t={t} type="ghost" size="small" />;
+
     return (
-        <List.Item key={series.id} actions={[bookCount, editButton]}>
+        <List.Item key={series.id} actions={[bookCount, editButton, deleteSeries]}>
             <List.Item.Meta title={title} avatar={avatar} description={description} />
         </List.Item>
     );

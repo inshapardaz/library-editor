@@ -130,6 +130,13 @@ export const booksApi = createApi({
             }),
             invalidatesTags: [ 'Books' ]
         }),
+        deleteBook: builder.mutation({
+            query: ({ libraryId, bookId }) => ({
+                url: `/libraries/${libraryId}/books/${bookId}`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: [ 'Books' ]
+        }),
         updateBookImage: builder.mutation({
             query: ({ libraryId, bookId, payload }) => {
                 const formData = new FormData();
@@ -182,6 +189,7 @@ export const {
     useGetChapterContentsQuery,
     useAddBookMutation,
     useUpdateBookMutation,
+    useDeleteBookMutation,
     useUpdateBookImageMutation,
     useAddChapterMutation,
     useUpdateChapterMutation,

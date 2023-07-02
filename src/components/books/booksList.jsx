@@ -1,9 +1,10 @@
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
-import { List, Switch } from "antd";
+import { Button, List, Switch } from "antd";
+import { FaBook, FaPlus } from "react-icons/fa";
 
 // Local Imports
 import helpers from '../../helpers';
@@ -41,7 +42,7 @@ function BooksList({libraryId,
     const navigate = useNavigate()
     const [showList, setShowList] = useLocalStorage('books-list-view', false);
 
-    const { data : books, error, isFetching } = useGetBooksQuery({libraryId,
+    const { refetch, data : books, error, isFetching } = useGetBooksQuery({libraryId,
         query,
         author,
         categories,
@@ -86,6 +87,16 @@ function BooksList({libraryId,
         return (<DataContainer
             busy={isFetching}
             error={error}
+            errorTitle={t('books.errors.loading.title')}
+            errorSubTitle={t('books.errors.loading.subTitle')}
+            errorAction={<Button type="default" onClick={refetch}>{t('actions.retry')}</Button>}
+            emptyImage={<FaBook size="5em"/>}
+            emptyDescription={t('books.empty.title')}
+            emptyContent={<Link to={`/libraries/${libraryId}/books/add`}>
+                    <Button type="dashed" icon={<FaPlus />}>
+                        {t("book.actions.add.label")}
+                    </Button>
+                </Link>}
             empty={books && books.data && books.data.length < 1}
             bordered={false}
             actions={(<Switch checkedChildren={t('actions.list')} unCheckedChildren={t('actions.card')} checked={showList} onChange={toggleView} />) }>

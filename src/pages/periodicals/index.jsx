@@ -22,7 +22,7 @@ function PeriodicalsHomePage() {
     const addButton = (
         <Link to={`/libraries/${libraryId}/periodicals/add`}>
             <Button type="dashed" icon={<FaPlus />}>
-                {t("periodicals.actions.add")}
+                {t("periodical.actions.add.label")}
             </Button>
         </Link>
     );

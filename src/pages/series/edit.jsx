@@ -43,18 +43,18 @@ const SeriesEditPage = () => {
             updateSeries({ libraryId, seriesId, payload: series })
                 .unwrap()
                 .then(() => uploadImage(seriesId))
-                .then(() => message.success(t("series.save.success")))
                 .then(() => navigate(`/libraries/${libraryId}/series/${seriesId}`))
-                .catch((_) => message.error(t("series.save.error")));
+                .then(() => message.success(t("series.actions.edit.success")))
+                .catch((_) => message.error(t("series.actions.edit.error")));
         } else {
             let response = null;
             addSeries({ libraryId, payload: series })
                 .unwrap()
                 .then((r) => (response = r))
                 .then(() => uploadImage(response.id))
-                .then(() => message.success(t("series.save.success")))
                 .then(() => navigate(`/libraries/${libraryId}/series/${response.id}`))
-                .catch((_) => message.error(t("series.save.error")));
+                .then(() => message.success(t("series.actions.add.success")))
+                .catch((_) => message.error(t("series.actions.add.error")));
         }
     };
 
@@ -88,7 +88,7 @@ const SeriesEditPage = () => {
 
         return helpers.defaultSeriesImage;
     };
-    const title = series ? series.name : t("series.actions.add");
+    const title = series ? series.name : t("series.actions.add.label");
 
     return (
         <>

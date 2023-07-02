@@ -10,7 +10,7 @@ import { useDeleteChapterMutation } from "../../../features/api/booksSlice";
 const { confirm } = Modal;
 
 // ------------------------------------------------------
-export default function ChapterDelete({ libraryId, bookId, chapter, t, onDeleted = () =>  {} }) {
+export default function ChapterDeleteButton({ libraryId, bookId, chapter, t, onDeleted = () =>  {} }) {
     const { message } = App.useApp();
     const [deleteChapter, { isLoading: isDeleting }] = useDeleteChapterMutation();
 

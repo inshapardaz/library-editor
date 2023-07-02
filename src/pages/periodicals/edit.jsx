@@ -46,8 +46,8 @@ const PeriodicalEditPage = () => {
                 .unwrap()
                 .then(() => uploadImage(periodicalId))
                 .then(() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}`))
-                .then(() => message.success(t("periodical.save.success")))
-                .catch((_) => message.error(t("periodicalI.save.error")));
+                .then(() => message.success(t("periodical.actions.edit.success")))
+                .catch((_) => message.error(t("periodical.actions.edit.error")));
         } else {
             let response = null;
             addPeriodical({ libraryId, payload: periodical })
@@ -55,8 +55,8 @@ const PeriodicalEditPage = () => {
                 .then((r) => (response = r))
                 .then(() => uploadImage(response.id))
                 .then(() => navigate(`/libraries/${libraryId}/periodicals/${response.id}`))
-                .then(() => message.success(t("periodical.save.success")))
-                .catch((_) => message.error(t("periodical.save.error")));
+                .then(() => message.success(t("periodical.actions.add.success")))
+                .catch((_) => message.error(t("periodical.actions.add.error")));
         }
     };
 
@@ -90,7 +90,7 @@ const PeriodicalEditPage = () => {
 
         return helpers.defaultPeriodicalImage;
     };
-    const title = periodical ? periodical.name : t("periodicals.actions.add");
+    const title = periodical ? periodical.title : t("periodical.actions.add.label");
 
     return (
         <>
@@ -100,7 +100,7 @@ const PeriodicalEditPage = () => {
                     <Col l={4} md={6} xs={24}>
                         <ImgCrop modalTitle={t("actions.resizeImage")}>
                             <Dragger fileList={fileList} beforeUpload={onImageChange} showUploadList={false}>
-                                <img src={getCoverSrc()} height="300" alt={periodical && periodical.name} onError={helpers.setDefaultPeriodicalImage} />
+                                <img src={getCoverSrc()} height="300" alt={periodical && periodical.title} onError={helpers.setDefaultPeriodicalImage} />
                             </Dragger>
                         </ImgCrop>
                     </Col>

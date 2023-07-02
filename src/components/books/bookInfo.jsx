@@ -9,6 +9,7 @@ import helpers from "../../helpers";
 import { BookCategory } from "./bookCategory";
 import { BookSeriesInfo } from "./bookSeriesInfo";
 import styles from '../../styles/common.module.scss'
+import BookDeleteButton from "./bookDeleteButton";
 
 // -----------------------------------------
 
@@ -33,7 +34,8 @@ const BookInfo = ({ libraryId, book, t }) =>
             <BookCategory libraryId={libraryId} book={book}/>
             <BookSeriesInfo book={book} t={t} />
             <Button block icon={<FiEdit />} onClick={() => navigate(`/libraries/${libraryId}/books/${book.id}/edit`)}>{t('actions.edit')}</Button>
-            <Button block danger icon={<FiTrash />}>{t('actions.delete')}</Button>
+            <BookDeleteButton block danger libraryId={libraryId} book={book} t={t} >{t('actions.delete')}</BookDeleteButton>
+
         </Space>
     </>)
 }

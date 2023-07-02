@@ -43,18 +43,18 @@ const AuthorEditPage = () => {
             updateAuthor({ libraryId, authorId, payload: author })
                 .unwrap()
                 .then(() => uploadImage(authorId))
-                .then(() => message.success(t("author.save.success")))
                 .then(() => navigate(`/libraries/${libraryId}/authors/${authorId}`))
-                .catch((_) => message.error(t("author.save.error")));
+                .then(() => message.success(t("author.actions.edit.success")))
+                .catch((_) => message.error(t("author.actions.edit.error")));
         } else {
             let response = null;
             addAuthor({ libraryId, payload: author })
                 .unwrap()
                 .then((r) => (response = r))
                 .then(() => uploadImage(response.id))
-                .then(() => message.success(t("author.save.success")))
                 .then(() => navigate(`/libraries/${libraryId}/authors/${response.id}`))
-                .catch((_) => message.error(t("author.save.error")));
+                .then(() => message.success(t("author.actions.add.success")))
+                .catch((_) => message.error(t("author.actions.add.error")));
         }
     };
 
@@ -88,7 +88,7 @@ const AuthorEditPage = () => {
 
         return helpers.defaultAuthorImage;
     };
-    const title = author ? author.name : t("authors.actions.add");
+    const title = author ? author.name : t("author.actions.add.label");
 
     return (
         <>

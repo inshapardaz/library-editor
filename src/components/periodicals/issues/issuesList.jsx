@@ -1,9 +1,11 @@
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
-import { List, Switch } from "antd";
+import { Button, List, Switch } from "antd";
+import { FaPlus } from "react-icons/fa";
+import { GiNewspaper } from "react-icons/gi";
 
 // Local Imports
 import helpers from "../../../helpers";
@@ -30,7 +32,7 @@ function IssuesList({ libraryId, periodicalId, query, categories, sortBy, sortDi
     const navigate = useNavigate();
     const [showList, setShowList] = useLocalStorage("issues-list-view", false);
 
-    const { data: issues, error, isFetching } = useGetIssuesQuery({ libraryId, periodicalId, query, categories, sortBy, sortDirection, status, pageNumber, pageSize });
+    const { refetch, data: issues, error, isFetching } = useGetIssuesQuery({ libraryId, periodicalId, query, categories, sortBy, sortDirection, status, pageNumber, pageSize });
 
     const toggleView = (checked) => {
         setShowList(checked);
@@ -53,7 +55,22 @@ function IssuesList({ libraryId, periodicalId, query, categories, sortBy, sortDi
     };
 
     return (
-        <DataContainer busy={isFetching} error={error} empty={issues && issues.data && issues.data.length < 1} bordered={false} actions={<Switch checkedChildren={t("actions.list")} unCheckedChildren={t("actions.card")} checked={showList} onChange={toggleView} />}>
+        <DataContainer
+            busy={isFetching}
+            error={error}
+            errorTitle={t('issues.errors.loading.title')}
+            errorSubTitle={t('issues.errors.loading.subTitle')}
+            errorAction={<Button type="default" onClick={refetch}>{t('actions.retry')}</Button>}
+            empty={issues && issues.data && issues.data.length < 1}
+            emptyImage={<GiNewspaper size="5em"/>}
+            emptyDescription={t('issues.empty.title')}
+            emptyContent={<Link to={`/libraries/${libraryId}/periodicals/${periodicalId}/issues/add`}>
+                    <Button type="dashed" icon={<FaPlus />}>
+                        {t("issue.actions.add.label")}
+                    </Button>
+                </Link>}
+            bordered={false}
+            actions={<Switch checkedChildren={t("actions.list")} unCheckedChildren={t("actions.card")} checked={showList} onChange={toggleView} />}>
             <List
                 grid={showList ? null : grid}
                 loading={isFetching}

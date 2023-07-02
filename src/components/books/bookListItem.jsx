@@ -12,15 +12,16 @@ import { BookCategory } from './bookCategory';
 import { BookSeriesInfo } from './bookSeriesInfo';
 import helpers from '../../helpers/index';
 import { IconText } from '../common/iconText';
+import BookDeleteButton from "./bookDeleteButton";
 // ------------------------------------------------------
 
 const {Text, Paragraph} = Typography;
 
 // ------------------------------------------------------
 
-function BookListItem({ libraryId, book, t }) 
+function BookListItem({ libraryId, book, t })
 {
-  const cover = (book.links.image ? <img src={book.links.image} onError={helpers.setDefaultBookImage} className={ styles["book__image--small"]}  alt={book.title}  /> : 
+  const cover = (book.links.image ? <img src={book.links.image} onError={helpers.setDefaultBookImage} className={ styles["book__image--small"]}  alt={book.title}  /> :
   <img src={helpers.defaultBookImage} className={ styles["book__image--small"]} alt={book.title} />);
   const avatar  = (<Avatar.Group maxCount="2" size="large">
        { book.authors.map(author => (<AuthorAvatar key={author.id} libraryId={libraryId} author={author} t={t}/>))}
@@ -33,11 +34,12 @@ function BookListItem({ libraryId, book, t })
     </Link>);
   const pageCount = (<IconText icon={AiOutlineCopy} text={t('book.pageCount', { count: book.pageCount })} key="book-page-count" />);
 
-  return (<List.Item 
-    key={book.id} 
+  return (<List.Item
+    key={book.id}
     actions={[chapterCount, pageCount,
       (<BookCategory key={`${book.id}-action-categories`} justList book={book} />),
-      (<BookSeriesInfo key={`${book.id}-action-series`} book={book} t={t}/>)
+      (<BookSeriesInfo key={`${book.id}-action-series`} book={book} t={t}/>),
+      (<BookDeleteButton libraryId={libraryId} book={book} t={t} type="ghost" size="small" />)
     ]}
     extra={cover}>
         <List.Item.Meta avatar={avatar}

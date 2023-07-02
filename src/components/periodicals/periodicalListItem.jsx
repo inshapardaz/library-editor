@@ -10,6 +10,7 @@ import styles from "../../styles/common.module.scss";
 import { PeriodicalCategory } from "./periodicalCategory";
 import helpers from "../../helpers/index";
 import { IconText } from "../common/iconText";
+import PeriodicalDeleteButton from "./periodicalDeleteButton";
 // ------------------------------------------------------
 
 const { Text, Paragraph } = Typography;
@@ -39,8 +40,10 @@ function PeriodicalListItem({ libraryId, periodical, t }) {
             <IconText icon={FiLayers} text={t("actions.edit")} key="periodical-edit" />
         </Link>
     );
+    const deletePeriodical = (<PeriodicalDeleteButton libraryId={libraryId} periodical={periodical} t={t} type="ghost" size="small" />);
+
     return (
-        <List.Item key={periodical.id} actions={[editLink, issueCount, frequency, <PeriodicalCategory key={`${periodical.id}-action-categories`} justList periodical={periodical} />]} extra={cover}>
+        <List.Item key={periodical.id} actions={[editLink, deletePeriodical, issueCount, frequency, <PeriodicalCategory key={`${periodical.id}-action-categories`} justList periodical={periodical} />]} extra={cover}>
             <List.Item.Meta title={title} description={description} />
         </List.Item>
     );

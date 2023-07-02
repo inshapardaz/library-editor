@@ -13,26 +13,37 @@ export const seriesApi = createApi({
                 let queryVal = query ? `&query=${query}` : '';
                 return ({ url: `/libraries/${libraryId}/series?pageNumber=${pageNumber}&pageSize=${pageSize}${queryVal}`, method: 'get' })
             },
-            transformResponse: (response) => parseResponse(response)
+            transformResponse: (response) => parseResponse(response),
+            providesTags: [ 'Series' ]
         }),
         getSeriesById: builder.query({
             query: ({ libraryId, seriesId }) =>
                 ({ url: `/libraries/${libraryId}/series/${seriesId}`, method: 'get' }),
-            transformResponse: (response) => parseResponse(response)
+            transformResponse: (response) => parseResponse(response),
+            providesTags: [ 'Series' ]
         }),
         addSeries: builder.mutation({
             query: ({ libraryId, payload }) => ({
                 url: `/libraries/${libraryId}/series`,
                 method: 'POST',
                 payload: removeLinks(payload)
-            })
+            }),
+            invalidatesTags: [ 'Series' ]
         }),
         updateSeries: builder.mutation({
             query: ({ libraryId, seriesId, payload }) => ({
                 url: `/libraries/${libraryId}/series/${seriesId}`,
                 method: 'PUT',
                 payload: removeLinks(payload)
-            })
+            }),
+            invalidatesTags: [ 'Series' ]
+        }),
+        deleteSeries: builder.mutation({
+            query: ({ libraryId, seriesId }) => ({
+                url: `/libraries/${libraryId}/series/${seriesId}`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: [ 'Series' ]
         }),
         updateSeriesImage: builder.mutation({
             query: ({ libraryId, seriesId, payload }) => {
@@ -47,7 +58,8 @@ export const seriesApi = createApi({
                         'content-type': 'multipart/form-data'
                     }
                 });
-            }
+            },
+            invalidatesTags: [ 'Series' ]
         }),
     }),
 })
@@ -58,4 +70,5 @@ export const {
     useGetSeriesByIdQuery,
     useAddSeriesMutation,
     useUpdateSeriesMutation,
+    useDeleteSeriesMutation,
     useUpdateSeriesImageMutation } = seriesApi

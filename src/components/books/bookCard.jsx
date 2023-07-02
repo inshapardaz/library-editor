@@ -2,13 +2,14 @@ import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
 import { Avatar, Card } from "antd";
-import { FiEdit, FiTrash } from "react-icons/fi";
+import { FiEdit } from "react-icons/fi";
 
 // Local Imports
 import styles from "../../styles/common.module.scss";
 import { AuthorAvatar } from "../author/authorAvatar";
 import helpers from "../../helpers/index";
 import { BookSeriesInfo } from "./bookSeriesInfo";
+import BookDeleteButton from "./bookDeleteButton";
 // --------------------------------------------
 
 function BookCard({ libraryId, book, t }) {
@@ -25,13 +26,13 @@ function BookCard({ libraryId, book, t }) {
             <FiEdit />
         </Link>
     );
-    const deleteAction = <FiTrash />;
+    const deleteAction = <BookDeleteButton libraryId={libraryId} book={book} t={t} type="ghost" size="small" />;
     return (
-        <Link to={`/libraries/${libraryId}/books/${book.id}`}>
-            <Card key={book.id} cover={cover} hoverable actions={[edit, deleteAction]}>
-                <Card.Meta avatar={avatar} title={book.title} description={<BookSeriesInfo book={book} t={t} />} />
-            </Card>
-        </Link>
+        <Card key={book.id} cover={cover} hoverable actions={[edit, deleteAction]}>
+                <Link to={`/libraries/${libraryId}/books/${book.id}`}>
+                    <Card.Meta avatar={avatar} title={book.title} description={<BookSeriesInfo book={book} t={t} />} />
+                </Link>
+        </Card>
     );
 }
 
