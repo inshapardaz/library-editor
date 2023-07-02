@@ -21,6 +21,9 @@ import BookEditPage from './pages/books/edit'
 import AuthorsHomePage from './pages/authors/index'
 import AuthorPage from './pages/authors/author';
 import AuthorEditPage from './pages/authors/edit'
+import CategoriesHomePage from './pages/categories/index'
+import CategoriesPage from './pages/categories/category';
+import CategoriesEditPage from './pages//categories/edit';
 import SeriesHomePage from './pages/series/index'
 import SeriesPage from './pages/series/series';
 import SeriesEditPage from './pages//series/edit';
@@ -50,6 +53,10 @@ const Router = () => {
                     <Route path="/libraries/:libraryId/authors/add" element={<AuthorEditPage />} />
                     <Route path="/libraries/:libraryId/authors/:authorId" element={<AuthorPage />} />
                     <Route path="/libraries/:libraryId/authors/:authorId/edit" element={<AuthorEditPage />} />
+                    <Route path="/libraries/:libraryId/categories" element={<CategoriesHomePage />} />
+                    <Route path="/libraries/:libraryId/categories/add" element={<CategoriesEditPage />} />
+                    <Route path="/libraries/:libraryId/categories/:categoryId" element={<CategoriesPage />} />
+                    <Route path="/libraries/:libraryId/categories/:categoryId/edit" element={<CategoriesEditPage />} />
                     <Route path="/libraries/:libraryId/series" element={<SeriesHomePage />} />
                     <Route path="/libraries/:libraryId/series/add" element={<SeriesEditPage />} />
                     <Route path="/libraries/:libraryId/series/:seriesId" element={<SeriesPage />} />

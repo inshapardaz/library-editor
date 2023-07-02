@@ -51,9 +51,18 @@ function IssuesList({ libraryId, periodicalId, query, categories, sortBy, sortDi
     };
 
     const onPageChanged = (newPage, newPageSize) => {
-        navigate(helpers.buildLinkToIssuesPage(libraryId, periodicalId, newPage, newPageSize, query, categories, sortBy, sortDirection));
+        navigate(helpers.buildLinkToIssuesPage(
+            libraryId,
+            periodicalId,
+            newPage,
+            newPageSize,
+            query,
+            categories,
+            sortBy,
+            sortDirection));
     };
 
+    console.log(issues  )
     return (
         <DataContainer
             busy={isFetching}

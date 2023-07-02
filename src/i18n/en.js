@@ -424,8 +424,44 @@ const en = {
 	"categories" : {
 		"title": "Categories",
 		"all" : "All Categories",
-		"loadingError": "Unable to load categories"
+        "errors": {
+            "loading": {
+                "title": "Error",
+                "subTitle": "Unable to load categories",
+            }
+        },
+        "empty" : {
+            "title" : "No Categories"
+        }
 	},
+    "category" : {
+        "name": {
+            "label": "Name",
+            "placeholder": "Name of the category",
+            "required": "Name is required for category"
+        },
+        "bookCount_one" : "1 book",
+		"bookCount_other" : "{{count}} books",
+        "actions": {
+            "add": {
+                "label": "Add new category",
+                "title": "New Category",
+                "success" :"Category created successfully.",
+		        "error" :"Error creating category."
+            },
+            "edit": {
+                "title": "Editing '{{name}}'",
+                "success" :"Category saved successfully.",
+                "error" :"Error saving category"
+            },
+            "delete": {
+                "title" : "Delete category?",
+                "message": "Are you sure you want to delete category '{{name}}'?",
+                "success" :"Category deleted successfully.",
+                "error" :"Error deleting category."
+            }
+        }
+    },
 	"periodicals" : {
 		"title" : "Periodical",
         "errors": {

@@ -140,7 +140,7 @@ const helpers = {
 
         return null;
     },
-    buildLinkToPeriodicalsPage: (
+    buildLinkToCategoriesList : (
         libraryId,
         page,
         pageSize,
@@ -156,10 +156,58 @@ const helpers = {
                 querystring = querystring.slice(0, -1);
             }
 
-            return `/libraries/${libraryId}/periodicals?${querystring}`;
+            return `/libraries/${libraryId}/categories?${querystring}`;
         }
 
         return null;
+    },
+    buildLinkToPeriodicalsPage: (
+        libraryId,
+        page,
+        pageSize,
+        query,
+        sortBy,
+        sortDirection
+    ) => {
+        let querystring = '';
+        querystring += page ? `pageNumber=${page}&` : '';
+        querystring += pageSize ? `pageSize=${pageSize}&` : '';
+        querystring += query ? `query=${query}&` : '';
+        querystring += sortBy && sortBy !== 'title' ? `sortBy=${sortBy}&` : '';
+        querystring += sortDirection && sortDirection !== 'ascending' ? `sortDirection=${sortDirection}&` : '';
+
+        if (querystring !== '') {
+            if (querystring.substr(querystring.length - 1) === '&') {
+                querystring = querystring.slice(0, -1);
+            }
+
+            return `/libraries/${libraryId}/periodicals?${querystring}`;
+        }
+
+        return `/libraries/${libraryId}/periodicals`;
+    },
+    buildLinkToIssuesPage: (
+        libraryId,
+        periodicalId,
+        page,
+        sortBy,
+        sortDirection,
+    ) => {
+        const path = `/libraries/${libraryId}/periodicals/${periodicalId}`;
+        let querystring = '';
+        querystring += page ? `pageNumber=${page}&` : '';
+        querystring += sortBy && sortBy !== 'dateCreated' ? `sortBy=${sortBy}&` : '';
+        querystring += sortDirection && sortDirection !== 'ascending' ? `sortDirection=${sortDirection}&` : '';
+
+        if (querystring !== '') {
+            if (querystring.substr(querystring.length - 1) === '&') {
+                querystring = querystring.slice(0, -1);
+            }
+
+            return `${path}?${querystring}`;
+        }
+
+        return path;
     },
     buildLinkToBooksPagesPage: (location,
         page,
@@ -167,7 +215,7 @@ const helpers = {
         statusFilter,
         assignmentFilter) => {
         let querystring = '';
-        querystring += page ? `page=${page}&` : '';
+        querystring += page ? `pageNumber=${page}&` : '';
         querystring += pageSize && pageSize !== 12 ? `pageSize=${pageSize}&` : '';
         querystring += statusFilter ? `filter=${statusFilter}&` : '';
         querystring += assignmentFilter ? `assignmentFilter=${assignmentFilter}&` : '';
@@ -187,7 +235,7 @@ const helpers = {
         query,
         pageSize = 12) => {
         let querystring = '';
-        querystring += page ? `page=${page}&` : '';
+        querystring += page ? `pageNumber=${page}&` : '';
         querystring += query ? `q=${query}&` : '';
         querystring += pageSize && pageSize !== 12 ? `pageSize=${pageSize}&` : '';
 
@@ -206,30 +254,9 @@ const helpers = {
         query,
         pageSize = 12) => {
         let querystring = '';
-        querystring += page ? `page=${page}&` : '';
+        querystring += page ? `pageNumber=${page}&` : '';
         querystring += query ? `q=${query}&` : '';
         querystring += pageSize && pageSize !== 12 ? `pageSize=${pageSize}&` : '';
-
-        if (querystring !== '') {
-            if (querystring.substr(querystring.length - 1) === '&') {
-                querystring = querystring.slice(0, -1);
-            }
-
-            return `${location.pathname}?${querystring}`;
-        }
-
-        return location.pathname;
-    },
-    buildLinkToIssuesPage: (
-        location,
-        page,
-        sortBy,
-        sortDirection,
-    ) => {
-        let querystring = '';
-        querystring += page ? `page=${page}&` : '';
-        querystring += sortBy && sortBy !== 'dateCreated' ? `sortBy=${sortBy}&` : '';
-        querystring += sortDirection && sortDirection !== 'ascending' ? `sortDirection=${sortDirection}&` : '';
 
         if (querystring !== '') {
             if (querystring.substr(querystring.length - 1) === '&') {
@@ -247,7 +274,7 @@ const helpers = {
         statusFilter,
         assignmentFilter) => {
         let querystring = '';
-        querystring += page ? `page=${page}&` : '';
+        querystring += page ? `pageNumber=${page}&` : '';
         querystring += pageSize && pageSize !== 12 ? `pageSize=${pageSize}&` : '';
         querystring += statusFilter ? `filter=${statusFilter}&` : '';
         querystring += assignmentFilter ? `assignmentFilter=${assignmentFilter}&` : '';

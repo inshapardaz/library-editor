@@ -5,7 +5,7 @@ import { NavLink, useParams } from "react-router-dom";
 
 // 3rd party imports
 import { Menu, Button, theme, Drawer, Row, Col } from 'antd';
-import { FaBook, FaPenFancy, FaFeatherAlt, FaTags, FaTag, FaHome, FaBars } from 'react-icons/fa';
+import { FaBook, FaPenFancy, FaFeatherAlt, FaTags, FaHome, FaBars } from 'react-icons/fa';
 import { ImBooks, ImNewspaper } from 'react-icons/im';
 
 // Local Imports
@@ -16,7 +16,6 @@ import { Logo } from "./logo";
 import { LibrariesDropdown } from "../libraries/librariesDropDown";
 import ProfileMenu from "./profileMenu";
 import { useGetLibraryQuery } from '../../features/api/librariesSlice'
-import { useGetCategoriesQuery } from '../../features/api/categoriesSlice'
 import SearchBox from '../searchBox'
 //---------------------------------------------
 
@@ -27,23 +26,12 @@ function AppHeader () {
   const isMobile = useMediaQuery(["(max-width: 600px)"], [true], false);
   const { libraryId } = useParams()
   const { data: library } = useGetLibraryQuery({libraryId}, { skip : !libraryId })
-  const { data: categories, error, isFetching } = useGetCategoriesQuery({libraryId}, { skip : !libraryId })
 
   let items = [];
 
   const onMenuClick = ({key}) => {
     setMobileMenuOpen(false);
   }
-
-  const catItems = !error && !isFetching && categories && categories.data && categories.data.map(c => ({
-    label : (
-      <NavLink to={`/libraries/${libraryId}/books?categories=${c.id}`}>
-        {c.name}
-      </NavLink>
-    ),
-    key: c.id,
-    icon: <FaTag />,
-  }))
 
   if (library)
   {
@@ -80,10 +68,11 @@ function AppHeader () {
       key: 'authors',
       icon: <FaFeatherAlt />,
     },{
-      label: t("header.categories"),
-      key: 'categories',
-      icon: <FaTags />,
-      children : catItems
+        label: (<NavLink to={`/libraries/${libraryId}/categories`}>
+          {t("header.categories")}
+        </NavLink>),
+        key: 'categories',
+        icon: <FaTags />
     },{
       label: (
         <NavLink to={`/libraries/${libraryId}/series`}>
