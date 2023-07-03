@@ -2,16 +2,18 @@ import { Link } from "react-router-dom";
 
 
 // 3rd Party Libraries
-import { Avatar, Button, List, Typography } from "antd";
-import { MdOutlineAssignmentInd } from 'react-icons/md';
+import { Avatar, List, Tag, Typography } from "antd";
+import { FaRegKeyboard, FaGlasses } from "react-icons/fa";
+import { Draggable } from 'react-beautiful-dnd';
 
 // Local Import
 import ChapterEditor from "./chapterEditor";
 import ChapterDeleteButton from "./chapterDeleteButton";
+import ChapterAssignButton from "./chapterAssignButton";
 
 // ------------------------------------------------------
 
-function ChapterListItem({ libraryId, bookId, chapter, selected = false, t, onDeleted = () => { } }) {
+function ChapterListItem({ libraryId, bookId, chapter, selected = false, t, onUpdated = () => { } }) {
     const title = selected ? (
         <Typography.Text disabled={true}>{chapter.title}</Typography.Text>
     ) : (
@@ -21,12 +23,32 @@ function ChapterListItem({ libraryId, bookId, chapter, selected = false, t, onDe
     );
 
     const edit = <ChapterEditor libraryId={libraryId} bookId={bookId} chapter={chapter} t={t} />;
-    const deleteBtn = <ChapterDeleteButton libraryId={libraryId} bookId={bookId} chapter={chapter} t={t} onDeleted={onDeleted} />;
-    const assign = <Button type="text"><MdOutlineAssignmentInd /></Button>;
+    const deleteBtn = <ChapterDeleteButton libraryId={libraryId} bookId={bookId} chapter={chapter} t={t} onUpdated={onUpdated} />;
+    const assign = <ChapterAssignButton libraryId={libraryId} bookId={bookId} chapter={chapter} t={t} />;
+
+    let assignment = null;
+
+    if (chapter){
+        if (chapter.reviewerAccountId) {
+            assignment = (<Tag icon={<FaRegKeyboard />} closable={false}>{chapter.reviewerAccountName}</Tag>)
+        } else if (chapter.writerAccountId) {
+            assignment = (<Tag icon={<FaGlasses />} closable={false}>{chapter.writerAccountName}</Tag>)
+        }
+    }
+
     return (
-        <List.Item actions={[edit, deleteBtn, assign]}>
-            <List.Item.Meta title={title} avatar={<Avatar>{chapter.chapterNumber}</Avatar>} />
-        </List.Item>
+        <Draggable
+            //isDragDisabled={!canEdit}
+            draggableId={`draggable-${chapter.id}`}
+            index={chapter.chapterNumber - 1}>
+        {(provided) => (
+            <List.Item actions={[edit, deleteBtn, assign]}
+                ref={provided.innerRef}
+                {...provided.draggableProps}>
+                <List.Item.Meta title={title} avatar={<Avatar {...provided.dragHandleProps}>{chapter.chapterNumber}</Avatar>} description={assignment} />
+            </List.Item>
+        )}
+        </Draggable>
     );
 }
 

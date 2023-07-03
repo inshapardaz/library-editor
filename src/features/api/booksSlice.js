@@ -176,6 +176,22 @@ export const booksApi = createApi({
             }),
             invalidatesTags: [ 'Chapters' ]
         }),
+        assignChapter: builder.mutation({
+            query: ({ libraryId, bookId, chapterNumber, payload }) => ({
+                url: `/libraries/${libraryId}/books/${bookId}/chapters/${chapterNumber}/assign`,
+                method: 'POST',
+                payload: removeLinks(payload)
+            }),
+            invalidatesTags: [ 'Chapters' ]
+        }),
+        updateChapterSequence: builder.mutation({
+            query: ({ libraryId, bookId, payload }) => ({
+                url: `/libraries/${libraryId}/books/${bookId}/chapters/sequence`,
+                method: 'POST',
+                payload: removeLinks(payload)
+            }),
+            invalidatesTags: [ 'Chapters' ]
+        }),
     }),
 })
 
@@ -193,5 +209,7 @@ export const {
     useUpdateBookImageMutation,
     useAddChapterMutation,
     useUpdateChapterMutation,
-    useDeleteChapterMutation
+    useDeleteChapterMutation,
+    useAssignChapterMutation,
+    useUpdateChapterSequenceMutation
  } = booksApi

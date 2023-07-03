@@ -165,7 +165,7 @@ const BookEditPage = () => {
                                 <Form.Item label={t("book.series.label")}>
                                     <Space.Compact>
                                         <Form.Item name="seriesId" noStyle>
-                                            <SeriesSelect placeholder={t("book.series.placeholder")} libraryId={libraryId} label={book && book.seriesName} />
+                                            <SeriesSelect placeholder={t("book.series.placeholder")} t={t} libraryId={libraryId} label={book && book.seriesName} />
                                         </Form.Item>
                                         <Form.Item name="seriesIndex" noStyle>
                                             <InputNumber min={1} style={{ width: "50%" }} />

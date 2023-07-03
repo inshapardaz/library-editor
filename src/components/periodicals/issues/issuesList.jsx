@@ -62,7 +62,6 @@ function IssuesList({ libraryId, periodicalId, query, categories, sortBy, sortDi
             sortDirection));
     };
 
-    console.log(issues  )
     return (
         <DataContainer
             busy={isFetching}

@@ -19,7 +19,9 @@ export default function ChapterEditor({ libraryId, bookId, chapter, t, buttonTyp
 
     const onSubmit = (values) => {
         if (chapter) {
-            return updateChapter({ libraryId, bookId, chapterNumber: chapter.chapterNumber, payload: values })
+            chapter.title = values.title;
+            chapter.status = values.status;
+            return updateChapter({ libraryId, bookId, chapterNumber: chapter.chapterNumber, payload: chapter })
                 .unwrap()
                 .then(() => setOpen(false))
                 .then(() => message.success(t("chapter.actions.edit.success")))

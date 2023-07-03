@@ -266,7 +266,16 @@ const en = {
         }
 	},
 	"chapters" : {
-		"title": "Chapters"
+		"title": "Chapters",
+        "errors": {
+            "loading": {
+                "title": "Error",
+                "subTitle": "Unable to load chapters.",
+            }
+        },
+        "empty" : {
+            "title" : "No chapter found",
+        }
 	},
     "chapter" : {
         "title" : {
@@ -278,6 +287,12 @@ const en = {
             "label": "Status",
             "placeholder" : "Select Chapter Status",
             "required" : "Chapter status is required"
+        },
+        "user" : {
+            "label": "User",
+            "placeholder" : "Select user",
+            "required" : "User is required"
+
         },
         "actions": {
             "add": {
@@ -296,6 +311,16 @@ const en = {
                 "message": "Are you sure you want to delete chapter '{{title}}'?",
                 "success" :"Chapter deleted successfully.",
                 "error" :"Error deleting chapter."
+            },
+            "assign": {
+                "title" : "Assign Chapter?",
+                "message": "You are assigning chapter '{{title}}'?",
+                "success" :"Chapter assigned successfully.",
+                "error" :"Error assigning chapter."
+            },
+            "reorder": {
+                "success" :"Chapter ordered successfully.",
+                "error" :"Error ordering chapter."
             }
         },
         "errors": {
@@ -303,9 +328,6 @@ const en = {
                 "title": "Error",
                 "subTitle": "Unable to load books.",
             }
-        },
-        "empty" : {
-            "title" : "No Books"
         }
     },
 	"reader" : {
@@ -574,6 +596,11 @@ const en = {
             }
         }
     },
+    "users" : {
+        "empty" : {
+            "title" : "No Series"
+        }
+    },
 	"fonts" : {
 		"alviLahoriNastaleeq": "Alvi Lahori Nastaleeq",
         "fajerNooriNastalique": "Fajer Noori Nastaleeq",
@@ -629,6 +656,7 @@ const en = {
     "errors" : {
         "imageRequired": "Only image files are expected. Please select an image file."
     }
+
 }
 
 export default en;
