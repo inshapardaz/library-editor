@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
 
-
 // 3rd Party Libraries
-import { Avatar, List, Tag, Typography } from "antd";
-import { FaRegKeyboard, FaGlasses } from "react-icons/fa";
-import { Draggable } from 'react-beautiful-dnd';
+import { Avatar, List, Space, Tag, Typography } from "antd";
+import { FaRegKeyboard, FaGlasses, FaGripLines } from "react-icons/fa";
+import { Draggable } from "react-beautiful-dnd";
 
 // Local Import
 import ChapterEditor from "./chapterEditor";
@@ -13,7 +12,7 @@ import ChapterAssignButton from "./chapterAssignButton";
 
 // ------------------------------------------------------
 
-function ChapterListItem({ libraryId, bookId, chapter, selected = false, t, onUpdated = () => { } }) {
+function ChapterListItem({ libraryId, bookId, chapter, selected = false, t, onUpdated = () => {} }) {
     const title = selected ? (
         <Typography.Text disabled={true}>{chapter.title}</Typography.Text>
     ) : (
@@ -28,11 +27,19 @@ function ChapterListItem({ libraryId, bookId, chapter, selected = false, t, onUp
 
     let assignment = null;
 
-    if (chapter){
+    if (chapter) {
         if (chapter.reviewerAccountId) {
-            assignment = (<Tag icon={<FaRegKeyboard />} closable={false}>{chapter.reviewerAccountName}</Tag>)
+            assignment = (
+                <Tag icon={<FaRegKeyboard />} closable={false}>
+                    {chapter.reviewerAccountName}
+                </Tag>
+            );
         } else if (chapter.writerAccountId) {
-            assignment = (<Tag icon={<FaGlasses />} closable={false}>{chapter.writerAccountName}</Tag>)
+            assignment = (
+                <Tag icon={<FaGlasses />} closable={false}>
+                    {chapter.writerAccountName}
+                </Tag>
+            );
         }
     }
 
@@ -40,14 +47,22 @@ function ChapterListItem({ libraryId, bookId, chapter, selected = false, t, onUp
         <Draggable
             //isDragDisabled={!canEdit}
             draggableId={`draggable-${chapter.id}`}
-            index={chapter.chapterNumber - 1}>
-        {(provided) => (
-            <List.Item actions={[edit, deleteBtn, assign]}
-                ref={provided.innerRef}
-                {...provided.draggableProps}>
-                <List.Item.Meta title={title} avatar={<Avatar {...provided.dragHandleProps}>{chapter.chapterNumber}</Avatar>} description={assignment} />
-            </List.Item>
-        )}
+            index={chapter.chapterNumber - 1}
+        >
+            {(provided) => (
+                <List.Item actions={[edit, deleteBtn, assign]} ref={provided.innerRef} {...provided.draggableProps}>
+                    <List.Item.Meta
+                        title={title}
+                        avatar={
+                            <Space {...provided.dragHandleProps}>
+                                <FaGripLines />
+                                <Avatar>{chapter.chapterNumber}</Avatar>
+                            </Space>
+                        }
+                        description={assignment}
+                    />
+                </List.Item>
+            )}
         </Draggable>
     );
 }

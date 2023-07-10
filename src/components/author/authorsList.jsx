@@ -7,11 +7,11 @@ import { Button, List, Switch } from "antd";
 import { FaFeatherAlt, FaPlus } from "react-icons/fa";
 
 // Local Imports
-import DataContainer from "../layout/dataContainer"
-import AuthorCard from './authorCard'
-import helpers from '../../helpers';
+import DataContainer from "../layout/dataContainer";
+import AuthorCard from "./authorCard";
+import helpers from "../../helpers";
 import AuthorListItem from "./authorListItem";
-import { useGetAuthorsQuery } from '../../features/api/authorsSlice'
+import { useGetAuthorsQuery } from "../../features/api/authorsSlice";
 // ------------------------------------------------------
 
 const grid = {
@@ -26,12 +26,23 @@ const grid = {
 
 // ------------------------------------------------------
 
-function AuthorsList({libraryId, query, authorType, pageNumber, pageSize}) {
-    const { t } = useTranslation()
-    const navigate = useNavigate()
-    const [showList, setShowList] = useLocalStorage('author-list-view', false);
+function AuthorsList({ libraryId, query, authorType, pageNumber, pageSize }) {
+    const { t } = useTranslation();
+    const navigate = useNavigate();
+    const [showList, setShowList] = useLocalStorage("author-list-view", false);
 
-    const { refetch, data : authors, error, isFetching } = useGetAuthorsQuery({libraryId, query, authorType, pageNumber, pageSize})
+    const {
+        refetch,
+        data: authors,
+        error,
+        isFetching,
+    } = useGetAuthorsQuery({
+        libraryId,
+        query,
+        authorType,
+        pageNumber,
+        pageSize,
+    });
 
     const toggleView = (checked) => {
         setShowList(checked);
@@ -39,43 +50,75 @@ function AuthorsList({libraryId, query, authorType, pageNumber, pageSize}) {
 
     const renderItem = (author) => {
         if (showList) {
-            return <AuthorListItem key={author.id} libraryId={libraryId} author={author} t={t} />
+            return (
+                <AuthorListItem
+                    key={author.id}
+                    libraryId={libraryId}
+                    author={author}
+                    t={t}
+                />
+            );
+        } else {
+            return (
+                <List.Item>
+                    <AuthorCard
+                        key={author.id}
+                        libraryId={libraryId}
+                        author={author}
+                        t={t}
+                    />
+                </List.Item>
+            );
         }
-        else {
-            return <List.Item><AuthorCard key={author.id} libraryId={libraryId} author={author} t={t} /></List.Item>
-        }
-    }
+    };
 
     const onPageChanged = (newPage, newPageSize) => {
-        navigate(helpers.buildLinkToAuthorsPage(
-            libraryId,
-            newPage,
-            newPageSize,
-            query,
-            authorType
-            ));
-        }
+        navigate(
+            helpers.buildLinkToAuthorsPage(
+                libraryId,
+                newPage,
+                newPageSize,
+                query,
+                authorType
+            )
+        );
+    };
 
-        return (<DataContainer
+    return (
+        <DataContainer
             busy={isFetching}
             error={error}
-            errorTitle={t('authors.errors.loading.title')}
-            errorSubTitle={t('authors.errors.loading.subTitle')}
-            errorAction={<Button type="default" onClick={refetch}>{t('actions.retry')}</Button>}
-            emptyImage={<FaFeatherAlt size="5em"/>}
-            emptyDescription={t('authors.empty.title')}
-            emptyContent={<Link to={`/libraries/${libraryId}/authors/add`}>
+            errorTitle={t("authors.errors.loading.title")}
+            errorSubTitle={t("authors.errors.loading.subTitle")}
+            errorAction={
+                <Button type="default" onClick={refetch}>
+                    {t("actions.retry")}
+                </Button>
+            }
+            emptyImage={<FaFeatherAlt size="5em" />}
+            emptyDescription={t("authors.empty.title")}
+            emptyContent={
+                <Link to={`/libraries/${libraryId}/authors/add`}>
                     <Button type="dashed" icon={<FaPlus />}>
                         {t("author.actions.add.label")}
                     </Button>
-                </Link>}
+                </Link>
+            }
             empty={authors && authors.data && authors.data.length < 1}
-            actions={(<Switch checkedChildren={t('actions.list')} unCheckedChildren={t('actions.card')} checked={showList} onChange={toggleView} />) }>
+            extra={
+                <Switch
+                    checkedChildren={t("actions.list")}
+                    unCheckedChildren={t("actions.card")}
+                    checked={showList}
+                    onChange={toggleView}
+                />
+            }
+        >
             <List
-                grid={ showList ? null : grid}
+                grid={showList ? null : grid}
                 loading={isFetching}
                 size="large"
-                itemLayout={ showList ? "vertical": "horizontal" }
+                itemLayout={showList ? "vertical" : "horizontal"}
                 dataSource={authors ? authors.data : []}
                 pagination={{
                     onChange: onPageChanged,
@@ -85,11 +128,12 @@ function AuthorsList({libraryId, query, authorType, pageNumber, pageSize}) {
                     showSizeChanger: true,
                     responsive: true,
                     showQuickJumper: true,
-                    pageSizeOptions: [12, 24, 48, 96]
+                    pageSizeOptions: [12, 24, 48, 96],
                 }}
                 renderItem={renderItem}
             />
-        </DataContainer>);
+        </DataContainer>
+    );
 }
 
 export default AuthorsList;

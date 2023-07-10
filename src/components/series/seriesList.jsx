@@ -56,40 +56,56 @@ function SeriesList({libraryId, query, pageNumber, pageSize}) {
             ));
         }
 
-        return (<DataContainer
-            busy={isFetching}
-            error={error}
-            errorTitle={t('series.errors.loading.title')}
-            errorSubTitle={t('series.errors.loading.subTitle')}
-            errorAction={<Button type="default" onClick={refetch}>{t('actions.retry')}</Button>}
-            emptyImage={<ImBooks size="5em"/>}
-            emptyDescription={t('series.empty.title')}
-            emptyContent={<Link to={`/libraries/${libraryId}/series/add`}>
-                    <Button type="dashed" icon={<FaPlus />}>
-                        {t("series.actions.add.label")}
+        return (
+            <DataContainer
+                busy={isFetching}
+                error={error}
+                errorTitle={t("series.errors.loading.title")}
+                errorSubTitle={t("series.errors.loading.subTitle")}
+                errorAction={
+                    <Button type="default" onClick={refetch}>
+                        {t("actions.retry")}
                     </Button>
-                </Link>}
-            empty={series && series.data && series.data.length < 1}
-            actions={(<Switch checkedChildren={t('actions.list')} unCheckedChildren={t('actions.card')} checked={showList} onChange={toggleView} />) }>
-            <List
-                grid={ showList ? null : grid}
-                loading={isFetching}
-                size="large"
-                itemLayout={ showList ? "vertical": "horizontal" }
-                dataSource={series ? series.data : []}
-                pagination={{
-                    onChange: onPageChanged,
-                    pageSize: series ? series.pageSize : 0,
-                    current: series ? series.currentPageIndex : 0,
-                    total: series ? series.totalCount : 0,
-                    showSizeChanger: true,
-                    responsive: true,
-                    showQuickJumper: true,
-                    pageSizeOptions: [12, 24, 48, 96]
-                }}
-                renderItem={renderItem}
-            />
-        </DataContainer>);
+                }
+                emptyImage={<ImBooks size="5em" />}
+                emptyDescription={t("series.empty.title")}
+                emptyContent={
+                    <Link to={`/libraries/${libraryId}/series/add`}>
+                        <Button type="dashed" icon={<FaPlus />}>
+                            {t("series.actions.add.label")}
+                        </Button>
+                    </Link>
+                }
+                empty={series && series.data && series.data.length < 1}
+                extra={
+                    <Switch
+                        checkedChildren={t("actions.list")}
+                        unCheckedChildren={t("actions.card")}
+                        checked={showList}
+                        onChange={toggleView}
+                    />
+                }
+            >
+                <List
+                    grid={showList ? null : grid}
+                    loading={isFetching}
+                    size="large"
+                    itemLayout={showList ? "vertical" : "horizontal"}
+                    dataSource={series ? series.data : []}
+                    pagination={{
+                        onChange: onPageChanged,
+                        pageSize: series ? series.pageSize : 0,
+                        current: series ? series.currentPageIndex : 0,
+                        total: series ? series.totalCount : 0,
+                        showSizeChanger: true,
+                        responsive: true,
+                        showQuickJumper: true,
+                        pageSizeOptions: [12, 24, 48, 96],
+                    }}
+                    renderItem={renderItem}
+                />
+            </DataContainer>
+        );
 }
 
 export default SeriesList;

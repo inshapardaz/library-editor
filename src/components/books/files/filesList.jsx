@@ -8,13 +8,13 @@ import {
     useGetBookChaptersQuery,
     useUpdateChapterSequenceMutation,
 } from "../../../features/api/booksSlice";
-import ChapterListItem from "./chapterListItem";
-import ChapterEditor from "./chapterEditor";
+import ChapterListItem from "../chapters/chapterListItem";
+import ChapterEditor from "../chapters/chapterEditor";
 import DataContainer from "../../layout/dataContainer";
 
 // ------------------------------------------------------
 
-const ChaptersList = ({
+const FilesList = ({
     libraryId,
     bookId,
     t,
@@ -142,4 +142,4 @@ const ChaptersList = ({
     );
 };
 
-export default ChaptersList;
+export default FilesList;

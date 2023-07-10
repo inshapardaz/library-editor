@@ -245,6 +245,12 @@ const en = {
 		"chapters" : {
 			"title" : "Chapters"
 		},
+        "pages": {
+            "title" : "Pages"
+        },
+        "files": {
+            "title" : "Files",
+        },
         "actions": {
             "add": {
                 "label": "Add new book",
@@ -327,6 +333,73 @@ const en = {
             "loading": {
                 "title": "Error",
                 "subTitle": "Unable to load books.",
+            }
+        }
+    },
+    "pages" : {
+        "errors": {
+            "loading": {
+                "title": "Error",
+                "subTitle": "Unable to load pages.",
+            }
+        },
+        "empty" : {
+            "title" : "No page found",
+        },
+        "assignment": {
+            "all": "All",
+            "mine": "Assigned to me",
+            "assigned": "Assigned",
+            "unassigned": "Unassigned",
+            "allStatuses": "All Statuses",
+        },
+        "filters": {
+            "all": "All",
+            "availableToType": "Available",
+            "typing": "Typing",
+            "typed": "Typed",
+            "proofreading": "Proofreading",
+            "completed": "Completed",
+        },
+        "sort": {
+            "ascending": "Ascending",
+            "descending": "Descending",
+        }
+    },
+    "page" : {
+        "actions": {
+            "add": {
+                "label": "Add new page",
+                "title": "New page",
+                "success" :"Page created successfully.",
+		        "error" :"Error creating page."
+            },
+            "edit": {
+                "title" : "Editing page {{sequenceNumber}}",
+            },
+            "uploadPage" : {
+                "label": "Upload new page",
+                "title": "Upload page",
+                "success" :"Page created successfully.",
+		        "error" :"Error creating page."
+            },
+            "uploadPdf" : {
+                "label": "Upload PDF",
+                "title": "Upload PDF File",
+                "success" :"PDF uploaded successfully.",
+		        "error" :"Error uploading pdf."
+            },
+            "uploadZip" : {
+                "label": "Upload Zip",
+                "title": "Upload Zip File",
+                "success" :"Zip file uploaded successfully.",
+		        "error" :"Error uploading zip file."
+            },
+            "delete": {
+                "title" : "Delete page?",
+                "message": "Are you sure you want to delete page '{{ sequenceNumber }}'?",
+                "success" :"Page deleted successfully.",
+                "error" :"Error deleting page."
             }
         }
     },

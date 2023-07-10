@@ -209,26 +209,27 @@ const helpers = {
 
         return path;
     },
-    buildLinkToBooksPagesPage: (location,
-        page,
+    buildLinkToBooksPagesPage: (libraryId,
+        bookId,
+        pageNumber,
         pageSize,
         statusFilter,
         assignmentFilter) => {
-        let querystring = '';
-        querystring += page ? `pageNumber=${page}&` : '';
+        let querystring = 'section=pages&';
+        querystring += pageNumber ? `pageNumber=${pageNumber}&` : '';
         querystring += pageSize && pageSize !== 12 ? `pageSize=${pageSize}&` : '';
-        querystring += statusFilter ? `filter=${statusFilter}&` : '';
-        querystring += assignmentFilter ? `assignmentFilter=${assignmentFilter}&` : '';
+        querystring += statusFilter ? `status=${statusFilter}&` : '';
+        querystring += assignmentFilter ? `assignment=${assignmentFilter}&` : '';
 
         if (querystring !== '') {
             if (querystring.substr(querystring.length - 1) === '&') {
                 querystring = querystring.slice(0, -1);
             }
 
-            return `${location.pathname}?${querystring}`;
+            return `/libraries/${libraryId}/books/${bookId}?${querystring}`;
         }
 
-        return location.pathname;
+        return null;
     },
     buildLinkToLibrariesPage: (location,
         page,
@@ -298,21 +299,21 @@ const helpers = {
         return true;
     },
     getDateFormatFromFrequency: (frequency) => {
-    switch (frequency) {
-        case "Weekly":
-            return "week";
-        case "Monthly":
-            return "MMMM YYYY";
-        case "Quarterly":
-            return "Q YYYY";
-        case "Annually":
-            return "YYYY";
-        case "Daily":
-        case "FortNightly":
-        default:
-            return "LL";
+        switch (frequency) {
+            case "Weekly":
+                return "week";
+            case "Monthly":
+                return "MMMM YYYY";
+            case "Quarterly":
+                return "Q YYYY";
+            case "Annually":
+                return "YYYY";
+            case "Daily":
+            case "FortNightly":
+            default:
+                return "LL";
+        }
     }
-}
 };
 
 export default helpers;

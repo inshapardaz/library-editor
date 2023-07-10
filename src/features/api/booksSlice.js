@@ -114,6 +114,14 @@ export const booksApi = createApi({
             transformResponse: (response) => parseResponse(response),
             providesTags: [ 'ChapterContents' ]
         }),
+        getBookPages: builder.query({
+            query: ({ libraryId, bookId, status = 'Typing', assignmentFilter = null, reviewerAssignmentFilter = null, assignmentTo = null, pageNumber = 1, pageSize = 12 }) => {
+                let queryVal = `?pageNumber=${pageNumber}&pageSize=${pageSize}${status ? `&status=${status}` : ''}${assignmentFilter ? `&assignmentFilter=${assignmentFilter}` : ''}${reviewerAssignmentFilter ? `&reviewerAssignmentFilter=${reviewerAssignmentFilter}` : ''}`;
+                return ({ url: `/libraries/${libraryId}/books/${bookId}/pages${queryVal}` })
+            },
+            transformResponse: (response) => parseResponse(response),
+            providesTags: [ 'BookPages' ]
+        }),
         addBook: builder.mutation({
             query: ({ libraryId, payload }) => ({
                 url: `/libraries/${libraryId}/books`,
@@ -192,6 +200,61 @@ export const booksApi = createApi({
             }),
             invalidatesTags: [ 'Chapters' ]
         }),
+        getBookPage: builder.query({
+            query: ({ libraryId, bookId, pageNumber, payload }) => ({
+                url: `/libraries/${libraryId}/books/${bookId}/pages/${pageNumber}`,
+                method: 'GET',
+                payload: removeLinks(payload)
+            }),
+            invalidatesTags: [ 'BookPages' ]
+        }),
+        addBookPage: builder.mutation({
+            query: ({ libraryId, bookId, payload }) => ({
+                url: `/libraries/${libraryId}/books/${bookId}/pages`,
+                method: 'POST',
+                payload: removeLinks(payload)
+            }),
+            invalidatesTags: [ 'BookPages' ]
+        }),
+        updateBookPage: builder.mutation({
+            query: ({ libraryId, bookId, pageNumber, payload }) => ({
+                url: `/libraries/${libraryId}/books/${bookId}/pages/${pageNumber}`,
+                method: 'PUT',
+                payload: removeLinks(payload)
+            }),
+            invalidatesTags: [ 'Chapters' ]
+        }),
+        deleteBookPage: builder.mutation({
+            query: ({ libraryId, bookId, pageNumber }) => ({
+                url: `/libraries/${libraryId}/books/${bookId}/pages/${pageNumber}`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: [ 'BookPages' ]
+        }),
+        assignBookPage: builder.mutation({
+            query: ({ libraryId, bookId, pageNumber, payload }) => ({
+                url: `/libraries/${libraryId}/books/${bookId}/pages/${pageNumber}/assign`,
+                method: 'POST',
+                payload: removeLinks(payload)
+            }),
+            invalidatesTags: [ 'BookPages' ]
+        }),
+        updateBookPageImage: builder.mutation({
+            query: ({ libraryId, bookId, pageNumber, payload }) => {
+                const formData = new FormData();
+                formData.append('file', payload, payload.fileName);
+                return ({
+                    url: `/libraries/${libraryId}/books/${bookId}/pages/${pageNumber}/image`,
+                    method: 'PUT',
+                    payload: formData,
+                    formData: true,
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                });
+            },
+            invalidatesTags: [ 'Books' ]
+        }),
     }),
 })
 
@@ -203,6 +266,7 @@ export const {
     useGetBookChaptersQuery,
     useGetChapterQuery,
     useGetChapterContentsQuery,
+    useGetBookPagesQuery,
     useAddBookMutation,
     useUpdateBookMutation,
     useDeleteBookMutation,
@@ -211,5 +275,11 @@ export const {
     useUpdateChapterMutation,
     useDeleteChapterMutation,
     useAssignChapterMutation,
-    useUpdateChapterSequenceMutation
+    useUpdateChapterSequenceMutation,
+    useGetBookPageQuery,
+    useAddBookPageMutation,
+    useUpdateBookPageMutation,
+    useDeleteBookPageMutation,
+    useAssignBookPageMutation,
+    useUpdateBookPageImageMutation
  } = booksApi

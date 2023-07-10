@@ -18,6 +18,7 @@ import LibraryHome from './pages/libraries/library'
 import BooksHomePage from './pages/books/index'
 import BookPage from './pages/books/book'
 import BookEditPage from './pages/books/edit'
+import PageEditPage from './pages/books/pages/edit'
 import AuthorsHomePage from './pages/authors/index'
 import AuthorPage from './pages/authors/author';
 import AuthorEditPage from './pages/authors/edit'
@@ -49,6 +50,8 @@ const Router = () => {
                     <Route path="/libraries/:libraryId/books/add" element={<BookEditPage />} />
                     <Route path="/libraries/:libraryId/books/:bookId" element={<BookPage />} />
                     <Route path="/libraries/:libraryId/books/:bookId/edit" element={<BookEditPage />} />
+                    <Route path="/libraries/:libraryId/books/:bookId/pages/add" element={<PageEditPage />} />
+                    <Route path="/libraries/:libraryId/books/:bookId/pages/:pageNumber/edit" element={<PageEditPage />} />
                     <Route path="/libraries/:libraryId/authors" element={<AuthorsHomePage />} />
                     <Route path="/libraries/:libraryId/authors/add" element={<AuthorEditPage />} />
                     <Route path="/libraries/:libraryId/authors/:authorId" element={<AuthorPage />} />
