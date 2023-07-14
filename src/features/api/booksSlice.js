@@ -114,14 +114,6 @@ export const booksApi = createApi({
             transformResponse: (response) => parseResponse(response),
             providesTags: [ 'ChapterContents' ]
         }),
-        getBookPages: builder.query({
-            query: ({ libraryId, bookId, status = 'Typing', assignmentFilter = null, reviewerAssignmentFilter = null, assignmentTo = null, pageNumber = 1, pageSize = 12 }) => {
-                let queryVal = `?pageNumber=${pageNumber}&pageSize=${pageSize}${status ? `&status=${status}` : ''}${assignmentFilter ? `&assignmentFilter=${assignmentFilter}` : ''}${reviewerAssignmentFilter ? `&reviewerAssignmentFilter=${reviewerAssignmentFilter}` : ''}`;
-                return ({ url: `/libraries/${libraryId}/books/${bookId}/pages${queryVal}` })
-            },
-            transformResponse: (response) => parseResponse(response),
-            providesTags: [ 'BookPages' ]
-        }),
         addBook: builder.mutation({
             query: ({ libraryId, payload }) => ({
                 url: `/libraries/${libraryId}/books`,
@@ -200,13 +192,21 @@ export const booksApi = createApi({
             }),
             invalidatesTags: [ 'Chapters' ]
         }),
+        getBookPages: builder.query({
+            query: ({ libraryId, bookId, status = 'Typing', assignment = null, reviewerAssignmentFilter = null, assignmentTo = null, pageNumber = 1, pageSize = 12 }) => {
+                let queryVal = `?pageNumber=${pageNumber}&pageSize=${pageSize}${status ? `&status=${status}` : ''}${assignment ? `&assignmentFilter=${assignment}` : ''}${reviewerAssignmentFilter ? `&reviewerAssignmentFilter=${reviewerAssignmentFilter}` : ''}`;
+                return ({ url: `/libraries/${libraryId}/books/${bookId}/pages${queryVal}` })
+            },
+            transformResponse: (response) => parseResponse(response),
+            providesTags: [ 'BookPages' ]
+        }),
         getBookPage: builder.query({
-            query: ({ libraryId, bookId, pageNumber, payload }) => ({
+            query: ({ libraryId, bookId, pageNumber }) => ({
                 url: `/libraries/${libraryId}/books/${bookId}/pages/${pageNumber}`,
                 method: 'GET',
-                payload: removeLinks(payload)
             }),
-            invalidatesTags: [ 'BookPages' ]
+            transformResponse: (response) => parseResponse(response),
+            providesTags: [ 'BookPages' ]
         }),
         addBookPage: builder.mutation({
             query: ({ libraryId, bookId, payload }) => ({
@@ -217,23 +217,23 @@ export const booksApi = createApi({
             invalidatesTags: [ 'BookPages' ]
         }),
         updateBookPage: builder.mutation({
-            query: ({ libraryId, bookId, pageNumber, payload }) => ({
-                url: `/libraries/${libraryId}/books/${bookId}/pages/${pageNumber}`,
+            query: ({ page }) => ({
+                url: page.links.update,
                 method: 'PUT',
-                payload: removeLinks(payload)
+                payload: removeLinks(page)
             }),
-            invalidatesTags: [ 'Chapters' ]
+            invalidatesTags: [ 'BookPages' ]
         }),
         deleteBookPage: builder.mutation({
-            query: ({ libraryId, bookId, pageNumber }) => ({
-                url: `/libraries/${libraryId}/books/${bookId}/pages/${pageNumber}`,
+            query: ({ page }) => ({
+                url: page.links.delete,
                 method: 'DELETE'
             }),
             invalidatesTags: [ 'BookPages' ]
         }),
         assignBookPage: builder.mutation({
-            query: ({ libraryId, bookId, pageNumber, payload }) => ({
-                url: `/libraries/${libraryId}/books/${bookId}/pages/${pageNumber}/assign`,
+            query: ({ page, payload }) => ({
+                url: payload.accountId === "me" ?  page.links.assign_to_me :  page.links.assign,
                 method: 'POST',
                 payload: removeLinks(payload)
             }),
@@ -253,7 +253,15 @@ export const booksApi = createApi({
                     }
                 });
             },
-            invalidatesTags: [ 'Books' ]
+            invalidatesTags: [ 'BookPages' ]
+        }),
+        updateBookPageSequence: builder.mutation({
+            query: ({ page, payload }) => ({
+                url: page.links.page_sequence,
+                method: 'POST',
+                payload: removeLinks(payload)
+            }),
+            invalidatesTags: [ 'BookPages' ]
         }),
     }),
 })
@@ -281,5 +289,6 @@ export const {
     useUpdateBookPageMutation,
     useDeleteBookPageMutation,
     useAssignBookPageMutation,
-    useUpdateBookPageImageMutation
+    useUpdateBookPageImageMutation,
+    useUpdateBookPageSequenceMutation
  } = booksApi

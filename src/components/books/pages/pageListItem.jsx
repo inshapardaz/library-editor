@@ -1,23 +1,34 @@
 import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
-import { Avatar, Button, Checkbox, List, Space, Tag, Typography } from "antd";
-import { FaRegKeyboard, FaGlasses, FaTrash, FaGripLines } from "react-icons/fa";
+import { Avatar, Checkbox, List, Space, Tag, Typography } from "antd";
+import { FaRegKeyboard, FaGlasses, FaGripLines } from "react-icons/fa";
 import { Draggable } from "react-beautiful-dnd";
 
 // Local Import
 import PageStatusIcon from "./pageStatusIcon";
+import PageSequenceEditor from "./pageSequenceEditor";
+import PageDeleteButton from "./pageDeleteButton";
+import PageAssignButton from "./pageAssignButton";
+import PageStatusButton from "./pageStatusButton";
 
 // ------------------------------------------------------
 
-function PageListItem({ libraryId, bookId, page, selected = false, t }) {
+function PageListItem({
+    libraryId,
+    book,
+    page,
+    t,
+    selected = false,
+    onSelectChanged = () => {},
+}) {
     let description = page.chapterTitle ? (
         <Typography.Text>{page.chapterTitle}</Typography.Text>
     ) : null;
 
     const title = (
         <Link
-            to={`/libraries/${libraryId}/books/${bookId}/pages/${page.sequenceNumber}/edit`}
+            to={`/libraries/${libraryId}/books/${book.id}/pages/${page.sequenceNumber}/edit`}
         >
             <Typography.Text>
                 {page.sequenceNumber}
@@ -27,21 +38,18 @@ function PageListItem({ libraryId, bookId, page, selected = false, t }) {
         </Link>
     );
 
-    // const edit = <ChapterEditor libraryId={libraryId} bookId={bookId} chapter={chapter} t={t} />;
-    // const deleteBtn = <ChapterDeleteButton libraryId={libraryId} bookId={bookId} chapter={chapter} t={t} onUpdated={onUpdated} />;
-    // const assign = <ChapterAssignButton libraryId={libraryId} bookId={bookId} chapter={chapter} t={t} />;
-
-    let assignment = null;
+    let assignment = [];
 
     if (page) {
         if (page.reviewerAccountId) {
-            assignment = (
+            assignment.push(
                 <Tag icon={<FaRegKeyboard />} closable={false}>
                     {page.reviewerAccountName}
                 </Tag>
             );
-        } else if (page.writerAccountId) {
-            assignment = (
+        }
+        if (page.writerAccountId) {
+            assignment.push(
                 <Tag icon={<FaGlasses />} closable={false}>
                     {page.writerAccountName}
                 </Tag>
@@ -51,15 +59,37 @@ function PageListItem({ libraryId, bookId, page, selected = false, t }) {
 
     return (
         <Draggable
-            draggableId={`draggable-${page.id}`}
+            draggableId={`page-${page.sequenceNumber}-draggable`}
             index={page.sequenceNumber - 1}
         >
             {(provided) => (
                 <List.Item
                     actions={[
-                        <Button type="ghost">
-                            <FaTrash />
-                        </Button>,
+                        page && page.links.update && (
+                            <PageSequenceEditor page={page} t={t} type="text" />
+                        ),
+                        page && page.links.update && (
+                            <PageStatusButton
+                                pages={[page]}
+                                t={t}
+                                type="text"
+                            />
+                        ),
+                        page && page.links.assign && (
+                            <PageAssignButton
+                                libraryId={libraryId}
+                                pages={[page]}
+                                t={t}
+                                type="text"
+                            />
+                        ),
+                        page && page.links.delete && (
+                            <PageDeleteButton
+                                pages={[page]}
+                                t={t}
+                                type="text"
+                            />
+                        ),
                     ]}
                     ref={provided.innerRef}
                     {...provided.draggableProps}
@@ -71,7 +101,10 @@ function PageListItem({ libraryId, bookId, page, selected = false, t }) {
                                 <div {...provided.dragHandleProps}>
                                     <FaGripLines />
                                 </div>
-                                <Checkbox />
+                                <Checkbox
+                                    checked={selected}
+                                    onChange={() => onSelectChanged(page)}
+                                />
                                 <Avatar>
                                     <PageStatusIcon status={page.status} />
                                 </Avatar>

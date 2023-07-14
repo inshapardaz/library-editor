@@ -137,7 +137,7 @@ function BooksList({
                     checkedChildren={t("actions.list")}
                     unCheckedChildren={t("actions.card")}
                     checked={showList}
-                    onChange={toggleView}
+                    onChange={(checked) => setShowList(checked)}
                 />
             }
         >

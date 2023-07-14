@@ -75,13 +75,10 @@ const PageEditPage = () => {
                 sequenceNumber: page.sequenceNumber,
                 status: page.status,
                 text,
+                links: page.links,
             };
-            console.log(payload);
             updateBookPage({
-                libraryId,
-                bookId,
-                pageNumber,
-                payload,
+                page: payload,
             })
                 .unwrap()
                 .then(() => uploadImage(bookId))

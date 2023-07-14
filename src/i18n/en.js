@@ -309,7 +309,7 @@ const en = {
             },
             "edit": {
                 "title": "Editing '{{title}}'",
-                "success" :"Chapter saved succssfully.",
+                "success" :"Chapter saved successfully.",
                 "error" :"Error saving chapter."
             },
             "delete": {
@@ -366,7 +366,26 @@ const en = {
             "descending": "Descending",
         }
     },
-    "page" : {
+    "page": {
+        "sequenceNumber": {
+          "title": "Sequence Number",
+          "required" : "Sequence Number is required."
+        },
+        "status": {
+          "title": "Status",
+          "required" : "Status is required.",
+          "placeholder" : "Select status"
+        },
+        "chapter": {
+          "label": "Chapter",
+          "required" : "Chapter is required.",
+          "placeholder" : "Select chapter",
+        },
+        "user" : {
+            "label": "User",
+            "placeholder" : "Select user",
+            "required" : "User is required"
+        },
         "actions": {
             "add": {
                 "label": "Add new page",
@@ -375,7 +394,16 @@ const en = {
 		        "error" :"Error creating page."
             },
             "edit": {
-                "title" : "Editing page {{sequenceNumber}}",
+                "title": "Editing page {{sequenceNumber}}",
+            },
+            "assign": {
+                "title_one" : "Assign page {{count}}",
+                "title_other" : "Assign pages {{count}}",
+                "message": "Assigning page(s) '{{ sequenceNumber }}'?",
+                "success_one" :"Page assigned successfully.",
+                "success_other" :"{{count}}pages assigned successfully.",
+                "error_one" :"Error assigning page.",
+                "error_other" :"Error assigning {{count}} pages."
             },
             "uploadPage" : {
                 "label": "Upload new page",
@@ -395,11 +423,31 @@ const en = {
                 "success" :"Zip file uploaded successfully.",
 		        "error" :"Error uploading zip file."
             },
+            "updateStatus": {
+                "title": "Updating Status",
+                "success" :"Page status updated successfully.",
+                "error" :"Error saving page statuses."
+            },
             "delete": {
-                "title" : "Delete page?",
+                "title_one" : "Delete page",
+                "title_other" : "Delete {{count}} pages",
                 "message": "Are you sure you want to delete page '{{ sequenceNumber }}'?",
                 "success" :"Page deleted successfully.",
                 "error" :"Error deleting page."
+            },
+            "setChapter": {
+                "title_one" : "Setting Chapter",
+                "title_other" : "Setting Chapter for {{count}} pages",
+                "message": "Are you sure you want to change chapter for page(s) '{{ sequenceNumber }}'?",
+                "success" :"Pages updated successfully.",
+                "error" :"Error updating pages."
+            },
+            "sequence": {
+                "label" : "Move page",
+                "title" : "Move page?",
+                "message": "Please provide new sequence number for page '{{ sequenceNumber }}'?",
+                "success" :"Page moved successfully.",
+                "error" :"Error moving page."
             }
         }
     },
@@ -672,6 +720,15 @@ const en = {
     "users" : {
         "empty" : {
             "title" : "No Series"
+        },
+        "me": {
+            "title": "Me",
+        },
+        "none": {
+            "title": "Unassign",
+        },
+        "others": {
+            "title": "Other users",
         }
     },
 	"fonts" : {

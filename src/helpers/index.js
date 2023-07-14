@@ -214,12 +214,14 @@ const helpers = {
         pageNumber,
         pageSize,
         statusFilter,
-        assignmentFilter) => {
+        assignmentFilter,
+        sortDirection) => {
         let querystring = 'section=pages&';
         querystring += pageNumber ? `pageNumber=${pageNumber}&` : '';
         querystring += pageSize && pageSize !== 12 ? `pageSize=${pageSize}&` : '';
         querystring += statusFilter ? `status=${statusFilter}&` : '';
         querystring += assignmentFilter ? `assignment=${assignmentFilter}&` : '';
+        querystring += sortDirection ? `sortDirection=${sortDirection}&` : '';
 
         if (querystring !== '') {
             if (querystring.substr(querystring.length - 1) === '&') {

@@ -362,6 +362,25 @@ const ur = {
         }
     },
     "page" : {
+        "sequenceNumber": {
+          "title": "ترتیب",
+          "required" : "ترتیب ضروری ہے۔"
+        },
+        "status": {
+          "title": "حیثیت",
+          "required" : "حیثیت ضروری ہے۔",
+          "placeholder" : "حیثیت چُنیں"
+        },
+        "chapter": {
+          "label": "باب",
+          "required" : "باب ضروری ہے",
+          "placeholder" : "باب چُنیں",
+        },
+        "user" : {
+            "label": "صارف",
+            "placeholder" : "صارف چنیں",
+            "required" : "صارف ضروری ہے"
+        },
         "actions": {
             "add": {
                 "label": "نیا صفحہ بنائیں",
@@ -371,6 +390,15 @@ const ur = {
             },
             "edit": {
                 "title" : "صفحہ {{sequenceNumber}} کی تدوین",
+            },
+            "assign": {
+                "title_one" : "صفحہ تفویض کریں",
+                "title_other" : "{{count}} صفحات تفویض کریں",
+                "message": "صفحہ '{{ sequenceNumber }}' تفویض کریں۔",
+                "success_one": "صفحہ تفویض کر دیا گیا ہے۔",
+                "success_other": "{{count}} صفحات تفویض کر دیے گئے۔",
+                "error_one": "صفحہ نفویض نہیں کیا جا سکا۔",
+                "error_other": "{{count}} صفحات تفویضنہیں کیے جا سکے۔"
             },
             "uploadPage" : {
                 "label": "صفحہ اپ لوڈ",
@@ -390,11 +418,31 @@ const ur = {
                 "success": "زِپ فایل کامیابی سے اپ لوڈ ہو گئی ہے۔",
 		        "error": "زِپ فایل اپ لوڈ نہیں ہو سکی۔"
             },
+             "updateStatus": {
+                "title": "صفحات کی حیثیت",
+                "success" :"صفحات کی حیثیت محفوظ کر دی گئی ہے۔",
+                "error" :"صفحات کی حیثیت محفوظ نہیں کی جا سکی۔"
+            },
+            "setChapter": {
+                "title_one" : "باب تبدیل کریں",
+                "title_other" : "{{count}}صفحات کا باب تبدیل کریں۔",
+                "message": "کیا آپ صفھات '{{ sequenceNumber }}' کا باب تبدیل کرنا چاہیں گے؟",
+                "success" :"صفحات محفوظ کر دیے گئے ہیں۔",
+                "error" :"صفحات میں تبدیلی محفوظ نہیں کہ جا سکی۔"
+            },
             "delete": {
-                "title" : "صفحہ حذف کریں؟",
+                "title_one": "صفحہ حذف کریں؟",
+                "title_other" : "{{count}} صفحات حذف کریں؟?",
                 "message": "کیا آپ صفحہ {{ sequenceNumber }} حذف کرنا چاہتے ہیں؟",
                 "success": "صفحہ حذف کر دیا گیا ہے۔",
                 "error": "صفحہ حذف نہیں کیا جا سکا۔"
+            },
+            "sequence": {
+                "label" : "ترتیب",
+                "title" : "صفحہ کی ترتیب",
+                "message": "صفحہ '{{ sequenceNumber }}' کی نئی ترتیب کیا ہے؟",
+                "success" :"صفحہ ترتیب دے دیا گیا ہے",
+                "error" :"صفحے کی ترتیب میں ناکامی۔"
             }
         }
     },
@@ -667,6 +715,15 @@ const ur = {
     "users" : {
         "empty" : {
             "title" : "صارف دستیاب نہیں ہیں",
+        },
+        "me": {
+            "title": "مجھے",
+        },
+        "none": {
+            "title": "غیر تفویض",
+        },
+        "others": {
+            "title": "دوسرے صارف",
         }
     },
 	"fonts" : {

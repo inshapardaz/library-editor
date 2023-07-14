@@ -1,57 +1,46 @@
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
-import { Button, List, Menu, Skeleton } from "antd";
+import { App, Button, Col, List, Radio, Row, Skeleton } from "antd";
 import { MdContentCopy } from "react-icons/md";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { FaRegImage, FaRegListAlt } from "react-icons/fa";
 
 // Internal Imports
-import { useGetBookPagesQuery } from "../../../features/api/booksSlice";
+import {
+    useGetBookPagesQuery,
+    useUpdateBookPageSequenceMutation,
+} from "../../../features/api/booksSlice";
 import PageListItem from "../pages/pageListItem";
 import DataContainer from "../../layout/dataContainer";
-import {
-    FaCheck,
-    FaFile,
-    FaFileAlt,
-    FaFilePdf,
-    FaFileSignature,
-    FaFilter,
-    FaGlasses,
-    FaInfoCircle,
-    FaLayerGroup,
-    FaPlus,
-    FaRegImage,
-    FaRegListAlt,
-    FaSort,
-    FaSortAmountDown,
-    FaSortAmountUp,
-    FaStarOfLife,
-    FaTrash,
-    FaUser,
-    FaUserAlt,
-    FaUserFriends,
-    FaUserSlash,
-    FaUsers,
-} from "react-icons/fa";
-import { FaFileArrowUp, FaFileCirclePlus, FaFileZipper } from "react-icons/fa6";
-import helpers from "../../../helpers";
+import PageAddButton from "./pageAddButton";
+import PageDeleteButton from "./pageDeleteButton";
+import PageAssignButton from "./pageAssignButton";
+import PageSortButton from "./pageSortButton";
+import PageStatusFilterButton from "./pageStatusFilterButton";
+import PageAssignmentFilterButton from "./pageAssignmentFilterButton";
+import CheckboxButton from "../../checkboxButton";
+import PageChapterButton from "./pageChapterButton";
+import PageStatusButton from "./pageStatusButton";
 
 // ------------------------------------------------------
 
-const PagesList = ({
-    libraryId,
-    bookId,
-    t,
-    selectedChapterNumber: selectedPageNumber = null,
-    size = "default",
-    hideTitle = false,
-}) => {
-    const navigate = useNavigate();
+const PagesList = ({ libraryId, book, t, size = "default" }) => {
+    const { message } = App.useApp();
+    const [showList, setShowList] = useLocalStorage(
+        "book-pages-list-view",
+        true
+    );
     const [searchParams] = useSearchParams();
+    const [selection, setSelection] = useState([]);
+    const [selectedPages, setSelectedPages] = useState([]);
     const status = searchParams.get("status") ?? "Typing";
     const assignment = searchParams.get("assignment") ?? "Mine";
     const pageNumber = searchParams.get("pageNumber") ?? 1;
     const pageSize = searchParams.get("pageSize") ?? 12;
+    const sortDirection = searchParams.get("sortDirection") ?? 12;
 
     const {
         refetch,
@@ -59,214 +48,141 @@ const PagesList = ({
         error,
         isFetching,
     } = useGetBookPagesQuery(
-        { libraryId, bookId, status, pageNumber, pageSize },
-        { skip: !libraryId || !bookId }
+        {
+            libraryId,
+            bookId: book.id,
+            status,
+            assignment,
+            sortDirection,
+            pageNumber,
+            pageSize,
+        },
+        { skip: !libraryId || !book || !book.links.pages }
     );
+
+    const [updateBookPageSequence, { isLoading: isUpdatingSequence }] =
+        useUpdateBookPageSequenceMutation();
 
     if (isFetching) return <Skeleton />;
 
-    const setStatus = (newStatus) => {
-        navigate(
-            helpers.buildLinkToBooksPagesPage(
-                libraryId,
-                bookId,
-                pageNumber,
-                pageSize,
-                newStatus,
-                assignment
-            )
-        );
-    };
-
-    const setAssignment = (newAvailabilityStatus) => {
-        navigate(
-            helpers.buildLinkToBooksPagesPage(
-                libraryId,
-                bookId,
-                pageNumber,
-                pageSize,
-                status,
-                newAvailabilityStatus
-            )
-        );
-    };
     const onDragDrop = (result) => {
-        // const fromIndex = result.source.index;
-        // const toIndex = result.destination.index;
-        // let payload = [ ...chapters.data ]
-        // if (fromIndex !== toIndex) {
-        //   const element = payload[fromIndex];
-        //   payload.splice(fromIndex, 1);
-        //   payload.splice(toIndex, 0, element);
-        //   payload = payload.map((item, index) => ({
-        //     id: item.id,
-        //     chapterNumber : index + 1
-        //   }))
-        //   return updateChapterSequence({ libraryId, bookId, payload })
-        //     .unwrap()
-        //     .then(() => message.success(t("chapter.actions.reorder.success")))
-        //     .catch((_) => message.error(t("chapter.actions.reorder.error")));
-        // }
+        const fromIndex = result.source.index + 1;
+        const toIndex = result.destination.index + 1;
+        if (fromIndex !== toIndex) {
+            const page = pages.data.find((p) => p.sequenceNumber === fromIndex);
+            if (page) {
+                return updateBookPageSequence({
+                    page,
+                    payload: { sequenceNumber: toIndex },
+                })
+                    .unwrap()
+                    .then(() =>
+                        message.success(t("chapter.actions.reorder.success"))
+                    )
+                    .catch((_) =>
+                        message.error(t("chapter.actions.reorder.error"))
+                    );
+            }
+        }
     };
-    // {/* <PageEditor libraryId={libraryId} bookId={bookId} t={t} buttonType="dashed" /> */}
 
-    const selectedKeys = [
-        assignment
-            ? `assignment.${assignment}`.toLowerCase()
-            : "assignment.all",
-        status ? `status.${status}`.toLowerCase() : "status.all",
-    ];
+    //------------------------------------------------------
+    const onSelectChanged = (p) => {
+        const currentIndex = selection.indexOf(p.sequenceNumber);
+        const newSelection = [...selection];
 
-    console.log(selectedKeys);
-    const headerItems = [
-        {
-            icon: <FaPlus />,
-            children: [
-                {
-                    icon: <FaFileCirclePlus />,
-                    label: (
-                        <Link
-                            to={`/libraries/${libraryId}/books/${bookId}/pages/add`}
-                        >
-                            {t("page.actions.add.label")}
-                        </Link>
-                    ),
-                },
-                {
-                    icon: <FaFileArrowUp />,
-                    label: t("page.actions.uploadPage.label"),
-                },
-                {
-                    icon: <FaFilePdf />,
-                    label: t("page.actions.uploadPdf.label"),
-                },
-                {
-                    icon: <FaFileZipper />,
-                    label: t("page.actions.uploadZip.label"),
-                },
-            ],
-        },
-        {
-            icon: <FaTrash />,
-        },
-        {
-            icon: <FaUser />,
-        },
-        {
-            icon: <FaLayerGroup />,
-        },
-        {
-            icon: <FaInfoCircle />,
-        },
-        {
-            icon: <FaFileAlt />,
-        },
-        {
-            type: "divider",
-            style: { flex: "1", order: 7 },
-        },
-        {
-            icon: <FaUser />,
-            children: [
-                {
-                    icon: <FaUsers />,
-                    label: t("pages.assignment.all"),
-                    onClick: () => setAssignment("all"),
-                    key: "assignment.all",
-                },
-                {
-                    icon: <FaUserAlt />,
-                    label: t("pages.assignment.mine"),
-                    onClick: () => setAssignment("assignedToMe"),
-                    key: "assignment.assignedtome",
-                },
-                {
-                    icon: <FaUserFriends />,
-                    label: t("pages.assignment.assigned"),
-                    onClick: () => setAssignment("assigned"),
-                    key: "assignment.assigned",
-                },
-                {
-                    icon: <FaUserSlash />,
-                    label: t("pages.assignment.unassigned"),
-                    onClick: () => setAssignment("unassigned"),
-                    key: "assignment.unassigned",
-                },
-            ],
-        },
-        {
-            icon: <FaFilter />,
-            children: [
-                {
-                    icon: <FaStarOfLife />,
-                    label: t("pages.filters.all"),
-                    onClick: () => setStatus("all"),
-                    key: "status.unassigned",
-                },
-                {
-                    icon: <FaFile />,
-                    label: t("pages.filters.availableToType"),
-                    onClick: () => setStatus("Available"),
-                    key: "status.available",
-                },
-                {
-                    icon: <FaFileSignature />,
-                    label: t("pages.filters.typing"),
-                    onClick: () => setStatus("Typing"),
-                    key: "status.typing",
-                },
-                {
-                    icon: <FaFileAlt />,
-                    label: t("pages.filters.typed"),
-                    onClick: () => setStatus("Typed"),
-                    key: "status.typed",
-                },
-                {
-                    icon: <FaGlasses />,
-                    label: t("pages.filters.proofreading"),
-                    onClick: () => setStatus("InReview"),
-                    key: "status.inreview",
-                },
-                {
-                    icon: <FaCheck />,
-                    label: t("pages.filters.completed"),
-                    onClick: () => setStatus("Completed"),
-                    key: "status.completed",
-                },
-            ],
-        },
-        {
-            icon: <FaSort />,
-            children: [
-                {
-                    icon: <FaSortAmountDown />,
-                    label: t("pages.sort.descending"),
-                },
-                {
-                    icon: <FaSortAmountUp />,
-                    label: t("pages.sort.ascending"),
-                },
-            ],
-        },
-        {
-            icon: <FaRegImage />,
-        },
-        {
-            icon: <FaRegListAlt />,
-        },
-    ];
-    const header = (
-        <Menu
-            mode="horizontal"
-            selectedKeys={selectedKeys}
-            items={headerItems}
-        ></Menu>
+        if (currentIndex === -1) {
+            newSelection.push(p.sequenceNumber);
+        } else {
+            newSelection.splice(currentIndex, 1);
+        }
+
+        setSelection(newSelection);
+        setSelectedPages(
+            pages.data.filter((p) => newSelection.includes(p.sequenceNumber))
+        );
+    };
+
+    const onSelectAll = () => {
+        if (selection.length === pages.data.length) {
+            setSelection([]);
+            setSelectedPages([]);
+        } else {
+            setSelection(pages.data.map((p) => p.sequenceNumber));
+            setSelectedPages(pages.data.map((p) => p.sequenceNumber));
+        }
+    };
+
+    const hasAllSelected = selection.length === pages.data.length;
+    const hasPartialSelection =
+        selection.length > 0 && selection.length < pages.data.length;
+
+    //------------------------------------------------------
+    const toolbar = (
+        <Row gutter={8}>
+            <Col>
+                <Button.Group>
+                    <CheckboxButton
+                        onChange={onSelectAll}
+                        checked={hasAllSelected}
+                        indeterminate={hasPartialSelection}
+                    />
+                    <PageAddButton libraryId={libraryId} book={book} t={t} />
+                    <PageDeleteButton pages={selectedPages} t={t} />
+                    <PageAssignButton
+                        libraryId={libraryId}
+                        pages={selectedPages}
+                        t={t}
+                    />
+                    <PageChapterButton
+                        libraryId={libraryId}
+                        book={book}
+                        pages={selectedPages}
+                        t={t}
+                    />
+                    <PageStatusButton pages={selectedPages} t={t} />
+                </Button.Group>
+            </Col>
+            <Col flex={1}></Col>
+            <Col>
+                <Button.Group>
+                    <PageAssignmentFilterButton
+                        libraryId={libraryId}
+                        bookId={book.id}
+                        t={t}
+                    />
+                    <PageStatusFilterButton
+                        libraryId={libraryId}
+                        bookId={book.id}
+                        t={t}
+                    />
+                    <PageSortButton
+                        libraryId={libraryId}
+                        bookId={book.id}
+                        t={t}
+                    />
+                </Button.Group>
+            </Col>
+            <Col>
+                <Radio.Group
+                    value={showList}
+                    onChange={(e) => setShowList(e.target.value)}
+                >
+                    <Radio.Button value="true">
+                        <FaRegListAlt />
+                    </Radio.Button>
+                    <Radio.Button value="false">
+                        <FaRegImage />
+                    </Radio.Button>
+                </Radio.Group>
+            </Col>
+        </Row>
     );
-    console.log(pages);
+
     return (
         <>
             <DataContainer
-                busy={isFetching}
+                busy={isFetching | isUpdatingSequence}
                 error={error}
                 errorTitle={t("pages.errors.loading.title")}
                 errorSubTitle={t("pages.errors.loading.subTitle")}
@@ -278,11 +194,11 @@ const PagesList = ({
                 emptyImage={<MdContentCopy size="5em" />}
                 emptyDescription={t("pages.empty.title")}
                 empty={pages && pages.data && pages.data.length < 1}
-                title={header}
+                title={toolbar}
                 bordered={false}
             >
                 <DragDropContext onDragEnd={onDragDrop}>
-                    <Droppable droppableId={`Droppable_${bookId}`}>
+                    <Droppable droppableId={`${book.id}_pages_droppable`}>
                         {(provided) => (
                             <div
                                 ref={provided.innerRef}
@@ -294,14 +210,16 @@ const PagesList = ({
                                     dataSource={pages ? pages.data : []}
                                     renderItem={(page) => (
                                         <PageListItem
-                                            key={page.id}
+                                            key={`page_${page.sequenceNumber}`}
                                             t={t}
                                             selected={
-                                                selectedPageNumber ===
-                                                page.sequenceNumber
+                                                selection.indexOf(
+                                                    page.sequenceNumber
+                                                ) >= 0
                                             }
+                                            onSelectChanged={onSelectChanged}
                                             libraryId={libraryId}
-                                            bookId={bookId}
+                                            book={book}
                                             page={page}
                                         />
                                     )}

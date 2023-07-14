@@ -12,18 +12,49 @@ import ChapterAssignButton from "./chapterAssignButton";
 
 // ------------------------------------------------------
 
-function ChapterListItem({ libraryId, bookId, chapter, selected = false, t, onUpdated = () => {} }) {
+function ChapterListItem({
+    libraryId,
+    bookId,
+    chapter,
+    selected = false,
+    t,
+    onUpdated = () => {},
+}) {
     const title = selected ? (
         <Typography.Text disabled={true}>{chapter.title}</Typography.Text>
     ) : (
-        <Link to={`/libraries/${libraryId}/books/${bookId}/chapters/${chapter.chapterNumber}`}>
+        <Link
+            to={`/libraries/${libraryId}/books/${bookId}/chapters/${chapter.chapterNumber}`}
+        >
             <Typography.Text>{chapter.title}</Typography.Text>
         </Link>
     );
 
-    const edit = <ChapterEditor libraryId={libraryId} bookId={bookId} chapter={chapter} t={t} />;
-    const deleteBtn = <ChapterDeleteButton libraryId={libraryId} bookId={bookId} chapter={chapter} t={t} onUpdated={onUpdated} />;
-    const assign = <ChapterAssignButton libraryId={libraryId} bookId={bookId} chapter={chapter} t={t} />;
+    const edit = (
+        <ChapterEditor
+            libraryId={libraryId}
+            bookId={bookId}
+            chapter={chapter}
+            t={t}
+        />
+    );
+    const deleteBtn = (
+        <ChapterDeleteButton
+            libraryId={libraryId}
+            bookId={bookId}
+            chapter={chapter}
+            t={t}
+            onUpdated={onUpdated}
+        />
+    );
+    const assign = (
+        <ChapterAssignButton
+            libraryId={libraryId}
+            bookId={bookId}
+            chapter={chapter}
+            t={t}
+        />
+    );
 
     let assignment = null;
 
@@ -46,11 +77,15 @@ function ChapterListItem({ libraryId, bookId, chapter, selected = false, t, onUp
     return (
         <Draggable
             //isDragDisabled={!canEdit}
-            draggableId={`draggable-${chapter.id}`}
+            draggableId={`chapter-${chapter.id}-draggable`}
             index={chapter.chapterNumber - 1}
         >
             {(provided) => (
-                <List.Item actions={[edit, deleteBtn, assign]} ref={provided.innerRef} {...provided.draggableProps}>
+                <List.Item
+                    actions={[edit, deleteBtn, assign]}
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                >
                     <List.Item.Meta
                         title={title}
                         avatar={
