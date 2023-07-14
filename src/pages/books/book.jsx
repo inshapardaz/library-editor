@@ -1,10 +1,5 @@
 import { useTranslation } from "react-i18next";
-import {
-    Link,
-    useNavigate,
-    useParams,
-    useSearchParams,
-} from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 // 3rd party libraries
 import { Button, Col, Row, Space, Tabs } from "antd";
@@ -84,7 +79,14 @@ const BookPage = () => {
                     {t("book.files.title")}
                 </Space>
             ),
-            children: <h1>Book Files</h1>,
+            children: (
+                <FilesList
+                    libraryId={libraryId}
+                    book={book}
+                    t={t}
+                    size="large"
+                />
+            ),
         },
     ];
 
