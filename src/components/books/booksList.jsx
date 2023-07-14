@@ -64,10 +64,6 @@ function BooksList({
         pageSize,
     });
 
-    const toggleView = (checked) => {
-        setShowList(checked);
-    };
-
     const renderItem = (book) => {
         if (showList) {
             return (
