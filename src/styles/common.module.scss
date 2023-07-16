@@ -251,6 +251,26 @@
   }
 }
 
+.page {
+    &__image {
+        width: 262px;
+        height: 400px;
+
+        &--small {
+            width: 98px;
+            height: 150px;
+        }
+
+        &--thumbnail {
+            max-width: 100%;
+
+            @include when-mobile-device {
+                max-width: 90%;
+            }
+        }
+    }
+}
+
 .periodical {
   &__image {
     width : 262px;

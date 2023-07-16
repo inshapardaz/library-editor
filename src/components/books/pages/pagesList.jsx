@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
@@ -24,11 +24,47 @@ import PageAssignmentFilterButton from "./pageAssignmentFilterButton";
 import CheckboxButton from "../../checkboxButton";
 import PageChapterButton from "./pageChapterButton";
 import PageStatusButton from "./pageStatusButton";
+import helpers from "../../../helpers";
+import BookStatus from "../../../models/bookStatus";
+import PageStatus from "../../../models/pageStatus";
+import AssignmentStatus from "../../../models/assignmentStatus";
+import PageCard from "./pageCard";
 
 // ------------------------------------------------------
 
+const getFilterFromBookStatus = (book) => {
+    switch (book.status) {
+        case BookStatus.AvailableForTyping:
+            return PageStatus.AvailableForTyping;
+        case BookStatus.BeingTyped:
+            return PageStatus.Typing;
+        case BookStatus.ReadyForProofRead:
+            return PageStatus.Typed;
+        case BookStatus.ProofRead:
+            return PageStatus.InReview;
+        case BookStatus.Published:
+        default:
+            return PageStatus.All;
+    }
+};
+
+const getAssignmentFilterFromBookStatus = (book) => {
+    switch (book.status) {
+        case BookStatus.AvailableForTyping:
+        case BookStatus.BeingTyped:
+        case BookStatus.ReadyForProofRead:
+        case BookStatus.ProofRead:
+            return AssignmentStatus.AssignedToMe;
+        case BookStatus.Published:
+        default:
+            return AssignmentStatus.All;
+    }
+};
+// ---------------------------------------------------------------------
+
 const PagesList = ({ libraryId, book, t, size = "default" }) => {
     const { message } = App.useApp();
+    const navigate = useNavigate();
     const [showList, setShowList] = useLocalStorage(
         "book-pages-list-view",
         true
@@ -36,8 +72,10 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
     const [searchParams] = useSearchParams();
     const [selection, setSelection] = useState([]);
     const [selectedPages, setSelectedPages] = useState([]);
-    const status = searchParams.get("status") ?? "Typing";
-    const assignment = searchParams.get("assignment") ?? "Mine";
+    const status = searchParams.get("status") ?? getFilterFromBookStatus(book);
+    const assignment =
+        searchParams.get("assignment") ??
+        getAssignmentFilterFromBookStatus(book);
     const pageNumber = searchParams.get("pageNumber") ?? 1;
     const pageSize = searchParams.get("pageSize") ?? 12;
     const sortDirection = searchParams.get("sortDirection") ?? 12;
@@ -118,6 +156,20 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
         selection.length > 0 && selection.length < pages.data.length;
 
     //------------------------------------------------------
+    const onPageChanged = (newPage, newPageSize) => {
+        navigate(
+            helpers.buildLinkToBooksPagesPage(
+                libraryId,
+                book.id,
+                newPage,
+                newPageSize,
+                status,
+                assignment,
+                sortDirection
+            )
+        );
+    };
+    //------------------------------------------------------
     const toolbar = (
         <Row gutter={8}>
             <Col>
@@ -168,10 +220,10 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
                     value={showList}
                     onChange={(e) => setShowList(e.target.value)}
                 >
-                    <Radio.Button value="true">
+                    <Radio.Button value={true}>
                         <FaRegListAlt />
                     </Radio.Button>
-                    <Radio.Button value="false">
+                    <Radio.Button value={false}>
                         <FaRegImage />
                     </Radio.Button>
                 </Radio.Group>
@@ -179,6 +231,33 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
         </Row>
     );
 
+    const renderPage = (page) => {
+        if (showList) {
+            return (
+                <PageListItem
+                    key={`page_${page.sequenceNumber}`}
+                    t={t}
+                    selected={selection.indexOf(page.sequenceNumber) >= 0}
+                    onSelectChanged={onSelectChanged}
+                    libraryId={libraryId}
+                    book={book}
+                    page={page}
+                />
+            );
+        }
+
+        return (
+            <PageCard
+                key={`page_${page.sequenceNumber}`}
+                t={t}
+                selected={selection.indexOf(page.sequenceNumber) >= 0}
+                onSelectChanged={onSelectChanged}
+                libraryId={libraryId}
+                book={book}
+                page={page}
+            />
+        );
+    };
     return (
         <>
             <DataContainer
@@ -206,23 +285,36 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
                             >
                                 <List
                                     size={size}
-                                    itemLayout="horizontal"
+                                    itemLayout={
+                                        showList ? "horizontal" : "vertical"
+                                    }
+                                    grid={
+                                        showList
+                                            ? null
+                                            : {
+                                                  gutter: 16,
+                                                  xs: 1,
+                                                  sm: 1,
+                                                  md: 2,
+                                                  lg: 2,
+                                                  xl: 3,
+                                                  xxl: 3,
+                                              }
+                                    }
                                     dataSource={pages ? pages.data : []}
-                                    renderItem={(page) => (
-                                        <PageListItem
-                                            key={`page_${page.sequenceNumber}`}
-                                            t={t}
-                                            selected={
-                                                selection.indexOf(
-                                                    page.sequenceNumber
-                                                ) >= 0
-                                            }
-                                            onSelectChanged={onSelectChanged}
-                                            libraryId={libraryId}
-                                            book={book}
-                                            page={page}
-                                        />
-                                    )}
+                                    renderItem={renderPage}
+                                    pagination={{
+                                        onChange: onPageChanged,
+                                        pageSize: pages ? pages.pageSize : 0,
+                                        current: pages
+                                            ? pages.currentPageIndex
+                                            : 0,
+                                        total: pages ? pages.totalCount : 0,
+                                        showSizeChanger: true,
+                                        responsive: true,
+                                        showQuickJumper: true,
+                                        pageSizeOptions: [12, 24, 48, 96],
+                                    }}
                                 >
                                     {provided.placeholder}
                                 </List>

@@ -13,6 +13,7 @@ import {
 
 // Local Import
 import helpers from "../../../helpers";
+import AssignmentStatus from "../../../models/assignmentStatus";
 
 // ------------------------------------------------------
 
@@ -21,8 +22,8 @@ export default function PageAssignmentFilterButton({ libraryId, bookId, t }) {
     const [searchParams] = useSearchParams();
 
     const status = searchParams.get("status");
-    const assignment = searchParams.get("assignment") ?? "Mine";
-    const pageNumber = searchParams.get("pageNumber") ?? 1;
+    const assignment =
+        searchParams.get("assignment") ?? AssignmentStatus.AssignedToMe;
     const pageSize = searchParams.get("pageSize") ?? 12;
 
     const setAssignment = (newAvailabilityStatus) => {
@@ -30,7 +31,7 @@ export default function PageAssignmentFilterButton({ libraryId, bookId, t }) {
             helpers.buildLinkToBooksPagesPage(
                 libraryId,
                 bookId,
-                pageNumber,
+                1,
                 pageSize,
                 status,
                 newAvailabilityStatus
@@ -42,26 +43,26 @@ export default function PageAssignmentFilterButton({ libraryId, bookId, t }) {
         {
             icon: <FaUsers />,
             label: t("pages.assignment.all"),
-            onClick: () => setAssignment("all"),
-            key: "all",
+            onClick: () => setAssignment(AssignmentStatus.All),
+            key: AssignmentStatus.All,
         },
         {
             icon: <FaUserAlt />,
             label: t("pages.assignment.mine"),
-            onClick: () => setAssignment("assignedToMe"),
-            key: "assignedToMe",
+            onClick: () => setAssignment(AssignmentStatus.AssignedToMe),
+            key: AssignmentStatus.AssignedToMe,
         },
         {
             icon: <FaUserFriends />,
             label: t("pages.assignment.assigned"),
-            onClick: () => setAssignment("assigned"),
-            key: "assigned",
+            onClick: () => setAssignment(AssignmentStatus.Assigned),
+            key: AssignmentStatus.Assigned,
         },
         {
             icon: <FaUserSlash />,
             label: t("pages.assignment.unassigned"),
-            onClick: () => setAssignment("unassigned"),
-            key: "unassigned",
+            onClick: () => setAssignment(AssignmentStatus.Unassigned),
+            key: AssignmentStatus.Unassigned,
         },
     ];
     return (
