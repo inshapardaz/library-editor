@@ -60,13 +60,10 @@ export default function ChapterEditor({ libraryId, bookId, chapter, t, type }) {
         ? t("chapter.actions.edit.title", { title: chapter.title })
         : t("chapter.actions.add.title");
     const buttonIcon = chapter ? <FaEdit /> : <FaPlus />;
-    const buttonText = chapter ? "" : t("chapter.actions.add.label");
 
     return (
         <>
-            <Button type={type} onClick={onShow} icon={buttonIcon}>
-                {buttonText}
-            </Button>
+            <Button type={type} onClick={onShow} icon={buttonIcon} />
             <Modal
                 open={open}
                 title={title}

@@ -33,19 +33,6 @@ function ChapterListItem({
         </Link>
     );
 
-    const edit = (
-        <ChapterEditor
-            libraryId={libraryId}
-            bookId={bookId}
-            chapter={chapter}
-            t={t}
-        />
-    );
-    const deleteBtn = <ChapterDeleteButton chapters={[chapter]} t={t} />;
-    const assign = (
-        <ChapterAssignButton libraryId={libraryId} chapters={[chapter]} t={t} />
-    );
-
     let assignment = [];
 
     if (chapter) {
@@ -73,7 +60,32 @@ function ChapterListItem({
         >
             {(provided) => (
                 <List.Item
-                    actions={[edit, deleteBtn, assign]}
+                    actions={[
+                        chapter && chapter.links.update && (
+                            <ChapterEditor
+                                libraryId={libraryId}
+                                bookId={bookId}
+                                chapter={chapter}
+                                t={t}
+                                type="text"
+                            />
+                        ),
+                        chapter && chapter.links.delete && (
+                            <ChapterDeleteButton
+                                chapters={[chapter]}
+                                t={t}
+                                type="text"
+                            />
+                        ),
+                        chapter && chapter.links.assign && (
+                            <ChapterAssignButton
+                                libraryId={libraryId}
+                                chapters={[chapter]}
+                                t={t}
+                                type="text"
+                            />
+                        ),
+                    ]}
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                 >
