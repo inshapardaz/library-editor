@@ -6,7 +6,7 @@ import { FaRegKeyboard, FaGlasses, FaGripLines } from "react-icons/fa";
 import { Draggable } from "react-beautiful-dnd";
 
 // Local Import
-import PageStatusIcon from "./pageStatusIcon";
+import EditingStatusIcon from "../../editingStatusIcon";
 import PageSequenceEditor from "./pageSequenceEditor";
 import PageDeleteButton from "./pageDeleteButton";
 import PageAssignButton from "./pageAssignButton";
@@ -106,7 +106,7 @@ function PageListItem({
                                     onChange={() => onSelectChanged(page)}
                                 />
                                 <Avatar>
-                                    <PageStatusIcon status={page.status} />
+                                    <EditingStatusIcon status={page.status} />
                                 </Avatar>
                             </Space>
                         }

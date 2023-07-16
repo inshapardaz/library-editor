@@ -23,7 +23,7 @@ import {
 } from "../../../features/api/booksSlice";
 import PageHeader from "../../../components/layout/pageHeader";
 import DataContainer from "../../../components/layout/dataContainer";
-import PageStatusIcon from "../../../components/books/pages/pageStatusIcon";
+import EditingStatusIcon from "../../../components/editingStatusIcon";
 import helpers from "../../../helpers";
 
 // -----------------------------------------
@@ -178,7 +178,7 @@ const PageEditPage = () => {
                 <PageHeader
                     title={title}
                     icon={
-                        <PageStatusIcon
+                        <EditingStatusIcon
                             status={page && page.status}
                             style={{ width: 36, height: 36 }}
                         />

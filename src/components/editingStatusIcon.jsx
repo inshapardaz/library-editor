@@ -8,7 +8,7 @@ import {
 
 // ------------------------------------------------------
 
-const PageStatusIcon = ({ status, style }) => {
+const EditingStatusIcon = ({ status, style }) => {
     switch (status) {
         case "Available":
             return <FaFile style={style} />;
@@ -25,4 +25,4 @@ const PageStatusIcon = ({ status, style }) => {
     }
 };
 
-export default PageStatusIcon;
+export default EditingStatusIcon;

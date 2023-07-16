@@ -314,15 +314,27 @@ const en = {
             },
             "delete": {
                 "title" : "Delete Chapter?",
-                "message": "Are you sure you want to delete chapter '{{title}}'?",
+                "title_other" : "Delete {{count}} chapters",
+                "message": "Are you sure you want to delete chapter '{{titles}}'?",
+                "message_other": "Are you sure you want to delete chapters '{{titles}}'?",
                 "success" :"Chapter deleted successfully.",
-                "error" :"Error deleting chapter."
+                "success_other" :"{{count}} Chapters deleted successfully.",
+                "error" :"Error deleting chapter.",
+                "error_other" :"Error deleting {{ count }}} chapters."
+            },
+            "updateStatus": {
+                "title": "Updating Status",
+                "success" :"Chapter status updated successfully.",
+                "error" :"Error saving chapter statuses."
             },
             "assign": {
-                "title" : "Assign Chapter?",
-                "message": "You are assigning chapter '{{title}}'?",
-                "success" :"Chapter assigned successfully.",
-                "error" :"Error assigning chapter."
+                "title_one" : "Assign Chapter {{count}}",
+                "title_other" : "Assign Chapters {{count}}",
+                "message": "Assigning Chapter(s) '{{ chapterNumber }}'?",
+                "success_one" :"Chapter assigned successfully.",
+                "success_other" :"{{count}} chapters assigned successfully.",
+                "error_one" :"Error assigning chapter.",
+                "error_other" :"Error assigning {{count}} chapters."
             },
             "reorder": {
                 "success" :"Chapter ordered successfully.",
@@ -401,7 +413,7 @@ const en = {
                 "title_other" : "Assign pages {{count}}",
                 "message": "Assigning page(s) '{{ sequenceNumber }}'?",
                 "success_one" :"Page assigned successfully.",
-                "success_other" :"{{count}}pages assigned successfully.",
+                "success_other" :"{{count}} pages assigned successfully.",
                 "error_one" :"Error assigning page.",
                 "error_other" :"Error assigning {{count}} pages."
             },

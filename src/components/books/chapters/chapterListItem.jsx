@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
-import { Avatar, List, Space, Tag, Typography } from "antd";
+import { Avatar, Checkbox, List, Space, Tag, Typography } from "antd";
 import { FaRegKeyboard, FaGlasses, FaGripLines } from "react-icons/fa";
 import { Draggable } from "react-beautiful-dnd";
 
@@ -9,6 +9,7 @@ import { Draggable } from "react-beautiful-dnd";
 import ChapterEditor from "./chapterEditor";
 import ChapterDeleteButton from "./chapterDeleteButton";
 import ChapterAssignButton from "./chapterAssignButton";
+import EditingStatusIcon from "../../editingStatusIcon";
 
 // ------------------------------------------------------
 
@@ -17,8 +18,8 @@ function ChapterListItem({
     bookId,
     chapter,
     selected = false,
+    onSelectChanged = () => {},
     t,
-    onUpdated = () => {},
 }) {
     const title = selected ? (
         <Typography.Text disabled={true}>{chapter.title}</Typography.Text>
@@ -26,7 +27,9 @@ function ChapterListItem({
         <Link
             to={`/libraries/${libraryId}/books/${bookId}/chapters/${chapter.chapterNumber}`}
         >
-            <Typography.Text>{chapter.title}</Typography.Text>
+            <Typography.Text>
+                {chapter.chapterNumber} - {chapter.title}
+            </Typography.Text>
         </Link>
     );
 
@@ -38,35 +41,23 @@ function ChapterListItem({
             t={t}
         />
     );
-    const deleteBtn = (
-        <ChapterDeleteButton
-            libraryId={libraryId}
-            bookId={bookId}
-            chapter={chapter}
-            t={t}
-            onUpdated={onUpdated}
-        />
-    );
+    const deleteBtn = <ChapterDeleteButton chapters={[chapter]} t={t} />;
     const assign = (
-        <ChapterAssignButton
-            libraryId={libraryId}
-            bookId={bookId}
-            chapter={chapter}
-            t={t}
-        />
+        <ChapterAssignButton libraryId={libraryId} chapters={[chapter]} t={t} />
     );
 
-    let assignment = null;
+    let assignment = [];
 
     if (chapter) {
         if (chapter.reviewerAccountId) {
-            assignment = (
+            assignment.push(
                 <Tag icon={<FaRegKeyboard />} closable={false}>
                     {chapter.reviewerAccountName}
                 </Tag>
             );
-        } else if (chapter.writerAccountId) {
-            assignment = (
+        }
+        if (chapter.writerAccountId) {
+            assignment.push(
                 <Tag icon={<FaGlasses />} closable={false}>
                     {chapter.writerAccountName}
                 </Tag>
@@ -89,13 +80,23 @@ function ChapterListItem({
                     <List.Item.Meta
                         title={title}
                         avatar={
-                            <Space {...provided.dragHandleProps}>
-                                <FaGripLines />
-                                <Avatar>{chapter.chapterNumber}</Avatar>
+                            <Space>
+                                <div {...provided.dragHandleProps}>
+                                    <FaGripLines />
+                                </div>
+                                <Checkbox
+                                    checked={selected}
+                                    onChange={() => onSelectChanged(chapter)}
+                                />
+                                <Avatar>
+                                    <EditingStatusIcon
+                                        status={chapter.status}
+                                    />
+                                </Avatar>
                             </Space>
                         }
-                        description={assignment}
                     />
+                    {assignment}
                 </List.Item>
             )}
         </Draggable>

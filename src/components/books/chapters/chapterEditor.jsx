@@ -2,26 +2,33 @@ import { useState } from "react";
 
 // Third party libraries
 import { App, Button, Modal, Form, Input } from "antd";
-import { FaEdit, FaPlus } from 'react-icons/fa';
+import { FaEdit, FaPlus } from "react-icons/fa";
 
 // Local imports
-import { useAddChapterMutation, useUpdateChapterMutation } from "../../../features/api/booksSlice";
+import {
+    useAddChapterMutation,
+    useUpdateChapterMutation,
+} from "../../../features/api/booksSlice";
 import EditingStatusSelect from "../../editingStatusSelect";
 
 // ------------------------------------------------------
 
-export default function ChapterEditor({ libraryId, bookId, chapter, t, buttonType = "text" }) {
+export default function ChapterEditor({ libraryId, bookId, chapter, t, type }) {
     const { message } = App.useApp();
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
     const [addChapter, { isLoading: isAdding }] = useAddChapterMutation();
-    const [updateChapter, { isLoading: isUpdating }] = useUpdateChapterMutation();
+    const [updateChapter, { isLoading: isUpdating }] =
+        useUpdateChapterMutation();
 
     const onSubmit = (values) => {
         if (chapter) {
-            chapter.title = values.title;
-            chapter.status = values.status;
-            return updateChapter({ libraryId, bookId, chapterNumber: chapter.chapterNumber, payload: chapter })
+            const payload = {
+                ...chapter,
+                title: values.title,
+                status: values.status,
+            };
+            return updateChapter({ chapter: payload })
                 .unwrap()
                 .then(() => setOpen(false))
                 .then(() => message.success(t("chapter.actions.edit.success")))
@@ -35,49 +42,74 @@ export default function ChapterEditor({ libraryId, bookId, chapter, t, buttonTyp
         }
     };
     const onOk = () =>
-        form.validateFields()
+        form
+            .validateFields()
             .then((values) => {
-                onSubmit(values)
+                onSubmit(values);
             })
-            .catch((info) => {});
+            .catch((info) => {
+                console.log(info);
+            });
 
     const onShow = () => {
         form.resetFields();
         setOpen(true);
-    }
+    };
 
-    const title = chapter ? t("chapter.actions.edit.title", { title: chapter.title }) : t("chapter.actions.add.title");
-    const buttonIcon = chapter ? (<FaEdit />) : (<FaPlus />);
+    const title = chapter
+        ? t("chapter.actions.edit.title", { title: chapter.title })
+        : t("chapter.actions.add.title");
+    const buttonIcon = chapter ? <FaEdit /> : <FaPlus />;
     const buttonText = chapter ? "" : t("chapter.actions.add.label");
 
-    return (<>
-        <Button type={buttonType} onClick={onShow} icon={buttonIcon}>{ buttonText }</Button>
-        <Modal open={open} title={title} onCancel={() => setOpen(false)} onOk={onOk} closable={false}
-            okButtonProps={{ disabled:  isAdding | isUpdating }}
-            cancelButtonProps={{ disabled:  isAdding | isUpdating }}>
-            <Form form={form} layout="vertical" initialValues={chapter || { status: 'Available' }}>
-                <Form.Item
-                    name="title"
-                    label={t("chapter.title.label")}
-                    rules={[
-                        {
-                            required: true,
-                            message: t("chapter.title.required"),
-                        },
-                    ]}
+    return (
+        <>
+            <Button type={type} onClick={onShow} icon={buttonIcon}>
+                {buttonText}
+            </Button>
+            <Modal
+                open={open}
+                title={title}
+                onCancel={() => setOpen(false)}
+                onOk={onOk}
+                closable={false}
+                okButtonProps={{ disabled: isAdding | isUpdating }}
+                cancelButtonProps={{ disabled: isAdding | isUpdating }}
+            >
+                <Form
+                    form={form}
+                    layout="vertical"
+                    initialValues={chapter || { status: "Available" }}
                 >
-                    <Input placeholder={t("chapter.title.placeholder")} />
-                </Form.Item>
-                <Form.Item name="status"
-                    label={t("chapter.status.label")}
-                    rules={[
-                        {
-                            required: true,
-                            message: t("chapter.status.required"),
-                        },
-                    ]}>
-                    <EditingStatusSelect t={t} placeholder={t("chapter.status.placeholder")} />
-                </Form.Item>
-            </Form>
-        </Modal></>);
+                    <Form.Item
+                        name="title"
+                        label={t("chapter.title.label")}
+                        rules={[
+                            {
+                                required: true,
+                                message: t("chapter.title.required"),
+                            },
+                        ]}
+                    >
+                        <Input placeholder={t("chapter.title.placeholder")} />
+                    </Form.Item>
+                    <Form.Item
+                        name="status"
+                        label={t("chapter.status.label")}
+                        rules={[
+                            {
+                                required: true,
+                                message: t("chapter.status.required"),
+                            },
+                        ]}
+                    >
+                        <EditingStatusSelect
+                            t={t}
+                            placeholder={t("chapter.status.placeholder")}
+                        />
+                    </Form.Item>
+                </Form>
+            </Modal>
+        </>
+    );
 }

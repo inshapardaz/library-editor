@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 // 3rd party libraries
 import { App, Button, Col, List, Row, Skeleton, Typography } from "antd";
 import { FaBook } from "react-icons/fa";
@@ -10,7 +12,11 @@ import {
 } from "../../../features/api/booksSlice";
 import ChapterListItem from "./chapterListItem";
 import ChapterEditor from "./chapterEditor";
+import ChapterAssignButton from "./chapterAssignButton";
 import DataContainer from "../../layout/dataContainer";
+import CheckboxButton from "../../checkboxButton";
+import ChapterDeleteButton from "./chapterDeleteButton";
+import ChapterStatusButton from "./chapterStatusButton";
 
 // ------------------------------------------------------
 
@@ -18,12 +24,12 @@ const ChaptersList = ({
     libraryId,
     bookId,
     t,
-    selectedChapterNumber = null,
     size = "default",
     hideTitle = false,
 }) => {
     const { message } = App.useApp();
-
+    const [selection, setSelection] = useState([]);
+    const [selectedChapters, setSelectedChapters] = useState([]);
     const {
         refetch,
         data: chapters,
@@ -65,18 +71,67 @@ const ChaptersList = ({
         }
     };
 
+    //------------------------------------------------------
+    const onSelectChanged = (c) => {
+        const currentIndex = selection.indexOf(c.chapterNumber);
+        const newSelection = [...selection];
+
+        if (currentIndex === -1) {
+            newSelection.push(c.chapterNumber);
+        } else {
+            newSelection.splice(currentIndex, 1);
+        }
+
+        setSelection(newSelection);
+        setSelectedChapters(
+            chapters.data.filter((p) => newSelection.includes(p.chapterNumber))
+        );
+    };
+
+    const onSelectAll = () => {
+        if (selection.length === chapters.data.length) {
+            setSelection([]);
+            setSelectedChapters([]);
+        } else {
+            setSelection(chapters.data.map((p) => p.chapterNumber));
+            setSelectedChapters(chapters.data.map((p) => p.chapterNumber));
+        }
+    };
+
+    const hasAllSelected = selection.length === chapters.data.length;
+    const hasPartialSelection =
+        selection.length > 0 && selection.length < chapters.data.length;
+    //------------------------------------------------------
+
     const header = (
-        <Row>
-            <Col flex="auto">
+        <Row gutter={8}>
+            <Col>
                 <Typography level={3}>{title}</Typography>
             </Col>
             <Col>
-                <ChapterEditor
-                    libraryId={libraryId}
-                    bookId={bookId}
-                    t={t}
-                    buttonType="dashed"
-                />
+                <Button.Group>
+                    <CheckboxButton
+                        onChange={onSelectAll}
+                        checked={hasAllSelected}
+                        indeterminate={hasPartialSelection}
+                    />
+                    <ChapterEditor
+                        libraryId={libraryId}
+                        bookId={bookId}
+                        t={t}
+                    />
+                    <ChapterDeleteButton chapters={selectedChapters} t={t} />
+                    <ChapterAssignButton
+                        libraryId={libraryId}
+                        chapters={selectedChapters}
+                        t={t}
+                    />
+                    <ChapterStatusButton
+                        libraryId={libraryId}
+                        chapters={selectedChapters}
+                        t={t}
+                    />
+                </Button.Group>
             </Col>
         </Row>
     );
@@ -122,9 +177,11 @@ const ChaptersList = ({
                                             key={chapter.id}
                                             t={t}
                                             selected={
-                                                selectedChapterNumber ===
-                                                chapter.chapterNumber
+                                                selection.indexOf(
+                                                    chapter.chapterNumber
+                                                ) >= 0
                                             }
+                                            onSelectChanged={onSelectChanged}
                                             libraryId={libraryId}
                                             bookId={bookId}
                                             chapter={chapter}
