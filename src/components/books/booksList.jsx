@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
@@ -42,6 +42,7 @@ function BooksList({
 }) {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const location = useLocation();
     const [showList, setShowList] = useLocalStorage("books-list-view", false);
 
     const {
@@ -91,7 +92,7 @@ function BooksList({
     const onPageChanged = (newPage, newPageSize) => {
         navigate(
             helpers.buildLinkToBooksPage(
-                libraryId,
+                location.pathname,
                 newPage,
                 newPageSize,
                 query,

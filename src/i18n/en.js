@@ -149,6 +149,7 @@ const en = {
 		"title" : "Profile"
 	},
 	"search": {
+		"header" : "Search",
 		"title" : "Search...",
 		"placeholder" : "Search by title, author, keyword"
 	},

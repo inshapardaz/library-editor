@@ -150,6 +150,7 @@ const ur = {
 		"title" : "پروفائل"
 	},
 	"search": {
+		"header" : "تلاش",
 		"title" : "تلاش۔۔۔",
 		"placeholder": "تلاش برائے عنوان، مصنّف، زمرہ"
 	},

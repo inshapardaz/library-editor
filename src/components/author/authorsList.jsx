@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
@@ -29,6 +29,7 @@ const grid = {
 function AuthorsList({ libraryId, query, authorType, pageNumber, pageSize }) {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const location = useLocation();
     const [showList, setShowList] = useLocalStorage("author-list-view", false);
 
     const {
@@ -75,7 +76,7 @@ function AuthorsList({ libraryId, query, authorType, pageNumber, pageSize }) {
     const onPageChanged = (newPage, newPageSize) => {
         navigate(
             helpers.buildLinkToAuthorsPage(
-                libraryId,
+                location.pathname,
                 newPage,
                 newPageSize,
                 query,

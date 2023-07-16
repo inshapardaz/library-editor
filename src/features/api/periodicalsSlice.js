@@ -9,7 +9,25 @@ export const periodicalsApi = createApi({
     baseQuery: axiosBaseQuery({ baseUrl: process.env.REACT_APP_API_URL }),
     endpoints: (builder) => ({
         getPeriodicals: builder.query({
-            query: ({ libraryId }) => ({ url: `/libraries/${libraryId}/periodicals`, method: 'get' }),
+            query: ({ libraryId, query,
+                sortBy = null,
+                sortDirection = null,
+                categories = null,
+                status = null,
+                pageNumber = 1,
+                pageSize = 12 }) => {
+                let queryVal = query ? `&query=${query}` : '';
+                if (status) {
+                    queryVal += `&status=${status}`;
+                }
+                if (categories) {
+                    queryVal += `&categoryId=${categories}`;
+                }
+                if (sortDirection) {
+                    queryVal += `&sortDirection=${sortDirection}`;
+                }
+                return ({ url: `/libraries/${libraryId}/periodicals?pageNumber=${pageNumber}&pageSize=${pageSize}${queryVal}`, method: 'get' })
+            },
             transformResponse: (response) => parseResponse(response),
             providesTags: [ 'Periodicals' ]
         }),

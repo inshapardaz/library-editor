@@ -1,4 +1,4 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 // Third party libraries
 import { Button, Dropdown, Space } from "antd";
@@ -20,6 +20,7 @@ import AssignmentStatus from "../../../models/assignmentStatus";
 export default function PageAssignmentFilterButton({ libraryId, bookId, t }) {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
+    const location = useLocation();
 
     const status = searchParams.get("status");
     const assignment =
@@ -29,7 +30,7 @@ export default function PageAssignmentFilterButton({ libraryId, bookId, t }) {
     const setAssignment = (newAvailabilityStatus) => {
         navigate(
             helpers.buildLinkToBooksPagesPage(
-                libraryId,
+                location.pathname,
                 bookId,
                 1,
                 pageSize,

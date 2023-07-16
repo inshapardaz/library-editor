@@ -1,4 +1,4 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 // Third party libraries
 import { Button, Dropdown, Space } from "antd";
@@ -14,6 +14,8 @@ import helpers from "../../../helpers";
 
 export default function PageSortButton({ libraryId, bookId, t }) {
     const navigate = useNavigate();
+    const location = useLocation();
+
     const [searchParams] = useSearchParams();
 
     const status = searchParams.get("status");
@@ -25,8 +27,7 @@ export default function PageSortButton({ libraryId, bookId, t }) {
     const setSortDirection = (newSortDirection) => {
         navigate(
             helpers.buildLinkToBooksPagesPage(
-                libraryId,
-                bookId,
+                location.pathname,
                 pageNumber,
                 pageSize,
                 status,

@@ -60,7 +60,7 @@ const helpers = {
         return null;
     },
     buildLinkToBooksPage: (
-        libraryId,
+        location,
         page,
         pageSize,
         query,
@@ -91,13 +91,13 @@ const helpers = {
                 querystring = querystring.slice(0, -1);
             }
 
-            return `/libraries/${libraryId}/books?${querystring}`;
+            return `${location}?${querystring}`;
         }
 
-        return null;
+        return location;
     },
     buildLinkToAuthorsPage: (
-        libraryId,
+        location,
         page,
         pageSize,
         query,
@@ -114,10 +114,10 @@ const helpers = {
                 querystring = querystring.slice(0, -1);
             }
 
-            return `/libraries/${libraryId}/authors?${querystring}`;
+            return `${location}?${querystring}`;
         }
 
-        return null;
+        return location;
     },
     buildLinkToSeriesPage: (
         libraryId,
@@ -162,7 +162,7 @@ const helpers = {
         return null;
     },
     buildLinkToPeriodicalsPage: (
-        libraryId,
+        location,
         page,
         pageSize,
         query,
@@ -181,10 +181,10 @@ const helpers = {
                 querystring = querystring.slice(0, -1);
             }
 
-            return `/libraries/${libraryId}/periodicals?${querystring}`;
+            return `${location}?${querystring}`;
         }
 
-        return `/libraries/${libraryId}/periodicals`;
+        return location;
     },
     buildLinkToIssuesPage: (
         libraryId,
@@ -209,8 +209,7 @@ const helpers = {
 
         return path;
     },
-    buildLinkToBooksPagesPage: (libraryId,
-        bookId,
+    buildLinkToBooksPagesPage: (location,
         pageNumber,
         pageSize,
         statusFilter,
@@ -228,10 +227,10 @@ const helpers = {
                 querystring = querystring.slice(0, -1);
             }
 
-            return `/libraries/${libraryId}/books/${bookId}?${querystring}`;
+            return `${location}?${querystring}`;
         }
 
-        return null;
+        return location;
     },
     buildLinkToLibrariesPage: (location,
         page,

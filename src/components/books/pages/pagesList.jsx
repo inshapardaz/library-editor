@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
@@ -65,6 +65,7 @@ const getAssignmentFilterFromBookStatus = (book) => {
 const PagesList = ({ libraryId, book, t, size = "default" }) => {
     const { message } = App.useApp();
     const navigate = useNavigate();
+    const location = useLocation();
     const [showList, setShowList] = useLocalStorage(
         "book-pages-list-view",
         true
@@ -159,7 +160,7 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
     const onPageChanged = (newPage, newPageSize) => {
         navigate(
             helpers.buildLinkToBooksPagesPage(
-                libraryId,
+                location.pathname,
                 book.id,
                 newPage,
                 newPageSize,

@@ -1,4 +1,4 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 // Third party libraries
 import { Button, Dropdown, Space } from "antd";
@@ -20,6 +20,7 @@ import helpers from "../../../helpers";
 
 export default function PageStatusFilterButton({ libraryId, bookId, t }) {
     const navigate = useNavigate();
+    const location = useLocation();
     const [searchParams] = useSearchParams();
 
     const status = searchParams.get("status") ?? "Typing";
@@ -29,8 +30,7 @@ export default function PageStatusFilterButton({ libraryId, bookId, t }) {
     const setStatus = (newStatus) => {
         navigate(
             helpers.buildLinkToBooksPagesPage(
-                libraryId,
-                bookId,
+                location.pathname,
                 1,
                 pageSize,
                 newStatus,
