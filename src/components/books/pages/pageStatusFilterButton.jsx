@@ -18,12 +18,25 @@ import helpers from "../../../helpers";
 
 // ------------------------------------------------------
 
-export default function PageStatusFilterButton({ libraryId, t, status }) {
+export default function PageStatusFilterButton({ t }) {
     const navigate = useNavigate();
     const location = useLocation();
+    const [searchParams] = useSearchParams();
+
+    const status = searchParams.get("status") ?? "Typing";
+    const assignment = searchParams.get("assignment") ?? "assignedToMe";
+    const pageSize = searchParams.get("pageSize") ?? 12;
 
     const setStatus = (newStatus) => {
-        navigate(helpers.buildLinkToBooksPage(location.pathname, 1));
+        navigate(
+            helpers.buildLinkToBooksPagesPage(
+                location.pathname,
+                1,
+                pageSize,
+                newStatus,
+                assignment
+            )
+        );
     };
     const items = [
         {

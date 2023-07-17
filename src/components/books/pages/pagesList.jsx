@@ -161,7 +161,6 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
         navigate(
             helpers.buildLinkToBooksPagesPage(
                 location.pathname,
-                book.id,
                 newPage,
                 newPageSize,
                 status,
@@ -306,10 +305,10 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
                                     renderItem={renderPage}
                                     pagination={{
                                         onChange: onPageChanged,
-                                        pageSize: pages ? pages.pageSize : 0,
+                                        pageSize: pages ? pages.pageSize : 12,
                                         current: pages
                                             ? pages.currentPageIndex
-                                            : 0,
+                                            : 1,
                                         total: pages ? pages.totalCount : 0,
                                         showSizeChanger: true,
                                         responsive: true,
