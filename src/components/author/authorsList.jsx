@@ -13,6 +13,7 @@ import helpers from "../../helpers";
 import AuthorListItem from "./authorListItem";
 import { useGetAuthorsQuery } from "../../features/api/authorsSlice";
 import { useState } from "react";
+import AuthorSortButton from "./authorSortButton";
 // ------------------------------------------------------
 
 const grid = {
@@ -33,6 +34,8 @@ function AuthorsList({
     authorType,
     pageNumber,
     pageSize,
+    sortBy,
+    sortDirection,
     showSearch = true,
 }) {
     const { t } = useTranslation();
@@ -139,6 +142,7 @@ function AuthorsList({
                             placeholder={t("authors.search.placeholder")}
                         />
                     )}
+                    <AuthorSortButton t={t} sortDirection={sortDirection} />
                     <Switch
                         checkedChildren={t("actions.list")}
                         unCheckedChildren={t("actions.card")}

@@ -20,6 +20,8 @@ function AuthorsHomePage() {
     const authorType = searchParams.get("authorType");
     const pageNumber = searchParams.get("pageNumber");
     const pageSize = searchParams.get("pageSize");
+    const sortBy = searchParams.get("sortBy");
+    const sortDirection = searchParams.get("sortDirection");
 
     const addButton = (
         <Link to={`/libraries/${libraryId}/authors/add`}>
@@ -30,9 +32,21 @@ function AuthorsHomePage() {
     );
     return (
         <>
-            <PageHeader title={t("authors.title")} icon={<FaFeatherAlt style={{ width: 36, height: 36 }} />} actions={addButton} />
+            <PageHeader
+                title={t("authors.title")}
+                icon={<FaFeatherAlt style={{ width: 36, height: 36 }} />}
+                actions={addButton}
+            />
             <ContentsContainer>
-                <AuthorsList libraryId={libraryId} query={query} authorType={authorType} pageNumber={pageNumber} pageSize={pageSize} />
+                <AuthorsList
+                    libraryId={libraryId}
+                    query={query}
+                    authorType={authorType}
+                    pageNumber={pageNumber}
+                    pageSize={pageSize}
+                    sortBy={sortBy}
+                    sortDirection={sortDirection}
+                />
             </ContentsContainer>
         </>
     );

@@ -4,7 +4,7 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 // 3rd party libraries
 import { Space, Tabs } from "antd";
 import { FaBook, FaFeather, FaSearch } from "react-icons/fa";
-import { ImNewspaper } from "react-icons/im";
+import { ImBooks, ImNewspaper } from "react-icons/im";
 
 // Local Imports
 import PageHeader from "../../components/layout/pageHeader";
@@ -12,6 +12,7 @@ import ContentsContainer from "../../components/layout/contentContainer";
 import BooksList from "../../components/books/booksList";
 import AuthorsList from "../../components/author/authorsList";
 import PeriodicalsList from "../../components/periodicals/periodicalsList";
+import SeriesList from "../../components/series/seriesList";
 
 export default function SearchPage() {
     const { t } = useTranslation();
@@ -73,6 +74,24 @@ export default function SearchPage() {
                     libraryId={libraryId}
                     query={query}
                     authorType={authorType}
+                    pageNumber={pageNumber}
+                    pageSize={pageSize}
+                    showSearch={false}
+                />
+            ),
+        },
+        {
+            key: "series",
+            label: (
+                <Space gutter={2}>
+                    <ImBooks />
+                    {t("series.title")}
+                </Space>
+            ),
+            children: (
+                <SeriesList
+                    libraryId={libraryId}
+                    query={query}
                     pageNumber={pageNumber}
                     pageSize={pageSize}
                     showSearch={false}

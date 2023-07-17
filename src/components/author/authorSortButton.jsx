@@ -15,43 +15,20 @@ import SortDirection from "../../models/sortDirection";
 
 // ------------------------------------------------------
 
-export default function BookSortButton({ sortBy, sortDirection, t }) {
+export default function AuthorSortButton({ sortBy, sortDirection, t }) {
     const navigate = useNavigate();
     const location = useLocation();
 
     const setSortDirection = (newSortDirection) => {
         navigate(
-            helpers.updateLinkToBooksPage(location, {
+            helpers.updateLinkToAuthorsPage(location, {
                 pageNumber: 1,
                 sortDirection: newSortDirection,
             })
         );
     };
-    const setSortBy = (newSortBy) => {
-        navigate(
-            helpers.updateLinkToBooksPage(location, {
-                pageNumber: 1,
-                sortBy: newSortBy,
-            })
-        );
-    };
 
     const items = [
-        {
-            key: "title",
-            icon: <FaSortAlphaUp />,
-            label: t("books.sort.title"),
-            onClick: () => setSortBy(""),
-        },
-        {
-            key: "datecreated",
-            icon: <FaRegCalendarPlus />,
-            label: t("books.sort.dateCreated"),
-            onClick: () => setSortBy("dateCreated"),
-        },
-        {
-            type: "divider",
-        },
         {
             key: SortDirection.Descending,
             icon: <FaSortAmountDown />,
