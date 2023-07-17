@@ -189,6 +189,9 @@ const en = {
         },
         "empty" : {
             "title" : "No latest book found",
+        },
+        "search": {
+            "placeholder" : "Search books..."
         }
 	},
 	"book" : {
@@ -486,6 +489,9 @@ const en = {
         },
         "empty" : {
             "title" : "No Authors"
+        },
+        "search": {
+            "placeholder" : "Search authors..."
         }
 	},
 	"author" : {
@@ -628,6 +634,9 @@ const en = {
         },
         "empty" : {
             "title" : "No Periodicals"
+        },
+        "search": {
+            "placeholder" : "Search periodicals..."
         }
 	},
 	"periodical" : {

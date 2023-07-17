@@ -192,6 +192,9 @@ const ur = {
         },
         "empty" : {
             "title" : "کتب دستیاب نہیں",
+        },
+        "search": {
+            "placeholder" : "تلاش کتب۔۔۔"
         }
 	},
 	"book" : {
@@ -481,6 +484,9 @@ const ur = {
         },
         "empty" : {
             "title" : "کوئی مصنّف موجود نہیں",
+        },
+        "search": {
+            "placeholder" : "تلاش مصنّف۔۔۔"
         }
 	},
 	"author" : {
@@ -623,6 +629,9 @@ const ur = {
         },
         "empty" : {
             "title" : "جرائد موجود نہیں",
+        },
+        "search": {
+            "placeholder" : "تلاش جرائد۔۔۔"
         }
 	},
 	"periodical" : {

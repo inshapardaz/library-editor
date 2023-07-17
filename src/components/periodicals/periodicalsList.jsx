@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
-import { Button, List, Switch } from "antd";
+import { Button, Input, List, Space, Switch } from "antd";
 import { FaPlus } from "react-icons/fa";
 import { ImNewspaper } from "react-icons/im";
 
@@ -13,6 +13,7 @@ import DataContainer from "../layout/dataContainer";
 import PeriodicalCard from "./periodicalCard";
 import PeriodicalListItem from "./periodicalListItem";
 import { useGetPeriodicalsQuery } from "../../features/api/periodicalsSlice";
+import { useState } from "react";
 // ------------------------------------------------------
 
 const grid = {
@@ -34,6 +35,7 @@ function PeriodicalsList({
     sortDirection,
     pageNumber,
     pageSize,
+    showSearch = true,
 }) {
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -42,6 +44,7 @@ function PeriodicalsList({
         "periodicals-list-view",
         false
     );
+    const [search, setSearch] = useState(query);
 
     const {
         refetch,
@@ -98,6 +101,19 @@ function PeriodicalsList({
         );
     };
 
+    const onSearch = () => {
+        navigate(
+            helpers.buildLinkToPeriodicalsPage(
+                location.pathname,
+                1,
+                pageSize,
+                search,
+                sortBy,
+                sortDirection
+            )
+        );
+    };
+
     return (
         <DataContainer
             busy={isFetching}
@@ -122,12 +138,24 @@ function PeriodicalsList({
                 periodicals && periodicals.data && periodicals.data.length < 1
             }
             extra={
-                <Switch
-                    checkedChildren={t("actions.list")}
-                    unCheckedChildren={t("actions.card")}
-                    checked={showList}
-                    onChange={toggleView}
-                />
+                <Space>
+                    {showSearch && (
+                        <Input.Search
+                            size="medium"
+                            value={search}
+                            allowClear
+                            onChange={(e) => setSearch(e.target.value)}
+                            onSearch={onSearch}
+                            placeholder={t("periodicals.search.placeholder")}
+                        />
+                    )}
+                    <Switch
+                        checkedChildren={t("actions.list")}
+                        unCheckedChildren={t("actions.card")}
+                        checked={showList}
+                        onChange={toggleView}
+                    />
+                </Space>
             }
         >
             <List

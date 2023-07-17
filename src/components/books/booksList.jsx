@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
-import { Button, List, Switch } from "antd";
+import { Button, Input, List, Space, Switch } from "antd";
 import { FaBook, FaPlus } from "react-icons/fa";
 
 // Local Imports
@@ -12,6 +12,7 @@ import DataContainer from "../layout/dataContainer";
 import BookCard from "./bookCard";
 import BookListItem from "./bookListItem";
 import { useGetBooksQuery } from "../../features/api/booksSlice";
+import { useState } from "react";
 // ------------------------------------------------------
 
 const grid = {
@@ -39,10 +40,12 @@ function BooksList({
     status,
     pageNumber,
     pageSize,
+    showSearch = true,
 }) {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
+    const [search, setSearch] = useState(query);
     const [showList, setShowList] = useLocalStorage("books-list-view", false);
 
     const {
@@ -107,6 +110,24 @@ function BooksList({
         );
     };
 
+    const onSearch = () => {
+        navigate(
+            helpers.buildLinkToBooksPage(
+                location.pathname,
+                1,
+                pageSize,
+                search,
+                author,
+                categories,
+                series,
+                sortBy,
+                sortDirection,
+                favorite,
+                read
+            )
+        );
+    };
+
     return (
         <DataContainer
             busy={isFetching}
@@ -130,12 +151,24 @@ function BooksList({
             empty={books && books.data && books.data.length < 1}
             bordered={false}
             extra={
-                <Switch
-                    checkedChildren={t("actions.list")}
-                    unCheckedChildren={t("actions.card")}
-                    checked={showList}
-                    onChange={(checked) => setShowList(checked)}
-                />
+                <Space>
+                    {showSearch && (
+                        <Input.Search
+                            size="medium"
+                            value={search}
+                            allowClear
+                            onChange={(e) => setSearch(e.target.value)}
+                            onSearch={onSearch}
+                            placeholder={t("authors.search.placeholder")}
+                        />
+                    )}
+                    <Switch
+                        checkedChildren={t("actions.list")}
+                        unCheckedChildren={t("actions.card")}
+                        checked={showList}
+                        onChange={(checked) => setShowList(checked)}
+                    />
+                </Space>
             }
         >
             <List

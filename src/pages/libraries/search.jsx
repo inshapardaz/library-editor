@@ -56,6 +56,7 @@ export default function SearchPage() {
                     status={status}
                     pageNumber={pageNumber}
                     pageSize={pageSize}
+                    showSearch={false}
                 />
             ),
         },
@@ -74,6 +75,7 @@ export default function SearchPage() {
                     authorType={authorType}
                     pageNumber={pageNumber}
                     pageSize={pageSize}
+                    showSearch={false}
                 />
             ),
         },
@@ -91,6 +93,7 @@ export default function SearchPage() {
                     query={query}
                     pageNumber={pageNumber}
                     pageSize={pageSize}
+                    showSearch={false}
                 />
             ),
         },
