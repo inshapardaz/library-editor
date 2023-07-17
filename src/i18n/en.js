@@ -192,6 +192,10 @@ const en = {
         },
         "search": {
             "placeholder" : "Search books..."
+        },
+        "sort": {
+            "title" : "Title",
+            "dateCreated" : "Date Added",
         }
 	},
 	"book" : {
@@ -376,10 +380,6 @@ const en = {
             "typed": "Typed",
             "proofreading": "Proofreading",
             "completed": "Completed",
-        },
-        "sort": {
-            "ascending": "Ascending",
-            "descending": "Descending",
         }
     },
     "page": {
@@ -804,6 +804,10 @@ const en = {
         "Typed": "Typed",
         "InReview" : "In Review",
         "Completed" : "Completed"
+    },
+    "sort": {
+        "ascending": "Ascending",
+        "descending": "Descending",
     },
     "errors" : {
         "imageRequired": "Only image files are expected. Please select an image file."

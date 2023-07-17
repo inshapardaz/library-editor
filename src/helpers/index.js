@@ -96,6 +96,60 @@ const helpers = {
 
         return location;
     },
+    updateLinkToBooksPage: (location, {
+        pageNumber,
+        pageSize,
+        query,
+        author,
+        categories,
+        series,
+        sortBy,
+        sortDirection,
+        favorite,
+        read,
+        status, }) => {
+
+        var searchParams = new URLSearchParams(location.search);
+        if (pageNumber) {
+            searchParams.set("pageNumber", pageNumber);
+        }
+        if (pageSize) {
+            searchParams.set("pageSize", pageSize);
+        }
+        if (query) {
+            searchParams.set("query", query);
+        } else if (query === "") {
+            searchParams.delete("query")
+        }
+        if (author) {
+            searchParams.set("author", author);
+        }
+        if (categories) {
+            searchParams.set("categories", categories);
+        }
+        if (series ) {
+            searchParams.set("series", series);
+        }
+        if (sortBy) {
+            searchParams.set("sortBy", sortBy);
+        } else if (sortBy === "") {
+            searchParams.delete("sortBy")
+        }
+        if (sortDirection) {
+            searchParams.set("sortDirection", sortDirection);
+        }
+        if (favorite) {
+            searchParams.set("favorite", favorite);
+        }
+        if (read) {
+            searchParams.set("read", read);
+        }
+        if (status) {
+            searchParams.set("status", status);
+        }
+
+        return `${location.pathname}?${searchParams.toString()}`;
+    },
     buildLinkToAuthorsPage: (
         location,
         page,

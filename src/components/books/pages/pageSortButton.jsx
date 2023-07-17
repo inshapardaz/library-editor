@@ -41,13 +41,13 @@ export default function PageSortButton({ libraryId, bookId, t }) {
         {
             key: "descending",
             icon: <FaSortAmountDown />,
-            label: t("pages.sort.descending"),
+            label: t("sort.descending"),
             onClick: () => setSortDirection("descending"),
         },
         {
             key: "ascending",
             icon: <FaSortAmountUp />,
-            label: t("pages.sort.ascending"),
+            label: t("sort.ascending"),
             onClick: () => setSortDirection("ascending"),
         },
     ];

@@ -10,6 +10,7 @@ import PageHeader from "../../components/layout/pageHeader";
 import BooksList from "../../components/books/booksList";
 import ContentsContainer from "../../components/layout/contentContainer";
 import BooksSideBar from "../../components/books/booksSideBar";
+import SortDirection from "../../models/sortDirection";
 
 //--------------------------------------------------------
 const { Content, Sider } = Layout;
@@ -29,8 +30,9 @@ function BooksHomePage() {
     const favorite = searchParams.get("favorite");
     const read = searchParams.get("read");
     const status = searchParams.get("status");
-    const sortBy = searchParams.get("sortBy") ?? "DateCreated";
-    const sortDirection = searchParams.get("sortDirection") ?? "descending";
+    const sortBy = searchParams.get("sortBy") ?? "title";
+    const sortDirection =
+        searchParams.get("sortDirection") ?? SortDirection.Descending;
     const pageNumber = searchParams.get("pageNumber") ?? 1;
     const pageSize = searchParams.get("pageSize") ?? 12;
 
@@ -44,14 +46,45 @@ function BooksHomePage() {
 
     return (
         <>
-            <PageHeader title={t("books.title")} icon={<FaBook style={{ width: 36, height: 36 }} />} actions={addButton} />
+            <PageHeader
+                title={t("books.title")}
+                icon={<FaBook style={{ width: 36, height: 36 }} />}
+                actions={addButton}
+            />
             <ContentsContainer>
-                <Layout style={{ padding: "24px 0", background: colorBgContainer }}>
-                    <Sider style={{ background: colorBgContainer }} width={200} breakpoint="lg" collapsedWidth={0}>
-                        <BooksSideBar libraryId={libraryId} selectedCategories={categories} sortBy={sortBy} sortDirection={sortDirection} favorite={favorite} read={read} />
+                <Layout
+                    style={{ padding: "24px 0", background: colorBgContainer }}
+                >
+                    <Sider
+                        style={{ background: colorBgContainer }}
+                        width={200}
+                        breakpoint="lg"
+                        collapsedWidth={0}
+                    >
+                        <BooksSideBar
+                            libraryId={libraryId}
+                            selectedCategories={categories}
+                            sortBy={sortBy}
+                            sortDirection={sortDirection}
+                            favorite={favorite}
+                            read={read}
+                        />
                     </Sider>
                     <Content>
-                        <BooksList libraryId={libraryId} query={query} author={author} categories={categories} series={series} sortBy={sortBy} sortDirection={sortDirection} favorite={favorite} read={read} status={status} pageNumber={pageNumber} pageSize={pageSize} />
+                        <BooksList
+                            libraryId={libraryId}
+                            query={query}
+                            author={author}
+                            categories={categories}
+                            series={series}
+                            sortBy={sortBy}
+                            sortDirection={sortDirection}
+                            favorite={favorite}
+                            read={read}
+                            status={status}
+                            pageNumber={pageNumber}
+                            pageSize={pageSize}
+                        />
                     </Content>
                 </Layout>
             </ContentsContainer>

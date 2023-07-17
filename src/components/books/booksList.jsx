@@ -13,6 +13,8 @@ import BookCard from "./bookCard";
 import BookListItem from "./bookListItem";
 import { useGetBooksQuery } from "../../features/api/booksSlice";
 import { useState } from "react";
+import BookStatusFilterButton from "./bookStatusFilterButton";
+import BookSortButton from "./bookSortButton";
 // ------------------------------------------------------
 
 const grid = {
@@ -94,37 +96,19 @@ function BooksList({
 
     const onPageChanged = (newPage, newPageSize) => {
         navigate(
-            helpers.buildLinkToBooksPage(
-                location.pathname,
-                newPage,
-                newPageSize,
-                query,
-                author,
-                categories,
-                series,
-                sortBy,
-                sortDirection,
-                favorite,
-                read
-            )
+            helpers.updateLinkToBooksPage(location, {
+                pageNumber: newPage,
+                pageSize: newPageSize,
+            })
         );
     };
 
     const onSearch = () => {
         navigate(
-            helpers.buildLinkToBooksPage(
-                location.pathname,
-                1,
-                pageSize,
-                search,
-                author,
-                categories,
-                series,
-                sortBy,
-                sortDirection,
-                favorite,
-                read
-            )
+            helpers.updateLinkToBooksPage(location, {
+                pageNumber: 1,
+                query: search,
+            })
         );
     };
 
@@ -162,6 +146,14 @@ function BooksList({
                             placeholder={t("authors.search.placeholder")}
                         />
                     )}
+                    <Button.Group>
+                        <BookStatusFilterButton t={t} status={status} />
+                        <BookSortButton
+                            sortBy={sortBy}
+                            sortDirection={sortDirection}
+                            t={t}
+                        />
+                    </Button.Group>
                     <Switch
                         checkedChildren={t("actions.list")}
                         unCheckedChildren={t("actions.card")}

@@ -195,6 +195,10 @@ const ur = {
         },
         "search": {
             "placeholder" : "تلاش کتب۔۔۔"
+        },
+        "sort": {
+            "title" : "نام",
+            "dateCreated" : "تاریخ اندراج",
         }
 	},
 	"book" : {
@@ -371,10 +375,6 @@ const ur = {
             "typed": "ٹائپ ہو چکے",
             "proofreading": "پروف خوانی",
             "completed": "مکمل",
-        },
-        "sort": {
-            "ascending": "ترتیب صعودی",
-            "descending": "ترتیب نزولی",
         }
     },
     "page" : {
@@ -800,6 +800,10 @@ const ur = {
         "Typed": "ٹائپنگ مکمل",
         "InReview" : "پروف خوانی",
         "Completed" : "مکمل"
+    },
+    "sort": {
+        "ascending": "ترتیب صعودی",
+        "descending": "ترتیب نزولی",
     },
     "errors" : {
         "imageRequired": "صرف تصاویر قابلِ قبول ہیں۔ برائے مہربانی تصویر کا انتخاب کیجئے۔"
