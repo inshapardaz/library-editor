@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 // 3rd party libraries
 import { useLocalStorage } from "usehooks-ts";
-import { App, Button, Input, Col, Row, Upload, Spin, Divider } from "antd";
+import { App, Button, Input, Col, Row, Upload, Spin } from "antd";
 import {
     FaCheckCircle,
     FaChevronLeft,
