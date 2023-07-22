@@ -4,9 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Button, Dropdown, Space } from "antd";
 import {
     FaChevronDown,
-    FaRegCalendarPlus,
     FaSort,
-    FaSortAlphaUp,
     FaSortAmountDown,
     FaSortAmountUp,
 } from "react-icons/fa";

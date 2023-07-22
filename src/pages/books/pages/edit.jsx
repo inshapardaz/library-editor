@@ -17,7 +17,6 @@ import {
     MdFullscreenExit,
     MdHideImage,
     MdImage,
-    MdImageSearch,
 } from "react-icons/md";
 
 // Local imports
