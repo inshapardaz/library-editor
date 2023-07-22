@@ -29,6 +29,7 @@ import BookStatus from "../../../models/bookStatus";
 import PageStatus from "../../../models/pageStatus";
 import AssignmentStatus from "../../../models/assignmentStatus";
 import PageCard from "./pageCard";
+import PageOcrButton from "./pageOcrButton";
 
 // ------------------------------------------------------
 
@@ -148,7 +149,7 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
             setSelectedPages([]);
         } else {
             setSelection(pages.data.map((p) => p.sequenceNumber));
-            setSelectedPages(pages.data.map((p) => p.sequenceNumber));
+            setSelectedPages(pages.data);
         }
     };
 
@@ -193,6 +194,7 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
                         t={t}
                     />
                     <PageStatusButton pages={selectedPages} t={t} />
+                    <PageOcrButton pages={selectedPages} t={t} />
                 </Button.Group>
             </Col>
             <Col flex={1}></Col>

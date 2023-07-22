@@ -32,7 +32,7 @@ function PageCard({
             to={`/libraries/${libraryId}/books/${book.id}/pages/${page.sequenceNumber}/edit`}
         >
             <Typography.Text>
-                {page.sequenceNumber}
+                {t("page.label", { sequenceNumber: page.sequenceNumber })}
                 {description ? " - " : null}
                 {description}
             </Typography.Text>
@@ -61,7 +61,7 @@ function PageCard({
     const cover = (
         <img
             src={page.links.image || helpers.defaultPageImage}
-            onError={helpers.setDefaultAuthorImage}
+            onError={helpers.setDefaultPageImage}
             className={styles["page__image"]}
             alt={page.sequenceNumber}
         />

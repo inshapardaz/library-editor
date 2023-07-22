@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
-import { Avatar, Checkbox, List, Space, Tag, Typography } from "antd";
-import { FaRegKeyboard, FaGlasses, FaGripLines } from "react-icons/fa";
+import { Avatar, Button, Checkbox, List, Space, Tag, Typography } from "antd";
+import { FaRegKeyboard, FaGlasses, FaGripLines, FaRegFileAlt } from "react-icons/fa";
 import { Draggable } from "react-beautiful-dnd";
 
 // Local Import
@@ -10,6 +10,7 @@ import ChapterEditor from "./chapterEditor";
 import ChapterDeleteButton from "./chapterDeleteButton";
 import ChapterAssignButton from "./chapterAssignButton";
 import EditingStatusIcon from "../../editingStatusIcon";
+import ChapterStatusButton from "./chapterStatusButton";
 
 // ------------------------------------------------------
 
@@ -62,6 +63,31 @@ function ChapterListItem({
                 <List.Item
                     actions={[
                         chapter && chapter.links.update && (
+                            <Button type="text">
+                            <Link
+                                to={`/libraries/${libraryId}/books/${bookId}/chapters/${chapter.chapterNumber}/edit`}
+                            >
+                                <FaRegFileAlt />
+                            </Link>
+                            </Button>
+                        ),
+                        chapter && chapter.links.assign && (
+                            <ChapterAssignButton
+                            libraryId={libraryId}
+                                chapters={[chapter]}
+                                t={t}
+                                type="text"
+                                />
+                        ),
+                        chapter && chapter.links.update && (
+                            <ChapterStatusButton
+                            libraryId={libraryId}
+                            chapters={[chapter]}
+                            t={t}
+                            type="text"
+                            />
+                            ),
+                        chapter && chapter.links.update && (
                             <ChapterEditor
                                 libraryId={libraryId}
                                 bookId={bookId}
@@ -72,14 +98,6 @@ function ChapterListItem({
                         ),
                         chapter && chapter.links.delete && (
                             <ChapterDeleteButton
-                                chapters={[chapter]}
-                                t={t}
-                                type="text"
-                            />
-                        ),
-                        chapter && chapter.links.assign && (
-                            <ChapterAssignButton
-                                libraryId={libraryId}
                                 chapters={[chapter]}
                                 t={t}
                                 type="text"

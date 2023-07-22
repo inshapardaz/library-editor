@@ -239,6 +239,14 @@ export const booksApi = createApi({
             }),
             invalidatesTags: [ 'BookPages' ]
         }),
+        ocrBookPage: builder.mutation({
+            query: ({ page, key }) => ({
+                url: page.links.ocr,
+                method: 'POST',
+                payload: removeLinks(key)
+            }),
+            invalidatesTags: [ 'BookPages' ]
+        }),
         updateBookPageImage: builder.mutation({
             query: ({ libraryId, bookId, pageNumber, payload }) => {
                 const formData = new FormData();
@@ -289,6 +297,7 @@ export const {
     useUpdateBookPageMutation,
     useDeleteBookPageMutation,
     useAssignBookPageMutation,
+    useOcrBookPageMutation,
     useUpdateBookPageImageMutation,
     useUpdateBookPageSequenceMutation
  } = booksApi

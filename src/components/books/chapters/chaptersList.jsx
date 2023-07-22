@@ -94,7 +94,7 @@ const ChaptersList = ({
             setSelectedChapters([]);
         } else {
             setSelection(chapters.data.map((p) => p.chapterNumber));
-            setSelectedChapters(chapters.data.map((p) => p.chapterNumber));
+            setSelectedChapters(chapters.data);
         }
     };
 

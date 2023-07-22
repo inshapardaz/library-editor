@@ -4,8 +4,14 @@ import { useNavigate, useParams } from "react-router-dom";
 
 // 3rd party libraries
 import { useLocalStorage } from "usehooks-ts";
-import { App, Button, Input, Col, Row, Upload, Spin } from "antd";
-import { FaCheckCircle, FaSave, FaTimesCircle } from "react-icons/fa";
+import { App, Button, Input, Col, Row, Upload, Spin, Divider } from "antd";
+import {
+    FaCheckCircle,
+    FaChevronLeft,
+    FaChevronRight,
+    FaSave,
+    FaTimesCircle,
+} from "react-icons/fa";
 import {
     MdFullscreen,
     MdFullscreenExit,
@@ -25,6 +31,8 @@ import PageHeader from "../../../components/layout/pageHeader";
 import DataContainer from "../../../components/layout/dataContainer";
 import EditingStatusIcon from "../../../components/editingStatusIcon";
 import helpers from "../../../helpers";
+import PageStatus from "../../../models/pageStatus";
+import PageOcrButton from "../../../components/books/pages/pageOcrButton";
 
 // -----------------------------------------
 const { Dragger } = Upload;
@@ -113,6 +121,22 @@ const PageEditPage = () => {
         }
     };
 
+    const showCompleteButton =
+        page &&
+        (page.status === PageStatus.Typing ||
+            page.status === PageStatus.InReview);
+
+    const onComplete = () => {
+        if (page.status === PageStatus.Typing) {
+            page.status = PageStatus.Typed;
+        } else if (page.status === PageStatus.InReview) {
+            page.status = PageStatus.Completed;
+        } else {
+            return;
+        }
+        onSave();
+    };
+
     const onImageChange = (file) => {
         const isImage = ["image/png", "image/jpeg"].includes(file.type);
         if (!isImage) {
@@ -146,12 +170,55 @@ const PageEditPage = () => {
             <Button onClick={onSave}>
                 <FaSave />
             </Button>
-            <Button onClick={() => navigate(-1)}>
-                <FaCheckCircle />
+            {showCompleteButton && (
+                <Button onClick={onComplete}>
+                    <FaCheckCircle />
+                </Button>
+            )}
+            <PageOcrButton pages={[page]} t={t} />
+        </Button.Group>,
+    ];
+
+    if (page && page.links && (page.links.previous || page.links.next)) {
+        var previousButton = (
+            <Button
+                disabled={!page.links.previous}
+                onClick={() =>
+                    navigate(
+                        `/libraries/${libraryId}/books/${bookId}/pages/${
+                            parseInt(pageNumber) - 1
+                        }/edit`
+                    )
+                }
+            >
+                <FaChevronRight />
             </Button>
-            <Button onClick={() => navigate(-1)}>
-                <MdImageSearch />
+        );
+
+        var nextButton = (
+            <Button
+                disabled={!page.links.next}
+                onClick={() =>
+                    navigate(
+                        `/libraries/${libraryId}/books/${bookId}/pages/${
+                            parseInt(pageNumber) + 1
+                        }/edit`
+                    )
+                }
+            >
+                <FaChevronLeft />
             </Button>
+        );
+
+        actions.push(
+            <Button.Group>
+                {previousButton}
+                {nextButton}
+            </Button.Group>
+        );
+    }
+    actions.push(
+        <Button.Group>
             <Button onClick={() => setShowImage(!showImage)}>
                 {showImage ? <MdHideImage /> : <MdImage />}
             </Button>
@@ -167,8 +234,8 @@ const PageEditPage = () => {
             >
                 <FaTimesCircle />
             </Button>
-        </Button.Group>,
-    ];
+        </Button.Group>
+    );
 
     return (
         <>

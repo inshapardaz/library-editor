@@ -402,6 +402,7 @@ const en = {
             "placeholder" : "Select user",
             "required" : "User is required"
         },
+        "label" : "Page {{sequenceNumber}}",
         "actions": {
             "add": {
                 "label": "Add new page",
@@ -457,6 +458,22 @@ const en = {
                 "message": "Are you sure you want to change chapter for page(s) '{{ sequenceNumber }}'?",
                 "success" :"Pages updated successfully.",
                 "error" :"Error updating pages."
+            },
+            "ocr": {
+                "title_one" : "Extract text for page",
+                "title_other" : "Extract text for {{count}} pages",
+                "message": "Are you sure you want to extract text for page(s) '{{ sequenceNumber }}'? This will overwrite existing text for pages and cannot be recovered.",
+                "success" :"Text extraction successfully.",
+                "error": "Error extracting text.",
+                "key": {
+                    "label": "OCR Key",
+                    "description": "This key will be used to extract text from images.",
+                    "required" : "OCR Key is required."
+                },
+                "saveKey": {
+                    "label": "Save OCR Key",
+                    "description": "It will save this key locally on your computer for future use. No part of key information is stored on our servers. If you are using a public or shared computer, please do not save key."
+                }
             },
             "sequence": {
                 "label" : "Move page",
