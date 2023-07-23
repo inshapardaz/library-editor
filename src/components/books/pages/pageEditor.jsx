@@ -66,7 +66,7 @@ export default function PageEditor({ libraryId, bookId, chapter, t, buttonType =
                             },
                         ]}
                     >
-                        <Input placeholder={t("chapter.title.placeholder")} />
+                        <Input placeholder={t("chapter.title.placeholder")} autoFocus />
                     </Form.Item>
                     <Form.Item
                         name="status"

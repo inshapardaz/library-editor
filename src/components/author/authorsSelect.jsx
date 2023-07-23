@@ -1,11 +1,17 @@
 import React, { useState }  from 'react';
 
 // 3rd party libraries
-import { Empty, Select } from 'antd';
+import { Avatar, Empty, Select, Space } from 'antd';
 import { FaFeatherAlt } from 'react-icons/fa';
 
 // local imports
 import { useGetAuthorsQuery } from '../../features/api/authorsSlice'
+import helpers from '../../helpers';
+// -------------------------------------------------
+
+const AuthorAvatar = ({author}) => author.links.image
+            ? <Avatar src={author.links.image}></Avatar>
+            : <Avatar src={helpers.defaultAuthorImage}></Avatar>;
 
 // -------------------------------------------------
 
@@ -30,7 +36,10 @@ const AuthorsSelect = ({ libraryId, value = [], onChange, placeholder, t }) => {
         placeholder={placeholder}>
         {authors != null && authors.data.map((author) => (
         <Select.Option key={author.id} value={author.id}>
-          { author.name }
+          <Space>
+                <AuthorAvatar author={author} />
+                { author.name }
+            </Space>
         </Select.Option>
       ))}
     </Select>);

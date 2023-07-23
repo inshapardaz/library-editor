@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 // Third party libraries
-import { App, Button, Modal, Form, Input } from "antd";
+import { App, Button, Modal, Form, Input, Tooltip } from "antd";
 import { FaEdit, FaPlus } from "react-icons/fa";
 
 // Local imports
@@ -63,7 +63,9 @@ export default function ChapterEditor({ libraryId, bookId, chapter, t, type }) {
 
     return (
         <>
-            <Button type={type} onClick={onShow} icon={buttonIcon} />
+            <Tooltip title={t('actions.edit')}>
+                <Button type={type} onClick={onShow} icon={buttonIcon} />
+            </Tooltip>
             <Modal
                 open={open}
                 title={title}

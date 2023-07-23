@@ -33,7 +33,7 @@ function AuthorAvatar({
     const popoverContent = (
         <div>
             <p>
-                <ImBooks />{" "}
+                <ImBooks />
                 <Link
                     href={`/libraries/${libraryId}/books?author=${author.id}`}
                 >
@@ -41,7 +41,7 @@ function AuthorAvatar({
                 </Link>
             </p>
             <p>
-                <FaFeatherAlt />{" "}
+                <FaFeatherAlt />
                 {author.type === "writer"
                     ? t("author.writer")
                     : t("author.poet")}

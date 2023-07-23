@@ -124,7 +124,7 @@ const BookEditPage = () => {
                                         },
                                     ]}
                                 >
-                                    <Input placeholder={t("book.title.placeholder")} />
+                                    <Input placeholder={t("book.title.placeholder")} autoFocus />
                                 </Form.Item>
                                 <Form.Item name="description" label={t("book.description.label")}>
                                     <Input.TextArea rows={4} />

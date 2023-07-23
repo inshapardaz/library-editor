@@ -15,6 +15,7 @@ const CategoriesSelect = ({ libraryId, value = [], onChange, placeholder }) => {
     }
 
     return (<Select  mode="multiple" loading={isFetching} error={error}
+        filterOption optionFilterProp="children"
         defaultValue={value ? value.map(c => c.id) : ""}
         onChange={onChangeHandler} placeholder={placeholder}>
         {categories && categories.data.map((category) => (

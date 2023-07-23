@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 // 3rd party libraries
-import { App, Button, Col, List, Row, Skeleton, Typography } from "antd";
+import { App, Button, Col, List, Row, Skeleton } from "antd";
 import { FaBook } from "react-icons/fa";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
@@ -41,8 +41,6 @@ const ChaptersList = ({
     );
     const [updateChapterSequence, { isLoading: isUpdating }] =
         useUpdateChapterSequenceMutation();
-
-    const title = hideTitle ? null : <div>{t("book.chapters.title")}</div>;
 
     if (isFetching) return <Skeleton />;
 
@@ -105,9 +103,6 @@ const ChaptersList = ({
 
     const header = (
         <Row gutter={8}>
-            <Col>
-                <Typography level={3}>{title}</Typography>
-            </Col>
             <Col>
                 <Button.Group>
                     <CheckboxButton

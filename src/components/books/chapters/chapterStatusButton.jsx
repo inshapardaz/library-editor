@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 // Third party libraries
-import { App, Button, Modal, Form } from "antd";
+import { App, Button, Modal, Form, Tooltip } from "antd";
 import { FaTasks } from "react-icons/fa";
 
 // Local imports
@@ -55,12 +55,14 @@ export default function ChapterStatusButton({ chapters, t, type }) {
 
     return (
         <>
-            <Button
-                type={type}
-                onClick={onShow}
-                disabled={count === 0}
-                icon={<FaTasks />}
-            ></Button>
+            <Tooltip title={t('chapter.actions.updateStatus.title')}>
+                <Button
+                    type={type}
+                    onClick={onShow}
+                    disabled={count === 0}
+                    icon={<FaTasks />}
+                />
+            </Tooltip>
             <Modal
                 open={open}
                 title={title}

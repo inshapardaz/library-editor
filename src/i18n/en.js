@@ -336,6 +336,7 @@ const en = {
                 "error" :"Error saving chapter statuses."
             },
             "assign": {
+                "label": "Assign Chapter",
                 "title_one" : "Assign Chapter {{count}}",
                 "title_other" : "Assign Chapters {{count}}",
                 "message": "Assigning Chapter(s) '{{ chapterNumber }}'?",
@@ -354,6 +355,9 @@ const en = {
                 "title": "Error",
                 "subTitle": "Unable to load books.",
             }
+        },
+        "editor" : {
+            "title" : "Edit chapter contents",
         }
     },
     "pages" : {

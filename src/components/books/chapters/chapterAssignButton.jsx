@@ -1,12 +1,13 @@
 import { useState } from "react";
 
 // Third party libraries
-import { App, Button, Modal, Form, Space } from "antd";
+import { App, Button, Modal, Form, Space, Tooltip, Tag } from "antd";
 import { MdOutlineAssignmentInd } from "react-icons/md";
+import { useAssignChapterMutation } from "../../../features/api/booksSlice";
 
 // Local imports
-import { useAssignChapterMutation } from "../../../features/api/booksSlice";
 import UserSelect from "../../userSelect";
+import { EditOutlined, FileDoneOutlined } from "@ant-design/icons";
 
 // ------------------------------------------------------
 
@@ -17,20 +18,37 @@ export default function ChapterAssignButton({ libraryId, chapters, t, type }) {
     const [assignChapter, { isLoading: isAdding }] = useAssignChapterMutation();
     const count = chapters ? chapters.length : 0;
 
+    let assignment = [];
+
+    if (chapters.length === 1) {
+        if (chapters[0].reviewerAccountId) {
+            assignment.push(
+                <Tag icon={<FileDoneOutlined />} closable={false}>
+                    {chapters[0].reviewerAccountName}
+                </Tag>
+            );
+        }
+        if (chapters[0].writerAccountId) {
+            assignment.push(
+                <Tag icon={<EditOutlined />} closable={false}>
+                    {chapters[0].writerAccountName}
+                </Tag>
+            );
+        }
+    }
+
     const onSubmit = (values) => {
-        const payload = {
-            accountId: values.id === "none" ? null : values.id,
+        const payload = values.id === "none"  ? {
+            unassign : true
+        } :
+        {
+            accountId: values.id === "me" ? null : values.id,
         };
 
-        const promises = [];
-        chapters
-            .slice(0)
-            .reverse()
+        const promises = chapters
             .map((chapter) => {
                 if (chapter && chapter.links && chapter.links.assign) {
-                    return promises.push(
-                        assignChapter({ chapter, payload }).unwrap()
-                    );
+                    return assignChapter({ chapter, payload }).unwrap();
                 }
                 return Promise.resolve();
             });
@@ -66,12 +84,15 @@ export default function ChapterAssignButton({ libraryId, chapters, t, type }) {
 
     return (
         <>
-            <Button
-                type={type}
-                onClick={onShow}
-                disabled={count === 0}
-                icon={<MdOutlineAssignmentInd />}
-            />
+            <Tooltip title={t('chapter.actions.assign.label')}>
+                <Button
+                    type={type}
+                    onClick={onShow}
+                    disabled={count === 0}
+                >
+                    {assignment.length > 0 ? assignment : <MdOutlineAssignmentInd />}
+                </Button>
+            </Tooltip>
             <Modal
                 open={open}
                 title={t("chapter.actions.assign.title", { count })}

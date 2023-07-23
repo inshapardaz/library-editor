@@ -1,5 +1,5 @@
 // Third party libraries
-import { App, Button, Modal } from "antd";
+import { App, Button, Modal, Tooltip } from "antd";
 import { FaTrash } from "react-icons/fa";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 // Local imports
@@ -23,20 +23,15 @@ export default function ChapterDeleteButton({ chapters = [], t, type }) {
             content: t("chapter.actions.delete.message", {
                 titles: chapters.map((p) => p.title).join(","),
             }),
-            okButtonProps: { disabled: isDeleting },
+            okButtonProps: { loading: isDeleting },
             okType: "danger",
             cancelButtonProps: { disabled: isDeleting },
             closable: { isDeleting },
             onOk() {
-                const promises = [];
-                chapters
-                    .slice(0)
-                    .reverse()
+                const promises = chapters
                     .map((chapter) => {
                         if (chapter && chapter.links && chapter.links.delete) {
-                            return promises.push(
-                                deleteChapter({ chapter }).unwrap()
-                            );
+                            return deleteChapter({ chapter }).unwrap();
                         }
                         return Promise.resolve();
                     });
@@ -57,11 +52,13 @@ export default function ChapterDeleteButton({ chapters = [], t, type }) {
     };
 
     return (
-        <Button
-            type={type}
-            disabled={count < 1}
-            onClick={showConfirm}
-            icon={<FaTrash />}
-        ></Button>
+        <Tooltip title={t('actions.delete')}>
+            <Button
+                type={type}
+                disabled={count < 1}
+                onClick={showConfirm}
+                icon={<FaTrash />}
+            />
+        </Tooltip>
     );
 }
