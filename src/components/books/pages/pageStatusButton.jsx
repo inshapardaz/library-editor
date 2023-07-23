@@ -19,16 +19,11 @@ export default function PageStatusButton({ pages, t, type }) {
     const count = pages ? pages.length : 0;
 
     const onSubmit = (values) => {
-        const promises = [];
-        pages
-            .slice(0)
-            .reverse()
+        const promises = pages
             .map((page) => {
                 if (page && page.links && page.links.update) {
                     const payload = { ...page, status: values.status };
-                    return promises.push(
-                        updateBookPage({ page: payload }).unwrap()
-                    );
+                    return updateBookPage({ page: payload }).unwrap();
                 }
                 return Promise.resolve();
             });

@@ -33,15 +33,10 @@ export default function PageDeleteButton({
             cancelButtonProps: { disabled: isDeleting },
             closable: !isDeleting,
             onOk: () => {
-                const promises = [];
-                pages
-                    .slice(0)
-                    .reverse()
+                const promises = pages
                     .map((page) => {
                         if (page && page.links && page.links.delete) {
-                            return promises.push(
-                                deleteBookPage({ page }).unwrap()
-                            );
+                            return deleteBookPage({ page }).unwrap();
                         }
                         return Promise.resolve();
                     });

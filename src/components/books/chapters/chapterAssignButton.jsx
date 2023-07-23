@@ -2,7 +2,7 @@ import { useState } from "react";
 
 // Third party libraries
 import { App, Button, Modal, Form, Space, Tooltip, Tag } from "antd";
-import { MdOutlineAssignmentInd } from "react-icons/md";
+import { FaUserAlt } from "react-icons/fa";
 import { useAssignChapterMutation } from "../../../features/api/booksSlice";
 
 // Local imports
@@ -90,7 +90,7 @@ export default function ChapterAssignButton({ libraryId, chapters, t, type }) {
                     onClick={onShow}
                     disabled={count === 0}
                 >
-                    {assignment.length > 0 ? assignment : <MdOutlineAssignmentInd />}
+                    {assignment.length > 0 ? assignment : <FaUserAlt />}
                 </Button>
             </Tooltip>
             <Modal

@@ -22,15 +22,10 @@ export default function PageAssignButton({ libraryId, pages, t, type }) {
             accountId: values.id === "none" ? null : values.id,
         };
 
-        const promises = [];
-        pages
-            .slice(0)
-            .reverse()
+        const promises = pages
             .map((page) => {
                 if (page && page.links && page.links.assign) {
-                    return promises.push(
-                        assignBookPage({ page, payload }).unwrap()
-                    );
+                    return assignBookPage({ page, payload }).unwrap();
                 }
                 return Promise.resolve();
             });

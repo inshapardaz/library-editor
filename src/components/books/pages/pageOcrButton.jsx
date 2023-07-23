@@ -70,8 +70,6 @@ export default function PageOcrButton({ pages, t, type }) {
 
     const onSubmit = (values) => {
         const promises = pagesStatus
-            .slice(0)
-            .reverse()
             .map((page) => {
                 if (page && page.links && page.links.ocr) {
                     return ocrBookPage({ page, key: values.key }).unwrap();
