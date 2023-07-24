@@ -18,21 +18,14 @@ export default function PageSortButton({ libraryId, bookId, t }) {
 
     const [searchParams] = useSearchParams();
 
-    const status = searchParams.get("status");
-    const assignment = searchParams.get("assignment");
-    const pageNumber = searchParams.get("pageNumber");
-    const pageSize = searchParams.get("pageSize");
     const sortDirection = searchParams.get("sortDirection") || "ascending";
 
     const setSortDirection = (newSortDirection) => {
         navigate(
-            helpers.buildLinkToBooksPagesPage(
-                location.pathname,
-                pageNumber,
-                pageSize,
-                status,
-                assignment,
-                newSortDirection
+            helpers.updateLinkToBooksPagesPage(
+                location, {
+                    sortDirection: newSortDirection
+                }
             )
         );
     };

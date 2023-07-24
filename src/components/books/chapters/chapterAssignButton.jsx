@@ -11,7 +11,7 @@ import { EditOutlined, FileDoneOutlined } from "@ant-design/icons";
 
 // ------------------------------------------------------
 
-export default function ChapterAssignButton({ libraryId, chapters, t, type }) {
+export default function ChapterAssignButton({ libraryId, chapters, t, type, showDetails = true }) {
     const { message } = App.useApp();
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
@@ -90,7 +90,7 @@ export default function ChapterAssignButton({ libraryId, chapters, t, type }) {
                     onClick={onShow}
                     disabled={count === 0}
                 >
-                    {assignment.length > 0 ? assignment : <FaUserAlt />}
+                    {showDetails && assignment.length > 0 ? assignment : <FaUserAlt />}
                 </Button>
             </Tooltip>
             <Modal

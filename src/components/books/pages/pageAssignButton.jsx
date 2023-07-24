@@ -52,8 +52,8 @@ export default function PageAssignButton({ libraryId, pages, t, type }) {
         setOpen(true);
     };
 
-    const hasAllPagesGotLink =
-        pages && pages.data && pages.data.every((p) => p.links.assign_to_me);
+    const hasAllPagesGotLink = true;
+    // pages && pages.data && pages.data.every((p) => p.links.assign_to_me);
 
     let data = {
         id: "",

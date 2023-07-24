@@ -1,16 +1,21 @@
-import { Typography } from "antd";
+import { ImBooks } from "react-icons/im";
+
+// Local Imports
+import { IconText } from "../common/iconText";
 // ------------------------------------------------------
 
-const { Text } = Typography;
-
-// ------------------------------------------------------
-
-export function BookSeriesInfo({ book, t }) {
+export function BookSeriesInfo({ libraryId, book, t, navigate }) {
     if (book && book.seriesName) {
         if (book.seriesIndex && book.seriesIndex > 0) {
-            return <Text type="secondary">{t("book.series.seriesAndIndexLabel", { name: book.seriesName, index: book.seriesIndex })}</Text>;
+            return <IconText
+                icon={ImBooks}
+                text={t("book.series.seriesAndIndexLabel", { name: book.seriesName, index: book.seriesIndex })}
+                onClick={() => navigate(`/libraries/${libraryId}/books?series=${book.series.id}`)}/>
+
         } else {
-            return <Text type="secondary">{t("book.series.indexLabel", { name: book.seriesName })}</Text>;
+            return <IconText
+                icon={ImBooks}
+                text={t("book.series.indexLabel", { name: book.seriesName })} />
         }
     }
 

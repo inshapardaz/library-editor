@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 // 3rd party libraries
 import { useLocalStorage } from "usehooks-ts";
-import { App, Button, Input, Col, Row, Upload, Spin } from "antd";
+import { App, Button, Col, Row, Upload, Spin } from "antd";
 import {
     FaCheckCircle,
     FaChevronLeft,
@@ -30,12 +30,12 @@ import PageHeader from "../../../components/layout/pageHeader";
 import DataContainer from "../../../components/layout/dataContainer";
 import EditingStatusIcon from "../../../components/editingStatusIcon";
 import helpers from "../../../helpers";
+import Editor from "../../../editor";
 import PageStatus from "../../../models/pageStatus";
 import PageOcrButton from "../../../components/books/pages/pageOcrButton";
 
 // -----------------------------------------
 const { Dragger } = Upload;
-const { TextArea } = Input;
 
 // -----------------------------------------
 
@@ -253,15 +253,15 @@ const PageEditPage = () => {
                 />
                 <DataContainer error={error}>
                     <Row gutter={16}>
-                        <Col flex="auto" l={12} m={24}>
-                            <TextArea
+                        <Col span={12} style={{display: 'flex'}}>
+                            <Editor
                                 rows={20}
                                 value={text}
-                                onChange={(e) => setText(e.target.value)}
+                                onChange={(content) => setText(content)}
                             />
                         </Col>
                         {showImage && (
-                            <Col flex="auto" l={12} m={24}>
+                            <Col span={12}>
                                 <Dragger
                                     fileList={fileList}
                                     beforeUpload={onImageChange}

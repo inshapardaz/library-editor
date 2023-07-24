@@ -22,20 +22,16 @@ export default function PageAssignmentFilterButton({ libraryId, bookId, t }) {
     const [searchParams] = useSearchParams();
     const location = useLocation();
 
-    const status = searchParams.get("status");
     const assignment =
         searchParams.get("assignment") ?? AssignmentStatus.AssignedToMe;
-    const pageSize = searchParams.get("pageSize") ?? 12;
 
     const setAssignment = (newAvailabilityStatus) => {
         navigate(
-            helpers.buildLinkToBooksPagesPage(
-                location.pathname,
-                bookId,
-                1,
-                pageSize,
-                status,
-                newAvailabilityStatus
+            helpers.updateLinkToBooksPagesPage(
+                location, {
+                    pageNumber : 1,
+                    assignmentFilter: newAvailabilityStatus,
+                }
             )
         );
     };

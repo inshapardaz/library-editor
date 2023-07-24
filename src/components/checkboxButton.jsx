@@ -8,13 +8,15 @@ export default function CheckboxButton({
     indeterminate,
     onChange,
     type,
+    disabled
 }) {
     return (
-        <Button type={type} onClick={onChange}>
+        <Button type={type} disabled={disabled}>
             <Checkbox
                 checked={checked}
                 indeterminate={indeterminate}
                 onChange={onChange}
+                disabled={disabled}
             />
         </Button>
     );

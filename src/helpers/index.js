@@ -236,7 +236,7 @@ const helpers = {
             sortBy,
             sortDirection}
     ) => {
-         var searchParams = new URLSearchParams(location.search);
+        var searchParams = new URLSearchParams(location.search);
         if (pageNumber) {
             searchParams.set("pageNumber", pageNumber);
         }
@@ -351,6 +351,33 @@ const helpers = {
 
         return location;
     },
+    updateLinkToBooksPagesPage : (location, {
+        pageNumber,
+        pageSize,
+        statusFilter,
+        assignmentFilter,
+        sortDirection}) => {
+            var searchParams = new URLSearchParams(location.search);
+            if (pageNumber) {
+                searchParams.set("pageNumber", pageNumber);
+            }
+            if (pageSize) {
+                searchParams.set("pageSize", pageSize);
+            } else {
+
+            }
+            if (statusFilter) {
+                searchParams.set("status", statusFilter);
+            }
+            if (assignmentFilter) {
+                searchParams.set("assignment", assignmentFilter);
+            }
+            if (sortDirection) {
+                searchParams.set("sortDirection", sortDirection);
+            }
+
+            return `${location.pathname}?${searchParams.toString()}`;
+        },
     buildLinkToLibrariesPage: (location,
         page,
         query,

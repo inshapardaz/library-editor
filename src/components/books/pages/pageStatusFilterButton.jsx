@@ -24,17 +24,14 @@ export default function PageStatusFilterButton({ t }) {
     const [searchParams] = useSearchParams();
 
     const status = searchParams.get("status") ?? "Typing";
-    const assignment = searchParams.get("assignment") ?? "assignedToMe";
-    const pageSize = searchParams.get("pageSize") ?? 12;
 
     const setStatus = (newStatus) => {
         navigate(
-            helpers.buildLinkToBooksPagesPage(
-                location.pathname,
-                1,
-                pageSize,
-                newStatus,
-                assignment
+            helpers.updateLinkToBooksPagesPage(
+                location, {
+                    pageNumber : 1,
+                    statusFilter: newStatus
+                }
             )
         );
     };

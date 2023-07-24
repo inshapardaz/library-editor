@@ -87,7 +87,7 @@ const ChaptersList = ({
     };
 
     const onSelectAll = () => {
-        if (selection.length === chapters.data.length) {
+        if (chapters.data.length > 0 && selection.length === chapters.data.length) {
             setSelection([]);
             setSelectedChapters([]);
         } else {
@@ -120,6 +120,7 @@ const ChaptersList = ({
                         libraryId={libraryId}
                         chapters={selectedChapters}
                         t={t}
+                        showDetails={false}
                     />
                     <ChapterStatusButton
                         libraryId={libraryId}

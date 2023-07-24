@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
@@ -100,6 +100,11 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
         { skip: !libraryId || !book || !book.links.pages }
     );
 
+    useEffect(() => {
+        setSelection([]);
+        setSelectedPages([]);
+    }, [pages]);
+
     const [updateBookPageSequence, { isLoading: isUpdatingSequence }] =
         useUpdateBookPageSequenceMutation();
 
@@ -144,7 +149,7 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
     };
 
     const onSelectAll = () => {
-        if (selection.length === pages.data.length) {
+        if (pages.data.length > 0 && selection.length === pages.data.length) {
             setSelection([]);
             setSelectedPages([]);
         } else {
@@ -153,7 +158,7 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
         }
     };
 
-    const hasAllSelected = selection.length === pages.data.length;
+    const hasAllSelected = selection.length  > 0 && selection.length === pages.data.length;
     const hasPartialSelection =
         selection.length > 0 && selection.length < pages.data.length;
 
@@ -178,6 +183,7 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
                     <CheckboxButton
                         onChange={onSelectAll}
                         checked={hasAllSelected}
+                        disabled={pages.data.length < 1}
                         indeterminate={hasPartialSelection}
                     />
                     <PageAddButton libraryId={libraryId} book={book} t={t} />

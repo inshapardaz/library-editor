@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // 3rd Party Libraries
 import { Avatar, List, Typography } from "antd";
@@ -20,6 +20,8 @@ const { Text, Paragraph } = Typography;
 // ------------------------------------------------------
 
 function BookListItem({ libraryId, book, t }) {
+    const navigate = useNavigate();
+
     const cover = book.links.image ? (
         <img
             src={book.links.image}
@@ -59,16 +61,16 @@ function BookListItem({ libraryId, book, t }) {
         <Text type="secondary">{t("book.noDescription")}</Text>
     );
     const chapterCount = (
-        <Link to={`/libraries/${libraryId}/books/${book.id}`}>
-            <IconText
-                icon={FiLayers}
-                text={t("book.chapterCount", { count: book.chapterCount })}
-                key="book-chapter-count"
-            />
-        </Link>
+        <IconText
+            onClick={() => navigate(`/libraries/${libraryId}/books/${book.id}`)}
+            icon={FiLayers}
+            text={t("book.chapterCount", { count: book.chapterCount })}
+            key="book-chapter-count"
+        />
     );
     const pageCount = (
         <IconText
+            onClick={() => navigate(`/libraries/${libraryId}/books/${book.id}/?section=pages`)}
             icon={AiOutlineCopy}
             text={t("book.pageCount", { count: book.pageCount })}
             key="book-page-count"
