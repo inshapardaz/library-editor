@@ -384,6 +384,16 @@ const en = {
             "typed": "Typed",
             "proofreading": "Proofreading",
             "completed": "Completed",
+        },
+        "actions": {
+            "upload" : {
+                "label": "Upload",
+                "title": "Upload pages for {{book}}",
+                "message" : "Click or drag book page images  to this area to upload",
+                "detail": "You can upload JPG, PNG files. Any file added here will be uploaded in to book in the sequence so please select pages in book sequence.",
+                "success" :"Pages created successfully.",
+                "error" :"Error creating pagers.",
+            }
         }
     },
     "page": {

@@ -271,6 +271,25 @@ export const booksApi = createApi({
             }),
             invalidatesTags: [ 'BookPages' ]
         }),
+        createBookPageWithImage: builder.mutation({
+            query: ({ book, fileList }) => {
+                const formData = new FormData();
+                fileList.forEach((file) => {
+                    formData.append('files[]', file);
+                });
+                return ({
+                    url: book.links.create_multiple,
+                    method: 'POST',
+                    payload: formData,
+                    formData: true,
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                });
+            },
+            invalidatesTags: [ 'BookPages' ]
+        }),
+
     }),
 })
 
@@ -299,5 +318,6 @@ export const {
     useAssignBookPageMutation,
     useOcrBookPageMutation,
     useUpdateBookPageImageMutation,
-    useUpdateBookPageSequenceMutation
+    useUpdateBookPageSequenceMutation,
+    useCreateBookPageWithImageMutation,
  } = booksApi

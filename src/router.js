@@ -39,6 +39,7 @@ import ChapterEditor from './pages/books/chapters/edit'
 import LayoutWithHeader from './components/layout/layoutWithHeader'
 import LayoutWithFooter from './components/layout/layoutWithFooter';
 import SecurePage from './components/layout/securePage';
+import BookPagesUploadPage from './pages/books/pages/upload';
 
 const Router = () => {
     return (<BrowserRouter>
@@ -55,6 +56,7 @@ const Router = () => {
                     <Route path="/libraries/:libraryId/books/:bookId/edit" element={<BookEditPage />} />
                     <Route path="/libraries/:libraryId/books/:bookId/chapters/{:chapterNumber}/edit" element={<ChapterEditor />} />
                     <Route path="/libraries/:libraryId/books/:bookId/pages/add" element={<PageEditPage />} />
+                    <Route path="/libraries/:libraryId/books/:bookId/pages/upload" element={<BookPagesUploadPage />} />
                     <Route path="/libraries/:libraryId/books/:bookId/pages/:pageNumber/edit" element={<PageEditPage />} />
                     <Route path="/libraries/:libraryId/authors" element={<AuthorsHomePage />} />
                     <Route path="/libraries/:libraryId/authors/add" element={<AuthorEditPage />} />

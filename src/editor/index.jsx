@@ -36,9 +36,9 @@ import styles from './editor.module.scss'
     const editorStateRef = useRef();
     const onEditorChange = (editorState) => {
         editorStateRef.current = editorState;
-        console.log(editorState);
-        const markdown = $convertToMarkdownString(TRANSFORMERS);
-        onChange(markdown);
+        //console.log(editorState);
+        //const markdown = $convertToMarkdownString(TRANSFORMERS);
+        //onChange(markdown);
       }
 
     const onError = (error) => {
@@ -48,7 +48,8 @@ import styles from './editor.module.scss'
     const initialConfig = {
         theme,
         onError,
-        editorState: () => $convertFromMarkdownString(value, TRANSFORMERS)
+        //editorState: () => $convertFromMarkdownString(value, TRANSFORMERS)
+        editorState: () => editorStateRef.current
       };
 
     return (

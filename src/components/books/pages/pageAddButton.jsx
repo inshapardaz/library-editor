@@ -27,17 +27,27 @@ export default function PageAddButton({ libraryId, book, t }) {
         {
             key: "pages-add-upload",
             icon: <FaFileArrowUp />,
-            label: t("page.actions.uploadPage.label"),
+            label: (
+                <Link to={`/libraries/${libraryId}/books/${book.id}/pages/upload`}>
+                    {t("page.actions.uploadPage.label")}
+                </Link>
+            ),
         },
         {
             key: "pages-add-pdf",
             icon: <FaFilePdf />,
-            label: t("page.actions.uploadPdf.label"),
+            label: (
+                <Link to={`/libraries/${libraryId}/books/${book.id}/pages/upload`}>
+                    {t("page.actions.uploadPdf.label")}
+                </Link>),
         },
         {
             key: "pages-add-zip",
             icon: <FaFileZipper />,
-            label: t("page.actions.uploadZip.label"),
+            label: (
+                <Link to={`/libraries/${libraryId}/books/${book.id}/pages/upload`}>
+                    {t("page.actions.uploadZip.label")}
+                </Link>),
         },
     ];
     return (
