@@ -17,6 +17,7 @@ import { LibrariesDropdown } from "../libraries/librariesDropDown";
 import ProfileMenu from "./profileMenu";
 import { useGetLibraryQuery } from '../../features/api/librariesSlice'
 import SearchBox from '../searchBox'
+
 //---------------------------------------------
 
 function AppHeader () {

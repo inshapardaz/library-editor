@@ -15,7 +15,11 @@ function SearchBox() {
     const [search, setSearch] = useState(searchParams.get("query"));
 
     const onSearch = () => {
-        navigate(`/libraries/${libraryId}/search?query=${search}`);
+        if (libraryId) {
+            navigate(`/libraries/${libraryId}/search?query=${search}`);
+        } else {
+            navigate(`/libraries?query=${search}`);
+        }
     };
     return (
         <Input.Search

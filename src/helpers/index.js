@@ -397,6 +397,36 @@ const helpers = {
 
         return location.pathname;
     },
+    updateLinkToLibrariesPage: (location, {
+        query,
+        pageNumber,
+        pageSize,
+        statusFilter,
+        sortDirection}) => {
+        var searchParams = new URLSearchParams(location.search);
+        if (pageNumber) {
+            searchParams.set("pageNumber", pageNumber);
+        }
+        if (pageSize) {
+            searchParams.set("pageSize", pageSize);
+        } else {
+
+        }
+        if (statusFilter) {
+            searchParams.set("status", statusFilter);
+        }
+        if (sortDirection) {
+            searchParams.set("sortDirection", sortDirection);
+        }
+        if (query) {
+            searchParams.set("query", query);
+        }else if (query === "") {
+            searchParams.delete("query")
+        }
+
+
+        return `${location.pathname}?${searchParams.toString()}`;
+    },
     buildLinkToLibraryUsersPage: (location,
         page,
         query,

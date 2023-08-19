@@ -19,12 +19,10 @@ export default function ChapterStatusButton({ chapters, t, type }) {
     const count = chapters ? chapters.length : 0;
 
     const onSubmit = (values) => {
-        console.log(chapters);
         const promises = chapters
             .map((chapter) => {
                 if (chapter && chapter.links && chapter.links.update) {
                     const payload = { ...chapter, status: values.status };
-                    console.log('Adding chapter to update queue', payload);
                     return updateChapter({ chapter: payload }).unwrap();
                 }
                 return Promise.resolve();

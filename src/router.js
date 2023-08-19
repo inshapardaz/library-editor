@@ -15,6 +15,7 @@ import {
 
 import LibrariesHome from './pages/libraries'
 import LibraryHome from './pages/libraries/library'
+import LibraryEditPage from './pages/libraries/edit';
 import SearchPage from './pages/libraries/search'
 import BooksHomePage from './pages/books/index'
 import BookPage from './pages/books/book'
@@ -48,7 +49,9 @@ const Router = () => {
                 <Route element={<SecurePage />}>
                     <Route path="/" element={<Home />} />
                     <Route path="/libraries/" element={<LibrariesHome />} />
+                    <Route path="/libraries/add" element={<LibraryEditPage />} />
                     <Route path="/libraries/:libraryId" element={<LibraryHome />} />
+                    <Route path="/libraries/:libraryId/edit" element={<LibraryEditPage />} />
                     <Route path="/libraries/:libraryId/search" element={<SearchPage />} />
                     <Route path="/libraries/:libraryId/books" element={<BooksHomePage />} />
                     <Route path="/libraries/:libraryId/books/add" element={<BookEditPage />} />

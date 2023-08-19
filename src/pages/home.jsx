@@ -9,7 +9,7 @@ const Home = () => {
   return (<>
     <div className={styles.home}/>
     <ContentsContainer>
-      <LibrariesList />
+      <LibrariesList showMore />
     </ContentsContainer>
   </>)
 }

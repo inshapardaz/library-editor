@@ -10,7 +10,7 @@ import { useGetLibrariesQuery } from '../../features/api/librariesSlice'
 
 // ---------------------------------------------------
 export function LibrariesDropdown() {
-    const { data: libraries, isError, isFetching } = useGetLibrariesQuery()
+    const { data: libraries, isError, isFetching } = useGetLibrariesQuery({})
     const items = !isError && !isFetching && libraries && libraries.data ? libraries.data
         .map(l => ({
             label: (<Link to={`libraries/${l.id}`}>

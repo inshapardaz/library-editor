@@ -8,7 +8,7 @@ import { useGetCategoriesQuery } from '../features/api/categoriesSlice'
 
 const LibraryProvider = ({children}) => {
     const { libraryId } = useParams()
-    useGetLibrariesQuery()
+    useGetLibrariesQuery({})
     useGetCategoriesQuery({libraryId}, { skip: !libraryId})
 
     return children;

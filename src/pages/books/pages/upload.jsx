@@ -61,10 +61,6 @@ const BookPagesUploadPage = () => {
             setFileList([...fileList, file]);
             return false;
         },
-        // action: book && book.links && book.links.create_multiple,
-        // headers: {
-        //   authorization: `Bearer ${store?.getState()?.auth?.user?.accessToken}`,
-        // },
         listType: "picture",
         onChange(info) {
             if (info.file.status !== 'uploading') {
