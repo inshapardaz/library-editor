@@ -8,12 +8,6 @@ import {OnChangePlugin} from '@lexical/react/LexicalOnChangePlugin';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 
-import {
-    $convertFromMarkdownString,
-    $convertToMarkdownString,
-    TRANSFORMERS,
-  } from '@lexical/markdown';
-
 // local imports
 import styles from './editor.module.scss'
 

@@ -1,7 +1,4 @@
-import { useParams } from "react-router-dom";
-
-const EditChapter = ({ onChange, value }) =>   {
-    const { libraryId, bookId, chapterNumber } = useParams();
+const EditChapter = () =>   {
 
     return 'Editor'
 }
