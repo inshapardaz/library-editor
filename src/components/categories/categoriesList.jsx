@@ -54,7 +54,7 @@ function SeriesList({ libraryId, query, pageNumber, pageSize }) {
             emptyContent={
                 <Link to={`/libraries/${libraryId}/categories/add`}>
                     <Button type="dashed" icon={<FaPlus />}>
-                        {t("categories.actions.add.label")}
+                        {t("category.actions.add.label")}
                     </Button>
                 </Link>
             }

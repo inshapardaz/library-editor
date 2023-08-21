@@ -31,7 +31,7 @@ function SeriesPage() {
     const { data: series, error, isFetching } = useGetSeriesByIdQuery({ libraryId, seriesId });
 
     if (isFetching) return <Loading />;
-    if (error) return <Error />;
+    if (error) return <Error t={t} />;
 
     const editButton = (
         <Link to={`/libraries/${libraryId}/series/${seriesId}/edit`}>

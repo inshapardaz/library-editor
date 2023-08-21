@@ -14,13 +14,13 @@ export const categoriesApi = createApi({
                 return ({ url: `/libraries/${libraryId}/categories?pageNumber=${pageNumber}&pageSize=${pageSize}${queryVal}`, method: 'get' })
             },
             transformResponse: (response) => parseResponse(response),
-            providesTags: [ 'Series' ]
+            providesTags: [ 'Categories' ]
         }),
         getCategoryById: builder.query({
             query: ({ libraryId, categoryId }) =>
                 ({ url: `/libraries/${libraryId}/categories/${categoryId}`, method: 'get' }),
             transformResponse: (response) => parseResponse(response),
-            providesTags: [ 'Series' ]
+            providesTags: [ 'Categories' ]
         }),
         addCategory: builder.mutation({
             query: ({ libraryId, payload }) => ({

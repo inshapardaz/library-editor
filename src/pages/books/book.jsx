@@ -34,7 +34,7 @@ const BookPage = () => {
     } = useGetBookQuery({ libraryId, bookId }, { skip: !libraryId || !bookId });
 
     if (isFetching) return <Loading />;
-    if (error) return <Error />;
+    if (error) return <Error t={t} />;
 
     const tabs = [
         {

@@ -40,7 +40,7 @@ const IssueEditPage = () => {
     const [fileList, setFileList] = useState([]);
 
     if (isFetching || isFetchingPeriodical) return <Loading />;
-    if (error || periodicalError) return <Error />;
+    if (error || periodicalError) return <Error t={t} />;
 
     const onSubmit = async (issue) => {
         if (periodicalId) {

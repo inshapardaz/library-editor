@@ -37,7 +37,7 @@ const LibraryEditPage = () => {
     const [fileList, setFileList] = useState([]);
 
     if (isFetching) return <Loading />;
-    if (error) return <Error />;
+    if (error) return <Error t={t} />;
 
     const onSubmit = async (library) => {
         if (libraryId) {

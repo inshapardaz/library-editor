@@ -32,7 +32,7 @@ function AuthorPage() {
   const { data : author, error, isFetching } = useGetAuthorByIdQuery({libraryId, authorId})
 
   if (isFetching) return <Loading />
-  if (error) return (<Error />)
+  if (error) return (<Error t={t} />)
 
   return (<>
     <PageHeader title={author.name} icon={<FaFeatherAlt style={{ width: 36, height: 36 }}/>} />

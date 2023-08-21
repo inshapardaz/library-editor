@@ -317,6 +317,14 @@ const ur = {
         "seriesIndex": {
             "label" : "سلسلے میں ترتیب"
         },
+        "publisher": {
+            "label" : "ناشر",
+            "placeholder" : "کتاب کا ناشر",
+        },
+        "source": {
+            "label" : "ماخذ",
+            "placeholder" : "کتاب کا ماخذ",
+        },
 		"chapterCount_one" : "1 باب",
 		"chapterCount_other": "{{count}} ابواب",
 		"pageCount_one" : "1 صفحہ",

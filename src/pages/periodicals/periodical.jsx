@@ -31,7 +31,7 @@ function PeriodicalPage() {
     const { data: periodical, error, isFetching } = useGetPeriodicalByIdQuery({ libraryId, periodicalId });
 
     if (isFetching) return <Loading />;
-    if (error) return <Error />;
+    if (error) return <Error t={t} />;
 
     const editButton = (
         <Link to={`/libraries/${libraryId}/periodicals/${periodicalId}/edit`}>

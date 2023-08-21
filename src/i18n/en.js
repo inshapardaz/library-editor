@@ -307,6 +307,14 @@ const en = {
         "seriesIndex": {
             "label" : "Sequence in series"
         },
+        "publisher": {
+            "label" : "Publisher",
+            "placeholder" : "Publisher of the book",
+        },
+        "source": {
+            "label" : "Source",
+            "placeholder" : "Source of the book",
+        },
         "language": {
             "label" : "Language",
             "placeholder" : "Select language for book",

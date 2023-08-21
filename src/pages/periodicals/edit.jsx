@@ -38,7 +38,7 @@ const PeriodicalEditPage = () => {
     const [fileList, setFileList] = useState([]);
 
     if (isFetching) return <Loading />;
-    if (error) return <Error />;
+    if (error) return <Error t={t} />;
 
     const onSubmit = async (periodical) => {
         if (periodicalId) {

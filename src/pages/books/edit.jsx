@@ -43,7 +43,7 @@ const BookEditPage = () => {
     const [fileList, setFileList] = useState([]);
 
     if (isFetching) return <Loading />;
-    if (error) return <Error />;
+    if (error) return <Error t={t} />;
 
     const onSubmit = async (book) => {
         if (bookId) {
@@ -162,6 +162,12 @@ const BookEditPage = () => {
                                 <Form.Item name="yearPublished" label={t("book.yearPublished.label")}>
                                     <InputNumber min={1} />
                                 </Form.Item>
+                                <Form.Item name="publisher" label={t("book.publisher.label")}>
+                                    <Input placeholder={t("book.publisher.placeholder")}/>
+                                </Form.Item>
+                                <Form.Item name="copyrights" label={t("book.copyrights.label")}>
+                                    <CopyrightSelect t={t} />
+                                </Form.Item>
                                 <Form.Item label={t("book.series.label")}>
                                     <Space.Compact>
                                         <Form.Item name="seriesId" noStyle>
@@ -172,8 +178,8 @@ const BookEditPage = () => {
                                         </Form.Item>
                                     </Space.Compact>
                                 </Form.Item>
-                                <Form.Item name="copyrights" label={t("book.copyrights.label")}>
-                                    <CopyrightSelect t={t} />
+                                <Form.Item name="source" label={t("book.source.label")}>
+                                    <Input placeholder={t("book.source.placeholder")}/>
                                 </Form.Item>
                                 <Form.Item name="status" label={t("book.status.label")} placeholder={t("book.status.placeholder")}>
                                     <PublishStatusSelect t={t} />

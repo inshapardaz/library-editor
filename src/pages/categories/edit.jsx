@@ -28,7 +28,7 @@ const CategoryEditPage = () => {
     const { data: category, error, isFetching } = useGetCategoryByIdQuery({ libraryId, categoryId }, { skip: !libraryId || !categoryId });
 
     if (isFetching) return <Loading />;
-    if (error) return <Error />;
+    if (error) return <Error t={t} />;
 
     const onSubmit = async (values) => {
         if (categoryId) {
