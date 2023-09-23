@@ -20,9 +20,8 @@ const BookPagesUploadPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [fileList, setFileList] = useState([]);
-    const [uploading, setUploading] = useState(false);
     const { libraryId, bookId } = useParams();
-    const [createBookPageWithImage] = useCreateBookPageWithImageMutation();
+    const [createBookPageWithImage, { isLoading: isUploading }] = useCreateBookPageWithImageMutation();
     const {
         data: book,
         error,
@@ -30,8 +29,6 @@ const BookPagesUploadPage = () => {
     } = useGetBookQuery({ libraryId, bookId }, { skip: !libraryId || !bookId });
 
     const handleUpload = () => {
-        setUploading(true);
-
         createBookPageWithImage({
             book,
             fileList
@@ -42,13 +39,14 @@ const BookPagesUploadPage = () => {
         .catch((_) => message.error(t("pages.actions.upload.error")));
     };
 
-    const title = t('pages.actions.upload.title', { book: book && book.title });
+    const title = t('pages.actions.upload.title', { book: book?.title });
+    console.log(fileList)
     const actions = [
         <Button.Group>
-            <Button  onClick={handleUpload} icon={<FaFileUpload />} disabled={uploading  || fileList.length < 1}>
+            <Button  onClick={handleUpload} icon={<FaFileUpload />} disabled={isUploading  || fileList.length < 1}>
                 {t('pages.actions.upload.label')}
             </Button>
-            <Button onClick={() => navigate(-1)} icon={<FaTimesCircle />} disabled={uploading}>
+            <Button onClick={() => navigate(-1)} icon={<FaTimesCircle />} disabled={isUploading}>
                 {t('actions.close')}
             </Button>
         </Button.Group>,
@@ -56,26 +54,16 @@ const BookPagesUploadPage = () => {
 
     const props = {
         name: 'file',
+        disabled: isUploading,
         multiple: true,
         beforeUpload: (file) => {
             setFileList([...fileList, file]);
             return false;
         },
         listType: "picture",
-        onChange(info) {
-            if (info.file.status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (info.file.status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully`);
-            } else if (info.file.status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
         onRemove(e) {
-            setFileList(fileList.splice(fileList.findIndex(function(f){
-                return f.uid === e.uid;
-            }), 1));
+            const index = fileList.findIndex((f) => f.uid === e.uid);
+            setFileList(fileList.splice(index, 1));
         }
     };
 
