@@ -472,6 +472,10 @@ const en = {
                 "detail": "You can upload JPG, PNG files. Any file added here will be uploaded in to book in the sequence so please select pages in book sequence.",
                 "success" :"Pages created successfully.",
                 "error" :"Error creating pagers.",
+            },
+            "autoFillChapter": {
+                "title": "Auto fill page chapters",
+                "message" : "Set Chapter of first page of every chapter. Using this option will automatically set the chapters for remaining pages. This will overwrite any page chapter already set. Would you like to continue?",
             }
         }
     },

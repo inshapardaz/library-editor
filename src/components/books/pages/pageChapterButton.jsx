@@ -14,8 +14,7 @@ export default function PageChapterButton({ libraryId, book, pages, t, type }) {
     const { message } = App.useApp();
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
-    const [updateBookPage, { isLoading: isAssigning }] =
-        useUpdateBookPageMutation();
+    const [updateBookPage, { isLoading: isAssigning }] = useUpdateBookPageMutation();
     const count = pages ? pages.length : 0;
 
     const onSubmit = (values) => {

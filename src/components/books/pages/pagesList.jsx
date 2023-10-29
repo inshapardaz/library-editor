@@ -23,6 +23,7 @@ import PageStatusFilterButton from "./pageStatusFilterButton";
 import PageAssignmentFilterButton from "./pageAssignmentFilterButton";
 import CheckboxButton from "../../checkboxButton";
 import PageChapterButton from "./pageChapterButton";
+import PageAutoChapterUpdate from "./pageAutoChapterUpdate";
 import PageStatusButton from "./pageStatusButton";
 import helpers from "../../../helpers";
 import BookStatus from "../../../models/bookStatus";
@@ -199,6 +200,7 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
                         pages={selectedPages}
                         t={t}
                     />
+                    <PageAutoChapterUpdate pages={selectedPages} t={t} />
                     <PageStatusButton pages={selectedPages} t={t} />
                     <PageOcrButton pages={selectedPages} t={t} />
                 </Button.Group>
