@@ -34,7 +34,7 @@ function AuthorListItem({ libraryId, author, t }) {
         </Link>
     );
     const writingsCount = (
-        <Link to={`/libraries/${libraryId}/writings?author=${author.id}`}>
+        <Link to={`/libraries/${libraryId}/articles?author=${author.id}`}>
             <IconText icon={FaPenFancy} text="0" key="author-writings-count" />
         </Link>
     );

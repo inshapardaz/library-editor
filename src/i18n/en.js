@@ -651,6 +651,58 @@ const en = {
             }
         }
 	},
+    "articles" : {
+
+    },
+    "article" : {
+        "title": {
+            "label": "Title",
+            "placeholder": "Title of article",
+            "required": "Title is required for article"
+        },
+        "type": {
+            "label": "Type",
+            "placeholder": "Type of article",
+            "required": "Type is required for article",
+            "writing" : "Writing",
+            "poetry" : "Poetry"
+        },
+        "public": {
+            "label" : "Public"
+        },
+        "authors": {
+            "label" : "Authors",
+            "placeholder" : "Select authors of the article",
+            "required" : "Author is required"
+        },
+        "status": {
+            "label": "Status",
+            "placeholder" : "Select Article Status"
+        },
+        "categories": {
+            "label" : "Categories",
+            "placeholder" : "Select categories"
+        },
+        "actions": {
+            "add": {
+                "label": "Add new article",
+                "title": "New article",
+                "success" :"Article created successfully.",
+		        "error" :"Error creating article."
+            },
+            "edit": {
+                "title": "Editing '{{name}}'",
+                "success" :"Article saved successfully.",
+                "error" :"Error saving article"
+            },
+            "delete": {
+                "title" : "Delete article?",
+                "message": "Are you sure you want to delete article '{{name}}'?",
+                "success" :"Article deleted successfully.",
+                "error" :"Error deleting article."
+            }
+        }
+    },
 	"series" : {
 		"title" : "Series",
 		"bookCount_one" : "1 book",

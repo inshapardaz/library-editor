@@ -54,7 +54,7 @@ function AppHeader () {
       icon: <FaBook />,
     },{
       label: (
-        <NavLink to={`/libraries/${libraryId}/writings`}>
+        <NavLink to={`/libraries/${libraryId}/articles`}>
           {t("header.writings")}
         </NavLink>
       ),

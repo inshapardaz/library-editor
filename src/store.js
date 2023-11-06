@@ -7,6 +7,7 @@ import { booksApi } from './features/api/booksSlice'
 import { categoriesApi } from './features/api/categoriesSlice'
 import { periodicalsApi } from './features/api/periodicalsSlice'
 import { issuesApi } from './features/api/issuesSlice'
+import { articlesApi } from './features/api/articlesSlice'
 import { accountsApi } from './features/api/accountsSlice'
 import uiReducer from './features/ui/uiSlice';
 
@@ -22,6 +23,7 @@ export const store = configureStore({
         [periodicalsApi.reducerPath]: periodicalsApi.reducer,
         [issuesApi.reducerPath]: issuesApi.reducer,
         [accountsApi.reducerPath]: accountsApi.reducer,
+        [articlesApi.reducerPath]: articlesApi.reducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware()
@@ -33,4 +35,5 @@ export const store = configureStore({
             .concat(periodicalsApi.middleware)
             .concat(issuesApi.middleware)
             .concat(accountsApi.middleware)
+            .concat(articlesApi.middleware)
 });
