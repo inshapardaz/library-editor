@@ -1,20 +1,20 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
 import { Button, Input, List, Space, Switch } from "antd";
-import { FaBook, FaPlus } from "react-icons/fa";
+import { FaPenFancy, FaPlus } from "react-icons/fa";
 
 // Local Imports
+import { useGetArticlesQuery } from "../../features/api/articlesSlice";
 import helpers from "../../helpers";
 import DataContainer from "../layout/dataContainer";
-import BookCard from "./bookCard";
-import BookListItem from "./bookListItem";
-import { useGetBooksQuery } from "../../features/api/booksSlice";
-import { useState } from "react";
-import BookStatusFilterButton from "./bookStatusFilterButton";
-import BookSortButton from "./bookSortButton";
+import ArticleSortButton from "./articleSortButton";
+import ArticleListItem from "./articleListItem";
+import ArticleCard from "./articleCard";
+import ArticleStatusFilterButton from "./articleStatusFilterButton";
 // ------------------------------------------------------
 
 const grid = {
@@ -29,12 +29,12 @@ const grid = {
 
 // ------------------------------------------------------
 
-function BooksList({
+function ArticlesList({
     libraryId,
     query,
     author,
     categories,
-    series,
+    type,
     sortBy,
     sortDirection,
     favorite,
@@ -48,19 +48,19 @@ function BooksList({
     const navigate = useNavigate();
     const location = useLocation();
     const [search, setSearch] = useState(query);
-    const [showList, setShowList] = useLocalStorage("books-list-view", false);
+    const [showList, setShowList] = useLocalStorage("articles-list-view", false);
 
     const {
         refetch,
-        data: books,
+        data: articles,
         error,
         isFetching,
-    } = useGetBooksQuery({
+    } = useGetArticlesQuery({
         libraryId,
         query,
         author,
         categories,
-        series,
+        type,
         sortBy,
         sortDirection,
         favorite,
@@ -70,23 +70,23 @@ function BooksList({
         pageSize,
     });
 
-    const renderItem = (book) => {
+    const renderItem = (article) => {
         if (showList) {
             return (
-                <BookListItem
-                    key={book.id}
+                <ArticleListItem
+                    key={article.id}
                     libraryId={libraryId}
-                    book={book}
+                    article={article}
                     t={t}
                 />
             );
         } else {
             return (
                 <List.Item>
-                    <BookCard
-                        key={book.id}
+                    <ArticleCard
+                        key={article.id}
                         libraryId={libraryId}
-                        book={book}
+                        article={article}
                         t={t}
                     />
                 </List.Item>
@@ -96,7 +96,7 @@ function BooksList({
 
     const onPageChanged = (newPage, newPageSize) => {
         navigate(
-            helpers.updateLinkToBooksPage(location, {
+            helpers.updateLinkToArticlesPage(location, {
                 pageNumber: newPage,
                 pageSize: newPageSize,
             })
@@ -105,7 +105,7 @@ function BooksList({
 
     const onSearch = () => {
         navigate(
-            helpers.updateLinkToBooksPage(location, {
+            helpers.updateLinkToArticlesPage(location, {
                 pageNumber: 1,
                 query: search,
             })
@@ -116,23 +116,23 @@ function BooksList({
         <DataContainer
             busy={isFetching}
             error={error}
-            errorTitle={t("books.errors.loading.title")}
-            errorSubTitle={t("books.errors.loading.subTitle")}
+            errorTitle={t("articles.errors.loading.title")}
+            errorSubTitle={t("article.errors.loading.subTitle")}
             errorAction={
                 <Button type="default" onClick={refetch}>
                     {t("actions.retry")}
                 </Button>
             }
-            emptyImage={<FaBook size="5em" />}
-            emptyDescription={t("books.empty.title")}
+            emptyImage={<FaPenFancy size="5em" />}
+            emptyDescription={t("articles.empty.title")}
             emptyContent={
-                <Link to={`/libraries/${libraryId}/books/add`}>
+                <Link to={`/libraries/${libraryId}/articles/add`}>
                     <Button type="dashed" icon={<FaPlus />}>
-                        {t("book.actions.add.label")}
+                        {t("article.actions.add.label")}
                     </Button>
                 </Link>
             }
-            empty={books && books.data && books.data.length < 1}
+            empty={articles && articles.data && articles.data.length < 1}
             bordered={false}
             extra={
                 <Space>
@@ -143,12 +143,12 @@ function BooksList({
                             allowClear
                             onChange={(e) => setSearch(e.target.value)}
                             onSearch={onSearch}
-                            placeholder={t("book.search.placeholder")}
+                            placeholder={t("articles.search.placeholder")}
                         />
                     )}
                     <Button.Group>
-                        <BookStatusFilterButton t={t} status={status} />
-                        <BookSortButton
+                        <ArticleStatusFilterButton t={t} status={status} />
+                        <ArticleSortButton
                             sortBy={sortBy}
                             sortDirection={sortDirection}
                             t={t}
@@ -168,12 +168,12 @@ function BooksList({
                 loading={isFetching}
                 size="large"
                 itemLayout={showList ? "vertical" : "horizontal"}
-                dataSource={books ? books.data : []}
+                dataSource={articles ? articles.data : []}
                 pagination={{
                     onChange: onPageChanged,
-                    pageSize: books ? books.pageSize : 0,
-                    current: books ? books.currentPageIndex : 0,
-                    total: books ? books.totalCount : 0,
+                    pageSize: articles ? articles.pageSize : 0,
+                    current: articles ? articles.currentPageIndex : 0,
+                    total: articles ? articles.totalCount : 0,
                     showSizeChanger: true,
                     responsive: true,
                     showQuickJumper: true,
@@ -185,4 +185,4 @@ function BooksList({
     );
 }
 
-export default BooksList;
+export default ArticlesList;

@@ -251,6 +251,25 @@
   }
 }
 
+.article {
+    &__image {
+      height : 250px;
+
+      &--small {
+        width: 148px;
+        height: 150px;
+      }
+
+      &--thumbnail
+      {
+        max-width:100%;
+        @include when-mobile-device {
+          max-width:90%;
+        }
+      }
+    }
+  }
+
 .page {
     &__image {
         width: 262px;

@@ -652,19 +652,44 @@ const en = {
         }
 	},
     "articles" : {
-
+        "title" : "Writings",
+        "errors": {
+            "loading": {
+                "title": "Error",
+                "subTitle": "Unable to load writings.",
+            }
+        },
+        "empty" : {
+            "title" : "No writing found"
+        },
+        "search": {
+            "placeholder" : "Search writings..."
+        },
+        "sort": {
+            "title" : "Title",
+            "lastModified" : "Last Modified",
+        },
+        "favorites" : {
+			"title" : "Favorites"
+		},
+		"read" : {
+			"title" : "Read books"
+		},
+        "latest" : {
+			"title"  : "Latest books"
+		},
     },
     "article" : {
         "title": {
             "label": "Title",
-            "placeholder": "Title of article",
-            "required": "Title is required for article"
+            "placeholder": "Title of writing",
+            "required": "Title is required for writing"
         },
         "type": {
             "label": "Type",
-            "placeholder": "Type of article",
-            "required": "Type is required for article",
-            "writing" : "Writing",
+            "placeholder": "Type of writing",
+            "required": "Type is required for writing",
+            "writing" : "Prose",
             "poetry" : "Poetry"
         },
         "public": {
@@ -672,34 +697,40 @@ const en = {
         },
         "authors": {
             "label" : "Authors",
-            "placeholder" : "Select authors of the article",
+            "placeholder" : "Select authors of the writing",
             "required" : "Author is required"
         },
         "status": {
             "label": "Status",
-            "placeholder" : "Select Article Status"
+            "placeholder" : "Select writing status"
         },
         "categories": {
             "label" : "Categories",
             "placeholder" : "Select categories"
         },
+        "information" : {
+            "label": "Information"
+        },
+        "contents" : {
+            "label": "Contents"
+        },
         "actions": {
             "add": {
-                "label": "Add new article",
-                "title": "New article",
-                "success" :"Article created successfully.",
-		        "error" :"Error creating article."
+                "label": "Add new writing",
+                "title": "New writing",
+                "success" :"Writing created successfully.",
+		        "error" :"Error creating writing."
             },
             "edit": {
-                "title": "Editing '{{name}}'",
-                "success" :"Article saved successfully.",
-                "error" :"Error saving article"
+                "title": "Editing '{{title}}'",
+                "success" :"Writing saved successfully.",
+                "error" :"Error saving writing"
             },
             "delete": {
-                "title" : "Delete article?",
-                "message": "Are you sure you want to delete article '{{name}}'?",
-                "success" :"Article deleted successfully.",
-                "error" :"Error deleting article."
+                "title" : "Delete writing?",
+                "message": "Are you sure you want to delete writing '{{name}}'?",
+                "success" :"Writing deleted successfully.",
+                "error" :"Error deleting writing."
             }
         }
     },

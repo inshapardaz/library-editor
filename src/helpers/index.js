@@ -12,6 +12,7 @@ const defaultLibraryImage = '/images/library_placeholder.png';
 const defaultAuthorImage = '/images/author_placeholder.jpg';
 const defaultSeriesImage = '/images/series_placeholder.jpg';
 const defaultBookImage = '/images/book_placeholder.jpg';
+const defaultArticleImage = '/images/article_placeholder.png';
 const defaultPageImage = '/images/page_placeholder.jpg';
 const defaultPeriodicalImage = '/images/periodical_placeholder.png';
 const defaultIssueImage = '/images/periodical_placeholder.png';
@@ -36,6 +37,10 @@ const helpers = {
     defaultBookImage,
     setDefaultBookImage: (ev) => {
         ev.target.src = defaultBookImage;
+    },
+    defaultArticleImage,
+    setDefaultArticleImage: (ev) => {
+        ev.target.src = defaultArticleImage;
     },
     defaultPageImage,
     setDefaultPageImage: (ev) => {
@@ -279,6 +284,60 @@ const helpers = {
         }
 
         return null;
+    },
+    updateLinkToArticlesPage: (location, {
+        pageNumber,
+        pageSize,
+        query,
+        author,
+        categories,
+        type,
+        sortBy,
+        sortDirection,
+        favorite,
+        read,
+        status, }) => {
+
+        var searchParams = new URLSearchParams(location.search);
+        if (pageNumber) {
+            searchParams.set("pageNumber", pageNumber);
+        }
+        if (pageSize) {
+            searchParams.set("pageSize", pageSize);
+        }
+        if (query) {
+            searchParams.set("query", query);
+        } else if (query === "") {
+            searchParams.delete("query")
+        }
+        if (author) {
+            searchParams.set("author", author);
+        }
+        if (categories) {
+            searchParams.set("categories", categories);
+        }
+        if (type) {
+            searchParams.set("type", type);
+        }
+        if (sortBy) {
+            searchParams.set("sortBy", sortBy);
+        } else if (sortBy === "") {
+            searchParams.delete("sortBy")
+        }
+        if (sortDirection) {
+            searchParams.set("sortDirection", sortDirection);
+        }
+        if (favorite) {
+            searchParams.set("favorite", favorite);
+        }
+        if (read) {
+            searchParams.set("read", read);
+        }
+        if (status) {
+            searchParams.set("status", status);
+        }
+
+        return `${location.pathname}?${searchParams.toString()}`;
     },
     buildLinkToPeriodicalsPage: (
         location,
