@@ -700,6 +700,10 @@ const en = {
             "placeholder" : "Select authors of the writing",
             "required" : "Author is required"
         },
+        "layout" : {
+            "label": "Layout",
+            "placeholder" : "Select layout"
+        },
         "status": {
             "label": "Status",
             "placeholder" : "Select writing status"
@@ -713,6 +717,9 @@ const en = {
         },
         "contents" : {
             "label": "Contents"
+        },
+        "messages" : {
+            "newContent" : "There are no contents available in chosen language. You are creating new content for this article۔"
         },
         "actions": {
             "add": {
@@ -1006,10 +1013,20 @@ const en = {
         "ascending": "Ascending",
         "descending": "Descending",
     },
+    "layouts" : {
+        "normal" : {
+            "label": "Normal"
+        },
+        "singleColumnPoetry" : {
+            "label": "Single Column Poetry"
+        },
+        "twoColumnPoetry" : {
+            "label": "Two Column Poetry"
+        }
+    },
     "errors" : {
         "imageRequired": "Only image files are expected. Please select an image file."
     }
-
 }
 
 export default en;

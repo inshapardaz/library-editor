@@ -9,6 +9,7 @@ import { FiEdit } from "react-icons/fi";
 
 // Local imports
 import { useGetArticleQuery, useGetArticleContentsQuery } from "../../features/api/articlesSlice";
+import styles from '../../styles/reader.module.scss';
 import ContentsContainer from "../../components/layout/contentContainer";
 import PageHeader from "../../components/layout/pageHeader";
 import Error from "../../components/common/error";
@@ -21,7 +22,7 @@ const ArticlePage = () => {
     const { t } = useTranslation();
     const { libraryId, articleId } = useParams();
     const { data: article, error, isFetching } = useGetArticleQuery({ libraryId, articleId }, { skip: !libraryId || !articleId });
-    const { data: articleContents, errorContents, isFetchingContents } = useGetArticleContentsQuery({ libraryId, articleId }, { skip: !libraryId || !articleId });
+    const { data: articleContents } = useGetArticleContentsQuery({ libraryId, articleId }, { skip: !libraryId || !articleId });
 
     if (isFetching) return <Loading />;
     if (error) return <Error t={t} />;
@@ -69,7 +70,9 @@ const ArticlePage = () => {
                     </Button.Group>,
                 ]}/>
                 <ContentsContainer>
-                    {articleContents}
+                    <div className={article?.layout ? styles[`article_reader__${article?.layout}`] : styles[`article_reader__normal`]}>
+                        {articleContents?.text}
+                    </div>
                 </ContentsContainer>
     </>);
 }

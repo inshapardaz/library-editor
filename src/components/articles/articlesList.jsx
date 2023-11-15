@@ -48,7 +48,7 @@ function ArticlesList({
     const navigate = useNavigate();
     const location = useLocation();
     const [search, setSearch] = useState(query);
-    const [showList, setShowList] = useLocalStorage("articles-list-view", false);
+    const [showList, setShowList] = useLocalStorage("articles-list-view", true);
 
     const {
         refetch,

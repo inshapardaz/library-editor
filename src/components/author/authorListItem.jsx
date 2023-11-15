@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // 3rd Party Libraries
 import { List, Typography } from "antd";
@@ -19,6 +19,7 @@ const { Text, Paragraph } = Typography;
 // ------------------------------------------------------
 
 function AuthorListItem({ libraryId, author, t }) {
+    const navigate = useNavigate();
     const avatar = <img src={author.links.image || helpers.defaultAuthorImage} onError={helpers.setDefaultAuthorImage} className={styles["author__image--small"]} alt={author.name} />;
     const title = <Link to={`/libraries/${libraryId}/authors/${author.id}`}>{author.name}</Link>;
     const description = author.description ? (
@@ -29,19 +30,22 @@ function AuthorListItem({ libraryId, author, t }) {
         <Text type="secondary">{t("author.noDescription")}</Text>
     );
     const bookCount = (
-        <Link to={`/libraries/${libraryId}/authors/${author.id}`}>
-            <IconText icon={ImBooks} text={t("author.bookCount", { count: author.bookCount })} key="auhtor-book-count" />
-        </Link>
+        <IconText onClick={() => navigate(`/libraries/${libraryId}/books?author=${author.id}`)}
+            icon={ImBooks}
+            text={t("author.bookCount", { count: author.bookCount })}
+            key="auhtor-book-count" />
     );
     const writingsCount = (
-        <Link to={`/libraries/${libraryId}/articles?author=${author.id}`}>
-            <IconText icon={FaPenFancy} text="0" key="author-writings-count" />
-        </Link>
+        <IconText onClick={() => navigate(`/libraries/${libraryId}/articles?author=${author.id}`)}
+            icon={FaPenFancy}
+            text={t("author.writingCount", { count: author.articleCount })}
+            key="author-writings-count"/>
     );
     const editLink = (
-        <Link to={`/libraries/${libraryId}/authors/${author.id}/edit`}>
-            <FaEdit />
-        </Link>
+        <IconText onClick={() => navigate(`/libraries/${libraryId}/authors/${author.id}/edit`)}
+            icon={FaEdit}
+            text={t("actions.edit")}
+            key="author-edit"/>
     );
     const deleteAuthor = <AuthorDeleteButton libraryId={libraryId} author={author} t={t} type="ghost" size="small" />;
 

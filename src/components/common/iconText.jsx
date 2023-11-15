@@ -4,9 +4,9 @@ import React from 'react';
 import { Space } from 'antd';
 
 // ------------------------------------------------
-export function IconText({ icon, text, onClick = () => {} }) {
+export function IconText({ icon, text, link = true ,onClick = () => {} }) {
   return (
-    <Space onClick={onClick} style={{ cursor : 'pointer' }}>
+    <Space onClick={onClick} style={{ cursor : link ? 'pointer' : 'default' }}>
       {React.createElement(icon)}
       {text}
     </Space>

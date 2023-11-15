@@ -293,3 +293,12 @@
     //     text-align: center;
     // }
 }
+
+
+/* Article Reader */
+.article_reader {
+    &__normal {
+        max-width: 60%;
+        margin: 0 auto;
+    }
+}

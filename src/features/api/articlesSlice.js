@@ -58,8 +58,7 @@ export const articlesApi = createApi({
         }),
         getArticleContents: builder.query({
             query: ({ libraryId, articleId, language }) => ({ url: `/libraries/${libraryId}/articles/${articleId}/contents?language=${language}`, method: 'get' }),
-            transformResponse: (response) => parseResponse(response),
-            providesTags: [ 'ArticleContents' ]
+            transformResponse: (response) => parseResponse(response)
         }),
         addArticle: builder.mutation({
             query: ({ libraryId, payload }) => ({
@@ -108,6 +107,20 @@ export const articlesApi = createApi({
             }),
             invalidatesTags: [ 'Article' ]
         }),
+        addArticleContents: builder.mutation({
+            query: ({ libraryId, articleId, language, payload }) => ({
+                url: `/libraries/${libraryId}/articles/${articleId}/contents?language=${language}`,
+                method: 'POST',
+                payload
+            })
+        }),
+        updateArticleContents: builder.mutation({
+            query: ({ libraryId, articleId, language, payload }) => ({
+                url: `/libraries/${libraryId}/articles/${articleId}/contents?language=${language}`,
+                method: 'PUT',
+                payload
+            })
+        }),
     }),
 })
 
@@ -119,5 +132,7 @@ export const {
     useUpdateArticleMutation,
     useDeleteArticleMutation,
     useUpdateArticleImageMutation,
-    useAssignArticleMutation
+    useAssignArticleMutation,
+    useAddArticleContentsMutation,
+    useUpdateArticleContentsMutation
  } = articlesApi

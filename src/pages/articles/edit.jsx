@@ -18,10 +18,11 @@ import helpers from "../../helpers";
 import AuthorsSelect from "../../components/author/authorsSelect";
 import CategoriesSelect from "../../components/categories/categoriesSelect";
 import EditingStatusSelect from "../../components/editingStatusSelect";
+import ArticleContentEditor from "../../components/articles/articleContentEditor";
+import ArticleLayoutSelect from "../../components/articles/articleLayoutSelect";
 
 // ----------------------------------------------
 const { Dragger } = Upload;
-const { TextArea } = Input;
 // ----------------------------------------------
 
 const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 14 } };
@@ -160,6 +161,11 @@ const ArticleEditPage = () => {
                                 >
                                     <AuthorsSelect placeholder={t("article.authors.placeholder")} t={t} libraryId={libraryId} />
                                 </Form.Item>
+                                <Form.Item name="layout" label={t("article.layout.label")}>
+                                    <ArticleLayoutSelect libraryId={libraryId}
+                                        placeholder={t("article.layout.placeholder")}
+                                        t={t} />
+                                </Form.Item>
                                 <Form.Item name="categories" label={t("article.categories.label")}>
                                     <CategoriesSelect libraryId={libraryId} placeholder={t("article.categories.placeholder")} />
                                 </Form.Item>
@@ -193,7 +199,7 @@ const ArticleEditPage = () => {
             ),
     }];
 
-    if (articleId) {
+    if (article && article.links.add_content) {
         tabs.push({
             key: "contents",
             label: (
@@ -203,7 +209,7 @@ const ArticleEditPage = () => {
                 </Space>
             ),
             children: (
-                <TextArea/>
+                <ArticleContentEditor libraryId={libraryId} article={article} t={t} />
             ),
         });
     }

@@ -4,28 +4,12 @@ import { Link } from "react-router-dom";
 import { Avatar, List } from "antd";
 
 // Local Import
-import styles from "../../styles/common.module.scss";
 import AuthorAvatar from "../author/authorAvatar";
 import { ArticleCategory } from "./articleCategory";
-import helpers from "../../helpers/index";
 import ArticleDeleteButton from "./articleDeleteButton";
 // ------------------------------------------------------
 
 function ArticleListItem({ libraryId, article, t }) {
-    const cover = article.links.image ? (
-        <img
-            src={article.links.image}
-            onError={helpers.setDefaultArticleImage}
-            className={styles["article__image--small"]}
-            alt={article.title}
-        />
-    ) : (
-        <img
-            src={helpers.defaultArticleImage}
-            className={styles["article__image--small"]}
-            alt={article.title}
-        />
-    );
     const avatar = (
         <Avatar.Group maxCount="2" size="large">
             {article.authors.map((author) => (
@@ -47,7 +31,7 @@ function ArticleListItem({ libraryId, article, t }) {
     return (
         <List.Item
             key={article.id}
-            actions={[
+            extra={[
                 <ArticleCategory
                     key={`${article.id}-action-categories`}
                     justList
@@ -59,9 +43,9 @@ function ArticleListItem({ libraryId, article, t }) {
                     t={t}
                     type="ghost"
                     size="small"
+                    key={`${article.id}-action-delete`}
                 />,
             ]}
-            extra={cover}
         >
             <List.Item.Meta
                 avatar={avatar}
