@@ -79,6 +79,9 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
     const assignment =
         searchParams.get("assignment") ??
         getAssignmentFilterFromBookStatus(book);
+    const reviewerAssignmentFilter =
+        searchParams.get("reviewerAssignment") ??
+        getAssignmentFilterFromBookStatus(book);
     const pageNumber = searchParams.get("pageNumber") ?? 1;
     const pageSize = searchParams.get("pageSize") ?? 12;
     const sortDirection = searchParams.get("sortDirection") ?? 12;
@@ -93,7 +96,8 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
             libraryId,
             bookId: book.id,
             status,
-            assignment,
+            assignment : BookStatus.BeingTyped === book.status ? assignment : null,
+            reviewerAssignmentFilter:  BookStatus.ProofRead === book.status ? reviewerAssignmentFilter : null,
             sortDirection,
             pageNumber,
             pageSize,
@@ -172,6 +176,7 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
                 newPageSize,
                 status,
                 assignment,
+                reviewerAssignmentFilter,
                 sortDirection
             )
         );
@@ -210,7 +215,7 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
                 <Button.Group>
                     <PageAssignmentFilterButton
                         libraryId={libraryId}
-                        bookId={book.id}
+                        book={book}
                         t={t}
                     />
                     <PageStatusFilterButton

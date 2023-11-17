@@ -6,9 +6,10 @@ import helpers from "../../helpers";
 import { BookCategory } from "./bookCategory";
 import { BookSeriesInfo } from "./bookSeriesInfo";
 import styles from "../../styles/common.module.scss";
-
-// -----------------------------------------
-
+import { IconText } from "../common/iconText";
+import BookStatusIcon from './BookStatusIcon';
+import { AiOutlineCopy } from "react-icons/ai";
+import { FiLayers } from "react-icons/fi";
 // -----------------------------------------
 const { Paragraph } = Typography;
 // ---------------------------------------------
@@ -40,6 +41,9 @@ const BookInfo = ({ libraryId, book, t }) => {
                     t("book.publishLabel", { year: book.yearPublished })}
                 <BookCategory libraryId={libraryId} book={book} />
                 <BookSeriesInfo book={book} t={t} />
+                <IconText icon={FiLayers} text={t("book.chapterCount", { count: book.chapterCount })} />
+                <IconText icon={AiOutlineCopy} text={t("book.pageCount", { count: book.pageCount })} />
+                <IconText icon={BookStatusIcon({status : book.status, render:false })} text={t(`bookStatus.${book.status}`)} />
             </Space>
         </>
     );

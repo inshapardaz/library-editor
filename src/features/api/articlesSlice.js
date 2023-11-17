@@ -108,17 +108,25 @@ export const articlesApi = createApi({
             invalidatesTags: [ 'Article' ]
         }),
         addArticleContents: builder.mutation({
-            query: ({ libraryId, articleId, language, payload }) => ({
-                url: `/libraries/${libraryId}/articles/${articleId}/contents?language=${language}`,
+            query: ({ libraryId, articleId, language, layout, payload }) => ({
+                url: `/libraries/${libraryId}/articles/${articleId}/contents`,
                 method: 'POST',
-                payload
+                payload: {
+                    language: language,
+                    layout: layout,
+                    text: payload
+                }
             })
         }),
         updateArticleContents: builder.mutation({
-            query: ({ libraryId, articleId, language, payload }) => ({
-                url: `/libraries/${libraryId}/articles/${articleId}/contents?language=${language}`,
+            query: ({ libraryId, articleId, language, layout, payload }) => ({
+                url: `/libraries/${libraryId}/articles/${articleId}/contents`,
                 method: 'PUT',
-                payload
+                payload: {
+                    language: language,
+                    layout: layout,
+                    text: payload
+                }
             })
         }),
     }),

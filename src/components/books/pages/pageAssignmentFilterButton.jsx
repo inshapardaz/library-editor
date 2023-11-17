@@ -14,23 +14,28 @@ import {
 // Local Import
 import helpers from "../../../helpers";
 import AssignmentStatus from "../../../models/assignmentStatus";
+import BookStatus from "../../../models/bookStatus";
 
 // ------------------------------------------------------
 
-export default function PageAssignmentFilterButton({ libraryId, bookId, t }) {
+export default function PageAssignmentFilterButton({ libraryId, book, t }) {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const location = useLocation();
 
     const assignment =
-        searchParams.get("assignment") ?? AssignmentStatus.AssignedToMe;
+        (book.status === BookStatus.BeingTyped && searchParams.get("assignment")) ||
+        (book.status === BookStatus.ProofRead && searchParams.get("reviewerAssignment"))
+        ? AssignmentStatus.AssignedToMe
+        : AssignmentStatus.All;
 
     const setAssignment = (newAvailabilityStatus) => {
         navigate(
             helpers.updateLinkToBooksPagesPage(
                 location, {
                     pageNumber : 1,
-                    assignmentFilter: newAvailabilityStatus,
+                    assignmentFilter: BookStatus.BeingTyped === book.status ? newAvailabilityStatus : null,
+                    reviewerAssignmentFilter:  BookStatus.ProofRead === book.status ? newAvailabilityStatus : null,
                 }
             )
         );

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 // 3rd party imports
 import { Menu } from "antd";
-import { FaTags, FaTag, FaRegHeart, FaEye } from "react-icons/fa";
+import { FaTags, FaTag, FaRegHeart, FaEye, FaPen, FaPenAlt } from "react-icons/fa";
 import { MdNewReleases } from "react-icons/md";
 
 // Local Imports
@@ -58,6 +58,19 @@ function ArticlesSideBar({ libraryId, selectedCategories, sortBy, sortDirection,
             key: "sidebar-bar-read",
             icon: <FaEye />,
             label: <Link to={`/libraries/${libraryId}/articles?read=true`}>{t("articles.read.title")}</Link>,
+        });
+
+
+        items.splice(2, 0, {
+            key: "sidebar-bar-reviewed",
+            icon: <FaPenAlt />,
+            label: <Link to={`/libraries/${libraryId}/articles?status=inReview`}>{t("books.ProofRead.title")}</Link>,
+        });
+
+        items.splice(2, 0, {
+            key: "sidebar-bar-editing",
+            icon: <FaPen />,
+            label: <Link to={`/libraries/${libraryId}/articles?status=typing`}>{t("books.BeingTyped.title")}</Link>,
         });
     }
 

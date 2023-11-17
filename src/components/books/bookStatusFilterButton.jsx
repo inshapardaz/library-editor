@@ -3,19 +3,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 // Third party libraries
 import { Button, Dropdown, Space } from "antd";
 import {
-    FaCheck,
     FaChevronDown,
-    FaFile,
-    FaFileAlt,
-    FaFileSignature,
     FaFilter,
-    FaGlasses,
-    FaStarOfLife,
 } from "react-icons/fa";
 
 // Local Import
 import helpers from "../../helpers";
 import BookStatus from "../../models/bookStatus";
+import BookStatusIcon from "./BookStatusIcon";
 
 // ------------------------------------------------------
 
@@ -34,37 +29,37 @@ export default function BookStatusFilterButton({ t, status }) {
 
     const items = [
         {
-            icon: <FaStarOfLife />,
+            icon: <BookStatusIcon status={BookStatus.All} />,
             label: t("pages.filters.all"),
             onClick: () => setStatus(BookStatus.All),
             key: BookStatus.All,
         },
         {
-            icon: <FaFile />,
+            icon: <BookStatusIcon status={BookStatus.AvailableForTyping} />,
             label: t("pages.filters.availableToType"),
             onClick: () => setStatus(BookStatus.AvailableForTyping),
             key: BookStatus.AvailableForTyping,
         },
         {
-            icon: <FaFileSignature />,
+            icon: <BookStatusIcon status={BookStatus.BeingTyped} />,
             label: t("pages.filters.typing"),
             onClick: () => setStatus(BookStatus.BeingTyped),
             key: BookStatus.BeingTyped,
         },
         {
-            icon: <FaFileAlt />,
+            icon: <BookStatusIcon status={BookStatus.ReadyForProofRead} />,
             label: t("pages.filters.typed"),
             onClick: () => setStatus(BookStatus.ReadyForProofRead),
             key: BookStatus.ReadyForProofRead,
         },
         {
-            icon: <FaGlasses />,
+            icon: <BookStatusIcon status={BookStatus.ProofRead} />,
             label: t("pages.filters.proofreading"),
             onClick: () => setStatus(BookStatus.ProofRead),
             key: BookStatus.ProofRead,
         },
         {
-            icon: <FaCheck />,
+            icon: <BookStatusIcon status={BookStatus.Published} />,
             label: t("pages.filters.completed"),
             onClick: () => setStatus(BookStatus.Published),
             key: BookStatus.Published,

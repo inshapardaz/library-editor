@@ -143,7 +143,7 @@ function BooksList({
                             allowClear
                             onChange={(e) => setSearch(e.target.value)}
                             onSearch={onSearch}
-                            placeholder={t("book.search.placeholder")}
+                            placeholder={t("books.search.placeholder")}
                         />
                     )}
                     <Button.Group>

@@ -339,6 +339,20 @@ const helpers = {
 
         return `${location.pathname}?${searchParams.toString()}`;
     },
+    updateLinkToArticlesEditPage: (location, {
+        section,
+        language
+    }) => {
+        var searchParams = new URLSearchParams(location.search);
+        if (section) {
+            searchParams.set("section", section);
+        }
+        if (language) {
+            searchParams.set("language", language);
+        }
+
+        return `${location.pathname}?${searchParams.toString()}`;
+    },
     buildLinkToPeriodicalsPage: (
         location,
         page,
@@ -392,12 +406,14 @@ const helpers = {
         pageSize,
         statusFilter,
         assignmentFilter,
+        reviewerAssignmentFilter,
         sortDirection) => {
         let querystring = 'section=pages&';
         querystring += pageNumber ? `pageNumber=${pageNumber}&` : '';
         querystring += pageSize && pageSize !== 12 ? `pageSize=${pageSize}&` : '';
         querystring += statusFilter ? `status=${statusFilter}&` : '';
         querystring += assignmentFilter ? `assignment=${assignmentFilter}&` : '';
+        querystring += reviewerAssignmentFilter ? `reviewerAssignment=${reviewerAssignmentFilter}&` : '';
         querystring += sortDirection ? `sortDirection=${sortDirection}&` : '';
 
         if (querystring !== '') {
@@ -415,6 +431,7 @@ const helpers = {
         pageSize,
         statusFilter,
         assignmentFilter,
+        reviewerAssignmentFilter,
         sortDirection}) => {
             var searchParams = new URLSearchParams(location.search);
             if (pageNumber) {
@@ -430,6 +447,9 @@ const helpers = {
             }
             if (assignmentFilter) {
                 searchParams.set("assignment", assignmentFilter);
+            }
+            if (reviewerAssignmentFilter) {
+                searchParams.set("reviewerAssignment", reviewerAssignmentFilter);
             }
             if (sortDirection) {
                 searchParams.set("sortDirection", sortDirection);

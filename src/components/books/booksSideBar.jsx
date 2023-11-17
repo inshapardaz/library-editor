@@ -59,6 +59,18 @@ function BooksSideBar({ libraryId, selectedCategories, sortBy, sortDirection, fa
             icon: <FaBookOpen />,
             label: <Link to={`/libraries/${libraryId}/books?read=true`}>{t("books.read.title")}</Link>,
         });
+
+        items.splice(2, 0, {
+            key: "sidebar-bar-reviewed",
+            icon: <FaBookOpen />,
+            label: <Link to={`/libraries/${libraryId}/books?status=proofRead`}>{t("books.ProofRead.title")}</Link>,
+        });
+
+        items.splice(2, 0, {
+            key: "sidebar-bar-editing",
+            icon: <FaBookOpen />,
+            label: <Link to={`/libraries/${libraryId}/books?status=beingTyped`}>{t("books.BeingTyped.title")}</Link>,
+        });
     }
 
     let selection = [];

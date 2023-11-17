@@ -19,7 +19,6 @@ import AuthorsSelect from "../../components/author/authorsSelect";
 import CategoriesSelect from "../../components/categories/categoriesSelect";
 import EditingStatusSelect from "../../components/editingStatusSelect";
 import ArticleContentEditor from "../../components/articles/articleContentEditor";
-import ArticleLayoutSelect from "../../components/articles/articleLayoutSelect";
 
 // ----------------------------------------------
 const { Dragger } = Upload;
@@ -160,11 +159,6 @@ const ArticleEditPage = () => {
                                     ]}
                                 >
                                     <AuthorsSelect placeholder={t("article.authors.placeholder")} t={t} libraryId={libraryId} />
-                                </Form.Item>
-                                <Form.Item name="layout" label={t("article.layout.label")}>
-                                    <ArticleLayoutSelect libraryId={libraryId}
-                                        placeholder={t("article.layout.placeholder")}
-                                        t={t} />
                                 </Form.Item>
                                 <Form.Item name="categories" label={t("article.categories.label")}>
                                     <CategoriesSelect libraryId={libraryId} placeholder={t("article.categories.placeholder")} />
