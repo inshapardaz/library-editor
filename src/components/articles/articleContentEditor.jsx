@@ -36,7 +36,7 @@ const ArticleContentEditor = ({ libraryId, article, t }) => {
     const [ updateArticleContents, { isLoading: isUpdating }] = useUpdateArticleContentsMutation();
     const [saved, setSaved] = useState(articleContents);
     const onSubmit = async () => {
-        if (saved) {
+        if (saved || articleContents) {
             updateArticleContents({ libraryId, articleId : article.id, language: searchLang, layout: layout, payload: contents })
                 .unwrap()
                 .then(() => message.success(t("article.actions.edit.success")))
@@ -49,12 +49,13 @@ const ArticleContentEditor = ({ libraryId, article, t }) => {
                 .catch((_) => message.error(t("article.actions.add.error")));
         }
     };
-    console.log(error);
+
     useEffect(() => {
-        if (error) {
-            setContents('');
-        } else {
+        if (!error && articleContents) {
             setContents(articleContents.text);
+        } else {
+            setSaved(false);
+            setContents('');
         }
 
     }, [articleContents, error, searchLang]);

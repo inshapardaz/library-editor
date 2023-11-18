@@ -301,4 +301,12 @@
         max-width: 60%;
         margin: 0 auto;
     }
+
+    &__en {
+        direction: ltr;
+    }
+
+    &__ur {
+        direction: rtl;
+    }
 }

@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 
 // 3rd party imports
@@ -9,23 +10,29 @@ import { FiEdit } from "react-icons/fi";
 
 // Local imports
 import { useGetArticleQuery, useGetArticleContentsQuery } from "../../features/api/articlesSlice";
+import { selectedLanguage } from '../../features/ui/uiSlice';
 import styles from '../../styles/reader.module.scss';
-import ContentsContainer from "../../components/layout/contentContainer";
+import DataContainer from "../../components/layout/dataContainer";
 import PageHeader from "../../components/layout/pageHeader";
-import Error from "../../components/common/error";
 import Loading from "../../components/common/loader";
 import AuthorAvatar from "../../components/author/authorAvatar";
 import ArticleDeleteButton from "../../components/articles/articleDeleteButton";
 
 const ArticlePage = () => {
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const lang = useSelector(selectedLanguage);
+    const searchLang = searchParams.get("language") ??lang.key;
     const { t } = useTranslation();
     const { libraryId, articleId } = useParams();
-    const { data: article, error, isFetching } = useGetArticleQuery({ libraryId, articleId }, { skip: !libraryId || !articleId });
-    const { data: articleContents } = useGetArticleContentsQuery({ libraryId, articleId }, { skip: !libraryId || !articleId });
+    const { data: article, isFetching } = useGetArticleQuery({ libraryId, articleId }, { skip: !libraryId || !articleId });
+    const { data: articleContents, error: contentError, isFetching : isLoadingContents } = useGetArticleContentsQuery({ libraryId, articleId, language: searchLang }, { skip: !libraryId || !article });
 
-    if (isFetching) return <Loading />;
-    if (error) return <Error t={t} />;
+    if (isFetching) return <Loading />
+
+    const isArticlePresent = !!article;
+    const hasAnyContent = article?.contents.length > 0;
+    const isContentMissing = contentError && contentError.status === 404;
 
     const title = article ? article.title : t("article.actions.add.label");
 
@@ -48,6 +55,11 @@ const ArticlePage = () => {
                 }
                 actions={[
                     <Button.Group>
+                        {article && article.contents.map(c => (<Button key={c.language} onClick={() =>
+                                navigate(`/libraries/${libraryId}/articles/${article.id}?language=${c.language}`)
+                            } disabled={c.language === searchLang}>
+                            {t(`languages.${c.language}`)}
+                        </Button>))}
                         <Button
                             block
                             icon={<FiEdit />}
@@ -69,11 +81,23 @@ const ArticlePage = () => {
                         </ArticleDeleteButton>
                     </Button.Group>,
                 ]}/>
-                <ContentsContainer>
-                    <div className={article?.layout ? styles[`article_reader__${article?.layout}`] : styles[`article_reader__normal`]}>
+                <DataContainer busy={isFetching | isLoadingContents}
+                    error={!isArticlePresent || !hasAnyContent}
+                    errorTitle={ t("article.errors.contentNotFound.titleMissing")}
+                    errorSubTitle={t("article.errors.contentNotFound.subTitleMissing")}
+                    empty={isContentMissing && hasAnyContent}
+                    emptyDescription={t("article.errors.contentNotFound.title", { language : t(`languages.${searchLang}`) }) + '\n' +  t("article.errors.contentNotFound.subTitle")}
+                    emptyContent={
+                        article && article.contents.map(c =>
+                        <Button type="default" key={c.language} onClick={() => navigate(`/libraries/${libraryId}/articles/${article.id}?language=${c.language}`)}>
+                            {t(`languages.${c.language}`)}
+                        </Button>)
+                    }>
+                    <div className={[article?.layout ? styles[`article_reader__${article?.layout}`] : styles[`article_reader__normal`],
+                          article?.language ? styles[`article_reader__${article.language}`] : styles[`article_reader__${lang}`]]}>
                         {articleContents?.text}
                     </div>
-                </ContentsContainer>
+                </DataContainer>
     </>);
 }
 

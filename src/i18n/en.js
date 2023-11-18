@@ -739,7 +739,15 @@ const en = {
                 "success" :"Writing deleted successfully.",
                 "error" :"Error deleting writing."
             }
-        }
+        },
+        "errors": {
+            "contentNotFound": {
+                "title": "Content Not Available in `{{language}}`.",
+                "titleMissing": "Content Not Available.",
+                "subTitle": "Please try a different language below.",
+                "subTitleMissing": "Please visit us later.",
+            }
+        },
     },
 	"series" : {
 		"title" : "Series",

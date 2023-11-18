@@ -56,10 +56,6 @@ export const articlesApi = createApi({
             transformResponse: (response) => parseResponse(response),
             providesTags: [ 'Articles' ]
         }),
-        getArticleContents: builder.query({
-            query: ({ libraryId, articleId, language }) => ({ url: `/libraries/${libraryId}/articles/${articleId}/contents?language=${language}`, method: 'get' }),
-            transformResponse: (response) => parseResponse(response)
-        }),
         addArticle: builder.mutation({
             query: ({ libraryId, payload }) => ({
                 url: `/libraries/${libraryId}/articles`,
@@ -129,6 +125,10 @@ export const articlesApi = createApi({
                 }
             })
         }),
+        getArticleContents: builder.query({
+            query: ({ libraryId, articleId, language }) => ({ url: `/libraries/${libraryId}/articles/${articleId}/contents?language=${language}`, method: 'get' }),
+            transformResponse: (response) => parseResponse(response)
+        })
     }),
 })
 

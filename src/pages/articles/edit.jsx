@@ -181,7 +181,7 @@ const ArticleEditPage = () => {
                                         <Button type="primary" htmlType="submit" size="large" block>
                                             {t("actions.save")}
                                         </Button>
-                                        <Button size="large" onClick={() => navigate(-1)} block>
+                                        <Button size="large" onClick={() => navigate(`/libraries/${libraryId}/articles/${articleId}/`)} block>
                                             {t("actions.cancel")}
                                         </Button>
                                     </Space>
@@ -219,7 +219,7 @@ const ArticleEditPage = () => {
                 actions={[
                     <Button.Group>
                         <Button
-                            onClick={() => navigate(`/libraries/${libraryId}/articles`)}
+                            onClick={() => navigate(`/libraries/${libraryId}/articles/${articleId}/`)}
                         >
                             <FaTimesCircle />
                         </Button>
