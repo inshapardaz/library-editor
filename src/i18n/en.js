@@ -355,8 +355,29 @@ const en = {
                 "message": "Are you sure you want to delete book '{{title}}'? It will remove all of its contents including chapters, pages and files.",
                 "success" :"Book deleted successfully.",
                 "error" :"Error deleting book."
+            },
+            "addFile" : {
+                "title" : "Upload file",
+                "success" :"File uploadedsuccessfully.",
+                "error" :"Error uploading file."
+            },
+            "deleteFile": {
+                "title": "Delete file?",
+                "message": "Are you sure you want to delete book '{{title}}'?.",
+            },
+            "downloadFile": {
+                "title" : "Download file"
             }
-        }
+        },
+        "errors": {
+            "loading": {
+                "title": "Error",
+                "subTitle": "Unable to load book.",
+            }
+        },
+        "empty" : {
+            "title" : "No latest book found",
+        },
 	},
 	"chapters" : {
 		"title": "Chapters",
@@ -1015,7 +1036,8 @@ const en = {
         "Typing": "Being Typed",
         "Typed": "Typed",
         "InReview" : "In Review",
-        "Completed" : "Completed"
+        "Completed" : "Completed",
+        "All": "All"
     },
     "sort": {
         "ascending": "Ascending",

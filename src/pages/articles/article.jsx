@@ -17,6 +17,7 @@ import PageHeader from "../../components/layout/pageHeader";
 import Loading from "../../components/common/loader";
 import AuthorAvatar from "../../components/author/authorAvatar";
 import ArticleDeleteButton from "../../components/articles/articleDeleteButton";
+import ReactMarkdown from "react-markdown";
 
 const ArticlePage = () => {
     const navigate = useNavigate();
@@ -95,7 +96,7 @@ const ArticlePage = () => {
                     }>
                     <div className={[article?.layout ? styles[`article_reader__${article?.layout}`] : styles[`article_reader__normal`],
                           article?.language ? styles[`article_reader__${article.language}`] : styles[`article_reader__${lang}`]]}>
-                        {articleContents?.text}
+                        <ReactMarkdown children={articleContents?.text} />
                     </div>
                 </DataContainer>
     </>);

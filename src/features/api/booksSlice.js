@@ -97,7 +97,7 @@ export const booksApi = createApi({
         getBook: builder.query({
             query: ({ libraryId, bookId }) => ({ url: `/libraries/${libraryId}/books/${bookId}`, method: 'get' }),
             transformResponse: (response) => parseResponse(response),
-            providesTags: [ 'Books' ]
+            providesTags: [ 'Book' ]
         }),
         getBookChapters: builder.query({
             query: ({ libraryId, bookId }) => ({ url: `/libraries/${libraryId}/books/${bookId}/chapters`, method: 'get' }),
@@ -128,14 +128,14 @@ export const booksApi = createApi({
                 method: 'PUT',
                 payload: removeLinks(payload)
             }),
-            invalidatesTags: [ 'Books' ]
+            invalidatesTags: [ 'Books', 'Book' ]
         }),
         deleteBook: builder.mutation({
             query: ({ libraryId, bookId }) => ({
                 url: `/libraries/${libraryId}/books/${bookId}`,
                 method: 'DELETE'
             }),
-            invalidatesTags: [ 'Books' ]
+            invalidatesTags: [ 'Books', 'Book' ]
         }),
         updateBookImage: builder.mutation({
             query: ({ libraryId, bookId, payload }) => {
@@ -151,7 +151,7 @@ export const booksApi = createApi({
                     }
                 });
             },
-            invalidatesTags: [ 'Books' ]
+            invalidatesTags: [ 'Book' ]
         }),
         addChapter: builder.mutation({
             query: ({ libraryId, bookId, payload }) => ({
@@ -289,7 +289,45 @@ export const booksApi = createApi({
             },
             invalidatesTags: [ 'BookPages' ]
         }),
-
+        addBookContent: builder.mutation({
+            query: ({ book, payload }) => {
+                const formData = new FormData();
+                formData.append('file', payload, payload.fileName);
+                return ({
+                    url: book.links.add_file,
+                    method: 'POST',
+                    payload: formData,
+                    formData: true,
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                });
+            },
+            invalidatesTags: [ 'Book' ]
+        }),
+        updateBookContent: builder.mutation({
+            query: ({ content, payload }) => {
+                const formData = new FormData();
+                formData.append('file', payload, payload.fileName);
+                return ({
+                    url: content.links.update,
+                    method: 'PUT',
+                    payload: formData,
+                    formData: true,
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                });
+            },
+            invalidatesTags: [ 'Book' ]
+        }),
+        deleteBookContent: builder.mutation({
+            query: ({ content }) => ({
+                url: content.links.delete,
+                method: 'DELETE',
+            }),
+            invalidatesTags: [ 'Book' ]
+        }),
     }),
 })
 
@@ -320,4 +358,7 @@ export const {
     useUpdateBookPageImageMutation,
     useUpdateBookPageSequenceMutation,
     useCreateBookPageWithImageMutation,
+    useAddBookContentMutation,
+    useUpdateBookContentMutation,
+    useDeleteBookContentMutation,
  } = booksApi

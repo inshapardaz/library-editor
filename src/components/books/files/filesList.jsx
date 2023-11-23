@@ -1,142 +1,66 @@
 // 3rd party libraries
-import { App, Button, Col, List, Row, Skeleton, Typography } from "antd";
-import { FaBook } from "react-icons/fa";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { App, Button, List, Upload } from "antd";
+import { FaBook, FaFileUpload } from "react-icons/fa";
 
 // Internal Imports
-import {
-    useGetBookChaptersQuery,
-    useUpdateChapterSequenceMutation,
-} from "../../../features/api/booksSlice";
-import ChapterListItem from "../chapters/chapterListItem";
-import ChapterEditor from "../chapters/chapterEditor";
+import { useAddBookContentMutation } from "../../../features/api/booksSlice";
+import FileListItem from "../files/fileListItem";
 import DataContainer from "../../layout/dataContainer";
-
-// ------------------------------------------------------
+// ----------------------------------------------
 
 const FilesList = ({
     libraryId,
-    bookId,
+    book,
     t,
-    selectedChapterNumber = null,
-    size = "default",
-    hideTitle = false,
+    size = "default"
 }) => {
     const { message } = App.useApp();
 
-    const {
-        refetch,
-        data: chapters,
-        error,
-        isFetching,
-    } = useGetBookChaptersQuery(
-        { libraryId, bookId },
-        { skip: !libraryId || !bookId }
-    );
-    const [updateChapterSequence, { isLoading: isUpdating }] =
-        useUpdateChapterSequenceMutation();
+    const [addBookContent, { isLoading: isAdding }] = useAddBookContentMutation();
 
-    const title = hideTitle ? null : <div>{t("book.chapters.title")}</div>;
-
-    if (isFetching) return <Skeleton />;
-
-    const onDragDrop = (result) => {
-        const fromIndex = result.source.index;
-        const toIndex = result.destination.index;
-        let payload = [...chapters.data];
-        if (fromIndex !== toIndex) {
-            const element = payload[fromIndex];
-            payload.splice(fromIndex, 1);
-            payload.splice(toIndex, 0, element);
-
-            payload = payload.map((item, index) => ({
-                id: item.id,
-                chapterNumber: index + 1,
-            }));
-
-            return updateChapterSequence({ libraryId, bookId, payload })
-                .unwrap()
-                .then(() =>
-                    message.success(t("chapter.actions.reorder.success"))
-                )
-                .catch((_) =>
-                    message.error(t("chapter.actions.reorder.error"))
-                );
+    const uploadFile = (file) => {
+        const isAllowed = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"].includes(file.type);
+        if (!isAllowed) {
+            message.error(t("errors.imageRequired"));
+            return;
         }
-    };
 
-    const header = (
-        <Row>
-            <Col flex="auto">
-                <Typography level={3}>{title}</Typography>
-            </Col>
-            <Col>
-                <ChapterEditor
-                    libraryId={libraryId}
-                    bookId={bookId}
-                    t={t}
-                    buttonType="dashed"
-                />
-            </Col>
-        </Row>
-    );
+        addBookContent({ book: book, payload: file }).unwrap()
+            .then(() => message.success(t("book.actions.addFile.success")))
+            .catch((_) => message.error(t("book.actions.addFile.error")));
+    }
+
     return (
         <>
             <DataContainer
-                busy={isFetching | isUpdating}
-                error={error}
-                errorTitle={t("chapters.errors.loading.title")}
-                errorSubTitle={t("chapters.errors.loading.subTitle")}
-                errorAction={
-                    <Button type="default" onClick={refetch}>
-                        {t("actions.retry")}
-                    </Button>
-                }
+                busy={isAdding}
                 emptyImage={<FaBook size="5em" />}
-                emptyDescription={t("chapters.empty.title")}
+                emptyDescription={t("book.empty.title")}
                 emptyContent={
-                    <ChapterEditor
-                        libraryId={libraryId}
-                        bookId={bookId}
-                        t={t}
-                        buttonType="dashed"
-                    />
+                    <Upload beforeUpload={uploadFile} maxCount={1} showUploadList={false} >
+                        <Button icon={FaFileUpload}>a{t('book.actions.addFile')}</Button>
+                    </Upload>
                 }
-                empty={chapters && chapters.data && chapters.data.length < 1}
+                empty={!book || (book.contents && book.contents.length < 1)}
                 bordered={false}
-            >
-                <DragDropContext onDragEnd={onDragDrop}>
-                    <Droppable droppableId={`Droppable_${bookId}`}>
-                        {(provided) => (
-                            <div
-                                ref={provided.innerRef}
-                                {...provided.droppableProps}
-                            >
-                                <List
-                                    size={size}
-                                    itemLayout="horizontal"
-                                    dataSource={chapters ? chapters.data : []}
-                                    header={header}
-                                    renderItem={(chapter) => (
-                                        <ChapterListItem
-                                            key={chapter.id}
-                                            t={t}
-                                            selected={
-                                                selectedChapterNumber ===
-                                                chapter.chapterNumber
-                                            }
-                                            libraryId={libraryId}
-                                            bookId={bookId}
-                                            chapter={chapter}
-                                        />
-                                    )}
-                                >
-                                    {provided.placeholder}
-                                </List>
-                            </div>
+                >
+                    <List
+                        size={size}
+                        itemLayout="horizontal"
+                        dataSource={book && book.contents ? book.contents : []}
+                        header={<Upload beforeUpload={uploadFile} maxCount={1} showUploadList={false} >
+                                <Button icon={FaFileUpload}>Upload</Button>
+                            </Upload>}
+                        renderItem={(c) => (
+                            <FileListItem  key={`file-${c.id}`}
+                                libraryId={libraryId}
+                                bookId={book.id}
+                                content={c}
+                                t={t}
+                                message={message} />
                         )}
-                    </Droppable>
-                </DragDropContext>
+                    >
+                    </List>
             </DataContainer>
         </>
     );

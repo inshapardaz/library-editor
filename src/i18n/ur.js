@@ -334,7 +334,7 @@ const ur = {
 			"title": "ابواب"
 		},
         "pages": {
-            "title" : "صفحات",
+            "title" : "صفحات"
         },
         "files": {
             "title" : "دستاویزات",
@@ -356,9 +356,30 @@ const ur = {
                 "message": "کیا آپ کتاب '{{title}}' کو حذف کرنا چاہیں گے؟ ایسا کرنے سے اس کتاب سے متعلق تمام مواد بشمول ابواب، صفحات اور تمام دستاویزات حذف ہو جائیں گی۔",
                 "success" :"کتاب حذف کر دی گئی ہے۔",
                 "error" :"کتاب حذف کرنے میں ناکامی ہوئی۔"
+            },
+            "addFile" : {
+                "title" : "فائل اپلوڈ کریں",
+                "success" :"فائل کامیابی سے اپلوڈ کر دی گئی ہے۔",
+                "error" :"فائل اپلوڈ کرنے میں نامامی ہوئی۔"
+            },
+            "deleteFile": {
+                "title": "فایئل حذف کریں؟",
+                "message": "کیا آپ  '{{title}}' فائل کو حذف کرنا چاہیں گے؟",
+            },
+            "downloadFile": {
+                "title" : "فائل ڈائنلوڈ"
             }
-        }
-	},
+        },
+        "errors": {
+            "loading": {
+            "title": "Error",
+            "subTitle": "Unable to load book.",
+            }
+        },
+        "empty" : {
+            "title" : "No latest book found",
+        },
+    },
 	"chapters" : {
 		"title": "ابواب",
         "errors": {
@@ -1007,7 +1028,8 @@ const ur = {
         "Typing": "ٹائپنگ",
         "Typed": "ٹائپنگ مکمل",
         "InReview" : "پروف خوانی",
-        "Completed" : "مکمل"
+        "Completed" : "مکمل",
+        "All" : "تمام"
     },
     "layouts" : {
         "normal" : {

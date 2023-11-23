@@ -1,5 +1,5 @@
 // 3rd party imports
-import { Space, Typography } from "antd";
+import { Divider, Progress, Space, Typography } from "antd";
 
 // Local imports
 import helpers from "../../helpers";
@@ -10,6 +10,7 @@ import { IconText } from "../common/iconText";
 import BookStatusIcon from './BookStatusIcon';
 import { AiOutlineCopy } from "react-icons/ai";
 import { FiLayers } from "react-icons/fi";
+import EditingStatusIcon from "../editingStatusIcon";
 // -----------------------------------------
 const { Paragraph } = Typography;
 // ---------------------------------------------
@@ -44,6 +45,17 @@ const BookInfo = ({ libraryId, book, t }) => {
                 <IconText icon={FiLayers} text={t("book.chapterCount", { count: book.chapterCount })} />
                 <IconText icon={AiOutlineCopy} text={t("book.pageCount", { count: book.pageCount })} />
                 <IconText icon={BookStatusIcon({status : book.status, render:false })} text={t(`bookStatus.${book.status}`)} />
+                <Progress percent={book.progress} size="small" status="active" />
+                <Divider />
+                {book.pageStatus.map(s => (
+                    <Space direction="vertical" key={`status-${s.status}`} style={{ width: "100%" }}>
+                        <IconText
+                            icon={EditingStatusIcon({status : s.status, render:false })}
+                            text={t(`editingStatus.${s.status}`)}
+                            secondaryText={ s.count }/>
+                        <Progress percent={s.percentage} size="small" />
+                    </Space>
+                ))}
             </Space>
         </>
     );

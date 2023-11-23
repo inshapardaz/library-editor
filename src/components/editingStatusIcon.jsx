@@ -4,24 +4,25 @@ import {
     FaFileAlt,
     FaCheck,
     FaGlasses,
+    FaRegFile,
 } from "react-icons/fa";
 
 // ------------------------------------------------------
 
-const EditingStatusIcon = ({ status, style }) => {
+const EditingStatusIcon = ({ status, style, render = true }) => {
     switch (status) {
         case "Available":
-            return <FaFile style={style} />;
+            return render ? <FaFile style={style} /> : FaFile;
         case "Typing":
-            return <FaFileSignature style={style} />;
+            return render ? <FaFileSignature style={style} /> : FaFileSignature;
         case "Typed":
-            return <FaFileAlt style={style} />;
+            return render ? <FaFileAlt style={style} /> : FaFileAlt;
         case "InReview":
-            return <FaGlasses style={style} />;
+            return render ? <FaGlasses style={style} /> : FaGlasses;
         case "Completed":
-            return <FaCheck style={style} />;
+            return render ? <FaCheck style={style} /> : FaCheck;
         default:
-            return <FaFile style={style} />;
+            return render ? <FaRegFile style={style} /> : FaRegFile;
     }
 };
 
