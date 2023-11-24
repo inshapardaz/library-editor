@@ -45,9 +45,8 @@ const BookInfo = ({ libraryId, book, t }) => {
                 <IconText icon={FiLayers} text={t("book.chapterCount", { count: book.chapterCount })} />
                 <IconText icon={AiOutlineCopy} text={t("book.pageCount", { count: book.pageCount })} />
                 <IconText icon={BookStatusIcon({status : book.status, render:false })} text={t(`bookStatus.${book.status}`)} />
-                <Progress percent={book.progress} size="small" status="active" />
-                <Divider />
-                {book.pageStatus.map(s => (
+                {book?.pageStatus && <Divider />}
+                {book?.pageStatus?.map(s => (
                     <Space direction="vertical" key={`status-${s.status}`} style={{ width: "100%" }}>
                         <IconText
                             icon={EditingStatusIcon({status : s.status, render:false })}
