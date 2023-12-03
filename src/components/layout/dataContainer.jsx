@@ -13,6 +13,7 @@ const DataContainer = ({
     errorSubTitle,
     errorAction,
     busy,
+    busyContent = null,
     emptyImage,
     emptyDescription,
     emptyContent,
@@ -34,7 +35,7 @@ const DataContainer = ({
         <Empty image={emptyImage} description={emptyDescription}>
             {emptyContent}
         </Empty>
-    ) : busy ? null : (
+    ) : busy ? busyContent : (
         children
     );
     return (
@@ -44,7 +45,7 @@ const DataContainer = ({
             extra={extra}
             bordered={bordered}
             className={styles["api_container"]}
-            loading={busy}
+            loading={busy && !busyContent}
         >
             {content}
         </Card>

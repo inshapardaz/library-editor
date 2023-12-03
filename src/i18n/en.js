@@ -367,6 +367,30 @@ const en = {
             },
             "downloadFile": {
                 "title" : "Download file"
+            },
+            "loadFileImages": {
+                "title" : "Load File Images",
+                "progress" : "Loading pages {{completed}} of {{total}}",
+                "selectOtherFile" : "Select other file",
+                "messages" : {
+                    "loading": "Loading pages from pdf. It might take some time.",
+                    "loaded": "All pages loaded successfully.",
+                    "failedLoading": "Failed to load all pages.",
+                    "selectImage": "Please select an image",
+                    "errorFileType": "Only PDF cannot be processed. Other file types are not supported"
+                }
+            },
+            "split": {
+                "title" : "Split",
+            },
+            "applySplitToAll": {
+                "title": "Apply split to all pages."
+            },
+            "applySplitToAllBelow": {
+                "title": "Apply split to all pages after the current one."
+            },
+            "processAndSave": {
+                "title": "Process split and save pages"
             }
         },
         "errors": {

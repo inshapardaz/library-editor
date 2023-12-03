@@ -274,8 +274,8 @@ export const booksApi = createApi({
         createBookPageWithImage: builder.mutation({
             query: ({ book, fileList }) => {
                 const formData = new FormData();
-                fileList.forEach((file) => {
-                    formData.append('files[]', file);
+                fileList.forEach((file, index) => {
+                    formData.append(index, file, `${index}.jpg`);
                 });
                 return ({
                     url: book.links.create_multiple,

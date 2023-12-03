@@ -368,6 +368,30 @@ const ur = {
             },
             "downloadFile": {
                 "title" : "فائل ڈائنلوڈ"
+            },
+            "loadFileImages": {
+                "title" : "فائل کے صفحات لوڈ کریں",
+                "progress" : "{{total}} سے {{completed}} صفحات لوڈ ہو گئے ہیں۔",
+                "selectOtherFile" : "دوسری فائل چنیں",
+                "messages" : {
+                    "loading" : "پی ڈی ایف کے صفحات لوڈ ہو رہے ہیں۔ اس میں کچھ وقت لگ سکتا ہے۔",
+                    "loaded": "تمام صفحات لوڈ ہو چکے ہیں۔",
+                    "failedLoading" : "صفحات لوڈ کرنے میں ناکامی ہوئی۔ برائے مہربانی دوبارہ کوشش کیجیے",
+                    "selectImage": "برائے مہربانی تصویر چنیں",
+                    "errorFileType": "صرف پی ڈی ایف فائل استعمال کر سکتے ہیں۔"
+                }
+            },
+            "split": {
+                "title" : "تقسیم کریں"
+            },
+            "applySplitToAll": {
+                "title": "تمام صفحات پر ترجیحات نافذ کریں"
+            },
+            "applySplitToAllBelow": {
+                "title": "تمام اگلے صفحات پر ترجیحات نافذ کریں"
+            },
+            "processAndSave": {
+                "title": "صفحات کو محفوظ کریں"
             }
         },
         "errors": {

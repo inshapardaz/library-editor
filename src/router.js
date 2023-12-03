@@ -43,6 +43,7 @@ import LayoutWithFooter from './components/layout/layoutWithFooter';
 import SecurePage from './components/layout/securePage';
 import BookPagesUploadPage from './pages/books/pages/upload';
 import ArticlePage from './pages/articles/article';
+import BookProcessPage from './pages/books/process';
 
 const Router = () => {
     return (<BrowserRouter>
@@ -59,6 +60,7 @@ const Router = () => {
                     <Route path="/libraries/:libraryId/books/add" element={<BookEditPage />} />
                     <Route path="/libraries/:libraryId/books/:bookId" element={<BookPage />} />
                     <Route path="/libraries/:libraryId/books/:bookId/edit" element={<BookEditPage />} />
+                    <Route path="/libraries/:libraryId/books/:bookId/contents/:contentId/process" element={<BookProcessPage />} />
                     <Route path="/libraries/:libraryId/books/:bookId/chapters/{:chapterNumber}/edit" element={<ChapterEditor />} />
                     <Route path="/libraries/:libraryId/books/:bookId/pages/add" element={<PageEditPage />} />
                     <Route path="/libraries/:libraryId/books/:bookId/pages/upload" element={<BookPagesUploadPage />} />

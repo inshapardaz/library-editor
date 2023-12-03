@@ -359,3 +359,17 @@
 .home {
     margin-top: 50px;
 }
+
+.imageSplitDivider {
+    width: '100%';
+    position: relative;
+}
+
+.imageSplitDividerLine {
+    position: absolute;
+    display: block;
+    height: 100%;
+    width: 1px;
+    background: magenta;
+    z-index: 1000;
+}

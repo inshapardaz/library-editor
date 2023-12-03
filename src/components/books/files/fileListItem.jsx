@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
 import { Avatar, Button, List, Tooltip, Typography, Upload } from "antd";
-import { FaFileDownload, FaFileUpload } from "react-icons/fa";
+import { FaCogs, FaFileDownload, FaFileUpload } from "react-icons/fa";
 
 // Local Import
 import { useUpdateBookContentMutation } from "../../../features/api/booksSlice";
@@ -54,6 +54,15 @@ function FileListItem({
                                 <a href={content.links.download} target="_blank" rel="noreferrer">
                                     <Button icon={<FaFileDownload />} />
                                 </a>
+                            </Tooltip>
+                        ),
+                        content && content.links.update && (
+                            <Tooltip title="Process">
+                                <Link
+                                        to={`/libraries/${libraryId}/books/${bookId}/contents/${content.id}/process`}
+                                    >
+                                    <Button disabled={content.mimeType !== 'application/pdf'} icon={<FaCogs />} />
+                                </Link>
                             </Tooltip>
                         ),
                         content && content.links.delete && (

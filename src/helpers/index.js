@@ -16,7 +16,22 @@ const defaultArticleImage = '/images/article_placeholder.png';
 const defaultPageImage = '/images/page_placeholder.jpg';
 const defaultPeriodicalImage = '/images/periodical_placeholder.png';
 const defaultIssueImage = '/images/periodical_placeholder.png';
+const dataURItoBlob = (dataURI) => {
+    var byteString;
+    if (dataURI.split(',')[0].indexOf('base64') >= 0)
+        byteString = atob(dataURI.split(',')[1]);
+    else
+        byteString = unescape(dataURI.split(',')[1]);
 
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+    var ia = new Uint8Array(byteString.length);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    console.log(mimeString)
+    return new Blob([ia], {type:mimeString});
+};
 const helpers = {
     truncateWithEllipses: (text, max) => {
         if (!text) return text;
@@ -54,7 +69,6 @@ const helpers = {
     setDefaultIssueImage: (ev) => {
         ev.target.src = defaultIssueImage;
     },
-
     parseNullableBool: (val) => {
         if (val === 'true') {
             return true;
@@ -569,7 +583,78 @@ const helpers = {
             default:
                 return "LL";
         }
-    }
+    },
+    splitImage: (URI, splitPercentage, overlap = 0) => {
+        if (splitPercentage === 0 ) return Promise.resolve(dataURItoBlob(URI));
+        return new Promise(function(resolve, reject) {
+            if (URI == null) return reject();
+            var image = new Image();
+            image.addEventListener('load', function() {
+                var imagePieces = [];
+                const splitSize = (splitPercentage / 100) * image.width;
+
+                // Draw the left part of the image
+                var canvas1 = document.createElement('canvas');
+                var context1 = canvas1.getContext('2d');
+                canvas1.width = splitSize;
+                canvas1.height = image.height;
+                context1.drawImage(image,
+                    0, 0, splitSize, image.height,
+                    0, 0, splitSize, image.height);
+
+                imagePieces.push(canvas1.toDataURL());
+
+                // Draw the right part of the image
+                var canvas2 = document.createElement('canvas');
+                var context2 = canvas2.getContext('2d');
+                canvas2.width = image.width - splitSize;
+                canvas2.height = image.height;
+                context2.drawImage(image,
+                    splitSize, 0, image.width - splitSize, image.height,
+                    0, 0, image.width - splitSize, image.height);
+                imagePieces.push(canvas2.toDataURL());
+
+                resolve(imagePieces);
+            }, false);
+            image.src = URI;
+          });
+    },
+    splitImageUrl: (URI, splitPercentage, overlap = 0) => {
+        if (splitPercentage === 0 ) return Promise.resolve(dataURItoBlob(URI));
+        return new Promise(function(resolve, reject) {
+            if (URI == null) return reject();
+            var image = new Image();
+            image.addEventListener('load', function() {
+                var imagePieces = [];
+                const splitSize = (splitPercentage / 100) * image.width;
+
+                // Draw the left part of the image
+                var canvas1 = document.createElement('canvas');
+                var context1 = canvas1.getContext('2d');
+                canvas1.width = splitSize;
+                canvas1.height = image.height;
+                context1.drawImage(image,
+                    0, 0, splitSize, image.height,
+                    0, 0, splitSize, image.height);
+
+                imagePieces.push(canvas1.toDataURL());
+
+                // Draw the right part of the image
+                var canvas2 = document.createElement('canvas');
+                var context2 = canvas2.getContext('2d');
+                canvas2.width = image.width - splitSize;
+                canvas2.height = image.height;
+                context2.drawImage(image,
+                    splitSize, 0, image.width - splitSize, image.height,
+                    0, 0, image.width - splitSize, image.height);
+                imagePieces.push(canvas2.toDataURL());
+
+                resolve(imagePieces);
+            }, false);
+            image.src = URI;
+          });
+    },
+    dataURItoBlob
 };
 
 export default helpers;
