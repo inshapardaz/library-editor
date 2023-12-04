@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 // 3rd party libraries
-import { Button, Card, Space, Image, Slider, Switch, Tooltip, Result } from "antd";
+import { Button, Card, Space, Slider, Switch, Tooltip, Result } from "antd";
 import { FaFileImage, FaRegSave } from "react-icons/fa";
 
 // Local imports

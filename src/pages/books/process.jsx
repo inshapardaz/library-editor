@@ -24,7 +24,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = worker;
 const BookProcessPage = () => {
     const { message } = App.useApp();
     const {
-        token: { colorBgContainer },
+        token: { colorBgContainer, colorBorder },
     } = theme.useToken();
     const { t } = useTranslation();
     const [content, setContent] = useState(null);
@@ -331,16 +331,11 @@ const BookProcessPage = () => {
                             renderItem={(image) => (
                             <List.Item
                                 onClick={() => setSelectedImage(image)}
-                                style={selectedImage?.index === image.index ? {borderColor : 'red'} : null}>
+                                style={selectedImage?.index === image.index ? {backgroundColor : colorBorder } : null}>
                                 <List.Item.Meta
                                     avatar={<Image src={image.data} alt={image.index} preview={false} width={100} />}
                                     title={image.index}
                                 />
-                                {/* <Card
-                                    style={selectedImage?.index === image.index ? {borderColor : 'red'} : null}
-                                    extra={<Image src={image.data} alt={image.index} preview={false} />}>
-                                    <Card.Meta title={image.index} />
-                                </Card> */}
                             </List.Item>
                             )}
                         />
