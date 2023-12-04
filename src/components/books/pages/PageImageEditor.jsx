@@ -58,14 +58,14 @@ export const PageImageEditor = ({ image, t, zoom = 100, onUpdate = () => { } }) 
 
     return (<>
         <Card title={toolbar}>
-            <Space direction="vertical">
+            <Space direction="vertical" style={{ width: `${zoom}%` }}>
                 { checked && <Slider min={0} max={max} marks={marks}
                     onChange={onChangeSplitValue}
                     value={typeof sliderValue === 'number' ? sliderValue : 0} /> }
                 <div className={styles.imageSplitDivider}>
                     <span className={styles.imageSplitDividerLine}
                         style={{ right: `${sliderValue * 100 / max}%`, visibility: checked ? 'visible' : 'hidden' }} />
-                    <Image src={image.data} alt={image.index} preview={false} width={`${zoom}%`} />
+                    <img src={image.data} alt={image.index} style={{   objectFit: 'contain' }} width="100%" />
                 </div>
             </Space>
         </Card>
