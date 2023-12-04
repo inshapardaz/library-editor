@@ -26,7 +26,11 @@ const en = {
         "edit": "Edit",
         "delete": "Delete",
         "cancel": "Cancel",
-        "resizeImage": "Resize Image"
+        "resizeImage": "Resize Image",
+        "zoonIn": "Zoom In",
+        "zoonOut": "Zoom Out",
+        "next": "Next",
+        "previous": "Previous"
 	},
 	"login" : {
 		"title" : "Login",
@@ -372,6 +376,7 @@ const en = {
                 "title" : "Load File Images",
                 "progress" : "Loading pages {{completed}} of {{total}}",
                 "selectOtherFile" : "Select other file",
+                "page" : "Page {{current}} of {{total}}",
                 "messages" : {
                     "loading": "Loading pages from pdf. It might take some time.",
                     "loaded": "All pages loaded successfully.",

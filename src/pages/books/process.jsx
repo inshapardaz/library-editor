@@ -3,16 +3,15 @@ import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 
 // 3rd party libraries
-import { App, Button, Card, Checkbox, Col, theme, Layout, List, Progress, Row, Space, Typography, Image, Tooltip, Result } from "antd";
+import { App, Button, Card, Col, theme, Layout, List, Progress, Row, Space, Typography, Image, Tooltip, Result } from "antd";
 import * as pdfjsLib from "pdfjs-dist";
-import { MdContentCopy } from "react-icons/md";
+import { MdContentCopy, MdZoomIn, MdZoomOut } from "react-icons/md";
 import { TbSettingsCode, TbSettingsDown } from "react-icons/tb";
-import { FaFilePdf, FaRegFilePdf, FaSave } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight, FaFilePdf, FaRegFilePdf, FaSave } from "react-icons/fa";
 import * as worker from 'pdfjs-dist/build/pdf.worker.mjs';
 
 // Local Imports
 import { useGetBookQuery, useCreateBookPageWithImageMutation } from "../../features/api/booksSlice";
-import CheckboxButton from "../../components/checkboxButton";
 import DataContainer from "../../components/layout/dataContainer";
 import helpers from '../../helpers';
 import { PageImageEditor } from "../../components/books/pages/PageImageEditor";
@@ -30,8 +29,8 @@ const BookProcessPage = () => {
     const { t } = useTranslation();
     const [content, setContent] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [imageZoom, setImageZoom] = useState(100);
     const [images, setImages] = useState([]);
-    const [selection, setSelection] = useState([]);
     const [selectedImage, setSelectedImage] = useState(null);
     const [numOfPages, setNumOfPages] = useState(0)
     const [numOfPagesParsed, setNumOfPagesParsed] = useState(0)
@@ -49,6 +48,7 @@ const BookProcessPage = () => {
 
     const loadImages = async () => {
         if (loading) return;
+
         setLoading(true);
         message.info(t("book.actions.loadFileImages.messages.loading"))
 
@@ -164,62 +164,100 @@ const BookProcessPage = () => {
                 message.error(t("pages.actions.upload.error"))
             });
     }
+
     //------------------------------------------------------
-    const hasAllSelected = selection.length  > 0 && selection.length === images.length;
-    const hasPartialSelection =
-        selection.length > 0 && selection.length < images.length;
-
-    const onSelectChanged = (image) => {
-        const currentIndex = images.findIndex(x => x.index === image.index);
-        const newSelection = [...selection];
-
-        if (currentIndex === -1) {
-            newSelection.push(image.index);
-        } else {
-            newSelection.splice(currentIndex, 1);
+    const canZoomIn = () => imageZoom < 200;
+    const canZoomOut = () => imageZoom > 10;
+    const zoomIn = () => {
+        if (canZoomIn())
+        {
+            setImageZoom(e => e + 10);
         }
-
-        setSelection(newSelection);
-    };
-
-    const onSelectAll = () => {
-        if (images.length > 0 && selection.length === images.length) {
-            setSelection([]);
-        } else {
-            setSelection(images.map((p) => p.index));
+    }
+    const zoomOut = () => {
+        if (canZoomOut)
+        {
+            setImageZoom(e => e - 10);
         }
-    };
+    }
 
+    //------------------------------------------------------
+    const canGoNext = () => selectedImage && selectedImage.index < images.length - 1 ;
+    const canGoPrevious = () => selectedImage && selectedImage.index > 0;
+    const goNext = () => {
+        if (canGoNext())
+        {
+            const currentIndex = images.findIndex(x => x.index === selectedImage.index);
+            setSelectedImage(images[currentIndex + 1]);
+        }
+    }
+    const goPrevious = () => {
+        if (canGoPrevious)
+        {
+            const currentIndex = images.findIndex(x => x.index === selectedImage.index);
+            setSelectedImage(images[currentIndex - 1]);
+        }
+    }
     //------------------------------------------------------
     const toolbar = (
         <Row gutter={8}>
             <Col>
                 {book
-                    ? <Link to={`/libraries/${libraryId}/books/${bookId}?section=files`}><Button type="text">{book.title}</Button></Link>
+                    ? <Link  disabled={!images || images.length < 1 || loading || isUploading }
+                        to={`/libraries/${libraryId}/books/${bookId}?section=files`}><Button type="text">{book.title}</Button></Link>
                     : null}
             </Col>
             <Col>
                 <Button.Group>
-                    <CheckboxButton
-                        onChange={onSelectAll}
-                        checked={hasAllSelected}
-                        disabled={images.length < 1}
-                        indeterminate={hasPartialSelection}
-                    />
                     <Tooltip title={t('book.actions.loadFileImages.title')}>
-                        <Button onClick={loadImages} icon={<FaRegFilePdf />} disabled={loading || isUploading} />
-                    </Tooltip>
-                    <Tooltip title={t('book.actions.applySplitToAll.title')}>
-                        <Button onClick={applySettingsToAll} icon={<TbSettingsCode />} disabled={selectedImage == null || isUploading }/>
-                    </Tooltip>
-                    <Tooltip title={t('book.actions.applySplitToAllBelow.title')} >
-                        <Button onClick={applySettingsToAllNext} icon={<TbSettingsDown />} disabled={selectedImage == null || isUploading } />
-                    </Tooltip>
-                    <Tooltip title={t('book.actions.processAndSave.title')}>
-                        <Button onClick={savePages} icon={<FaSave />} disabled={!images || images.count < 1 || isUploading } />
+                        <Button onClick={loadImages}
+                            icon={<FaRegFilePdf />}
+                            disabled={loading || isUploading} />
                     </Tooltip>
                 </Button.Group>
             </Col>
+            <Col>
+                <Button.Group disabled={selectedImage == null || isUploading }>
+                    <Tooltip title={t('book.actions.applySplitToAll.title')}>
+                        <Button onClick={applySettingsToAll} icon={<TbSettingsCode />} />
+                    </Tooltip>
+                    <Tooltip title={t('book.actions.applySplitToAllBelow.title')} >
+                        <Button onClick={applySettingsToAllNext} icon={<TbSettingsDown />}/>
+                    </Tooltip>
+                </Button.Group>
+            </Col>
+            <Col>
+                <Button.Group>
+                    <Tooltip title={t('book.actions.processAndSave.title')}>
+                        <Button onClick={savePages}
+                            icon={<FaSave />}
+                            disabled={!images || images.length < 1 || loading || isUploading } />
+                    </Tooltip>
+                </Button.Group>
+            </Col>
+            {images && images.length > 1 &&
+            (<><Col>
+                <Button.Group disabled={ selectedImage }>
+                    <Tooltip title={t('actions.zoonIn')}>
+                        <Button onClick={zoomIn} disabled={!canZoomIn()} icon={<MdZoomIn />} />
+                    </Tooltip>
+                    <Button disabled>{imageZoom}%</Button>
+                    <Tooltip title={t('actions.zoonOut')}>
+                        <Button onClick={zoomOut} disabled={!canZoomOut()} icon={<MdZoomOut />} />
+                    </Tooltip>
+                </Button.Group>
+            </Col>
+            <Col>
+                <Button.Group disabled={ selectedImage }>
+                    <Tooltip title={t('actions.next')}>
+                        <Button onClick={goPrevious} disabled={!canGoPrevious()} icon={<FaArrowRight />} />
+                    </Tooltip>
+                    <Button disabled>{ selectedImage && t('book.actions.loadFileImages.page', {current: (selectedImage?.index ?? -1) + 1, total: images.length }) }</Button>
+                    <Tooltip title={t('actions.previous')}>
+                        <Button onClick={goNext} disabled={!canGoNext()} icon={<FaArrowLeft />} />
+                    </Tooltip>
+                </Button.Group>
+            </Col></>)}
         </Row>
     );
 
@@ -273,7 +311,7 @@ const BookProcessPage = () => {
                     style={{ padding: "24px 0", background: colorBgContainer }}
                 >
                     <Sider
-                        width={400}
+                        width={200}
                         breakpoint="lg"
                         collapsedWidth={0}
                         style={{
@@ -289,25 +327,26 @@ const BookProcessPage = () => {
                             dataSource={images}
                             itemLayout="vertical"
                             size="large"
+                            bordered={true}
                             renderItem={(image) => (
-                            <List.Item>
-                                <Card extra={<Image src={image.data} alt={image.index} preview={false} />} onClick={() => setSelectedImage(image)} >
-                                    <Card.Meta
-                                        title={image.index}
-                                        avatar={
-                                            <Checkbox
-                                                    checked={image.selected}
-                                                    onChange={() => onSelectChanged(image)}
-                                            />
-                                        }
-                                    />
-                                </Card>
+                            <List.Item
+                                onClick={() => setSelectedImage(image)}
+                                style={selectedImage?.index === image.index ? {borderColor : 'red'} : null}>
+                                <List.Item.Meta
+                                    avatar={<Image src={image.data} alt={image.index} preview={false} width={100} />}
+                                    title={image.index}
+                                />
+                                {/* <Card
+                                    style={selectedImage?.index === image.index ? {borderColor : 'red'} : null}
+                                    extra={<Image src={image.data} alt={image.index} preview={false} />}>
+                                    <Card.Meta title={image.index} />
+                                </Card> */}
                             </List.Item>
                             )}
                         />
                     </Sider>
                     <Content>
-                        <PageImageEditor image={selectedImage} t={t} onUpdate={updateImage}/>
+                        <PageImageEditor image={selectedImage} zoom={imageZoom} t={t} onUpdate={updateImage}/>
                     </Content>
                 </Layout>
             </DataContainer>

@@ -26,7 +26,11 @@ const ur = {
         "edit": "تدوین",
         "delete": "حذف کیجئے",
         "cancel": "اخراج",
-        "resizeImage": "تصویر کی تدوین"
+        "resizeImage": "تصویر کی تدوین",
+        "zoonIn": "زوم ان",
+        "zoonOut": "زوق آؤٹ",
+        "next": "اگلا",
+        "previous": "پچھلا"
 	},
 	"login" : {
 		"title" : "داخل ہوں",
@@ -373,6 +377,7 @@ const ur = {
                 "title" : "فائل کے صفحات لوڈ کریں",
                 "progress" : "{{total}} سے {{completed}} صفحات لوڈ ہو گئے ہیں۔",
                 "selectOtherFile" : "دوسری فائل چنیں",
+                "page" : "{{current}} / {{total}}",
                 "messages" : {
                     "loading" : "پی ڈی ایف کے صفحات لوڈ ہو رہے ہیں۔ اس میں کچھ وقت لگ سکتا ہے۔",
                     "loaded": "تمام صفحات لوڈ ہو چکے ہیں۔",
