@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
+import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
 import { App, Button, Card, Col, theme, Layout, List, Progress, Row, Space, Typography, Image, Tooltip, Result } from "antd";
@@ -11,6 +12,7 @@ import { FaArrowLeft, FaArrowRight, FaFilePdf, FaRegFilePdf, FaSave } from "reac
 import * as worker from 'pdfjs-dist/build/pdf.worker.mjs';
 
 // Local Imports
+import { axiosPrivate } from '../../helpers/axios.helpers';
 import { useGetBookQuery, useCreateBookPageWithImageMutation } from "../../features/api/booksSlice";
 import DataContainer from "../../components/layout/dataContainer";
 import helpers from '../../helpers';
@@ -19,6 +21,29 @@ import { PageImageEditor } from "../../components/books/pages/PageImageEditor";
 // --------------------------------------
 const { Content, Sider } = Layout;
 pdfjsLib.GlobalWorkerOptions.workerSrc = worker;
+// --------------------------------------
+const downloadFile = async (url, onProgress = () => {} ) => {
+    const response = await axiosPrivate({
+        url : url,
+        method: 'GET',
+        responseType: 'blob'
+    });
+
+    return new Promise((resolve, reject) => {
+        let reader = new FileReader();
+        reader.onload = (e) => {
+            const data = atob(e.target.result.replace(/.*base64,/, ""));
+            resolve(data);
+        };
+        reader.onprogress = ({loaded, total}) => onProgress({loaded, total});
+        reader.onerror = () => {
+            reader.abort();
+            reject(new DOMException("Problem parsing input file."));
+        };
+        reader.readAsDataURL(response.data);
+    });
+}
+
 // --------------------------------------
 
 const BookProcessPage = () => {
@@ -29,7 +54,7 @@ const BookProcessPage = () => {
     const { t } = useTranslation();
     const [content, setContent] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [imageZoom, setImageZoom] = useState(100);
+    const [imageZoom, setImageZoom] = useLocalStorage("page-editor-zoom", 100);
     const [images, setImages] = useState([]);
     const [selectedImage, setSelectedImage] = useState(null);
     const [numOfPages, setNumOfPages] = useState(0)
@@ -52,50 +77,10 @@ const BookProcessPage = () => {
         setLoading(true);
         message.info(t("book.actions.loadFileImages.messages.loading"))
 
-        return fetch(content.links.download)
-            .then((response) => {
-                return response.blob()
-                    .then((blob) => {
-                        let reader = new FileReader();
-                        reader.onload = (e) => {
-                            const data = atob(e.target.result.replace(/.*base64,/, ""));
-                            return loadPages(data);
-                        };
-                        reader.readAsDataURL(blob);
-                    });
-                });
-    };
-
-    const loadPages = async (data) => {
         try {
-            const imagesList = [];
-            const canvas = document.createElement("canvas");
-            canvas.setAttribute("className", "canv");
-            const pdf = await pdfjsLib.getDocument({ data }).promise;
-            setNumOfPages((e) => e + pdf.numPages);
-
-            for (let i = 1; i <= pdf.numPages; i++) {
-                var page = await pdf.getPage(i);
-                var viewport = page.getViewport({ scale: 1.5 });
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-                var render_context = {
-                    canvasContext: canvas.getContext("2d"),
-                    viewport: viewport,
-                };
-                await page.render(render_context).promise;
-                let img = canvas.toDataURL("image/png");
-                imagesList.push({
-                    index: i -1,
-                    data : img,
-                    selected : false,
-                    split: false,
-                    splitValue: null
-                });
-                setNumOfPagesParsed(e => e + 1 )
-            }
-
-            setImages((e) => [...e, ...imagesList]);
+            const onProgress = ({loaded, total}) =>  console.log(`Downloaded ${loaded} of ${total} bytes`)
+            const file = await downloadFile(content.links.download, onProgress);
+            await loadPages(file, onProgress)
             message.success(t("book.actions.loadFileImages.messages.loaded"))
         }
         catch {
@@ -104,6 +89,39 @@ const BookProcessPage = () => {
         finally {
             setLoading(false);
         }
+    };
+
+    const loadPages = async (data, onProgress = () => {}) => {
+        const imagesList = [];
+        const canvas = document.createElement("canvas");
+        canvas.setAttribute("className", "canv");
+        const pdf = await pdfjsLib.getDocument({ data }).promise;
+        onProgress({ loaded : 0, total: pdf.numPages})
+        setNumOfPages((e) => pdf.numPages);
+
+        for (let i = 1; i <= pdf.numPages; i++) {
+            var page = await pdf.getPage(i);
+            var viewport = page.getViewport({ scale: 1.5 });
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            var render_context = {
+                canvasContext: canvas.getContext("2d"),
+                viewport: viewport,
+            };
+            await page.render(render_context).promise;
+            let img = canvas.toDataURL("image/png");
+            imagesList.push({
+                index: i -1,
+                data : img,
+                selected : false,
+                split: false,
+                splitValue: null
+            });
+            onProgress({ loaded : i, total: pdf.numPages})
+            setNumOfPagesParsed(e => e + 1 )
+        }
+
+        setImages((e) => [...e, ...imagesList]);
     };
 
     const updateImage = (newImage) => {
