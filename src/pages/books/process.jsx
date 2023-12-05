@@ -44,6 +44,21 @@ const downloadFile = async (url, onProgress = () => {} ) => {
     });
 }
 
+const loadPage = async (pdf, index) => {
+        const canvas = document.createElement("canvas");
+        canvas.setAttribute("className", "canv");
+        var page = await pdf.getPage(index);
+        var viewport = page.getViewport({ scale: 1.5 });
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+        var render_context = {
+            canvasContext: canvas.getContext("2d"),
+            viewport: viewport,
+        };
+        await page.render(render_context).promise;
+        return canvas.toDataURL("image/png");
+};
+
 // --------------------------------------
 
 const BookProcessPage = () => {
@@ -80,48 +95,37 @@ const BookProcessPage = () => {
         try {
             const onProgress = ({loaded, total}) =>  console.log(`Downloaded ${loaded} of ${total} bytes`)
             const file = await downloadFile(content.links.download, onProgress);
-            await loadPages(file, onProgress)
+            const imagesList = [];
+
+            const pdf = await pdfjsLib.getDocument({ data: file }).promise;
+            onProgress({ loaded : 0, total: pdf.numPages})
+            setNumOfPages((e) => pdf.numPages);
+
+            for (let i = 1; i <= pdf.numPages; i++) {
+
+                let img = await loadPage(pdf, i)
+                imagesList.push({
+                    index: i -1,
+                    data : img,
+                    selected : false,
+                    split: false,
+                    splitValue: null
+                });
+                onProgress({ loaded : i, total: pdf.numPages})
+                setNumOfPagesParsed(e => e + 1 )
+            }
+
+            setImages((e) => [...e, ...imagesList]);
+
             message.success(t("book.actions.loadFileImages.messages.loaded"))
         }
-        catch {
+        catch (e) {
+            console.error(e)
             message.error(t("book.actions.loadFileImages.messages.failedLoading"))
         }
         finally {
             setLoading(false);
         }
-    };
-
-    const loadPages = async (data, onProgress = () => {}) => {
-        const imagesList = [];
-        const canvas = document.createElement("canvas");
-        canvas.setAttribute("className", "canv");
-        const pdf = await pdfjsLib.getDocument({ data }).promise;
-        onProgress({ loaded : 0, total: pdf.numPages})
-        setNumOfPages((e) => pdf.numPages);
-
-        for (let i = 1; i <= pdf.numPages; i++) {
-            var page = await pdf.getPage(i);
-            var viewport = page.getViewport({ scale: 1.5 });
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
-            var render_context = {
-                canvasContext: canvas.getContext("2d"),
-                viewport: viewport,
-            };
-            await page.render(render_context).promise;
-            let img = canvas.toDataURL("image/png");
-            imagesList.push({
-                index: i -1,
-                data : img,
-                selected : false,
-                split: false,
-                splitValue: null
-            });
-            onProgress({ loaded : i, total: pdf.numPages})
-            setNumOfPagesParsed(e => e + 1 )
-        }
-
-        setImages((e) => [...e, ...imagesList]);
     };
 
     const updateImage = (newImage) => {
