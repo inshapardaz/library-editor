@@ -1,11 +1,13 @@
 // 3rd party libraries
-import { App, Button, List, Upload } from "antd";
+import { App, List, Space, Typography, Upload } from "antd";
 import { FaBook, FaFileUpload } from "react-icons/fa";
 
 // Internal Imports
 import { useAddBookContentMutation } from "../../../features/api/booksSlice";
 import FileListItem from "../files/fileListItem";
 import DataContainer from "../../layout/dataContainer";
+// ----------------------------------------------
+const { Dragger } = Upload;
 // ----------------------------------------------
 
 const FilesList = ({
@@ -37,9 +39,7 @@ const FilesList = ({
                 emptyImage={<FaBook size="5em" />}
                 emptyDescription={t("book.empty.title")}
                 emptyContent={
-                    <Upload beforeUpload={uploadFile} maxCount={1} showUploadList={false} >
-                        <Button icon={FaFileUpload}>a{t('book.actions.addFile')}</Button>
-                    </Upload>
+                    <Dragger beforeUpload={uploadFile} maxCount={1} showUploadList={false}  />
                 }
                 empty={!book || (book.contents && book.contents.length < 1)}
                 bordered={false}
@@ -48,9 +48,12 @@ const FilesList = ({
                         size={size}
                         itemLayout="horizontal"
                         dataSource={book && book.contents ? book.contents : []}
-                        header={<Upload beforeUpload={uploadFile} maxCount={1} showUploadList={false} >
-                                <Button icon={FaFileUpload}>Upload</Button>
-                            </Upload>}
+                        footer={<Dragger beforeUpload={uploadFile} maxCount={1} showUploadList={false} >
+                                <Space direction="vertical">
+                                    <FaFileUpload style={{ width: 36, height: 36 }} />
+                                    <Typography.Text>{t('book.actions.addFile.title')}</Typography.Text>
+                                </Space>
+                            </Dragger>}
                         renderItem={(c) => (
                             <FileListItem  key={`file-${c.id}`}
                                 libraryId={libraryId}
