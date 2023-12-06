@@ -69,6 +69,8 @@ const BookProcessPage = () => {
     const { t } = useTranslation();
     const [content, setContent] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [processingProgress, setProcessingProgress] = useState(0);
+    const [hasSavedSettings, setHasSavedSettings] = useState(false);
     const [imageZoom, setImageZoom] = useLocalStorage("page-editor-zoom", 100);
     const [images, setImages] = useState([]);
     const [selectedImage, setSelectedImage] = useState(null);
@@ -83,6 +85,12 @@ const BookProcessPage = () => {
         if (book && book.contents)
         {
             setContent(book.contents.filter(x => `${x.id}` === contentId)[0]);
+            const ls = localStorage.getItem(`page-settings-${book.id}-${contentId}`)
+            if (ls) {
+                setHasSavedSettings(true);
+            } else {
+                setHasSavedSettings(false);
+            }
         }
     }, [book, contentId])
 
@@ -90,20 +98,37 @@ const BookProcessPage = () => {
         if (loading) return;
 
         setLoading(true);
+        setProcessingProgress(0);
         message.info(t("book.actions.loadFileImages.messages.loading"))
 
         try {
-            const onProgress = ({loaded, total}) =>  console.log(`Downloaded ${loaded} of ${total} bytes`)
-            const file = await downloadFile(content.links.download, onProgress);
+            const onProgressDownload = ({loaded, total}) =>  {
+                console.log(`Downloaded ${loaded} of ${total} bytes`)
+                if (total > 0)
+                {
+                    setProcessingProgress((loaded / total).toFixed(0))
+                }
+            }
+
+            const file = await downloadFile(content.links.download, onProgressDownload);
+
+            const onProgressPageLoading = ({loaded, total}) =>  {
+                console.log(`Pages ${loaded} of ${total} loaded`)
+                if (total > 0)
+                {
+                    setProcessingProgress((loaded / total).toFixed(0))
+                }
+            }
+
             const imagesList = [];
 
             const pdf = await pdfjsLib.getDocument({ data: file }).promise;
-            onProgress({ loaded : 0, total: pdf.numPages})
+            onProgressPageLoading({ loaded : 0, total: pdf.numPages})
             setNumOfPages((e) => pdf.numPages);
 
             for (let i = 1; i <= pdf.numPages; i++) {
 
-                let img = await loadPage(pdf, i)
+                let img = await loadPage(pdf, i);
                 imagesList.push({
                     index: i -1,
                     data : img,
@@ -111,12 +136,12 @@ const BookProcessPage = () => {
                     split: false,
                     splitValue: null
                 });
-                onProgress({ loaded : i, total: pdf.numPages})
+                onProgressPageLoading({ loaded : i, total: pdf.numPages})
                 setNumOfPagesParsed(e => e + 1 )
             }
 
             setImages((e) => [...e, ...imagesList]);
-
+            saveLocalSettings(imagesList)
             message.success(t("book.actions.loadFileImages.messages.loaded"))
         }
         catch (e) {
@@ -134,12 +159,32 @@ const BookProcessPage = () => {
             const newImages = [...images];
             newImages[currentIndex] = newImage;
             setImages(newImages);
+            saveLocalSettings(newImages)
         }
 
         setSelectedImage(newImage);
     };
 
     //------------------------------------------------------
+    const loadSavedSettings = () => {
+        try {
+            const settings = localStorage.getItem(`page-settings-${book.id}-${content.id}`)
+            setImages(JSON.parse(settings));
+        }
+        catch{
+            clearLocalSettings();
+            message.error(t("book.actions.loadFileImages.messages.errorLoadingSavedSettings"))
+        }
+    }
+
+    const saveLocalSettings = (settings) =>  {
+        localStorage.setItem(`page-settings-${book.id}-${content.id}`, JSON.stringify(settings))
+    }
+
+    const clearLocalSettings = () => {
+        localStorage.removeItem(`page-settings-${book.id}-${content.id}`)
+        setHasSavedSettings(false)
+    }
     const applySettingsToAll = () => {
         if (selectedImage && images && images.length > 0) {
             const newImages = [...images];
@@ -149,6 +194,7 @@ const BookProcessPage = () => {
                 newImages[i].splitValue = selectedImage.splitValue;
             }
             setImages(newImages);
+            saveLocalSettings(newImages)
         }
     }
 
@@ -161,6 +207,7 @@ const BookProcessPage = () => {
                 newImages[i].splitValue = selectedImage.splitValue;
             }
             setImages(newImages);
+            saveLocalSettings(newImages)
         }
     }
 
@@ -176,6 +223,7 @@ const BookProcessPage = () => {
                 })
                 .unwrap()
                 .then(() => message.success(t("pages.actions.upload.success")))
+                .then(() => clearLocalSettings())
                 .catch((e) => {
                     console.error(e)
                     message.error(t("pages.actions.upload.error"))
@@ -324,6 +372,9 @@ const BookProcessPage = () => {
                         <Button onClick={loadImages} disabled={loading}>
                             {t('book.actions.loadFileImages.title')}
                         </Button>
+                        {hasSavedSettings && <Button disabled={loading} onClick={loadSavedSettings}>
+                            {t('book.actions.loadFileImages.loadSavedSetting')}
+                        </Button>}
                     </Space>) }
                 empty={!content || !content.links.download || (images && images.length < 1)}
                 title={toolbar}

@@ -377,12 +377,14 @@ const en = {
                 "progress" : "Loading pages {{completed}} of {{total}}",
                 "selectOtherFile" : "Select other file",
                 "page" : "Page {{current}} of {{total}}",
+                "loadSavedSetting": "Load previously saved settings",
                 "messages" : {
                     "loading": "Loading pages from pdf. It might take some time.",
                     "loaded": "All pages loaded successfully.",
                     "failedLoading": "Failed to load all pages.",
                     "selectImage": "Please select an image",
-                    "errorFileType": "Only PDF cannot be processed. Other file types are not supported"
+                    "errorFileType": "Only PDF cannot be processed. Other file types are not supported",
+                    "errorLoadingSavedSettings": "Error loading saved settings. Saved settings are removed."
                 }
             },
             "split": {
