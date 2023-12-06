@@ -14,6 +14,7 @@ import * as worker from 'pdfjs-dist/build/pdf.worker.mjs';
 // Local Imports
 import { axiosPrivate } from '../../helpers/axios.helpers';
 import { useGetBookQuery, useCreateBookPageWithImageMutation } from "../../features/api/booksSlice";
+import { languages } from '../../features/ui/uiSlice';
 import DataContainer from "../../components/layout/dataContainer";
 import helpers from '../../helpers';
 import { PageImageEditor } from "../../components/books/pages/PageImageEditor";
@@ -94,6 +95,7 @@ const BookProcessPage = () => {
         }
     }, [book, contentId])
 
+    console.log(`Completed ${processingProgress}%`)
     const loadImages = async () => {
         if (loading) return;
 
@@ -168,22 +170,22 @@ const BookProcessPage = () => {
     //------------------------------------------------------
     const loadSavedSettings = () => {
         try {
-            const settings = localStorage.getItem(`page-settings-${book.id}-${content.id}`)
-            setImages(JSON.parse(settings));
+            //const settings = localStorage.getItem(`page-settings-${book.id}-${content.id}`)
+            //setImages(JSON.parse(settings));
         }
         catch{
-            clearLocalSettings();
-            message.error(t("book.actions.loadFileImages.messages.errorLoadingSavedSettings"))
+            //clearLocalSettings();
+            //message.error(t("book.actions.loadFileImages.messages.errorLoadingSavedSettings"))
         }
     }
 
     const saveLocalSettings = (settings) =>  {
-        localStorage.setItem(`page-settings-${book.id}-${content.id}`, JSON.stringify(settings))
+        //localStorage.setItem(`page-settings-${book.id}-${content.id}`, JSON.stringify(settings))
     }
 
     const clearLocalSettings = () => {
-        localStorage.removeItem(`page-settings-${book.id}-${content.id}`)
-        setHasSavedSettings(false)
+        //localStorage.removeItem(`page-settings-${book.id}-${content.id}`)
+        //setHasSavedSettings(false)
     }
     const applySettingsToAll = () => {
         if (selectedImage && images && images.length > 0) {
@@ -212,8 +214,13 @@ const BookProcessPage = () => {
     }
 
     const savePages = () =>  {
+        setLoading(true);
+
+        try{
+        const isRtl = () => languages[book?.language]?.dir === 'rtl';
+
         const promises = images
-            .map(i => i.split ? helpers.splitImage(i.data, i.splitValue ) : Promise.resolve(i.data));
+            .map(i => i.split ? helpers.splitImage({ URI : i.data, splitPercentage: i.splitValue, rtl: isRtl } ) : Promise.resolve(i.data));
         Promise.all(promises)
             .then((data) => {
                 const files = data.flat().map(d => helpers.dataURItoBlob(d));
@@ -233,6 +240,10 @@ const BookProcessPage = () => {
                 console.error(e)
                 message.error(t("pages.actions.upload.error"))
             });
+        }
+        finally {
+            setLoading(false)
+        }
     }
 
     //------------------------------------------------------

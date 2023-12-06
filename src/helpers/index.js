@@ -584,7 +584,7 @@ const helpers = {
                 return "LL";
         }
     },
-    splitImage: (URI, splitPercentage, overlap = 0) => {
+    splitImage: ({ URI, splitPercentage, overlap = 0, rtl = false }) => {
         if (splitPercentage === 0 ) return Promise.resolve(dataURItoBlob(URI));
         return new Promise(function(resolve, reject) {
             if (URI == null) return reject();
@@ -613,7 +613,9 @@ const helpers = {
                     splitSize, 0, image.width - splitSize, image.height,
                     0, 0, image.width - splitSize, image.height);
                 imagePieces.push(canvas2.toDataURL());
-
+                if (rtl) {
+                    imagePieces = imagePieces.reverse();
+                }
                 resolve(imagePieces);
             }, false);
             image.src = URI;
