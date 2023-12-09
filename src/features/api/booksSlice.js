@@ -105,14 +105,30 @@ export const booksApi = createApi({
             providesTags: [ 'Chapters' ]
         }),
         getChapter: builder.query({
-            query: ({ libraryId, bookId, chapterId }) => ({ url: `/libraries/${libraryId}/books/${bookId}/chapters/${chapterId}`, method: 'get' }),
+            query: ({ libraryId, bookId, chapterNumber }) => ({ url: `/libraries/${libraryId}/books/${bookId}/chapters/${chapterNumber}`, method: 'get' }),
             transformResponse: (response) => parseResponse(response),
             providesTags: [ 'Chapters' ]
         }),
         getChapterContents: builder.query({
-            query: ({ libraryId, bookId, chapterId }) => ({ url: `/libraries/${libraryId}/books/${bookId}/chapters/${chapterId}/contents`, method: 'get' }),
+            query: ({ libraryId, bookId, chapterNumber }) => ({ url: `/libraries/${libraryId}/books/${bookId}/chapters/${chapterNumber}/contents`, method: 'get' }),
             transformResponse: (response) => parseResponse(response),
             providesTags: [ 'ChapterContents' ]
+        }),
+        addChapterContents: builder.mutation({
+            query: ({ chapter, payload }) => ({
+                url: chapter.links.add_content,
+                method: 'POST',
+                payload: removeLinks(payload)
+            }),
+            invalidatesTags: [ 'ChapterContents' ]
+        }),
+        updateChapterContents: builder.mutation({
+            query: ({ chapterContent, payload }) => ({
+                url: chapterContent.links.update,
+                method: 'PUT',
+                payload: removeLinks(payload)
+            }),
+            invalidatesTags: [ 'ChapterContents' ]
         }),
         addBook: builder.mutation({
             query: ({ libraryId, payload }) => ({
@@ -339,6 +355,8 @@ export const {
     useGetBookChaptersQuery,
     useGetChapterQuery,
     useGetChapterContentsQuery,
+    useAddChapterContentsMutation,
+    useUpdateChapterContentsMutation,
     useGetBookPagesQuery,
     useAddBookMutation,
     useUpdateBookMutation,

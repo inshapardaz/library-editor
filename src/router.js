@@ -61,7 +61,7 @@ const Router = () => {
                     <Route path="/libraries/:libraryId/books/:bookId" element={<BookPage />} />
                     <Route path="/libraries/:libraryId/books/:bookId/edit" element={<BookEditPage />} />
                     <Route path="/libraries/:libraryId/books/:bookId/contents/:contentId/process" element={<BookProcessPage />} />
-                    <Route path="/libraries/:libraryId/books/:bookId/chapters/{:chapterNumber}/edit" element={<ChapterEditor />} />
+                    <Route path="/libraries/:libraryId/books/:bookId/chapters/:chapterNumber/edit" element={<ChapterEditor />} />
                     <Route path="/libraries/:libraryId/books/:bookId/pages/add" element={<PageEditPage />} />
                     <Route path="/libraries/:libraryId/books/:bookId/pages/upload" element={<BookPagesUploadPage />} />
                     <Route path="/libraries/:libraryId/books/:bookId/pages/:pageNumber/edit" element={<PageEditPage />} />
@@ -92,7 +92,7 @@ const Router = () => {
                 <Route path="/403" element={<Error403 />} />
                 <Route path="*" element={<Error404 />} />
             </Route>
-            <Route path="/libraries/:libraryId/books/:bookId/chapters/:chapterId" element={<BookReader />} />
+            <Route path="/libraries/:libraryId/books/:bookId/chapters/:chapterNumber" element={<BookReader />} />
             <Route element={<LayoutWithFooter />} >
                 <Route element={<SecurePage />}>
                     <Route path="/change-password" element={<ChangePassword />} />

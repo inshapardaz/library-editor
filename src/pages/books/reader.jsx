@@ -46,10 +46,10 @@ const BookReader = () => {
     const navigate = useNavigate()
     const windowSize = useWindowSize();
     const lang = useSelector(selectedLanguage)
-    const { libraryId, bookId, chapterId } = useParams()
+    const { libraryId, bookId, chapterNumber } = useParams()
     const { data: book, error: bookError } = useGetBookQuery({libraryId, bookId}, { skip : !libraryId || !bookId })
-    const { data : chapter, error: chapterError } = useGetChapterQuery({libraryId, bookId, chapterId}, { skip : !libraryId || !bookId || !chapterId || !book || bookError })
-    const { data : contents, error: contentsError, isFetching: contentsFetching } = useGetChapterContentsQuery({libraryId, bookId, chapterId}, { skip : !libraryId || !bookId || !chapterId || !chapter || chapterError })
+    const { data : chapter, error: chapterError } = useGetChapterQuery({libraryId, bookId, chapterNumber}, { skip : !libraryId || !bookId || !chapterNumber || !book || bookError })
+    const { data : contents, error: contentsError, isFetching: contentsFetching } = useGetChapterContentsQuery({libraryId, bookId, chapterNumber}, { skip : !libraryId || !bookId || !chapterNumber || !chapter || chapterError })
 
     const [font, setFont] = useLocalStorage('reader-font', 'MehrNastaleeq')
     const [size, setSize] = useLocalStorage('reader-font-size', 2.0);
