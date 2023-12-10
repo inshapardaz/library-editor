@@ -29,7 +29,7 @@ const dataURItoBlob = (dataURI) => {
     for (var i = 0; i < byteString.length; i++) {
         ia[i] = byteString.charCodeAt(i);
     }
-    console.log(mimeString)
+
     return new Blob([ia], {type:mimeString});
 };
 const helpers = {

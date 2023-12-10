@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
-import { App, Button, Card, Col, theme, Layout, List, Progress, Row, Space, Typography, Image, Tooltip, Result } from "antd";
+import { App, Button, Card, Col, theme, Layout, List, Progress, Row, Space, Typography, Image, Tooltip, Result, Spin } from "antd";
 import * as pdfjsLib from "pdfjs-dist";
 import { MdContentCopy, MdZoomIn, MdZoomOut } from "react-icons/md";
 import { TbSettingsCode, TbSettingsDown } from "react-icons/tb";
@@ -23,6 +23,7 @@ import { PageImageEditor } from "../../components/books/pages/PageImageEditor";
 const { Content, Sider } = Layout;
 pdfjsLib.GlobalWorkerOptions.workerSrc = worker;
 // --------------------------------------
+
 const downloadFile = async (url, onProgress = () => {} ) => {
     const response = await axiosPrivate({
         url : url,
@@ -70,13 +71,10 @@ const BookProcessPage = () => {
     const { t } = useTranslation();
     const [content, setContent] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [processingProgress, setProcessingProgress] = useState(0);
-    const [hasSavedSettings, setHasSavedSettings] = useState(false);
+    const [processingProgress, setProcessingProgress] = useState({ type: 'idle', value: 0});
     const [imageZoom, setImageZoom] = useLocalStorage("page-editor-zoom", 100);
     const [images, setImages] = useState([]);
     const [selectedImage, setSelectedImage] = useState(null);
-    const [numOfPages, setNumOfPages] = useState(0)
-    const [numOfPagesParsed, setNumOfPagesParsed] = useState(0)
     const { libraryId, bookId, contentId } = useParams();
 
     const { data: book, error, isFetching } = useGetBookQuery({ libraryId, bookId }, { skip: !libraryId || !bookId });
@@ -86,39 +84,30 @@ const BookProcessPage = () => {
         if (book && book.contents)
         {
             setContent(book.contents.filter(x => `${x.id}` === contentId)[0]);
-            const ls = localStorage.getItem(`page-settings-${book.id}-${contentId}`)
-            if (ls) {
-                setHasSavedSettings(true);
-            } else {
-                setHasSavedSettings(false);
-            }
         }
     }, [book, contentId])
 
-    console.log(`Completed ${processingProgress}%`)
     const loadImages = async () => {
         if (loading) return;
 
         setLoading(true);
-        setProcessingProgress(0);
+        setProcessingProgress({ type: 'downloadingFile', value: 0});
         message.info(t("book.actions.loadFileImages.messages.loading"))
 
         try {
             const onProgressDownload = ({loaded, total}) =>  {
-                console.log(`Downloaded ${loaded} of ${total} bytes`)
                 if (total > 0)
                 {
-                    setProcessingProgress((loaded / total).toFixed(0))
+                    setProcessingProgress({ type: 'downloadingFile', value: (loaded / total) * 100});
                 }
             }
 
             const file = await downloadFile(content.links.download, onProgressDownload);
 
             const onProgressPageLoading = ({loaded, total}) =>  {
-                console.log(`Pages ${loaded} of ${total} loaded`)
                 if (total > 0)
                 {
-                    setProcessingProgress((loaded / total).toFixed(0))
+                    setProcessingProgress({ type: 'loadingPages', value: (loaded / total) * 100});
                 }
             }
 
@@ -126,7 +115,6 @@ const BookProcessPage = () => {
 
             const pdf = await pdfjsLib.getDocument({ data: file }).promise;
             onProgressPageLoading({ loaded : 0, total: pdf.numPages})
-            setNumOfPages((e) => pdf.numPages);
 
             for (let i = 1; i <= pdf.numPages; i++) {
 
@@ -139,11 +127,9 @@ const BookProcessPage = () => {
                     splitValue: null
                 });
                 onProgressPageLoading({ loaded : i, total: pdf.numPages})
-                setNumOfPagesParsed(e => e + 1 )
             }
 
             setImages((e) => [...e, ...imagesList]);
-            saveLocalSettings(imagesList)
             message.success(t("book.actions.loadFileImages.messages.loaded"))
         }
         catch (e) {
@@ -151,6 +137,7 @@ const BookProcessPage = () => {
             message.error(t("book.actions.loadFileImages.messages.failedLoading"))
         }
         finally {
+            setProcessingProgress({ type: 'idle', value: 0});
             setLoading(false);
         }
     };
@@ -161,32 +148,13 @@ const BookProcessPage = () => {
             const newImages = [...images];
             newImages[currentIndex] = newImage;
             setImages(newImages);
-            saveLocalSettings(newImages)
         }
 
         setSelectedImage(newImage);
     };
 
     //------------------------------------------------------
-    const loadSavedSettings = () => {
-        try {
-            //const settings = localStorage.getItem(`page-settings-${book.id}-${content.id}`)
-            //setImages(JSON.parse(settings));
-        }
-        catch{
-            //clearLocalSettings();
-            //message.error(t("book.actions.loadFileImages.messages.errorLoadingSavedSettings"))
-        }
-    }
 
-    const saveLocalSettings = (settings) =>  {
-        //localStorage.setItem(`page-settings-${book.id}-${content.id}`, JSON.stringify(settings))
-    }
-
-    const clearLocalSettings = () => {
-        //localStorage.removeItem(`page-settings-${book.id}-${content.id}`)
-        //setHasSavedSettings(false)
-    }
     const applySettingsToAll = () => {
         if (selectedImage && images && images.length > 0) {
             const newImages = [...images];
@@ -196,7 +164,6 @@ const BookProcessPage = () => {
                 newImages[i].splitValue = selectedImage.splitValue;
             }
             setImages(newImages);
-            saveLocalSettings(newImages)
         }
     }
 
@@ -209,18 +176,20 @@ const BookProcessPage = () => {
                 newImages[i].splitValue = selectedImage.splitValue;
             }
             setImages(newImages);
-            saveLocalSettings(newImages)
         }
     }
 
     const savePages = () =>  {
-        setLoading(true);
+        setProcessingProgress({ type: 'savingPages', value: 0});
 
         try{
         const isRtl = () => languages[book?.language]?.dir === 'rtl';
 
+        setProcessingProgress({ type: 'savingPages', value: 0});
+
         const promises = images
             .map(i => i.split ? helpers.splitImage({ URI : i.data, splitPercentage: i.splitValue, rtl: isRtl } ) : Promise.resolve(i.data));
+
         Promise.all(promises)
             .then((data) => {
                 const files = data.flat().map(d => helpers.dataURItoBlob(d));
@@ -230,7 +199,6 @@ const BookProcessPage = () => {
                 })
                 .unwrap()
                 .then(() => message.success(t("pages.actions.upload.success")))
-                .then(() => clearLocalSettings())
                 .catch((e) => {
                     console.error(e)
                     message.error(t("pages.actions.upload.error"))
@@ -242,7 +210,7 @@ const BookProcessPage = () => {
             });
         }
         finally {
-            setLoading(false)
+            setProcessingProgress({ type: 'idle', value: 0});
         }
     }
 
@@ -342,11 +310,11 @@ const BookProcessPage = () => {
         </Row>
     );
 
-    const busyContent = loading ?
+    const busyContent = processingProgress.type !== 'idle' ?
         (<Card>
-            <Progress percent={numOfPages > 0 ? ((numOfPagesParsed / numOfPages) * 100).toFixed(0): 0 } />
+            <Progress percent={processingProgress.value} showInfo={false} />
             <Typography>
-                {t('book.actions.loadFileImages.progress', { completed: numOfPagesParsed, total: numOfPages})}
+                { t('book.actions.loadFileImages.messages.loading')}
             </Typography>
         </Card>)
         : null;
@@ -366,9 +334,10 @@ const BookProcessPage = () => {
     }
 
     return (<>
+            {busyContent}
+            { processingProgress.type === 'savingPages' &&  <Spin fullscreen /> }
             <DataContainer
-                busy={isFetching | loading }
-                busyContent={busyContent}
+                busy={isFetching | loading | isUploading | processingProgress.type !== 'idle'}
                 error={error}
                 errorTitle={t("pages.errors.loading.title")}
                 errorSubTitle={t("pages.errors.loading.subTitle")}
@@ -383,9 +352,6 @@ const BookProcessPage = () => {
                         <Button onClick={loadImages} disabled={loading}>
                             {t('book.actions.loadFileImages.title')}
                         </Button>
-                        {hasSavedSettings && <Button disabled={loading} onClick={loadSavedSettings}>
-                            {t('book.actions.loadFileImages.loadSavedSetting')}
-                        </Button>}
                     </Space>) }
                 empty={!content || !content.links.download || (images && images.length < 1)}
                 title={toolbar}
