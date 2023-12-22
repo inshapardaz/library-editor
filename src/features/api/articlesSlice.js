@@ -60,7 +60,7 @@ export const articlesApi = createApi({
             query: ({ libraryId, payload }) => ({
                 url: `/libraries/${libraryId}/articles`,
                 method: 'POST',
-                payload: removeLinks(payload)
+                data: removeLinks(payload)
             }),
             invalidatesTags: [ 'Articles' ]
         }),
@@ -68,7 +68,7 @@ export const articlesApi = createApi({
             query: ({ libraryId, articleId, payload }) => ({
                 url: `/libraries/${libraryId}/articles/${articleId}`,
                 method: 'PUT',
-                payload: removeLinks(payload)
+                data: removeLinks(payload)
             }),
             invalidatesTags: [ 'Articles' ]
         }),
@@ -99,7 +99,7 @@ export const articlesApi = createApi({
             query: ({ article, payload }) => ({
                 url: article.links.assign,
                 method: 'POST',
-                payload: removeLinks(payload)
+                data: removeLinks(payload)
             }),
             invalidatesTags: [ 'Article' ]
         }),
@@ -107,7 +107,7 @@ export const articlesApi = createApi({
             query: ({ libraryId, articleId, language, layout, payload }) => ({
                 url: `/libraries/${libraryId}/articles/${articleId}/contents`,
                 method: 'POST',
-                payload: {
+                data: {
                     language: language,
                     layout: layout,
                     text: payload
@@ -118,7 +118,7 @@ export const articlesApi = createApi({
             query: ({ libraryId, articleId, language, layout, payload }) => ({
                 url: `/libraries/${libraryId}/articles/${articleId}/contents`,
                 method: 'PUT',
-                payload: {
+                data: {
                     language: language,
                     layout: layout,
                     text: payload

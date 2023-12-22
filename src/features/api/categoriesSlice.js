@@ -26,7 +26,7 @@ export const categoriesApi = createApi({
             query: ({ libraryId, payload }) => ({
                 url: `/libraries/${libraryId}/categories`,
                 method: 'POST',
-                payload: removeLinks(payload)
+                data: removeLinks(payload)
             }),
             invalidatesTags: [ 'Categories' ]
         }),
@@ -34,7 +34,7 @@ export const categoriesApi = createApi({
             query: ({ libraryId, categoryId, payload }) => ({
                 url: `/libraries/${libraryId}/categories/${categoryId}`,
                 method: 'PUT',
-                payload: removeLinks(payload)
+                data: removeLinks(payload)
             }),
             invalidatesTags: [ 'Categories' ]
         }),

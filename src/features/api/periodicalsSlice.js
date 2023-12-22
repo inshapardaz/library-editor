@@ -41,7 +41,7 @@ export const periodicalsApi = createApi({
             query: ({ libraryId, payload }) => ({
                 url: `/libraries/${libraryId}/periodicals`,
                 method: 'POST',
-                payload: removeLinks(payload)
+                data: removeLinks(payload)
             }),
             invalidatesTags: [ 'Periodicals' ]
         }),
@@ -49,7 +49,7 @@ export const periodicalsApi = createApi({
             query: ({ libraryId, periodicalId, payload }) => ({
                 url: `/libraries/${libraryId}/periodicals/${periodicalId}`,
                 method: 'PUT',
-                payload: removeLinks(payload)
+                data: removeLinks(payload)
             }),
             invalidatesTags: [ 'Periodicals' ]
         }),

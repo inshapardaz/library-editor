@@ -183,32 +183,32 @@ const BookProcessPage = () => {
     const savePages = () =>  {
         setProcessingProgress({ type: 'savingPages', value: 0});
 
-        try{
-        const isRtl = () => languages[book?.language]?.dir === 'rtl';
+        try {
+            const isRtl = () => languages[book?.language]?.dir === 'rtl';
 
-        setProcessingProgress({ type: 'savingPages', value: 0});
+            setProcessingProgress({ type: 'savingPages', value: 0});
 
-        const promises = images
-            .map(i => i.split ? helpers.splitImage({ URI : i.data, splitPercentage: i.splitValue, rtl: isRtl } ) : Promise.resolve(i.data));
+            const promises = images
+                .map(i => i.split ? helpers.splitImage({ URI : i.data, splitPercentage: i.splitValue, rtl: isRtl } ) : Promise.resolve(i.data));
 
-        Promise.all(promises)
-            .then((data) => {
-                const files = data.flat().map(d => helpers.dataURItoBlob(d));
-                return createBookPageWithImage({
-                    book,
-                    fileList: files
+            Promise.all(promises)
+                .then((data) => {
+                    const files = data.flat().map(d => helpers.dataURItoBlob(d));
+                    return createBookPageWithImage({
+                        book,
+                        fileList: files
+                    })
+                    .unwrap()
+                    .then(() => message.success(t("pages.actions.upload.success")))
+                    .catch((e) => {
+                        console.error(e)
+                        message.error(t("pages.actions.upload.error"))
+                    });
                 })
-                .unwrap()
-                .then(() => message.success(t("pages.actions.upload.success")))
                 .catch((e) => {
                     console.error(e)
                     message.error(t("pages.actions.upload.error"))
                 });
-            })
-            .catch((e) => {
-                console.error(e)
-                message.error(t("pages.actions.upload.error"))
-            });
         }
         finally {
             setProcessingProgress({ type: 'idle', value: 0});

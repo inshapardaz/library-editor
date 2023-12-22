@@ -118,7 +118,7 @@ export const booksApi = createApi({
             query: ({ chapter, payload }) => ({
                 url: chapter.links.add_content,
                 method: 'POST',
-                payload: removeLinks(payload)
+                data: removeLinks(payload)
             }),
             invalidatesTags: [ 'ChapterContents' ]
         }),
@@ -126,7 +126,7 @@ export const booksApi = createApi({
             query: ({ chapterContent, payload }) => ({
                 url: chapterContent.links.update,
                 method: 'PUT',
-                payload: removeLinks(payload)
+                data: removeLinks(payload)
             }),
             invalidatesTags: [ 'ChapterContents' ]
         }),
@@ -134,7 +134,7 @@ export const booksApi = createApi({
             query: ({ libraryId, payload }) => ({
                 url: `/libraries/${libraryId}/books`,
                 method: 'POST',
-                payload: removeLinks(payload)
+                data: removeLinks(payload)
             }),
             invalidatesTags: [ 'Books' ]
         }),
@@ -142,7 +142,7 @@ export const booksApi = createApi({
             query: ({ libraryId, bookId, payload }) => ({
                 url: `/libraries/${libraryId}/books/${bookId}`,
                 method: 'PUT',
-                payload: removeLinks(payload)
+                data: removeLinks(payload)
             }),
             invalidatesTags: [ 'Books', 'Book' ]
         }),
@@ -173,7 +173,7 @@ export const booksApi = createApi({
             query: ({ libraryId, bookId, payload }) => ({
                 url: `/libraries/${libraryId}/books/${bookId}/chapters`,
                 method: 'POST',
-                payload: removeLinks(payload)
+                data: removeLinks(payload)
             }),
             invalidatesTags: [ 'Chapters' ]
         }),
@@ -181,7 +181,7 @@ export const booksApi = createApi({
             query: ({ chapter }) => ({
                 url: chapter.links.update,
                 method: 'PUT',
-                payload: removeLinks(chapter)
+                data: removeLinks(chapter)
             }),
             invalidatesTags: [ 'Chapters' ]
         }),
@@ -196,7 +196,7 @@ export const booksApi = createApi({
             query: ({ chapter, payload }) => ({
                 url: chapter.links.assign,
                 method: 'POST',
-                payload: removeLinks(payload)
+                data: removeLinks(payload)
             }),
             invalidatesTags: [ 'Chapters' ]
         }),
@@ -204,7 +204,7 @@ export const booksApi = createApi({
             query: ({ libraryId, bookId, payload }) => ({
                 url: `/libraries/${libraryId}/books/${bookId}/chapters/sequence`,
                 method: 'POST',
-                payload: removeLinks(payload)
+                data: removeLinks(payload)
             }),
             invalidatesTags: [ 'Chapters' ]
         }),
@@ -228,7 +228,7 @@ export const booksApi = createApi({
             query: ({ libraryId, bookId, payload }) => ({
                 url: `/libraries/${libraryId}/books/${bookId}/pages`,
                 method: 'POST',
-                payload: removeLinks(payload)
+                data: removeLinks(payload)
             }),
             invalidatesTags: [ 'BookPages' ]
         }),
@@ -236,7 +236,7 @@ export const booksApi = createApi({
             query: ({ page }) => ({
                 url: page.links.update,
                 method: 'PUT',
-                payload: removeLinks(page)
+                data: removeLinks(page)
             }),
             invalidatesTags: [ 'BookPages' ]
         }),
@@ -251,7 +251,7 @@ export const booksApi = createApi({
             query: ({ page, payload }) => ({
                 url: payload.accountId === "me" ?  page.links.assign_to_me :  page.links.assign,
                 method: 'POST',
-                payload: removeLinks(payload)
+                data: removeLinks(payload)
             }),
             invalidatesTags: [ 'BookPages' ]
         }),
@@ -259,7 +259,7 @@ export const booksApi = createApi({
             query: ({ page, key }) => ({
                 url: page.links.ocr,
                 method: 'POST',
-                payload: removeLinks(key)
+                data: removeLinks(key)
             }),
             invalidatesTags: [ 'BookPages' ]
         }),
@@ -283,7 +283,7 @@ export const booksApi = createApi({
             query: ({ page, payload }) => ({
                 url: page.links.page_sequence,
                 method: 'POST',
-                payload: removeLinks(payload)
+                data: removeLinks(payload)
             }),
             invalidatesTags: [ 'BookPages' ]
         }),

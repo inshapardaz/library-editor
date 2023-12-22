@@ -55,14 +55,14 @@ export const issuesApi = createApi({
             query: ({ libraryId, periodicalId, volumeNumber, issueNumber, payload }) => ({
                 url: `/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}`,
                 method: 'POST',
-                payload: removeLinks(payload)
+                data: removeLinks(payload)
             })
         }),
         updateIssue: builder.mutation({
             query: ({ libraryId, periodicalId, volumeNumber, issueNumber, payload }) => ({
                 url: `/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}`,
                 method: 'PUT',
-                payload: removeLinks(payload)
+                data: removeLinks(payload)
             })
         }),
         updateIssueImage: builder.mutation({

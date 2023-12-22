@@ -29,7 +29,7 @@ export const authorsApi = createApi({
             query: ({ libraryId, payload }) => ({
                 url: `/libraries/${libraryId}/authors`,
                 method: 'POST',
-                payload: removeLinks(payload)
+                data: removeLinks(payload)
             }),
             invalidatesTags: [ 'Authors' ]
         }),
@@ -37,7 +37,7 @@ export const authorsApi = createApi({
             query: ({ libraryId, authorId, payload }) => ({
                 url: `/libraries/${libraryId}/authors/${authorId}`,
                 method: 'PUT',
-                payload: removeLinks(payload)
+                data: removeLinks(payload)
             }),
             invalidatesTags: [ 'Authors' ]
         }),

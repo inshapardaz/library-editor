@@ -26,7 +26,7 @@ export const seriesApi = createApi({
             query: ({ libraryId, payload }) => ({
                 url: `/libraries/${libraryId}/series`,
                 method: 'POST',
-                payload: removeLinks(payload)
+                data: removeLinks(payload)
             }),
             invalidatesTags: [ 'Series' ]
         }),
@@ -34,7 +34,7 @@ export const seriesApi = createApi({
             query: ({ libraryId, seriesId, payload }) => ({
                 url: `/libraries/${libraryId}/series/${seriesId}`,
                 method: 'PUT',
-                payload: removeLinks(payload)
+                data: removeLinks(payload)
             }),
             invalidatesTags: [ 'Series' ]
         }),

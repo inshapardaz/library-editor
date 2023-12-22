@@ -38,7 +38,7 @@ export const librariesApi = createApi({
             query: ({ library }) => ({
                 url: `/libraries`,
                 method: 'POST',
-                payload: removeLinks(library)
+                data: removeLinks(library)
             }),
             invalidatesTags: [ 'Libraries' ]
         }),
@@ -46,7 +46,7 @@ export const librariesApi = createApi({
             query: ({ library }) => ({
                 url: library.links.update,
                 method: 'PUT',
-                payload: removeLinks(library)
+                data: removeLinks(library)
             }),
             invalidatesTags: [ 'Libraries' ]
         }),
