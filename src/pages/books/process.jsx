@@ -5,7 +5,7 @@ import { useLocalStorage } from "usehooks-ts";
 import { useHotkeys } from 'react-hotkeys-hook';
 
 // 3rd party libraries
-import { App, Button, Card, Col, theme, Layout, List, Progress, Row, Space, Typography, Image, Tooltip, Result, Spin } from "antd";
+import { App, Button, Card, Col, theme, Layout, List, Progress, Row, Space, Typography, Image, Tooltip, Result } from "antd";
 import * as pdfjsLib from "pdfjs-dist";
 import { MdContentCopy, MdZoomIn, MdZoomOut } from "react-icons/md";
 import { TbSettingsCode, TbSettingsDown } from "react-icons/tb";
@@ -114,7 +114,7 @@ const BookProcessPage = () => {
 
             const imagesList = [];
 
-            const pdf = await pdfjsLib.getDocument({ data: file }).promise;
+            const pdf = await (pdfjsLib.getDocument({ data: file }).promise);
             onProgressPageLoading({ loaded : 0, total: pdf.numPages})
 
             for (let i = 1; i <= pdf.numPages; i++) {
@@ -180,35 +180,39 @@ const BookProcessPage = () => {
         }
     }
 
-    const savePages = () =>  {
-        setProcessingProgress({ type: 'savingPages', value: 0});
+    const savePages = async () =>  {
+        setProcessingProgress({ type: 'savingPages', value: 0 });
 
         try {
             const isRtl = () => languages[book?.language]?.dir === 'rtl';
 
             setProcessingProgress({ type: 'savingPages', value: 0});
 
-            const promises = images
-                .map(i => i.split ? helpers.splitImage({ URI : i.data, splitPercentage: i.splitValue, rtl: isRtl } ) : Promise.resolve(i.data));
+            const data = [];
+            for(let i = 0; i < images.length; i++)
+            {
+                const image = images[i];
+                if (image.split)
+                {
+                    const splitImage = await helpers.splitImage({ URI : image.data, splitPercentage: image.splitValue, rtl: isRtl } );
+                    data.push(splitImage);
+                } else {
+                    data.push(image.data);
+                }
+            }
 
-            Promise.all(promises)
-                .then((data) => {
-                    const files = data.flat().map(d => helpers.dataURItoBlob(d));
-                    return createBookPageWithImage({
-                        book,
-                        fileList: files
-                    })
-                    .unwrap()
-                    .then(() => message.success(t("pages.actions.upload.success")))
-                    .catch((e) => {
-                        console.error(e)
-                        message.error(t("pages.actions.upload.error"))
-                    });
-                })
-                .catch((e) => {
-                    console.error(e)
-                    message.error(t("pages.actions.upload.error"))
-                });
+            const files = data.flat().map(d => helpers.dataURItoBlob(d));
+            const chunkSize = 10;
+            for (let i = 0; i < files.length; i += chunkSize) {
+                const chunk = files.slice(i, i + chunkSize);
+                await (createBookPageWithImage({  book, fileList: chunk}).unwrap())
+                setProcessingProgress({ type: 'savingPages', value: (i * 100) / files.length });
+            }
+            message.success(t("pages.actions.upload.success"))
+        }
+        catch(e) {
+            console.error(e)
+            message.error(t("pages.actions.upload.error"))
         }
         finally {
             setProcessingProgress({ type: 'idle', value: 0});
@@ -314,14 +318,17 @@ const BookProcessPage = () => {
         </Row>
     );
 
-    const busyContent = processingProgress.type !== 'idle' ?
-        (<Card>
-            <Progress percent={processingProgress.value} showInfo={false} />
-            <Typography>
-                { t('book.actions.loadFileImages.messages.loading')}
-            </Typography>
-        </Card>)
-        : null;
+    const busyContent = () => {
+
+        if (processingProgress.type === 'idle') return null;
+
+        return (<Card>
+                <Progress percent={processingProgress.value} showInfo={false} />
+                <Typography>
+                    { t(`book.actions.loadFileImages.messages.${processingProgress.type}`)}
+                </Typography>
+            </Card>);
+    }
 
     if (content && content?.mimeType !== "application/pdf")
     {
@@ -338,10 +345,9 @@ const BookProcessPage = () => {
     }
 
     return (<>
-            {busyContent}
-            { processingProgress.type === 'savingPages' &&  <Spin fullscreen /> }
             <DataContainer
                 busy={isFetching | loading | isUploading | processingProgress.type !== 'idle'}
+                busyContent={busyContent()}
                 error={error}
                 errorTitle={t("pages.errors.loading.title")}
                 errorSubTitle={t("pages.errors.loading.subTitle")}

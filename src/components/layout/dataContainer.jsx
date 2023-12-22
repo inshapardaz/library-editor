@@ -24,21 +24,27 @@ const DataContainer = ({
     style = null,
     children,
 }) => {
-    const content = error ? (
-        <Result
+
+    let content = null;
+
+    if (error) {
+        content = (<Result
             status="error"
             title={errorTitle}
             subTitle={errorSubTitle}
             icon={errorIcon}
             extra={errorAction}
-        />
-    ) : !!empty ? (
-        <Empty image={emptyImage} description={emptyDescription}>
+        />);
+    } else if (busy) {
+        content = busyContent;
+    } else if (!!empty) {
+        content = (<Empty image={emptyImage} description={emptyDescription}>
             {emptyContent}
-        </Empty>
-    ) : busy ? busyContent : (
-        children
-    );
+        </Empty>);
+    } else {
+        content = children;
+    }
+
     return (
         <Card
             title={title}

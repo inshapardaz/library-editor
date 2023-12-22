@@ -52,7 +52,7 @@ export const seriesApi = createApi({
                 return ({
                     url: `/libraries/${libraryId}/series/${seriesId}/image`,
                     method: 'PUT',
-                    payload: formData,
+                    data: formData,
                     formData: true,
                     headers: {
                         'content-type': 'multipart/form-data'

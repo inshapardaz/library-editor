@@ -64,7 +64,7 @@ export const librariesApi = createApi({
                 return ({
                     url: library.links.image_upload,
                     method: 'PUT',
-                    payload: formData,
+                    data: formData,
                     formData: true,
                     headers: {
                         'content-type': 'multipart/form-data'

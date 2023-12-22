@@ -43,7 +43,7 @@ export const axiosBaseQuery =
   ({ baseUrl } = { baseUrl: process.env.REACT_APP_API_URL }) =>
     async ({ url, method, data, params }) => {
       try {
-        const result = await axiosPrivate({ url: baseUrl + url, method, data, params })
+        const result = await axiosPrivate({ url: url.startsWith('http') ? url :  baseUrl + url, method, data, params })
         return result
       } catch (axiosError) {
         let err = axiosError

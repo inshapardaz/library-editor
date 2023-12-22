@@ -160,7 +160,7 @@ export const booksApi = createApi({
                 return ({
                     url: `/libraries/${libraryId}/books/${bookId}/image`,
                     method: 'PUT',
-                    payload: formData,
+                    data: formData,
                     formData: true,
                     headers: {
                         'content-type': 'multipart/form-data'
@@ -270,7 +270,7 @@ export const booksApi = createApi({
                 return ({
                     url: `/libraries/${libraryId}/books/${bookId}/pages/${pageNumber}/image`,
                     method: 'PUT',
-                    payload: formData,
+                    data: formData,
                     formData: true,
                     headers: {
                         'content-type': 'multipart/form-data'
@@ -296,7 +296,7 @@ export const booksApi = createApi({
                 return ({
                     url: book.links.create_multiple,
                     method: 'POST',
-                    payload: formData,
+                    data: formData,
                     formData: true,
                     headers: {
                         'content-type': 'multipart/form-data'
@@ -312,7 +312,7 @@ export const booksApi = createApi({
                 return ({
                     url: book.links.add_file,
                     method: 'POST',
-                    payload: formData,
+                    data: formData,
                     formData: true,
                     headers: {
                         'content-type': 'multipart/form-data'
@@ -328,7 +328,7 @@ export const booksApi = createApi({
                 return ({
                     url: content.links.update,
                     method: 'PUT',
-                    payload: formData,
+                    data: formData,
                     formData: true,
                     headers: {
                         'content-type': 'multipart/form-data'

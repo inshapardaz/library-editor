@@ -67,7 +67,7 @@ export const periodicalsApi = createApi({
                 return ({
                     url: `/libraries/${libraryId}/periodicals/${periodicalId}/image`,
                     method: 'PUT',
-                    payload: formData,
+                    data: formData,
                     formData: true,
                     headers: {
                         'content-type': 'multipart/form-data'

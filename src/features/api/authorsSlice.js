@@ -55,7 +55,7 @@ export const authorsApi = createApi({
                 return ({
                     url: `/libraries/${libraryId}/authors/${authorId}/image`,
                     method: 'PUT',
-                    payload: formData,
+                    data: formData,
                     formData: true,
                     headers: {
                         'content-type': 'multipart/form-data'

@@ -379,7 +379,9 @@ const en = {
                 "page" : "Page {{current}} of {{total}}",
                 "loadSavedSetting": "Load previously saved settings",
                 "messages" : {
-                    "loading": "Loading pages from pdf. It might take some time.",
+                    "downloadingFile": "Downloading file...",
+                    "loadingPages": "Parsing pages from pdf. It might take some time. Please keep this window open and in focus.",
+                    "savingPages": "Saving pages. It might take some time. Please keep this window open and in focus.",
                     "loaded": "All pages loaded successfully.",
                     "failedLoading": "Failed to load all pages.",
                     "selectImage": "Please select an image",
