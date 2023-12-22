@@ -1,4 +1,11 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
+// 3rd party imports
+import { App, Button, Spin } from "antd";
+import Editor from 'urdu-web-editor'
+import { FaCheckCircle, FaSave } from "react-icons/fa";
 
 // Local imports
 import {
@@ -7,15 +14,17 @@ import {
     useAddChapterContentsMutation,
     useUpdateChapterContentsMutation
 } from "../../../features/api/booksSlice";
-import { App, Button, Spin } from "antd";
+import { selectedLanguage } from '../../../features/ui/uiSlice'
 import PageHeader from "../../../components/layout/pageHeader";
 import EditingStatusIcon from "../../../components/editingStatusIcon";
 import DataContainer from "../../../components/layout/dataContainer";
-import Editor from "../../../editor";
-import { useEffect, useState } from "react";
-import { FaCheckCircle, FaSave } from "react-icons/fa";
 import EditingStatus from "../../../models/editingStatus";
-import { useTranslation } from "react-i18next";
+// ------------------------------------------
+
+const EMPTY_CONTENT =
+  '{"root":{"children":[{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}';
+
+
 
 // ----------------------------------------
 const EditChapter = () =>   {
@@ -33,6 +42,17 @@ const EditChapter = () =>   {
         { skip: !libraryId || !bookId || !chapterNumber }
     );
 
+    const editorConfiguration =   {
+        richText: true,
+        language: selectedLanguage?.key ?? 'en',
+        toolbar: {
+            showAlignment: false,
+            showFontFormat: true,
+            showInsert: true,
+            showExtraFormat: false,
+            showInsertLink: false,
+        }
+    }
     const {
         data: chapterContent,
         error: chapterContentError,
@@ -116,10 +136,9 @@ const EditChapter = () =>   {
                     actions={actions}
                 />
                 <DataContainer error={chapterError | chapterContentError}>
-                    <Editor
-                        rows={20}
-                        value={chapterContent?.content}
-                        onChange={(content) => setText(content)}
+                    <Editor configuration={editorConfiguration}
+                        value={chapterContent?.content ?? EMPTY_CONTENT }
+                        setValue={(content) => setText(content)}
                     />
                 </DataContainer>
             </Spin>

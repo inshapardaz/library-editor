@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useHotkeys } from 'react-hotkeys-hook';
 
 // 3rd party libraries
 import { Button, Card, Space, Slider, Switch, Tooltip, Result } from "antd";
@@ -25,11 +26,18 @@ export const PageImageEditor = ({ image, t, zoom = 100, onUpdate = () => { } }) 
         setDirty(true)
     };
 
+    //------------------------------------------------------
+    useHotkeys('ctrl+keyup', () => setSliderValue(e => e + 10), { enabled : checked, preventDefault: true })
+    useHotkeys('ctrl+keydown', () => setSliderValue(e => e - 10), { enabled: checked, preventDefault: true })
+    useHotkeys('ctrl+shift+v', () => setChecked(true), { enabled: !checked })
+    useHotkeys('alt+ctrl+s', () => save(), { enabled: !checked, preventDefault: true })
+    //------------------------------------------------------
+
     useEffect(() => {
         setChecked(image?.split);
         setSliderValue(Number((image?.splitValue ? (image?.splitValue * max) / 100 : max / 2).toFixed()));
         setDirty(false)
-    }, [image?.split, image?.splitValue]);
+    }, [image, image?.split, image?.splitValue]);
 
     if (!image) {
         return (<Result
@@ -44,6 +52,7 @@ export const PageImageEditor = ({ image, t, zoom = 100, onUpdate = () => { } }) 
         newImage.splitValue = (sliderValue / max) * 100;
         onUpdate(newImage);
     };
+
     //------------------------------------------------------
     const toolbar = (<Space>
         {t('book.actions.split.title')}
@@ -51,7 +60,7 @@ export const PageImageEditor = ({ image, t, zoom = 100, onUpdate = () => { } }) 
             size="small"
             checked={checked}
             onChange={onChangeSplit} />
-        <Tooltip title={t('actions.save')}>
+        <Tooltip title={t('actions.save') } >
             <Button onClick={save} icon={<FaRegSave />}  disabled={!dirty} />
         </Tooltip>
     </Space>);

@@ -19,6 +19,8 @@ import {
     MdImage,
 } from "react-icons/md";
 
+import Editor from 'urdu-web-editor'
+
 // Local imports
 import {
     useGetBookPageQuery,
@@ -30,7 +32,6 @@ import PageHeader from "../../../components/layout/pageHeader";
 import DataContainer from "../../../components/layout/dataContainer";
 import EditingStatusIcon from "../../../components/editingStatusIcon";
 import helpers from "../../../helpers";
-import Editor from "../../../editor";
 import PageStatus from "../../../models/pageStatus";
 import PageOcrButton from "../../../components/books/pages/pageOcrButton";
 
@@ -255,9 +256,8 @@ const PageEditPage = () => {
                     <Row gutter={16}>
                         <Col span={12} style={{display: 'flex'}}>
                             <Editor
-                                rows={20}
                                 value={text}
-                                onChange={(content) => setText(content)}
+                                setValue={(content) => setText(content)}
                             />
                         </Col>
                         {showImage && (

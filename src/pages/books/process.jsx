@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
+import { useHotkeys } from 'react-hotkeys-hook';
 
 // 3rd party libraries
 import { App, Button, Card, Col, theme, Layout, List, Progress, Row, Space, Typography, Image, Tooltip, Result, Spin } from "antd";
@@ -20,7 +21,7 @@ import helpers from '../../helpers';
 import { PageImageEditor } from "../../components/books/pages/PageImageEditor";
 
 // --------------------------------------
-const { Content, Sider } = Layout;
+const { Content, Sider, Header } = Layout;
 pdfjsLib.GlobalWorkerOptions.workerSrc = worker;
 // --------------------------------------
 
@@ -248,6 +249,9 @@ const BookProcessPage = () => {
         }
     }
     //------------------------------------------------------
+    useHotkeys('ctrl+left', goNext, {enabled : canGoNext()})
+    useHotkeys('ctrl+right', goPrevious, {enabled : canGoPrevious()})
+    //------------------------------------------------------
     const toolbar = (
         <Row gutter={8}>
             <Col>
@@ -354,45 +358,58 @@ const BookProcessPage = () => {
                         </Button>
                     </Space>) }
                 empty={!content || !content.links.download || (images && images.length < 1)}
-                title={toolbar}
                 bordered={false}
+                style={{ padding: "0" }}
             >
                 <Layout
-                    style={{ padding: "24px 0", background: colorBgContainer }}
+                    style={{ padding: "0", background: colorBgContainer }}
                 >
-                    <Sider
-                        width={200}
-                        breakpoint="lg"
-                        collapsedWidth={0}
-                        style={{
-                            background: colorBgContainer,
-                            overflow: 'auto',
-                            position: 'sticky',
-                            height: '100vh',
-                            top: 0,
-                            bottom: 0,
-                          }}
-                    >
-                        <List
-                            dataSource={images}
-                            itemLayout="vertical"
-                            size="large"
-                            bordered={true}
-                            renderItem={(image) => (
-                            <List.Item
-                                onClick={() => setSelectedImage(image)}
-                                style={selectedImage?.index === image.index ? {backgroundColor : colorBorder } : null}>
-                                <List.Item.Meta
-                                    avatar={<Image src={image.data} alt={image.index} preview={false} width={100} />}
-                                    title={image.index}
-                                />
-                            </List.Item>
-                            )}
-                        />
-                    </Sider>
-                    <Content>
-                        <PageImageEditor image={selectedImage} zoom={imageZoom} t={t} onUpdate={updateImage}/>
-                    </Content>
+                    <Header style={{
+                        background: colorBgContainer,
+                        position: 'sticky',
+                        top: 0,
+                        zIndex: 1,
+                        width: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        }}>
+                    {toolbar}
+                    </Header>
+                    <Layout>
+                        <Sider
+                            width={200}
+                            breakpoint="lg"
+                            collapsedWidth={0}
+                            style={{
+                                background: colorBgContainer,
+                                overflow: 'auto',
+                                position: 'sticky',
+                                height: '100vh',
+                                top: 0,
+                                bottom: 0,
+                            }}
+                        >
+                            <List
+                                dataSource={images}
+                                itemLayout="vertical"
+                                size="large"
+                                bordered={true}
+                                renderItem={(image) => (
+                                <List.Item
+                                    onClick={() => setSelectedImage(image)}
+                                    style={selectedImage?.index === image.index ? {backgroundColor : colorBorder } : null}>
+                                    <List.Item.Meta
+                                        avatar={<Image src={image.data} alt={image.index} preview={false} width={100} />}
+                                        title={image.index}
+                                    />
+                                </List.Item>
+                                )}
+                            />
+                        </Sider>
+                        <Content>
+                            <PageImageEditor image={selectedImage} zoom={imageZoom} t={t} onUpdate={updateImage}/>
+                        </Content>
+                    </Layout>
                 </Layout>
             </DataContainer>
         </>);

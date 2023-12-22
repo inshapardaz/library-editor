@@ -21,6 +21,7 @@ const DataContainer = ({
     actions,
     extra,
     bordered = true,
+    style = null,
     children,
 }) => {
     const content = error ? (
@@ -46,6 +47,7 @@ const DataContainer = ({
             bordered={bordered}
             className={styles["api_container"]}
             loading={busy && !busyContent}
+            style={style}
         >
             {content}
         </Card>

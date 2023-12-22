@@ -303,7 +303,7 @@ export const booksApi = createApi({
                     }
                 });
             },
-            invalidatesTags: [ 'BookPages' ]
+            invalidatesTags: [ 'Book', 'BookPages' ]
         }),
         addBookContent: builder.mutation({
             query: ({ book, payload }) => {

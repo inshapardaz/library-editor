@@ -28,7 +28,7 @@ const ur = {
         "cancel": "اخراج",
         "resizeImage": "تصویر کی تدوین",
         "zoonIn": "زوم ان",
-        "zoonOut": "زوق آؤٹ",
+        "zoonOut": "زوم آؤٹ",
         "next": "اگلا",
         "previous": "پچھلا"
 	},
