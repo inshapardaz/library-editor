@@ -12,10 +12,11 @@ export function BookSeriesInfo({ libraryId, book, t, navigate }) {
                 text={t("book.series.seriesAndIndexLabel", { name: book.seriesName, index: book.seriesIndex })}
                 onClick={() => navigate(`/libraries/${libraryId}/books?series=${book.series.id}`)}/>
 
-        } else {
-            return <IconText
+            } else {
+                return <IconText
                 icon={ImBooks}
-                text={t("book.series.indexLabel", { name: book.seriesName })} />
+                text={t("book.series.indexLabel", { name: book.seriesName })}
+                onClick={() => navigate(`/libraries/${libraryId}/books?series=${book.series.id}`)}/>
         }
     }
 

@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 // 3rd Party Libraries
 import { Avatar, List, Typography } from "antd";
-import { FiLayers } from "react-icons/fi";
+import { FiEdit, FiLayers } from "react-icons/fi";
 import { AiOutlineCopy } from "react-icons/ai";
 
 // Local Import
@@ -53,13 +53,20 @@ function BookListItem({ libraryId, book, t }) {
             {book.title}
         </Link>
     );
-    const description = book.description ? (
-        <Paragraph type="secondary" ellipsis>
-            {book.description}
-        </Paragraph>
-    ) : (
-        <Text type="secondary">{t("book.noDescription")}</Text>
-    );
+    const description = (<>
+        {book.description ? (
+            <Paragraph type="secondary" ellipsis>
+                {book.description}
+            </Paragraph>
+        ) : (
+            <Text type="secondary">{t("book.noDescription")}</Text>
+        )}
+        {book?.seriesName ? <BookSeriesInfo
+                    key={`${book.id}-action-series`}
+                    book={book}
+                    t={t}
+                />:null}
+    </>);
     const chapterCount = (
         <IconText
             onClick={() => navigate(`/libraries/${libraryId}/books/${book.id}`)}
@@ -77,21 +84,31 @@ function BookListItem({ libraryId, book, t }) {
         />
     );
 
+    const fileCount = (
+        <IconText
+            onClick={() => navigate(`/libraries/${libraryId}/books/${book.id}/?section=files`)}
+            icon={AiOutlineCopy}
+            text={t("book.fileCount", { count: book.contents?.length ?? 0 })}
+            key="book-file-count"
+        />
+    );
+
     return (
         <List.Item
             key={book.id}
             actions={[
                 chapterCount,
                 pageCount,
+                fileCount,
                 <BookCategory
                     key={`${book.id}-action-categories`}
                     justList
                     book={book}
                 />,
-                <BookSeriesInfo
-                    key={`${book.id}-action-series`}
-                    book={book}
-                    t={t}
+                <IconText
+                    onClick={() => navigate(`/libraries/${libraryId}/books/${book.id}/edit`)}
+                    icon={FiEdit}
+                    key="book-edit"
                 />,
                 <BookDeleteButton
                     libraryId={libraryId}

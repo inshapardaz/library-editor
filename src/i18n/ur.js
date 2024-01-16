@@ -332,6 +332,8 @@ const ur = {
 		"chapterCount_other": "{{count}} ابواب",
 		"pageCount_one" : "1 صفحہ",
 		"pageCount_other" : "{{count}} صفحات",
+		"fileCount_one" : "1 دستاویز",
+		"fileCount_other" : "{{count}} دستاویزات",
 		"publishLabel" : "{{year}} میں شائع ہوئی",
 		"noDescription" : "تفصیل دستیاب نہیں۔۔۔",
 		"chapters": {
@@ -407,11 +409,11 @@ const ur = {
         "errors": {
             "loading": {
             "title": "Error",
-            "subTitle": "Unable to load book.",
+            "subTitle": "کتاب حاصل کرنے میں  ناکامی ہوئی۔",
             }
         },
         "empty" : {
-            "title" : "No latest book found",
+            "title" : "کتب نہیں ملیں",
         },
     },
 	"chapters" : {
@@ -517,6 +519,7 @@ const ur = {
                 "label": "اپلوڈ کریں",
                 "title" : "{{book}} کے صفحات  اپلوڈ کریں",
                 "message" : "کلک یا ڈریگ کر کے کتاب کے صفحوں کے عکسس کی فائل چُنیں۔",
+                "success" :"صفحات کامیابی سے تخیلق کر دیے گئے ہیں۔",
                 "detail": "آپ جے پی جی اور پی ڈی ایف فائل چُن سکتے ہیں۔ کتاب کے صفحات کو ترتیب سے چٗنیں تا کہ وہ اسی ترتیب سے اپلوڈ ہوں۔"
             },
             "autoFillChapter": {

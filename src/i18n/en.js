@@ -331,6 +331,8 @@ const en = {
 		"chapterCount_other": "{{count}} chapters",
 		"pageCount_one" : "1 page",
 		"pageCount_other" : "{{count}} pages",
+        "fileCount_one" : "1 file",
+		"fileCount_other" : "{{count}} files",
 		"publishLabel" : "Published in {{year}}",
 		"noDescription" : "No details...",
 		"chapters" : {
