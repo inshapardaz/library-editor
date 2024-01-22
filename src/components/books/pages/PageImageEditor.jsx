@@ -9,7 +9,7 @@ import { FaFileImage, FaRegSave } from "react-icons/fa";
 import styles from '../../../styles/common.module.scss';
 
 // --------------------------------------
-export const PageImageEditor = ({ image, t, zoom = 100, onUpdate = () => { } }) => {
+export const PageImageEditor = ({ image, t, zoom = 100, isRtl = false, onUpdate = () => { } }) => {
     const max = 1000;
     const marks = { 0: '|', 500: '|', 1000: '|' };
     const [dirty, setDirty] = useState(false);
@@ -26,11 +26,18 @@ export const PageImageEditor = ({ image, t, zoom = 100, onUpdate = () => { } }) 
         setDirty(true)
     };
 
+    const save = () => {
+        var newImage = { ...image };
+        newImage.split = checked;
+        newImage.splitValue = (sliderValue / max) * 100;
+        onUpdate(newImage);
+    };
+
     //------------------------------------------------------
-    useHotkeys('ctrl+keyup', () => setSliderValue(e => e + 10), { enabled : checked, preventDefault: true })
-    useHotkeys('ctrl+keydown', () => setSliderValue(e => e - 10), { enabled: checked, preventDefault: true })
-    useHotkeys('ctrl+shift+v', () => setChecked(true), { enabled: !checked })
-    useHotkeys('alt+ctrl+s', () => save(), { enabled: !checked, preventDefault: true })
+    useHotkeys(isRtl ? 'ctrl+shift+left' : 'ctrl+right', () => onChangeSplitValue(sliderValue + 10), { enabled : checked, preventDefault: true })
+    useHotkeys(isRtl ? 'ctrl+shift+right': 'ctrl+left' , () => onChangeSplitValue(sliderValue - 10), { enabled: checked, preventDefault: true })
+    useHotkeys('ctrl+shift+x', () => setChecked(true), { enabled: !checked })
+    useHotkeys('ctrl+shift+.', () => save(), { enabled: checked, preventDefault: true })
     //------------------------------------------------------
 
     useEffect(() => {
@@ -46,21 +53,15 @@ export const PageImageEditor = ({ image, t, zoom = 100, onUpdate = () => { } }) 
             title={t('book.actions.loadFileImages.messages.selectImage')} />);
     }
 
-    const save = () => {
-        var newImage = { ...image };
-        newImage.split = checked;
-        newImage.splitValue = (sliderValue / max) * 100;
-        onUpdate(newImage);
-    };
-
     //------------------------------------------------------
     const toolbar = (<Space>
-        {t('book.actions.split.title')}
-        <Switch
-            size="small"
-            checked={checked}
-            onChange={onChangeSplit} />
-        <Tooltip title={t('actions.save') } >
+        <Tooltip title={t('book.actions.split.title') + '(ctrl+shift+x)' } >
+            <Switch
+                size="small"
+                checked={checked}
+                onChange={onChangeSplit} />
+        </Tooltip>
+        <Tooltip title={t('actions.save') + '(ctrl+shift+.)' } >
             <Button onClick={save} icon={<FaRegSave />}  disabled={!dirty} />
         </Tooltip>
     </Space>);

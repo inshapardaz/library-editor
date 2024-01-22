@@ -131,6 +131,7 @@ const BookProcessPage = () => {
             }
 
             setImages((e) => [...e, ...imagesList]);
+            if (imagesList.length > 0) setSelectedImage(imagesList[0]);
             message.success(t("book.actions.loadFileImages.messages.loaded"))
         }
         catch (e) {
@@ -253,8 +254,8 @@ const BookProcessPage = () => {
         }
     }
     //------------------------------------------------------
-    useHotkeys('ctrl+left', goNext, {enabled : canGoNext()})
-    useHotkeys('ctrl+right', goPrevious, {enabled : canGoPrevious()})
+    useHotkeys('ctrl+shift+keydown', goNext, {enabled : canGoNext()})
+    useHotkeys('ctrl+shift+keyup', goPrevious, {enabled : canGoPrevious()})
     //------------------------------------------------------
     const toolbar = (
         <Row gutter={8}>
@@ -274,21 +275,21 @@ const BookProcessPage = () => {
                 </Button.Group>
             </Col>
             <Col>
+                <Button.Group>
+                    <Tooltip title={t('book.actions.processAndSave.title')}>
+                        <Button onClick={savePages}
+                            icon={<FaSave />}
+                            disabled={!images || images.length < 1 || loading || isUploading } />
+                    </Tooltip>
+                </Button.Group>
+            </Col>
+            <Col>
                 <Button.Group disabled={selectedImage == null || isUploading }>
                     <Tooltip title={t('book.actions.applySplitToAll.title')}>
                         <Button onClick={applySettingsToAll} icon={<TbSettingsCode />} />
                     </Tooltip>
                     <Tooltip title={t('book.actions.applySplitToAllBelow.title')} >
                         <Button onClick={applySettingsToAllNext} icon={<TbSettingsDown />}/>
-                    </Tooltip>
-                </Button.Group>
-            </Col>
-            <Col>
-                <Button.Group>
-                    <Tooltip title={t('book.actions.processAndSave.title')}>
-                        <Button onClick={savePages}
-                            icon={<FaSave />}
-                            disabled={!images || images.length < 1 || loading || isUploading } />
                     </Tooltip>
                 </Button.Group>
             </Col>
@@ -306,11 +307,11 @@ const BookProcessPage = () => {
             </Col>
             <Col>
                 <Button.Group disabled={ selectedImage }>
-                    <Tooltip title={t('actions.next')}>
+                    <Tooltip title={t('actions.next') + '(ctrl+shift+up)'}>
                         <Button onClick={goPrevious} disabled={!canGoPrevious()} icon={<FaArrowRight />} />
                     </Tooltip>
                     <Button disabled>{ selectedImage && t('book.actions.loadFileImages.page', {current: (selectedImage?.index ?? -1) + 1, total: images.length }) }</Button>
-                    <Tooltip title={t('actions.previous')}>
+                    <Tooltip title={t('actions.previous'+ '(ctrl+shift+down)')}>
                         <Button onClick={goNext} disabled={!canGoNext()} icon={<FaArrowLeft />} />
                     </Tooltip>
                 </Button.Group>
@@ -413,7 +414,7 @@ const BookProcessPage = () => {
                             />
                         </Sider>
                         <Content>
-                            <PageImageEditor image={selectedImage} zoom={imageZoom} t={t} onUpdate={updateImage}/>
+                            <PageImageEditor image={selectedImage} zoom={imageZoom} t={t} onUpdate={updateImage} isRtl={languages[book?.language]?.dir === 'rtl'} />
                         </Content>
                     </Layout>
                 </Layout>

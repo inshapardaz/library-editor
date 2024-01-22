@@ -28,9 +28,12 @@ export default function FileDeleteButton({ content, t, type }) {
             onOk() {
                 if (content && content.links && content.links.delete) {
                     return deleteBookContent({ content }).unwrap()
-                        .then(() => message.success(t("chapter.actions.delete.success")))
-                        .catch((_) => message.error(t("chapter.actions.delete.error"))
-                    );
+                        .then(() => {
+                            message.success(t("chapter.actions.delete.success"))
+                        })
+                        .catch((_) => {
+                            message.error(t("chapter.actions.delete.error"))
+                        });
                 }
             }
         });
