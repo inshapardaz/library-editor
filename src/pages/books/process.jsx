@@ -311,7 +311,7 @@ const BookProcessPage = () => {
                         <Button onClick={goPrevious} disabled={!canGoPrevious()} icon={<FaArrowRight />} />
                     </Tooltip>
                     <Button disabled>{ selectedImage && t('book.actions.loadFileImages.page', {current: (selectedImage?.index ?? -1) + 1, total: images.length }) }</Button>
-                    <Tooltip title={t('actions.previous'+ '(ctrl+shift+down)')}>
+                    <Tooltip title={t('actions.previous') + '(ctrl+shift+down)'}>
                         <Button onClick={goNext} disabled={!canGoNext()} icon={<FaArrowLeft />} />
                     </Tooltip>
                 </Button.Group>
