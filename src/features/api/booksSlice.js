@@ -3,6 +3,7 @@ import { createApi } from '@reduxjs/toolkit/query/react'
 import { axiosBaseQuery } from '../../helpers/axios.helpers'
 
 import { parseResponse, removeLinks } from '../../helpers/parseResponse';
+
 // ----------------------------------------------
 export const booksApi = createApi({
     reducerPath: 'books',
@@ -259,7 +260,7 @@ export const booksApi = createApi({
             query: ({ page, key }) => ({
                 url: page.links.ocr,
                 method: 'POST',
-                data: removeLinks(key)
+                data: ({ key: key })
             }),
             invalidatesTags: [ 'BookPages' ]
         }),
@@ -346,7 +347,6 @@ export const booksApi = createApi({
         }),
     }),
 })
-
 
 export const {
     useGetBooksQuery,

@@ -15,6 +15,7 @@ import {
 } from "antd";
 import { MdImageSearch } from "react-icons/md";
 import {
+    FaCircleNotch,
     FaRegCheckCircle,
     FaRegHourglass,
     FaRegTimesCircle,
@@ -28,6 +29,7 @@ import { useOcrBookPageMutation } from "../../../features/api/booksSlice";
 
 const ProcessingStatus = {
     Pending: "pending",
+    Busy: "busy",
     Complete: "complete",
     Failed: "failed",
 };
@@ -36,6 +38,8 @@ const ProcessingIcon = ({ status }) => {
     switch (status) {
         case ProcessingStatus.Pending:
             return <FaRegHourglass />;
+        case ProcessingStatus.Busy:
+            return <FaCircleNotch />;
         case ProcessingStatus.Complete:
             return <FaRegCheckCircle />;
         case ProcessingStatus.Failed:
@@ -72,9 +76,13 @@ export default function PageOcrButton({ pages, t, type }) {
         const promises = pagesStatus
             .map((page) => {
                 if (page && page.links && page.links.ocr) {
-                    return ocrBookPage({ page, key: values.key }).unwrap();
+                    page.status = ProcessingStatus.Busy;
+                    return ocrBookPage({ page, key: values.key }).unwrap()
+                    .then(_ => page.status = ProcessingStatus.Complete)
+                    .catch(_ => page.status = ProcessingStatus.Failed);
+                } else {
+                    return Promise.resolve();
                 }
-                return Promise.resolve();
             });
 
         return Promise.all(promises)
@@ -94,7 +102,7 @@ export default function PageOcrButton({ pages, t, type }) {
     const onOk = () => {
         form.validateFields()
             .then(onSubmit)
-            .catch((info) => console.log(info));
+            .catch(_ => setOpen(true));
     };
 
     const onShow = () => {
