@@ -59,6 +59,7 @@ function BookCard({ libraryId, book, t }) {
             cover={cover}
             hoverable
             actions={[edit, deleteAction]}
+            onClick={() => navigate(`/libraries/${library.id}/books/${book.id}`)}
         >
             <Link to={`/libraries/${libraryId}/books/${book.id}`}>
                 <Card.Meta

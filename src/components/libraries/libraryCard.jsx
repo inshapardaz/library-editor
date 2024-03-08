@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, navigate } from "react-router-dom";
 
 // 3rd party libraries
 import { Card, Typography } from 'antd';
@@ -35,8 +35,12 @@ const LibraryCard = ({ library, t }) => {
             library={library}
             t={t}
             type="ghost"
-            size="small" />]}>
-          <Card.Meta title={library.name} description={description}/>
+            size="small"
+            onClick={() => navigate(`/libraries/${library.id}`)}
+            />]}>
+                <Link to={`/libraries/${library.id}`}>
+                    <Card.Meta title={library.name} description={description}/>
+                </Link>
         </Card>);
 }
 
