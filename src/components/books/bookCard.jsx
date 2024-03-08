@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, navigate } from "react-router-dom";
 
 // 3rd Party Libraries
 import { Avatar, Card } from "antd";
