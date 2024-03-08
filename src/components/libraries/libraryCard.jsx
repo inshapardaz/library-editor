@@ -1,4 +1,4 @@
-import { Link, navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // 3rd party libraries
 import { Card, Typography } from 'antd';
@@ -15,6 +15,7 @@ const { Text, Paragraph } = Typography;
 
 
 const LibraryCard = ({ library, t }) => {
+    const navigate = useNavigate();
     const cover = <img src={library.links.image || helpers.defaultLibraryImage} onError={helpers.setDefaultLibraryImage} className={styles["library__image"]} alt={library.name} />;
     const description = library.description ? (
         <Paragraph ellipsis type="secondary">

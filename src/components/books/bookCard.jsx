@@ -1,4 +1,4 @@
-import { Link, navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // 3rd Party Libraries
 import { Avatar, Card } from "antd";
@@ -13,6 +13,7 @@ import BookDeleteButton from "./bookDeleteButton";
 // --------------------------------------------
 
 function BookCard({ libraryId, book, t }) {
+    const navigate = useNavigate();
     const cover = book.links.image ? (
         <img
             src={book.links.image}
