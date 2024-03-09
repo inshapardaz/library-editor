@@ -13,7 +13,7 @@ import { FaArrowLeft, FaArrowRight, FaFilePdf, FaRegFilePdf, FaSave } from "reac
 import * as worker from 'pdfjs-dist/build/pdf.worker.mjs';
 
 // Local Imports
-import { axiosPrivate } from '../../helpers/axios.helpers';
+import { axiosPrivate, axiosPublic } from '../../helpers/axios.helpers';
 import { useGetBookQuery, useCreateBookPageWithImageMutation } from "../../features/api/booksSlice";
 import { languages } from '../../features/ui/uiSlice';
 import DataContainer from "../../components/layout/dataContainer";
@@ -25,8 +25,13 @@ const { Content, Sider, Header } = Layout;
 pdfjsLib.GlobalWorkerOptions.workerSrc = worker;
 // --------------------------------------
 
+const apiUrl = process.env.REACT_APP_API_URL;
 const downloadFile = async (url, onProgress = () => {} ) => {
-    const response = await axiosPrivate({
+    const response = url.startsWith(apiUrl) ? await axiosPrivate({
+        url : url,
+        method: 'GET',
+        responseType: 'blob'
+    }) : await axiosPublic({
         url : url,
         method: 'GET',
         responseType: 'blob'
