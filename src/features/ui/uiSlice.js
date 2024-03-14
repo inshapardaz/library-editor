@@ -11,8 +11,8 @@ const initialState = {
 };
 
 export const languages = {
-    'en': { key: "en", locale: 'en_GB', name: 'English', dir: 'ltr', flag: 'gb', antdLocale: enGB },
-    'ur': { key: "ur", locale: 'ur_PK', name: 'اردو', dir: 'rtl', flag: 'pk', antdLocale: urPK }
+    'en': { key: "en", locale: 'en_GB', name: 'English', dir: 'ltr', isRtl : false, flag: 'gb', antdLocale: enGB },
+    'ur': { key: "ur", locale: 'ur_PK', name: 'اردو', dir: 'rtl', isRtl : true, flag: 'pk', antdLocale: urPK }
 }
 
 export const uiSlice = createSlice({

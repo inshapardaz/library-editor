@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Third party libraries
 import { App, Button, Modal, Form, Tooltip } from "antd";
@@ -14,9 +14,7 @@ export default function ChapterStatusButton({ chapters, t, type }) {
     const { message } = App.useApp();
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
-    const [updateChapter, { isLoading: isUpdating }] =
-        useUpdateChapterMutation();
-    const count = chapters ? chapters.length : 0;
+    const [updateChapter, { isLoading: isUpdating }] = useUpdateChapterMutation();
 
     const onSubmit = (values) => {
         const promises = chapters
@@ -50,6 +48,11 @@ export default function ChapterStatusButton({ chapters, t, type }) {
     };
 
     const title = t("chapter.actions.updateStatus.title");
+    const [selectedStatus, setSelectedStatus] = useState(null);
+
+    useEffect(() => {
+        setSelectedStatus(chapters[0]?.status);
+    }, [chapters]);
 
     return (
         <>
@@ -57,7 +60,7 @@ export default function ChapterStatusButton({ chapters, t, type }) {
                 <Button
                     type={type}
                     onClick={onShow}
-                    disabled={count === 0}
+                    disabled={!chapters || chapters.length < 0}
                     icon={<FaTasks />}
                 />
             </Tooltip>
@@ -73,7 +76,7 @@ export default function ChapterStatusButton({ chapters, t, type }) {
                 <Form
                     form={form}
                     layout="vertical"
-                    initialValues={{ status: "" }}
+                    initialValues={{ status: selectedStatus }}
                 >
                     <Form.Item
                         name="status"

@@ -1,37 +1,62 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // 3rd party imports
-import { App, Button, Spin } from "antd";
-import Editor from 'urdu-web-editor'
-import { FaCheckCircle, FaSave } from "react-icons/fa";
+import { Alert, App, Breadcrumb, Button, Spin, Tooltip } from "antd";
+import { FaAngleLeft, FaAngleRight, FaBook, FaCheckCircle } from "react-icons/fa";
 
 // Local imports
 import {
+    useGetBookQuery,
     useGetChapterQuery,
+    useGetBookChaptersQuery,
     useGetChapterContentsQuery,
-    useAddChapterContentsMutation,
-    useUpdateChapterContentsMutation
+    useUpdateChapterMutation,
 } from "../../../features/api/booksSlice";
+
+import {
+    addChapterContent,
+    updateChapterContent
+} from '../../../domain/bookService'
+
 import { selectedLanguage } from '../../../features/ui/uiSlice'
 import PageHeader from "../../../components/layout/pageHeader";
-import EditingStatusIcon from "../../../components/editingStatusIcon";
 import DataContainer from "../../../components/layout/dataContainer";
 import EditingStatus from "../../../models/editingStatus";
+import TextEditor from "../../../components/textEditor";
+import EditingStatusIcon from "../../../components/editingStatusIcon";
+import ChapterAssignButton from "../../../components/books/chapters/chapterAssignButton";
+import ChapterStatusButton from "../../../components/books/chapters/chapterStatusButton";
 // ------------------------------------------
 
-const EMPTY_CONTENT =
-  '{"root":{"children":[{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}';
-
-
-
-// ----------------------------------------
-const EditChapter = () =>   {
+const EditChapter = () => {
     const { message } = App.useApp();
     const { t } = useTranslation();
+    const lang = useSelector(selectedLanguage)
     const { libraryId, bookId, chapterNumber } = useParams();
-    const [text, setText] = useState("");
+    const [isBusy, setIsBusy] = useState(false);
+
+    const [updateChapter, { isLoading: isUpdatingChapter }] = useUpdateChapterMutation();
+
+    const {
+        data: book,
+        error: bookError,
+        isFetching : loadingBook,
+    } = useGetBookQuery(
+        { libraryId, bookId },
+        { skip: !libraryId || !bookId }
+    );
+
+    const {
+        data: chapters,
+        error: chaptersError,
+        isFetching : loadingChapters,
+    } = useGetBookChaptersQuery(
+        { libraryId, bookId, chapterNumber },
+        { skip: loadingBook || !libraryId || !bookId  }
+    );
 
     const {
         data: chapter,
@@ -39,66 +64,51 @@ const EditChapter = () =>   {
         isFetching : loadingChapter,
     } = useGetChapterQuery(
         { libraryId, bookId, chapterNumber },
-        { skip: !libraryId || !bookId || !chapterNumber }
+        { skip: loadingBook || !libraryId || !bookId || !chapterNumber }
     );
 
-    const editorConfiguration =   {
-        richText: true,
-        language: selectedLanguage?.key ?? 'en',
-        toolbar: {
-            showAlignment: false,
-            showFontFormat: true,
-            showInsert: true,
-            showExtraFormat: false,
-            showInsertLink: false,
-        }
-    }
+    const language = book?.language ?? lang?.key ?? 'en';
+
     const {
         data: chapterContent,
         error: chapterContentError,
         isFetching : loadingChapterContent,
     } = useGetChapterContentsQuery(
-        { libraryId, bookId, chapterNumber },
-        { skip: !chapter }
+        { libraryId, bookId, chapterNumber, language },
+        { skip: !book || !chapter || !language }
     );
 
-    const [updateChapterContents, { isLoading: isUpdating }] = useUpdateChapterContentsMutation();
-    const [addChapterContents, { isLoading: isAdding }] = useAddChapterContentsMutation();
+    const isNewContent = () => {
+        return chapterContentError && chapterContentError.status === 404;
+    }
 
-    useEffect(() => {
-        setText(chapterContent?.content || "");
-    }, [chapterContent]);
-
-    const onSave = async () => {
-        console.log('Saving : %s', text);
-        if (chapterContentError && chapterContentError.status === 404) {
-            addChapterContents({
-                chapter: chapter,
-                page: text,
-            })
-                .unwrap()
-                .then(() => message.success(t("book.actions.edit.success")))
-                .catch((_) => message.error(t("book.actions.edit.error")));
-        } else {
-            updateChapterContents({
-                chapterContent,
-                payload: text,
-            })
-                .unwrap()
+    const onEditorSave = (c) => {
+        if (isNewContent()) {
+            setIsBusy(true);
+            return addChapterContent({ chapter, language, payload: c })
+            .then(() => message.success(t("book.actions.edit.success")))
+            .catch((_) => message.error(t("book.actions.edit.error")))
+            .finally(() => setIsBusy(false));
+        } else if (chapterContent){
+            setIsBusy(true);
+            return updateChapterContent({ chapterContent, language, payload: c })
                 .then(() => message.success(t("book.actions.add.success")))
-                .catch((_) => message.error(t("book.actions.add.error")));
+                .catch((_) => message.error(t("book.actions.add.error")))
+                .finally(() => setIsBusy(false));
         }
     };
 
     const onComplete = () => {
-        if (chapter.status === EditingStatus.Typing) {
-            chapter.status = EditingStatus.Typed;
-        } else if (chapter.status === EditingStatus.InReview) {
-            chapter.status = EditingStatus.Completed;
-        } else {
-            return;
+        if (chapter.status === EditingStatus.Typing || chapter.status === EditingStatus.InReview) {
+            const payload = {
+                ...chapter,
+                status: chapter.status === EditingStatus.Typing ? EditingStatus.Typed : EditingStatus.Completed,
+            };
+            return updateChapter({ chapter: payload })
+                .unwrap()
+                .then(() => message.success(t("chapter.actions.edit.success")))
+                .catch((_) => message.error(t("chapter.actions.edit.error")));
         }
-        onSave();
     };
 
 
@@ -107,39 +117,103 @@ const EditChapter = () =>   {
         (chapter.status === EditingStatus.Typing ||
             chapter.status === EditingStatus.InReview);
 
-    const actions = [
+    const actions =  chapter ? [
         <Button.Group>
-            <Button onClick={onSave}>
-                <FaSave />
-            </Button>
             {showCompleteButton && (
-                <Button onClick={onComplete}>
-                    <FaCheckCircle />
-                </Button>
+                <Tooltip title={t("actions.done")}>
+                    <Button onClick={onComplete}>
+                        <FaCheckCircle />
+                    </Button>
+                </Tooltip>
             )}
+            {chapter && chapter.links.assign && (
+                <ChapterAssignButton
+                    libraryId={libraryId}
+                    chapters={[chapter]}
+                    t={t}
+                    showDetails={false}
+                    />
+            )}
+            {chapter && chapter.links.update && (
+                <ChapterStatusButton
+                    libraryId={libraryId}
+                    chapters={[chapter]}
+                    t={t}
+                />
+            )}
+            <Tooltip title={t("actions.previous")}>
+                <Button disabled={!chapter || !chapter.links.previous}>
+                    <Link to={`/libraries/${libraryId}/books/${bookId}/chapters/${chapter.chapterNumber - 1}/edit`}>
+                        { lang.isRtl ? <FaAngleRight /> : <FaAngleLeft /> }
+                    </Link>
+                </Button>
+            </Tooltip>
+            <Tooltip title={t("actions.next")}>
+                <Button disabled={!chapter || !chapter.links.next}>
+                    <Link to={`/libraries/${libraryId}/books/${bookId}/chapters/${chapter.chapterNumber + 1}/edit`}>
+                        { lang.isRtl ? <FaAngleLeft /> : <FaAngleRight />}
+                    </Link>
+                </Button>
+            </Tooltip>
         </Button.Group>,
-    ];
+    ] : [];
+
+    const chaptersMenu = () => {
+        if (chapters){
+            var menuItems = chapters?.data.map((c) => ({
+                key: c.id,
+                label: (
+                    c.id === chapter?.id ? <> <EditingStatusIcon
+                             status={c && c.status}
+                             style={{ width: 16, height: 16 }}
+                         /> {c.title}</> :
+                    <Link to={`/libraries/${libraryId}/books/${bookId}/chapters/${c.chapterNumber}/edit`}>
+                         <EditingStatusIcon
+                             status={c && c.status}
+                             style={{ width: 16, height: 16 }}
+                         /> {c.title}
+                    </Link>
+                )
+            }));
+
+            return { items : menuItems };
+        }
+        return null;
+    };
 
     return (
         <>
             <Spin
-                spinning={loadingChapter | loadingChapterContent | isAdding | isUpdating}
+                spinning={loadingChapter | loadingChapterContent | isBusy | isUpdatingChapter }
             >
+                { isNewContent() && <Alert message={t("chapter.editor.newContents")} type="success" closable />}
+
                 <PageHeader
-                    title={chapter?.title}
-                    icon={
-                        <EditingStatusIcon
-                            status={chapter && chapter.status}
-                            style={{ width: 36, height: 36 }}
-                        />
-                    }
+                    breadcrumb={<Breadcrumb
+                        items={[
+                          {
+                            title: <Link to={`/libraries/${libraryId}/books/${bookId}`}><FaBook /> {book?.title}</Link>,
+                          },
+                          {
+                            title: t('chapters.title')
+                          },
+                          {
+                            title: (<>
+                                <EditingStatusIcon
+                                status={chapter && chapter.status}
+                                style={{ width: 16, height: 16 }}
+                            /> {chapter?.title}
+                            </>),
+                            menu : chaptersMenu()
+                          }
+                        ]}
+                      />}
                     actions={actions}
                 />
-                <DataContainer error={chapterError | chapterContentError}>
-                    <Editor configuration={editorConfiguration}
-                        value={chapterContent?.content ?? EMPTY_CONTENT }
-                        setValue={(content) => setText(content)}
-                    />
+                <DataContainer error={ chapterError | chapterContentError | bookError }>
+                    <TextEditor value={ chapterContent?.text }
+                                language={language}
+                                onSave={(c) => onEditorSave(c)}/>
                 </DataContainer>
             </Spin>
         </>);

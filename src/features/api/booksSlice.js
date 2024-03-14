@@ -111,25 +111,15 @@ export const booksApi = createApi({
             providesTags: [ 'Chapters' ]
         }),
         getChapterContents: builder.query({
-            query: ({ libraryId, bookId, chapterNumber }) => ({ url: `/libraries/${libraryId}/books/${bookId}/chapters/${chapterNumber}/contents`, method: 'get' }),
+            query: ({ libraryId, bookId, chapterNumber, language }) => ({
+                url: `/libraries/${libraryId}/books/${bookId}/chapters/${chapterNumber}/contents?language=${language}`,
+                method: 'get',
+                headers: {
+                    'Accept-Language': language || 'en-US'
+                }
+            }),
             transformResponse: (response) => parseResponse(response),
             providesTags: [ 'ChapterContents' ]
-        }),
-        addChapterContents: builder.mutation({
-            query: ({ chapter, payload }) => ({
-                url: chapter.links.add_content,
-                method: 'POST',
-                data: removeLinks(payload)
-            }),
-            invalidatesTags: [ 'ChapterContents' ]
-        }),
-        updateChapterContents: builder.mutation({
-            query: ({ chapterContent, payload }) => ({
-                url: chapterContent.links.update,
-                method: 'PUT',
-                data: removeLinks(payload)
-            }),
-            invalidatesTags: [ 'ChapterContents' ]
         }),
         addBook: builder.mutation({
             query: ({ libraryId, payload }) => ({
@@ -218,6 +208,14 @@ export const booksApi = createApi({
             providesTags: [ 'BookPages' ]
         }),
         getBookPage: builder.query({
+            query: ({ libraryId, bookId, pageNumber }) => ({
+                url: `/libraries/${libraryId}/books/${bookId}/pages/${pageNumber}`,
+                method: 'GET',
+            }),
+            transformResponse: (response) => parseResponse(response),
+            providesTags: [ 'BookPages' ]
+        }),
+        getBookPageContents: builder.query({
             query: ({ libraryId, bookId, pageNumber }) => ({
                 url: `/libraries/${libraryId}/books/${bookId}/pages/${pageNumber}`,
                 method: 'GET',
@@ -355,8 +353,6 @@ export const {
     useGetBookChaptersQuery,
     useGetChapterQuery,
     useGetChapterContentsQuery,
-    useAddChapterContentsMutation,
-    useUpdateChapterContentsMutation,
     useGetBookPagesQuery,
     useAddBookMutation,
     useUpdateBookMutation,

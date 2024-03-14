@@ -7,7 +7,7 @@ import { Select } from 'antd';
 
 const EditingStatusSelect = ({ t, value, onChange, placeholder }) => {
     return (<Select placeholder={placeholder}
-                defaultValue={value}
+                value={value}
                 onChange={val => onChange(val)} >
         <Select.Option value="Available">{ t('editingStatus.Available') }</Select.Option>
         <Select.Option value="Typing">{ t('editingStatus.Typing') }</Select.Option>

@@ -9,7 +9,7 @@ import styles from "../../styles/common.module.scss";
 
 // ----------------------------------------------------
 
-function PageHeader({ title, subTitle, icon, actions }) {
+function PageHeader({ title, subTitle, breadcrumb, icon, actions }) {
     //const { t } = useTranslation();
 
     let actionColumns = [];
@@ -31,17 +31,10 @@ function PageHeader({ title, subTitle, icon, actions }) {
                     <Space>
                         <Typography.Title level={2}>{title}</Typography.Title>
                         {subTitle}
+                        {breadcrumb}
                     </Space>
                 </Col>
                 {actionColumns}
-                {/* <Col>
-        <Breadcrumb>
-            <Breadcrumb.Item href="/">
-            <FaHome />
-          </Breadcrumb.Item>
-          <Breadcrumb.Item>{t('libraries.title')}</Breadcrumb.Item>
-        </Breadcrumb>
-      </Col> */}
             </Row>
         </div>
     );

@@ -60,7 +60,7 @@ const removeLinks = (source) => {
             source.files = newItems;
         }
 
-        if (source.contents) {
+        if (source.contents && source.contents.forEach) {
             const newItems = [];
             source.contents.forEach((item) => newItems.push(removeLinks(item)));
             source.contents = newItems;

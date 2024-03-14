@@ -30,7 +30,8 @@ const en = {
         "zoonIn": "Zoom In",
         "zoonOut": "Zoom Out",
         "next": "Next",
-        "previous": "Previous"
+        "previous": "Previous",
+        "done": "Done",
 	},
 	"login" : {
 		"title" : "Login",
@@ -453,7 +454,7 @@ const en = {
             "edit": {
                 "title": "Editing '{{title}}'",
                 "success" :"Chapter saved successfully.",
-                "error" :"Error saving chapter."
+                "error" :"Error saving chapter.",
             },
             "delete": {
                 "title" : "Delete Chapter?",
@@ -493,6 +494,7 @@ const en = {
         },
         "editor" : {
             "title" : "Edit chapter contents",
+            "newContents": "New chapter contents being created."
         }
     },
     "pages" : {

@@ -9,7 +9,6 @@ import {
     FaCheckCircle,
     FaChevronLeft,
     FaChevronRight,
-    FaSave,
     FaTimesCircle,
 } from "react-icons/fa";
 import {
@@ -31,9 +30,11 @@ import {
 import PageHeader from "../../../components/layout/pageHeader";
 import DataContainer from "../../../components/layout/dataContainer";
 import EditingStatusIcon from "../../../components/editingStatusIcon";
+import { selectedLanguage } from '../../../features/ui/uiSlice'
 import helpers from "../../../helpers";
 import PageStatus from "../../../models/pageStatus";
 import PageOcrButton from "../../../components/books/pages/pageOcrButton";
+import { useSelector } from "react-redux";
 
 // -----------------------------------------
 const { Dragger } = Upload;
@@ -44,6 +45,8 @@ const PageEditPage = () => {
     const { message } = App.useApp();
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const lang = useSelector(selectedLanguage)
+
     const [fullScreen, setFullScreen] = useState(false);
     const [showImage, setShowImage] = useLocalStorage(
         "page-editor-show-image",
@@ -61,6 +64,7 @@ const PageEditPage = () => {
         { libraryId, bookId, pageNumber },
         { skip: !libraryId || !bookId || !pageNumber }
     );
+        console.log(page)
     const [text, setText] = useState("");
 
     const [addBookPage, { isLoading: isAdding }] = useAddBookPageMutation();
@@ -69,12 +73,9 @@ const PageEditPage = () => {
     const [updateBookPageImage, { isLoading: isUpdatingImage }] =
         useUpdateBookPageImageMutation();
 
-    useEffect(() => {
-        setText(page?.text || "");
-    }, [page]);
-
-    const onSave = async () => {
-        if (pageNumber) {
+    const onSave = async (contents) => {
+        debugger;
+        if (page) {
             const payload = {
                 bookId: page.bookId,
                 chapterId: page.chapterId,
@@ -82,7 +83,7 @@ const PageEditPage = () => {
                 reviewerAssignTimeStamp: page.reviewerAssignTimeStamp,
                 sequenceNumber: page.sequenceNumber,
                 status: page.status,
-                text,
+                contents,
                 links: page.links,
             };
             updateBookPage({
@@ -99,7 +100,7 @@ const PageEditPage = () => {
                 bookId,
                 payload: {
                     bookId,
-                    text,
+                    contents,
                 },
             })
                 .unwrap()
@@ -109,6 +110,26 @@ const PageEditPage = () => {
                 .catch((_) => message.error(t("book.actions.add.error")));
         }
     };
+
+    const editorConfiguration =   {
+        richText: true,
+        language: lang?.key ?? 'en',
+        toolbar: {
+            showAlignment: false,
+            showFontFormat: true,
+            showInsert: true,
+            showExtraFormat: false,
+            showInsertLink: false,
+            showBlockFormat: true,
+            showSave: true
+        },
+        onSave: onSave,
+        format: "markdown"
+    }
+
+    useEffect(() => {
+        setText(page?.text || "");
+    }, [page]);
 
     const uploadImage = async (pageNumber) => {
         if (fileList && fileList.length > 0) {
@@ -134,7 +155,7 @@ const PageEditPage = () => {
         } else {
             return;
         }
-        onSave();
+        //onSave();
     };
 
     const onImageChange = (file) => {
@@ -167,9 +188,6 @@ const PageEditPage = () => {
 
     const actions = [
         <Button.Group>
-            <Button onClick={onSave}>
-                <FaSave />
-            </Button>
             {showCompleteButton && (
                 <Button onClick={onComplete}>
                     <FaCheckCircle />
@@ -256,8 +274,8 @@ const PageEditPage = () => {
                     <Row gutter={16}>
                         <Col span={12} style={{display: 'flex'}}>
                             <Editor
+                                configuration={editorConfiguration}
                                 value={text}
-                                setValue={(content) => setText(content)}
                             />
                         </Col>
                         {showImage && (
