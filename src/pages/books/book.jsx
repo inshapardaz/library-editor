@@ -59,7 +59,7 @@ const BookPage = () => {
             label: (
                 <Space gutter={2}>
                     <FaRegFileAlt />
-                    {t("book.pages.title")}
+                    {t("pages.title")}
                 </Space>
             ),
             children: (

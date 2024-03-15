@@ -65,7 +65,7 @@ const ArticlePage = () => {
                             block
                             icon={<FiEdit />}
                             onClick={() =>
-                                navigate(`/libraries/${libraryId}/articles/${article.id}/edit`)
+                                navigate(`/libraries/${libraryId}/articles/${article.id}/edit?section=contents&language=${searchLang}`)
                             }
                         >
                             {t("actions.edit")}

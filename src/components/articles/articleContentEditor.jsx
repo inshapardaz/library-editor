@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 // 3rd Party Imports
-import { Alert, App, Button, Col, Input, Row } from "antd";
+import { Alert, App, Button, Col, Row } from "antd";
 import { useSelector } from 'react-redux';
 
 // Local Imports
@@ -14,9 +14,8 @@ import { FaSave } from "react-icons/fa";
 import ArticleLayoutSelect from "./articleLayoutSelect";
 import { useLocation, useSearchParams } from "react-router-dom/dist";
 import helpers from "../../helpers";
+import TextEditor from "../textEditor";
 
-//-------------------------------------------
-const { TextArea } = Input;
 //-------------------------------------------
 
 const ArticleContentEditor = ({ libraryId, article, t }) => {
@@ -94,9 +93,8 @@ const ArticleContentEditor = ({ libraryId, article, t }) => {
             <Col span={24}>
                 { error && error.status === 404 &&
                     <Alert message={t('article.messages.newContent')} type="warning" closable showIcon banner /> }
-                <TextArea value={contents}
-                    onChange={v => setContents(v.target.value)}
-                    disabled={ isFetching | isAdding | isUpdating } />
+                <TextEditor value={contents} language={searchLang} showSave={false}
+                    onChange={setContents} />
             </Col>
         </Row>
     </>);

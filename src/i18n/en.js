@@ -339,9 +339,6 @@ const en = {
 		"chapters" : {
 			"title" : "Chapters"
 		},
-        "pages": {
-            "title" : "Pages"
-        },
         "files": {
             "title" : "Files",
         },
@@ -498,6 +495,8 @@ const en = {
         }
     },
     "pages" : {
+        "title": "Pages",
+        "label" : "Page {{sequenceNumber}}",
         "errors": {
             "loading": {
                 "title": "Error",
@@ -1028,7 +1027,7 @@ const en = {
         "fajerNooriNastalique": "Fajer Noori Nastaleeq",
         "gulzarNastalique": "Gulzar Nastaleeq",
         "emadNastaleeq": "Emad Nastaleeq",
-        "nNafeesWebNaskh": "Nafees Web Naskh",
+        "nafeesWebNaskh": "Nafees Web Naskh",
         "nafeesNastaleeq": "Nafees Nastaleeq",
         "mehrNastaleeq": "Mehr Nastaleeq",
         "adobeArabic": "Adobe Arabic",

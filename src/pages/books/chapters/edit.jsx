@@ -184,7 +184,7 @@ const EditChapter = () => {
     return (
         <>
             <Spin
-                spinning={loadingChapter | loadingChapterContent | isBusy | isUpdatingChapter }
+                spinning={loadingChapter | loadingChapterContent | isBusy | isUpdatingChapter | loadingChapters | loadingBook }
             >
                 { isNewContent() && <Alert message={t("chapter.editor.newContents")} type="success" closable />}
 
@@ -210,7 +210,7 @@ const EditChapter = () => {
                       />}
                     actions={actions}
                 />
-                <DataContainer error={ chapterError | chapterContentError | bookError }>
+                <DataContainer error={ chapterError | chapterContentError | bookError | chaptersError }>
                     <TextEditor value={ chapterContent?.text }
                                 language={language}
                                 onSave={(c) => onEditorSave(c)}/>

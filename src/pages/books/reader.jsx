@@ -150,7 +150,7 @@ const BookReader = () => {
             <Slider defaultValue={lineHeight} min={1.0} max={3.0} step={0.1} onChange={ setLineHeight } />
             <Divider />
             <Row><Col><BsFileEarmarkFont /></Col><Col><Typography>{t('reader.font')}</Typography></Col></Row>
-            <FontList selectedFont={font} onChanged={f => setFont(f)} t={t}  />
+            <FontList selectedFont={font} onChanged={f => setFont(f)} t={t} language={book?.language ?? lang?.key ?? 'en'}  />
         </Drawer>
         <Drawer title={t('chapters.title')} placement="left" onClose={onCloseChapters} open={showChapters}>
             <ChaptersMenu selectedChapterNumber={chapter?.chapterNumber} t={t} libraryId={libraryId} bookId={bookId} onChanged={gotoChapter} />

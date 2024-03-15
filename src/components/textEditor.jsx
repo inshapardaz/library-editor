@@ -1,7 +1,8 @@
-import { useState } from 'react';
-import Editor from 'urdu-web-editor'
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 //-----------------------------------------
+import Editor from 'urdu-web-editor'
 
 // Local imports
 import {
@@ -16,9 +17,15 @@ import { getFonts } from '../i18n';
 
 //-----------------------------------------
 
-const TextEditor = ({ value, language, onSave = (c) => {} }) => {
+const TextEditor = ({ value, language, onSave, showSave = true}) => {
+    const { t } = useTranslation();
 
-    const [fonts] = useState(getFonts(language));
+    const [fonts, setFonts] = useState([]);
+
+    useEffect (() => {
+        var fts = getFonts(t, language);
+        setFonts(fts);
+    }, [language, t]);
 
     const {
         data: punctuationList,
@@ -47,7 +54,7 @@ const TextEditor = ({ value, language, onSave = (c) => {} }) => {
             showExtraFormat: false,
             showInsertLink: false,
             showBlockFormat: true,
-            showSave: true,
+            showSave: showSave,
         },
         spellchecker: {
             enabled : true,
@@ -70,7 +77,7 @@ const TextEditor = ({ value, language, onSave = (c) => {} }) => {
     return (<>
         <Editor configuration={editorConfiguration}
             value={ value }
-            onSave={ c => onSave(c) }
+            onSave={onSave}
             />
     </>);
 }

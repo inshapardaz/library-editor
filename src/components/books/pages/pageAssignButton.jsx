@@ -31,12 +31,14 @@ export default function PageAssignButton({ libraryId, pages, t, type }) {
             });
 
         Promise.all(promises)
-            .then(() =>
-                message.success(t("page.actions.assign.success", { count }))
-            )
-            .catch((_) =>
+            .then(() => {
+                setOpen(false);
+                message.success(t("page.actions.assign.success", { count }));
+            })
+            .catch(() => {
+                setOpen(false);
                 message.error(t("page.actions.assign.error", { count }))
-            );
+            });
     };
 
     const onOk = () =>

@@ -15,6 +15,7 @@ export default function ChapterStatusButton({ chapters, t, type }) {
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
     const [updateChapter, { isLoading: isUpdating }] = useUpdateChapterMutation();
+    const [selectedStatus, setSelectedStatus] = useState(null);
 
     const onSubmit = (values) => {
         const promises = chapters
@@ -48,10 +49,11 @@ export default function ChapterStatusButton({ chapters, t, type }) {
     };
 
     const title = t("chapter.actions.updateStatus.title");
-    const [selectedStatus, setSelectedStatus] = useState(null);
 
     useEffect(() => {
-        setSelectedStatus(chapters[0]?.status);
+        if (chapters && chapters.length === 1) {
+            setSelectedStatus(chapters[0]?.status);
+        }
     }, [chapters]);
 
     return (

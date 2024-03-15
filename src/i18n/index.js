@@ -6,24 +6,24 @@ import ur from './ur';
 const fonts = {
     'en' : null,
     'ur': [
-        { value: 'AlviLahoriNastaleeq', label: 'Alvi Lahori Nastaleeq' },
-        { value: 'FajerNooriNastalique', label: 'Fajer Noori Nastalique' },
-        { value: 'gulzar-nastalique', label: 'Gulzar Nastalique' },
-        { value: 'EmadNastaleeq', label: 'Emad Nastaleeq' },
-        { value: 'NafeesWebNaskh', label: 'Nafees Web Naskh' },
-        { value: 'NafeesNastaleeq', label: 'Nafees Nastaleeq' },
-        { value: 'MehrNastaleeq', label: 'Mehr Nastaleeq' },
-        { value: 'AdobeArabic', label: 'Adobe Arabic' },
-        { value: 'Dubai', label: 'Dubai' },
-        { value: 'Noto Naskh Arabic', label: 'Noto Naskh Arabic' },
-        { value: 'Noto Nastaliq Urdu', label: 'Noto Nastaliq Urdu' },
-        { value: 'Jameel Noori Nastaleeq', label: 'Jameel Noori Nastaleeq' },
-        { value: 'jameel-khushkhati', label: 'Jameel Khushkhati' },
-        { value: 'JameelNooriNastaleeqKasheeda', label: 'Jameel Noori Nastaleeq Kasheeda' }
+        { value: 'AlviLahoriNastaleeq', label: 'alviLahoriNastaleeq' },
+        { value: 'FajerNooriNastalique', label: 'fajerNooriNastalique' },
+        { value: 'gulzar-nastalique', label: 'gulzarNastalique' },
+        { value: 'EmadNastaleeq', label: 'emadNastaleeq' },
+        { value: 'NafeesWebNaskh', label: 'nafeesWebNaskh' },
+        { value: 'NafeesNastaleeq', label: 'nafeesNastaleeq' },
+        { value: 'MehrNastaleeq', label: 'mehrNastaleeq' },
+        { value: 'AdobeArabic', label: 'adobeArabic' },
+        { value: 'Dubai', label: 'dubai' },
+        { value: 'Noto Naskh Arabic', label: 'notoNaskhArabic' },
+        { value: 'Noto Nastaliq Urdu', label: 'notoNastaliqUrdu' },
+        { value: 'Jameel Noori Nastaleeq', label: 'jameelNooriNastaleeq' },
+        { value: 'jameel-khushkhati', label: 'jameelKhushkhati' },
+        { value: 'JameelNooriNastaleeqKasheeda', label: 'jameelNooriNastaleeqKasheeda' }
     ]
 };
 
-export const getFonts = (language)  => fonts[language];
+export const getFonts = (t, language)  => fonts[language] ? fonts[language].map(f => ({ value: f.value, label: t(`fonts.${f.label}`) })) : null;
 
 i18n
     // .use(Backend)

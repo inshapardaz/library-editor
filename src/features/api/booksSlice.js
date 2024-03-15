@@ -127,6 +127,7 @@ export const booksApi = createApi({
                 method: 'POST',
                 data: removeLinks(payload)
             }),
+            transformResponse: (response) => parseResponse(response),
             invalidatesTags: [ 'Books' ]
         }),
         updateBook: builder.mutation({
@@ -135,6 +136,7 @@ export const booksApi = createApi({
                 method: 'PUT',
                 data: removeLinks(payload)
             }),
+            transformResponse: (response) => parseResponse(response),
             invalidatesTags: [ 'Books', 'Book' ]
         }),
         deleteBook: builder.mutation({
@@ -166,6 +168,7 @@ export const booksApi = createApi({
                 method: 'POST',
                 data: removeLinks(payload)
             }),
+            transformResponse: (response) => parseResponse(response),
             invalidatesTags: [ 'Chapters' ]
         }),
         updateChapter: builder.mutation({
@@ -174,6 +177,7 @@ export const booksApi = createApi({
                 method: 'PUT',
                 data: removeLinks(chapter)
             }),
+            transformResponse: (response) => parseResponse(response),
             invalidatesTags: [ 'Chapters' ]
         }),
         deleteChapter: builder.mutation({
@@ -229,6 +233,7 @@ export const booksApi = createApi({
                 method: 'POST',
                 data: removeLinks(payload)
             }),
+            transformResponse: (response) => parseResponse(response),
             invalidatesTags: [ 'BookPages' ]
         }),
         updateBookPage: builder.mutation({
@@ -237,6 +242,7 @@ export const booksApi = createApi({
                 method: 'PUT',
                 data: removeLinks(page)
             }),
+            transformResponse: (response) => parseResponse(response),
             invalidatesTags: [ 'BookPages' ]
         }),
         deleteBookPage: builder.mutation({
@@ -263,11 +269,11 @@ export const booksApi = createApi({
             invalidatesTags: [ 'BookPages' ]
         }),
         updateBookPageImage: builder.mutation({
-            query: ({ libraryId, bookId, pageNumber, payload }) => {
+            query: ({ page, payload }) => {
                 const formData = new FormData();
                 formData.append('file', payload, payload.fileName);
                 return ({
-                    url: `/libraries/${libraryId}/books/${bookId}/pages/${pageNumber}/image`,
+                    url: page.links.image_upload,
                     method: 'PUT',
                     data: formData,
                     formData: true,
@@ -318,6 +324,7 @@ export const booksApi = createApi({
                     }
                 });
             },
+            transformResponse: (response) => parseResponse(response),
             invalidatesTags: [ 'Book' ]
         }),
         updateBookContent: builder.mutation({
@@ -334,6 +341,7 @@ export const booksApi = createApi({
                     }
                 });
             },
+            transformResponse: (response) => parseResponse(response),
             invalidatesTags: [ 'Book' ]
         }),
         deleteBookContent: builder.mutation({

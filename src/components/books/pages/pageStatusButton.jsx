@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Third party libraries
 import { App, Button, Modal, Form } from "antd";
@@ -14,9 +14,9 @@ export default function PageStatusButton({ pages, t, type }) {
     const { message } = App.useApp();
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
-    const [updateBookPage, { isLoading: isUpdating }] =
-        useUpdateBookPageMutation();
+    const [updateBookPage, { isLoading: isUpdating }] = useUpdateBookPageMutation();
     const count = pages ? pages.length : 0;
+    const [selectedStatus, setSelectedStatus] = useState(null);
 
     const onSubmit = (values) => {
         const promises = pages
@@ -29,8 +29,14 @@ export default function PageStatusButton({ pages, t, type }) {
             });
 
         Promise.all(promises)
-            .then(() => message.success(t("page.actions.updateStatus.success")))
-            .catch((_) => message.error(t("page.actions.updateStatus.error")));
+            .then(() =>{
+                setOpen(false);
+                message.success(t("page.actions.updateStatus.success"))
+            })
+            .catch(() => {
+                setOpen(false);
+                message.error(t("page.actions.updateStatus.error"))
+            });
     };
     const onOk = () =>
         form
@@ -44,6 +50,12 @@ export default function PageStatusButton({ pages, t, type }) {
         form.resetFields();
         setOpen(true);
     };
+
+    useEffect(() => {
+        if (pages && pages.length === 1) {
+            setSelectedStatus(pages[0]?.status);
+        }
+    }, [pages]);
 
     const title = t("page.actions.updateStatus.title");
 
@@ -67,7 +79,7 @@ export default function PageStatusButton({ pages, t, type }) {
                 <Form
                     form={form}
                     layout="vertical"
-                    initialValues={{ status: "" }}
+                    initialValues={{ status: selectedStatus }}
                 >
                     <Form.Item
                         name="status"

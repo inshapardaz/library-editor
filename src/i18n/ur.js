@@ -340,9 +340,6 @@ const ur = {
 		"chapters": {
 			"title": "ابواب"
 		},
-        "pages": {
-            "title" : "صفحات"
-        },
         "files": {
             "title" : "دستاویزات",
         },
@@ -493,6 +490,8 @@ const ur = {
         }
     },
     "pages" : {
+        "title" : "صفحات",
+        "label" : "صفحہ {{sequenceNumber}}",
         "errors": {
             "loading": {
                 "title": "صفحات لوڈ نہیں ہو سکیں",
