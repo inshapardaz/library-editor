@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
 // 3rd party libraries
-import { FaCloudUploadAlt, FaFileUpload, FaTrash } from 'react-icons/fa';
+import { FaCloudUploadAlt, FaFileUpload, FaSave, FaTrash } from 'react-icons/fa';
 import { App, Button, Col, Form, Input, InputNumber, Layout, List, Row, Space, Spin, Switch, Typography, Upload, theme } from 'antd';
 
 // Local Imports
@@ -110,11 +110,19 @@ const BooksUpload = () => {
         newBooks.find(b => b.id === book.id).authors = value;
         setBooks(newBooks);
     }, [books]);
+
+    const saveButton = (
+        <Button type="primary" htmlType="submit" size="large" block icon={<FaSave />}>
+            {t("actions.save")}
+        </Button>
+    );
+
     return (
         <>
             <PageHeader
                 title={t("books.actions.upload.title")}
                 icon={<FaCloudUploadAlt style={{ width: 36, height: 36 }} />}
+                actions={[saveButton]}
             />
             <ContentsContainer>
                 <Spin spinning={isFetching | isAdding | isUploading}>
@@ -175,11 +183,6 @@ const BooksUpload = () => {
                                 </Form.Item>
                                 <Form.Item name="status" label={t("book.status.label")} placeholder={t("book.status.placeholder")}>
                                     <PublishStatusSelect t={t} />
-                                </Form.Item>
-                                <Form.Item >
-                                    <Button type="primary" htmlType="submit" size="large" block>
-                                        {t("books.actions.upload.label")}
-                                    </Button>
                                 </Form.Item>
                             </Sider>
                             <Content style={{
