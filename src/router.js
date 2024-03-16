@@ -44,6 +44,7 @@ import SecurePage from './components/layout/securePage';
 import BookPagesUploadPage from './pages/books/pages/upload';
 import ArticlePage from './pages/articles/article';
 import BookProcessPage from './pages/books/process';
+import BooksUpload from './pages/books/upload';
 
 const Router = () => {
     return (<BrowserRouter>
@@ -58,6 +59,7 @@ const Router = () => {
                     <Route path="/libraries/:libraryId/search" element={<SearchPage />} />
                     <Route path="/libraries/:libraryId/books" element={<BooksHomePage />} />
                     <Route path="/libraries/:libraryId/books/add" element={<BookEditPage />} />
+                    <Route path="/libraries/:libraryId/books/upload" element={<BooksUpload />} />
                     <Route path="/libraries/:libraryId/books/:bookId" element={<BookPage />} />
                     <Route path="/libraries/:libraryId/books/:bookId/edit" element={<BookEditPage />} />
                     <Route path="/libraries/:libraryId/books/:bookId/contents/:contentId/process" element={<BookProcessPage />} />

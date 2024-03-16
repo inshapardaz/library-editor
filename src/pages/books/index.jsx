@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 
 // 3rd party libraries
 import { Layout, theme, Button } from "antd";
-import { FaBook, FaPlus } from "react-icons/fa";
+import { FaBook, FaCloudUploadAlt, FaPlus } from "react-icons/fa";
 
 // Local Imports
 import PageHeader from "../../components/layout/pageHeader";
@@ -43,13 +43,20 @@ function BooksHomePage() {
             </Button>
         </Link>
     );
+    const uploadButton =(
+        <Link to={`/libraries/${libraryId}/books/upload`}>
+            <Button type="dashed" icon={<FaCloudUploadAlt />}>
+                {t("books.actions.upload.label")}
+            </Button>
+        </Link>
+    );
 
     return (
         <>
             <PageHeader
                 title={t("books.title")}
                 icon={<FaBook style={{ width: 36, height: 36 }} />}
-                actions={addButton}
+                actions={[addButton, uploadButton]}
             />
             <ContentsContainer>
                 <Layout
