@@ -153,7 +153,8 @@ const BooksUpload = () => {
     }
 
     const saveButton = (
-        <Button type="primary" htmlType="submit" size="large" block icon={<FaSave />} >
+        <Button type="primary" htmlType="submit" size="large" block icon={<FaSave />}
+            disabled={isFetching | isAdding | isUploading}>
             {t("actions.save")}
         </Button>
     );
