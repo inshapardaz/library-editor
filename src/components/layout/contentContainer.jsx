@@ -1,10 +1,10 @@
 // 3rd party libraries
-import { theme  } from "antd";
+import { theme } from "antd";
 
 // Local imports
 import styles from '../../styles/common.module.scss'
 
- // -----------------------------------------
+// -----------------------------------------
 
 function ContentsContainer({ children }) {
     const {
@@ -12,13 +12,13 @@ function ContentsContainer({ children }) {
     } = theme.useToken();
 
     return (<div
-                className={styles.container}
-                style={{
-                    background: colorBgContainer,
-                    borderRadius : borderRadius
-                }}>
-            {children}
-        </div>);
+        className={styles.container}
+        style={{
+            background: colorBgContainer,
+            borderRadius: borderRadius
+        }}>
+        {children}
+    </div>);
 }
 
 export default ContentsContainer;

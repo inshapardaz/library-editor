@@ -279,7 +279,7 @@ const en = {
             upload: {
                 label: "Upload",
                 title: "Upload Books",
-                book_number: "Book {{index}}",
+                defaultProperties: "Default Properties",
                 message: "Click or drag file to this area to upload",
                 empty: "No books selected for upload. Please Click or drag file to above area to upload",
                 success: "Books uploaded successfully.",
