@@ -284,6 +284,19 @@ const en = {
                 empty: "No books selected for upload. Please Click or drag file to above area to upload",
                 success: "Books uploaded successfully.",
                 error: "Error uploading books.",
+                details: {
+                    error: {
+                        title: "Error",
+                    },
+                    uploadMore: "Upload More",
+                    retryAllFailed: "Retry all failed uploads",
+                    status: {
+                        pending: "Pending",
+                        inProgress: "In Progress",
+                        completed: "Completed",
+                        failed: "Failed",
+                    },
+                },
             },
         },
     },
