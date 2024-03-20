@@ -8,12 +8,12 @@ import { FaCogs, FaFileDownload, FaFileUpload } from "react-icons/fa";
 import { useUpdateBookContentMutation } from "../../../features/api/booksSlice";
 import FileDeleteButton from "./fileDeleteButton";
 import FileTypeIcon from "./fileTypeIcon";
-
+import { BookImageFromFile } from "./bookImageFromFile";
 // ------------------------------------------------------
 
 function FileListItem({
     libraryId,
-    bookId,
+    book,
     content,
     t,
     message
@@ -21,12 +21,12 @@ function FileListItem({
     const [updateBookContent, { isLoading: isUpdating }] = useUpdateBookContentMutation();
 
     const title = (<Link
-            to={`/libraries/${libraryId}/books/${bookId}/contents/${content.id}`}
-        >
-            <Typography.Text>
-                {content.fileName}
-            </Typography.Text>
-        </Link>);
+        to={`/libraries/${libraryId}/books/${book.id}/contents/${content.id}`}
+    >
+        <Typography.Text>
+            {content.fileName}
+        </Typography.Text>
+    </Link>);
 
     const uploadFile = (file) => {
         const isAllowed = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"].includes(file.type);
@@ -41,50 +41,50 @@ function FileListItem({
     }
 
     return (<List.Item
-                    actions={[
-                        content && content.links.update && (
-                            <Tooltip title={t('book.actions.addFile.title')}>
-                                <Upload beforeUpload={uploadFile} maxCount={1} showUploadList={false} >
-                                    <Button icon={<FaFileUpload />} disabled={isUpdating} />
-                                </Upload>
-                            </Tooltip>
-                        ),
-                        content && content.links.download && (
-                            <Tooltip title={t('book.actions.downloadFile.title')}>
-                                <a href={content.links.download} target="_blank" rel="noreferrer">
-                                    <Button icon={<FaFileDownload />} />
-                                </a>
-                            </Tooltip>
-                        ),
-                        content && content.links.update && (
-                            <Tooltip title="Process">
-                                <Link
-                                        to={`/libraries/${libraryId}/books/${bookId}/contents/${content.id}/process`}
-                                    >
-                                    <Button disabled={content.mimeType !== 'application/pdf'} icon={<FaCogs />} />
-                                </Link>
-                            </Tooltip>
-                        ),
-                        content && content.links.delete && (
-                            <FileDeleteButton
-                                content={content}
-                                t={t}
-                                type="text"
-                            />
-                        ),
-                    ]}
-                >
-                    <List.Item.Meta
-                        title={title}
-                        avatar={
-                            <Avatar>
-                                <FileTypeIcon
-                                    type={content.mimeType}
-                                />
-                            </Avatar>
-                        }
+        actions={[
+            <BookImageFromFile libraryId={libraryId} book={book} t={t} disabled={isUpdating} content={content} />,
+            content && content.links.update && (
+                <Tooltip title={t('book.actions.addFile.title')}>
+                    <Upload beforeUpload={uploadFile} maxCount={1} showUploadList={false} >
+                        <Button icon={<FaFileUpload />} disabled={isUpdating} />
+                    </Upload>
+                </Tooltip>
+            ),
+            content && content.links.download && (
+                <Tooltip title={t('book.actions.downloadFile.title')}>
+                    <a href={content.links.download} target="_blank" rel="noreferrer">
+                        <Button icon={<FaFileDownload />} />
+                    </a>
+                </Tooltip>
+            ),
+            content && content.links.update && (
+                <Tooltip title="Process">
+                    <Link
+                        to={`/libraries/${libraryId}/books/${book.id}/contents/${content.id}/process`}
+                    >
+                        <Button disabled={content.mimeType !== 'application/pdf'} icon={<FaCogs />} />
+                    </Link>
+                </Tooltip>
+            ),
+            content && content.links.delete && (
+                <FileDeleteButton
+                    content={content}
+                    t={t}
+                />
+            ),
+        ]}
+    >
+        <List.Item.Meta
+            title={title}
+            avatar={
+                <Avatar>
+                    <FileTypeIcon
+                        type={content.mimeType}
                     />
-                </List.Item>
+                </Avatar>
+            }
+        />
+    </List.Item>
     );
 }
 

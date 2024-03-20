@@ -432,6 +432,13 @@ const en = {
             processAndSave: {
                 title: "Process split and save pages",
             },
+            setFirstPageAsImage: {
+                title: "Set first page of file as book image.",
+                message:
+                    "Do you want to make the first page of this file to be the book image?",
+                success: "Book image set successfully",
+                error: "Unable to set book image",
+            },
         },
         errors: {
             loading: {

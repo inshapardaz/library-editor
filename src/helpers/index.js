@@ -1,41 +1,43 @@
+import { axiosPrivate, axiosPublic } from "./axios.helpers";
+
+const apiUrl = process.env.REACT_APP_API_URL;
 const parseReadFilter = (readFilter) => {
     switch (readFilter) {
         case true:
-            return 'read=true&';
+            return "read=true&";
         case false:
-            return 'read=false&';
+            return "read=false&";
         default:
-            return '';
+            return "";
     }
 };
-const defaultLibraryImage = '/images/library_placeholder.png';
-const defaultAuthorImage = '/images/author_placeholder.jpg';
-const defaultSeriesImage = '/images/series_placeholder.jpg';
-const defaultBookImage = '/images/book_placeholder.jpg';
-const defaultArticleImage = '/images/article_placeholder.png';
-const defaultPageImage = '/images/page_placeholder.jpg';
-const defaultPeriodicalImage = '/images/periodical_placeholder.png';
-const defaultIssueImage = '/images/periodical_placeholder.png';
+const defaultLibraryImage = "/images/library_placeholder.png";
+const defaultAuthorImage = "/images/author_placeholder.jpg";
+const defaultSeriesImage = "/images/series_placeholder.jpg";
+const defaultBookImage = "/images/book_placeholder.jpg";
+const defaultArticleImage = "/images/article_placeholder.png";
+const defaultPageImage = "/images/page_placeholder.jpg";
+const defaultPeriodicalImage = "/images/periodical_placeholder.png";
+const defaultIssueImage = "/images/periodical_placeholder.png";
 const dataURItoBlob = (dataURI) => {
     var byteString;
-    if (dataURI.split(',')[0].indexOf('base64') >= 0)
-        byteString = atob(dataURI.split(',')[1]);
-    else
-        byteString = unescape(dataURI.split(',')[1]);
+    if (dataURI.split(",")[0].indexOf("base64") >= 0)
+        byteString = atob(dataURI.split(",")[1]);
+    else byteString = unescape(dataURI.split(",")[1]);
 
-    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
 
     var ia = new Uint8Array(byteString.length);
     for (var i = 0; i < byteString.length; i++) {
         ia[i] = byteString.charCodeAt(i);
     }
 
-    return new Blob([ia], {type:mimeString});
+    return new Blob([ia], { type: mimeString });
 };
 const helpers = {
     truncateWithEllipses: (text, max) => {
         if (!text) return text;
-        return text.substr(0, max - 1) + (text.length > max ? '...' : '');
+        return text.substr(0, max - 1) + (text.length > max ? "..." : "");
     },
     defaultLibraryImage,
     setDefaultLibraryImage: (ev) => {
@@ -70,10 +72,10 @@ const helpers = {
         ev.target.src = defaultIssueImage;
     },
     parseNullableBool: (val) => {
-        if (val === 'true') {
+        if (val === "true") {
             return true;
         }
-        if (val === 'false') {
+        if (val === "false") {
             return false;
         }
         return null;
@@ -90,23 +92,27 @@ const helpers = {
         sortDirection,
         favorite,
         read,
-        status,
+        status
     ) => {
-        let querystring = '';
-        querystring += page ? `pageNumber=${page}&` : '';
-        querystring += pageSize ? `pageSize=${pageSize}&` : '';
-        querystring += query ? `query=${query}&` : '';
-        querystring += author ? `author=${author}&` : '';
-        querystring += categories ? `categories=${categories}&` : '';
-        querystring += series ? `series=${series}&` : '';
-        querystring += sortBy && sortBy !== 'title' ? `sortBy=${sortBy}&` : '';
-        querystring += sortDirection && sortDirection !== 'ascending' ? `sortDirection=${sortDirection}&` : '';
-        querystring += favorite && favorite !== false ? 'favorite=true&' : '';
+        let querystring = "";
+        querystring += page ? `pageNumber=${page}&` : "";
+        querystring += pageSize ? `pageSize=${pageSize}&` : "";
+        querystring += query ? `query=${query}&` : "";
+        querystring += author ? `author=${author}&` : "";
+        querystring += categories ? `categories=${categories}&` : "";
+        querystring += series ? `series=${series}&` : "";
+        querystring += sortBy && sortBy !== "title" ? `sortBy=${sortBy}&` : "";
+        querystring +=
+            sortDirection && sortDirection !== "ascending"
+                ? `sortDirection=${sortDirection}&`
+                : "";
+        querystring += favorite && favorite !== false ? "favorite=true&" : "";
         querystring += parseReadFilter(read);
-        querystring += status && status !== 'published' ? `status=${status}&` : '';
+        querystring +=
+            status && status !== "published" ? `status=${status}&` : "";
 
-        if (querystring !== '') {
-            if (querystring.substr(querystring.length - 1) === '&') {
+        if (querystring !== "") {
+            if (querystring.substr(querystring.length - 1) === "&") {
                 querystring = querystring.slice(0, -1);
             }
 
@@ -115,19 +121,22 @@ const helpers = {
 
         return location;
     },
-    updateLinkToBooksPage: (location, {
-        pageNumber,
-        pageSize,
-        query,
-        author,
-        categories,
-        series,
-        sortBy,
-        sortDirection,
-        favorite,
-        read,
-        status, }) => {
-
+    updateLinkToBooksPage: (
+        location,
+        {
+            pageNumber,
+            pageSize,
+            query,
+            author,
+            categories,
+            series,
+            sortBy,
+            sortDirection,
+            favorite,
+            read,
+            status,
+        }
+    ) => {
         var searchParams = new URLSearchParams(location.search);
         if (pageNumber) {
             searchParams.set("pageNumber", pageNumber);
@@ -138,7 +147,7 @@ const helpers = {
         if (query) {
             searchParams.set("query", query);
         } else if (query === "") {
-            searchParams.delete("query")
+            searchParams.delete("query");
         }
         if (author) {
             searchParams.set("author", author);
@@ -146,13 +155,13 @@ const helpers = {
         if (categories) {
             searchParams.set("categories", categories);
         }
-        if (series ) {
+        if (series) {
             searchParams.set("series", series);
         }
         if (sortBy) {
             searchParams.set("sortBy", sortBy);
         } else if (sortBy === "") {
-            searchParams.delete("sortBy")
+            searchParams.delete("sortBy");
         }
         if (sortDirection) {
             searchParams.set("sortDirection", sortDirection);
@@ -169,21 +178,15 @@ const helpers = {
 
         return `${location.pathname}?${searchParams.toString()}`;
     },
-    buildLinkToAuthorsPage: (
-        location,
-        page,
-        pageSize,
-        query,
-        authorType
-    ) => {
-        let querystring = '';
-        querystring += page ? `pageNumber=${page}&` : '';
-        querystring += pageSize ? `pageSize=${pageSize}&` : '';
-        querystring += query ? `query=${query}&` : '';
-        querystring += authorType ? `authorType=${authorType}&` : '';
+    buildLinkToAuthorsPage: (location, page, pageSize, query, authorType) => {
+        let querystring = "";
+        querystring += page ? `pageNumber=${page}&` : "";
+        querystring += pageSize ? `pageSize=${pageSize}&` : "";
+        querystring += query ? `query=${query}&` : "";
+        querystring += authorType ? `authorType=${authorType}&` : "";
 
-        if (querystring !== '') {
-            if (querystring.substr(querystring.length - 1) === '&') {
+        if (querystring !== "") {
+            if (querystring.substr(querystring.length - 1) === "&") {
                 querystring = querystring.slice(0, -1);
             }
 
@@ -192,14 +195,10 @@ const helpers = {
 
         return location;
     },
-    updateLinkToAuthorsPage: (location, {
-        pageNumber,
-        pageSize,
-        query,
-        authorType,
-        sortBy,
-        sortDirection}) => {
-
+    updateLinkToAuthorsPage: (
+        location,
+        { pageNumber, pageSize, query, authorType, sortBy, sortDirection }
+    ) => {
         var searchParams = new URLSearchParams(location.search);
         if (pageNumber) {
             searchParams.set("pageNumber", pageNumber);
@@ -210,7 +209,7 @@ const helpers = {
         if (query) {
             searchParams.set("query", query);
         } else if (query === "") {
-            searchParams.delete("query")
+            searchParams.delete("query");
         }
         if (authorType) {
             searchParams.set("author", authorType);
@@ -218,7 +217,7 @@ const helpers = {
         if (sortBy) {
             searchParams.set("sortBy", sortBy);
         } else if (sortBy === "") {
-            searchParams.delete("sortBy")
+            searchParams.delete("sortBy");
         }
         if (sortDirection) {
             searchParams.set("sortDirection", sortDirection);
@@ -226,19 +225,14 @@ const helpers = {
 
         return `${location.pathname}?${searchParams.toString()}`;
     },
-    buildLinkToSeriesPage: (
-        libraryId,
-        page,
-        pageSize,
-        query
-    ) => {
-        let querystring = '';
-        querystring += page ? `pageNumber=${page}&` : '';
-        querystring += pageSize ? `pageSize=${pageSize}&` : '';
-        querystring += query ? `query=${query}&` : '';
+    buildLinkToSeriesPage: (libraryId, page, pageSize, query) => {
+        let querystring = "";
+        querystring += page ? `pageNumber=${page}&` : "";
+        querystring += pageSize ? `pageSize=${pageSize}&` : "";
+        querystring += query ? `query=${query}&` : "";
 
-        if (querystring !== '') {
-            if (querystring.substr(querystring.length - 1) === '&') {
+        if (querystring !== "") {
+            if (querystring.substr(querystring.length - 1) === "&") {
                 querystring = querystring.slice(0, -1);
             }
 
@@ -248,12 +242,8 @@ const helpers = {
         return null;
     },
     updateLinkToSeriesPage: (
-        location, {
-            pageNumber,
-            pageSize,
-            query,
-            sortBy,
-            sortDirection}
+        location,
+        { pageNumber, pageSize, query, sortBy, sortDirection }
     ) => {
         var searchParams = new URLSearchParams(location.search);
         if (pageNumber) {
@@ -265,12 +255,12 @@ const helpers = {
         if (query) {
             searchParams.set("query", query);
         } else if (query === "") {
-            searchParams.delete("query")
+            searchParams.delete("query");
         }
         if (sortBy) {
             searchParams.set("sortBy", sortBy);
         } else if (sortBy === "") {
-            searchParams.delete("sortBy")
+            searchParams.delete("sortBy");
         }
         if (sortDirection) {
             searchParams.set("sortDirection", sortDirection);
@@ -278,19 +268,14 @@ const helpers = {
 
         return `${location.pathname}?${searchParams.toString()}`;
     },
-    buildLinkToCategoriesList : (
-        libraryId,
-        page,
-        pageSize,
-        query
-    ) => {
-        let querystring = '';
-        querystring += page ? `pageNumber=${page}&` : '';
-        querystring += pageSize ? `pageSize=${pageSize}&` : '';
-        querystring += query ? `query=${query}&` : '';
+    buildLinkToCategoriesList: (libraryId, page, pageSize, query) => {
+        let querystring = "";
+        querystring += page ? `pageNumber=${page}&` : "";
+        querystring += pageSize ? `pageSize=${pageSize}&` : "";
+        querystring += query ? `query=${query}&` : "";
 
-        if (querystring !== '') {
-            if (querystring.substr(querystring.length - 1) === '&') {
+        if (querystring !== "") {
+            if (querystring.substr(querystring.length - 1) === "&") {
                 querystring = querystring.slice(0, -1);
             }
 
@@ -299,19 +284,22 @@ const helpers = {
 
         return null;
     },
-    updateLinkToArticlesPage: (location, {
-        pageNumber,
-        pageSize,
-        query,
-        author,
-        categories,
-        type,
-        sortBy,
-        sortDirection,
-        favorite,
-        read,
-        status, }) => {
-
+    updateLinkToArticlesPage: (
+        location,
+        {
+            pageNumber,
+            pageSize,
+            query,
+            author,
+            categories,
+            type,
+            sortBy,
+            sortDirection,
+            favorite,
+            read,
+            status,
+        }
+    ) => {
         var searchParams = new URLSearchParams(location.search);
         if (pageNumber) {
             searchParams.set("pageNumber", pageNumber);
@@ -322,7 +310,7 @@ const helpers = {
         if (query) {
             searchParams.set("query", query);
         } else if (query === "") {
-            searchParams.delete("query")
+            searchParams.delete("query");
         }
         if (author) {
             searchParams.set("author", author);
@@ -336,7 +324,7 @@ const helpers = {
         if (sortBy) {
             searchParams.set("sortBy", sortBy);
         } else if (sortBy === "") {
-            searchParams.delete("sortBy")
+            searchParams.delete("sortBy");
         }
         if (sortDirection) {
             searchParams.set("sortDirection", sortDirection);
@@ -353,10 +341,7 @@ const helpers = {
 
         return `${location.pathname}?${searchParams.toString()}`;
     },
-    updateLinkToArticlesEditPage: (location, {
-        section,
-        language
-    }) => {
+    updateLinkToArticlesEditPage: (location, { section, language }) => {
         var searchParams = new URLSearchParams(location.search);
         if (section) {
             searchParams.set("section", section);
@@ -375,15 +360,18 @@ const helpers = {
         sortBy,
         sortDirection
     ) => {
-        let querystring = '';
-        querystring += page ? `pageNumber=${page}&` : '';
-        querystring += pageSize ? `pageSize=${pageSize}&` : '';
-        querystring += query ? `query=${query}&` : '';
-        querystring += sortBy && sortBy !== 'title' ? `sortBy=${sortBy}&` : '';
-        querystring += sortDirection && sortDirection !== 'ascending' ? `sortDirection=${sortDirection}&` : '';
+        let querystring = "";
+        querystring += page ? `pageNumber=${page}&` : "";
+        querystring += pageSize ? `pageSize=${pageSize}&` : "";
+        querystring += query ? `query=${query}&` : "";
+        querystring += sortBy && sortBy !== "title" ? `sortBy=${sortBy}&` : "";
+        querystring +=
+            sortDirection && sortDirection !== "ascending"
+                ? `sortDirection=${sortDirection}&`
+                : "";
 
-        if (querystring !== '') {
-            if (querystring.substr(querystring.length - 1) === '&') {
+        if (querystring !== "") {
+            if (querystring.substr(querystring.length - 1) === "&") {
                 querystring = querystring.slice(0, -1);
             }
 
@@ -397,16 +385,20 @@ const helpers = {
         periodicalId,
         page,
         sortBy,
-        sortDirection,
+        sortDirection
     ) => {
         const path = `/libraries/${libraryId}/periodicals/${periodicalId}`;
-        let querystring = '';
-        querystring += page ? `pageNumber=${page}&` : '';
-        querystring += sortBy && sortBy !== 'dateCreated' ? `sortBy=${sortBy}&` : '';
-        querystring += sortDirection && sortDirection !== 'ascending' ? `sortDirection=${sortDirection}&` : '';
+        let querystring = "";
+        querystring += page ? `pageNumber=${page}&` : "";
+        querystring +=
+            sortBy && sortBy !== "dateCreated" ? `sortBy=${sortBy}&` : "";
+        querystring +=
+            sortDirection && sortDirection !== "ascending"
+                ? `sortDirection=${sortDirection}&`
+                : "";
 
-        if (querystring !== '') {
-            if (querystring.substr(querystring.length - 1) === '&') {
+        if (querystring !== "") {
+            if (querystring.substr(querystring.length - 1) === "&") {
                 querystring = querystring.slice(0, -1);
             }
 
@@ -415,23 +407,30 @@ const helpers = {
 
         return path;
     },
-    buildLinkToBooksPagesPage: (location,
+    buildLinkToBooksPagesPage: (
+        location,
         pageNumber,
         pageSize,
         statusFilter,
         assignmentFilter,
         reviewerAssignmentFilter,
-        sortDirection) => {
-        let querystring = 'section=pages&';
-        querystring += pageNumber ? `pageNumber=${pageNumber}&` : '';
-        querystring += pageSize && pageSize !== 12 ? `pageSize=${pageSize}&` : '';
-        querystring += statusFilter ? `status=${statusFilter}&` : '';
-        querystring += assignmentFilter ? `assignment=${assignmentFilter}&` : '';
-        querystring += reviewerAssignmentFilter ? `reviewerAssignment=${reviewerAssignmentFilter}&` : '';
-        querystring += sortDirection ? `sortDirection=${sortDirection}&` : '';
+        sortDirection
+    ) => {
+        let querystring = "section=pages&";
+        querystring += pageNumber ? `pageNumber=${pageNumber}&` : "";
+        querystring +=
+            pageSize && pageSize !== 12 ? `pageSize=${pageSize}&` : "";
+        querystring += statusFilter ? `status=${statusFilter}&` : "";
+        querystring += assignmentFilter
+            ? `assignment=${assignmentFilter}&`
+            : "";
+        querystring += reviewerAssignmentFilter
+            ? `reviewerAssignment=${reviewerAssignmentFilter}&`
+            : "";
+        querystring += sortDirection ? `sortDirection=${sortDirection}&` : "";
 
-        if (querystring !== '') {
-            if (querystring.substr(querystring.length - 1) === '&') {
+        if (querystring !== "") {
+            if (querystring.substr(querystring.length - 1) === "&") {
                 querystring = querystring.slice(0, -1);
             }
 
@@ -440,48 +439,49 @@ const helpers = {
 
         return location;
     },
-    updateLinkToBooksPagesPage : (location, {
-        pageNumber,
-        pageSize,
-        statusFilter,
-        assignmentFilter,
-        reviewerAssignmentFilter,
-        sortDirection}) => {
-            var searchParams = new URLSearchParams(location.search);
-            if (pageNumber) {
-                searchParams.set("pageNumber", pageNumber);
-            }
-            if (pageSize) {
-                searchParams.set("pageSize", pageSize);
-            } else {
+    updateLinkToBooksPagesPage: (
+        location,
+        {
+            pageNumber,
+            pageSize,
+            statusFilter,
+            assignmentFilter,
+            reviewerAssignmentFilter,
+            sortDirection,
+        }
+    ) => {
+        var searchParams = new URLSearchParams(location.search);
+        if (pageNumber) {
+            searchParams.set("pageNumber", pageNumber);
+        }
+        if (pageSize) {
+            searchParams.set("pageSize", pageSize);
+        } else {
+        }
+        if (statusFilter) {
+            searchParams.set("status", statusFilter);
+        }
+        if (assignmentFilter) {
+            searchParams.set("assignment", assignmentFilter);
+        }
+        if (reviewerAssignmentFilter) {
+            searchParams.set("reviewerAssignment", reviewerAssignmentFilter);
+        }
+        if (sortDirection) {
+            searchParams.set("sortDirection", sortDirection);
+        }
 
-            }
-            if (statusFilter) {
-                searchParams.set("status", statusFilter);
-            }
-            if (assignmentFilter) {
-                searchParams.set("assignment", assignmentFilter);
-            }
-            if (reviewerAssignmentFilter) {
-                searchParams.set("reviewerAssignment", reviewerAssignmentFilter);
-            }
-            if (sortDirection) {
-                searchParams.set("sortDirection", sortDirection);
-            }
+        return `${location.pathname}?${searchParams.toString()}`;
+    },
+    buildLinkToLibrariesPage: (location, page, query, pageSize = 12) => {
+        let querystring = "";
+        querystring += page ? `pageNumber=${page}&` : "";
+        querystring += query ? `q=${query}&` : "";
+        querystring +=
+            pageSize && pageSize !== 12 ? `pageSize=${pageSize}&` : "";
 
-            return `${location.pathname}?${searchParams.toString()}`;
-        },
-    buildLinkToLibrariesPage: (location,
-        page,
-        query,
-        pageSize = 12) => {
-        let querystring = '';
-        querystring += page ? `pageNumber=${page}&` : '';
-        querystring += query ? `q=${query}&` : '';
-        querystring += pageSize && pageSize !== 12 ? `pageSize=${pageSize}&` : '';
-
-        if (querystring !== '') {
-            if (querystring.substr(querystring.length - 1) === '&') {
+        if (querystring !== "") {
+            if (querystring.substr(querystring.length - 1) === "&") {
                 querystring = querystring.slice(0, -1);
             }
 
@@ -490,12 +490,10 @@ const helpers = {
 
         return location.pathname;
     },
-    updateLinkToLibrariesPage: (location, {
-        query,
-        pageNumber,
-        pageSize,
-        statusFilter,
-        sortDirection}) => {
+    updateLinkToLibrariesPage: (
+        location,
+        { query, pageNumber, pageSize, statusFilter, sortDirection }
+    ) => {
         var searchParams = new URLSearchParams(location.search);
         if (pageNumber) {
             searchParams.set("pageNumber", pageNumber);
@@ -503,7 +501,6 @@ const helpers = {
         if (pageSize) {
             searchParams.set("pageSize", pageSize);
         } else {
-
         }
         if (statusFilter) {
             searchParams.set("status", statusFilter);
@@ -513,24 +510,21 @@ const helpers = {
         }
         if (query) {
             searchParams.set("query", query);
-        }else if (query === "") {
-            searchParams.delete("query")
+        } else if (query === "") {
+            searchParams.delete("query");
         }
-
 
         return `${location.pathname}?${searchParams.toString()}`;
     },
-    buildLinkToLibraryUsersPage: (location,
-        page,
-        query,
-        pageSize = 12) => {
-        let querystring = '';
-        querystring += page ? `pageNumber=${page}&` : '';
-        querystring += query ? `q=${query}&` : '';
-        querystring += pageSize && pageSize !== 12 ? `pageSize=${pageSize}&` : '';
+    buildLinkToLibraryUsersPage: (location, page, query, pageSize = 12) => {
+        let querystring = "";
+        querystring += page ? `pageNumber=${page}&` : "";
+        querystring += query ? `q=${query}&` : "";
+        querystring +=
+            pageSize && pageSize !== 12 ? `pageSize=${pageSize}&` : "";
 
-        if (querystring !== '') {
-            if (querystring.substr(querystring.length - 1) === '&') {
+        if (querystring !== "") {
+            if (querystring.substr(querystring.length - 1) === "&") {
                 querystring = querystring.slice(0, -1);
             }
 
@@ -539,19 +533,24 @@ const helpers = {
 
         return location.pathname;
     },
-    buildLinkToIssuePagesPage: (location,
+    buildLinkToIssuePagesPage: (
+        location,
         page,
         pageSize,
         statusFilter,
-        assignmentFilter) => {
-        let querystring = '';
-        querystring += page ? `pageNumber=${page}&` : '';
-        querystring += pageSize && pageSize !== 12 ? `pageSize=${pageSize}&` : '';
-        querystring += statusFilter ? `filter=${statusFilter}&` : '';
-        querystring += assignmentFilter ? `assignmentFilter=${assignmentFilter}&` : '';
+        assignmentFilter
+    ) => {
+        let querystring = "";
+        querystring += page ? `pageNumber=${page}&` : "";
+        querystring +=
+            pageSize && pageSize !== 12 ? `pageSize=${pageSize}&` : "";
+        querystring += statusFilter ? `filter=${statusFilter}&` : "";
+        querystring += assignmentFilter
+            ? `assignmentFilter=${assignmentFilter}&`
+            : "";
 
-        if (querystring !== '') {
-            if (querystring.substr(querystring.length - 1) === '&') {
+        if (querystring !== "") {
+            if (querystring.substr(querystring.length - 1) === "&") {
                 querystring = querystring.slice(0, -1);
             }
 
@@ -585,78 +584,160 @@ const helpers = {
         }
     },
     splitImage: ({ URI, splitPercentage, overlap = 0, rtl = false }) => {
-        if (splitPercentage === 0 ) return Promise.resolve(dataURItoBlob(URI));
-        return new Promise(function(resolve, reject) {
+        if (splitPercentage === 0) return Promise.resolve(dataURItoBlob(URI));
+        return new Promise(function (resolve, reject) {
             if (URI == null) return reject();
             var image = new Image();
-            image.addEventListener('load', function() {
-                var imagePieces = [];
-                const splitSize = (splitPercentage / 100) * image.width;
+            image.addEventListener(
+                "load",
+                function () {
+                    var imagePieces = [];
+                    const splitSize = (splitPercentage / 100) * image.width;
 
-                // Draw the left part of the image
-                var canvas1 = document.createElement('canvas');
-                var context1 = canvas1.getContext('2d');
-                canvas1.width = splitSize;
-                canvas1.height = image.height;
-                context1.drawImage(image,
-                    0, 0, splitSize, image.height,
-                    0, 0, splitSize, image.height);
+                    // Draw the left part of the image
+                    var canvas1 = document.createElement("canvas");
+                    var context1 = canvas1.getContext("2d");
+                    canvas1.width = splitSize;
+                    canvas1.height = image.height;
+                    context1.drawImage(
+                        image,
+                        0,
+                        0,
+                        splitSize,
+                        image.height,
+                        0,
+                        0,
+                        splitSize,
+                        image.height
+                    );
 
-                imagePieces.push(canvas1.toDataURL());
+                    imagePieces.push(canvas1.toDataURL());
 
-                // Draw the right part of the image
-                var canvas2 = document.createElement('canvas');
-                var context2 = canvas2.getContext('2d');
-                canvas2.width = image.width - splitSize;
-                canvas2.height = image.height;
-                context2.drawImage(image,
-                    splitSize, 0, image.width - splitSize, image.height,
-                    0, 0, image.width - splitSize, image.height);
-                imagePieces.push(canvas2.toDataURL());
-                if (rtl) {
-                    imagePieces = imagePieces.reverse();
-                }
-                resolve(imagePieces);
-            }, false);
+                    // Draw the right part of the image
+                    var canvas2 = document.createElement("canvas");
+                    var context2 = canvas2.getContext("2d");
+                    canvas2.width = image.width - splitSize;
+                    canvas2.height = image.height;
+                    context2.drawImage(
+                        image,
+                        splitSize,
+                        0,
+                        image.width - splitSize,
+                        image.height,
+                        0,
+                        0,
+                        image.width - splitSize,
+                        image.height
+                    );
+                    imagePieces.push(canvas2.toDataURL());
+                    if (rtl) {
+                        imagePieces = imagePieces.reverse();
+                    }
+                    resolve(imagePieces);
+                },
+                false
+            );
             image.src = URI;
-          });
+        });
     },
     splitImageUrl: (URI, splitPercentage, overlap = 0) => {
-        if (splitPercentage === 0 ) return Promise.resolve(dataURItoBlob(URI));
-        return new Promise(function(resolve, reject) {
+        if (splitPercentage === 0) return Promise.resolve(dataURItoBlob(URI));
+        return new Promise(function (resolve, reject) {
             if (URI == null) return reject();
             var image = new Image();
-            image.addEventListener('load', function() {
-                var imagePieces = [];
-                const splitSize = (splitPercentage / 100) * image.width;
+            image.addEventListener(
+                "load",
+                function () {
+                    var imagePieces = [];
+                    const splitSize = (splitPercentage / 100) * image.width;
 
-                // Draw the left part of the image
-                var canvas1 = document.createElement('canvas');
-                var context1 = canvas1.getContext('2d');
-                canvas1.width = splitSize;
-                canvas1.height = image.height;
-                context1.drawImage(image,
-                    0, 0, splitSize, image.height,
-                    0, 0, splitSize, image.height);
+                    // Draw the left part of the image
+                    var canvas1 = document.createElement("canvas");
+                    var context1 = canvas1.getContext("2d");
+                    canvas1.width = splitSize;
+                    canvas1.height = image.height;
+                    context1.drawImage(
+                        image,
+                        0,
+                        0,
+                        splitSize,
+                        image.height,
+                        0,
+                        0,
+                        splitSize,
+                        image.height
+                    );
 
-                imagePieces.push(canvas1.toDataURL());
+                    imagePieces.push(canvas1.toDataURL());
 
-                // Draw the right part of the image
-                var canvas2 = document.createElement('canvas');
-                var context2 = canvas2.getContext('2d');
-                canvas2.width = image.width - splitSize;
-                canvas2.height = image.height;
-                context2.drawImage(image,
-                    splitSize, 0, image.width - splitSize, image.height,
-                    0, 0, image.width - splitSize, image.height);
-                imagePieces.push(canvas2.toDataURL());
+                    // Draw the right part of the image
+                    var canvas2 = document.createElement("canvas");
+                    var context2 = canvas2.getContext("2d");
+                    canvas2.width = image.width - splitSize;
+                    canvas2.height = image.height;
+                    context2.drawImage(
+                        image,
+                        splitSize,
+                        0,
+                        image.width - splitSize,
+                        image.height,
+                        0,
+                        0,
+                        image.width - splitSize,
+                        image.height
+                    );
+                    imagePieces.push(canvas2.toDataURL());
 
-                resolve(imagePieces);
-            }, false);
+                    resolve(imagePieces);
+                },
+                false
+            );
             image.src = URI;
-          });
+        });
     },
-    dataURItoBlob
+    dataURItoBlob,
+    loadPdfPage: async (pdf, index) => {
+        const canvas = document.createElement("canvas");
+        canvas.setAttribute("className", "canv");
+        var page = await pdf.getPage(index);
+        var viewport = page.getViewport({ scale: 1.5 });
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+        var render_context = {
+            canvasContext: canvas.getContext("2d"),
+            viewport: viewport,
+        };
+        await page.render(render_context).promise;
+        return canvas.toDataURL("image/png");
+    },
+    downloadFile: async (url, onProgress = () => {}) => {
+        const response = url.startsWith(apiUrl)
+            ? await axiosPrivate({
+                  url: url,
+                  method: "GET",
+                  responseType: "blob",
+              })
+            : await axiosPublic({
+                  url: url,
+                  method: "GET",
+                  responseType: "blob",
+              });
+
+        return new Promise((resolve, reject) => {
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                const data = atob(e.target.result.replace(/.*base64,/, ""));
+                resolve(data);
+            };
+            reader.onprogress = ({ loaded, total }) =>
+                onProgress({ loaded, total });
+            reader.onerror = () => {
+                reader.abort();
+                reject(new DOMException("Problem parsing input file."));
+            };
+            reader.readAsDataURL(response.data);
+        });
+    },
 };
 
 export default helpers;

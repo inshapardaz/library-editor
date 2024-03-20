@@ -39,31 +39,31 @@ const FilesList = ({
                 emptyImage={<FaBook size="5em" />}
                 emptyDescription={t("book.empty.title")}
                 emptyContent={
-                    <Dragger beforeUpload={uploadFile} maxCount={1} showUploadList={false}  />
+                    <Dragger beforeUpload={uploadFile} maxCount={1} showUploadList={false} />
                 }
                 empty={!book || (book.contents && book.contents.length < 1)}
                 bordered={false}
+            >
+                <List
+                    size={size}
+                    itemLayout="horizontal"
+                    dataSource={book && book.contents ? book.contents : []}
+                    footer={<Dragger beforeUpload={uploadFile} maxCount={1} showUploadList={false} >
+                        <Space direction="vertical">
+                            <FaFileUpload style={{ width: 36, height: 36 }} />
+                            <Typography.Text>{t('book.actions.addFile.title')}</Typography.Text>
+                        </Space>
+                    </Dragger>}
+                    renderItem={(c) => (
+                        <FileListItem key={`file-${c.id}`}
+                            libraryId={libraryId}
+                            book={book}
+                            content={c}
+                            t={t}
+                            message={message} />
+                    )}
                 >
-                    <List
-                        size={size}
-                        itemLayout="horizontal"
-                        dataSource={book && book.contents ? book.contents : []}
-                        footer={<Dragger beforeUpload={uploadFile} maxCount={1} showUploadList={false} >
-                                <Space direction="vertical">
-                                    <FaFileUpload style={{ width: 36, height: 36 }} />
-                                    <Typography.Text>{t('book.actions.addFile.title')}</Typography.Text>
-                                </Space>
-                            </Dragger>}
-                        renderItem={(c) => (
-                            <FileListItem  key={`file-${c.id}`}
-                                libraryId={libraryId}
-                                bookId={book.id}
-                                content={c}
-                                t={t}
-                                message={message} />
-                        )}
-                    >
-                    </List>
+                </List>
             </DataContainer>
         </>
     );

@@ -263,7 +263,7 @@ const BooksUpload = () => {
                 setStatus(ProcessStatus.Failed);
                 message.error(t("books.actions.upload.error"))
             })
-    }, [message, saveBook, t, updateRequest]);
+    }, [message, requests, saveBook, t, updateRequest]);
 
     useEffect(() => {
         if (status === ProcessStatus.Pending && requests.length > 0) {
