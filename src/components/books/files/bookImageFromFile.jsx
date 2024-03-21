@@ -22,7 +22,6 @@ export const BookImageFromFile = ({ libraryId, book, content, t, disabled }) => 
     const setFirstPageAsImage = async () => {
         setConfirm(true);
         setOpen(true);
-        setConfirm(false);
         setProgress(0);
         try {
             const file = await helpers.downloadFile(content.links.download, onProgressDownload);
@@ -50,6 +49,7 @@ export const BookImageFromFile = ({ libraryId, book, content, t, disabled }) => 
             open={open}
             onOk={() => setFirstPageAsImage()}
             confirmLoading={confirm}
+            maskClosable={false}
             onCancel={() => setOpen(false)}
         >
             {(confirm) ?
