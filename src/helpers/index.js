@@ -738,6 +738,14 @@ const helpers = {
             reader.readAsDataURL(response.data);
         });
     },
+    readBinaryFile: (file) => {
+        return new Promise((resolve, reject) => {
+            var reader = new FileReader();
+            reader.onload = () => resolve(new Uint8Array(reader.result));
+            reader.onerror = reject;
+            reader.readAsArrayBuffer(file);
+        });
+    },
 };
 
 export default helpers;
