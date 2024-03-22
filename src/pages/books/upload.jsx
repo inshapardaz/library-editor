@@ -4,7 +4,8 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 
 // 3rd party libraries
 import { FaCloudUploadAlt, FaFileUpload, FaHourglass, FaRedo, FaRegCheckCircle, FaRegTimesCircle, FaSave, FaTrash, FaUpload } from 'react-icons/fa';
-import { App, Avatar, Button, Card, Col, Form, Input, InputNumber, List, Popover, Row, Spin, Switch, Tooltip, Upload } from 'antd';
+import { App, Avatar, Button, Card, Col, Form, Input, InputNumber, List, Popover, Row, Space, Spin, Switch, Tooltip, Upload } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import * as pdfjsLib from "pdfjs-dist";
 
 // Local Imports
@@ -137,7 +138,14 @@ const BookUploadStatus = ({ status, t, libraryId, requests, onRetry, key }) => {
                 </Popover >);
             case ProcessStatus.CreatingBook:
             case ProcessStatus.UploadingContents:
-                return t('books.actions.upload.details.status.inProgress');
+                return (<Space><Spin size="small" indicator={
+                    <LoadingOutlined
+                        style={{
+                            fontSize: 24,
+                        }}
+                        spin
+                    />
+                } />{t('books.actions.upload.details.status.inProgress')}</Space>);
             case ProcessStatus.Pending:
                 return t('books.actions.upload.details.status.pending');
             default:
@@ -187,8 +195,9 @@ const BooksUpload = () => {
     const { libraryId } = useParams();
     const { library, isFetching } = useGetLibraryQuery({ libraryId }, { skip: libraryId === null })
     const [addBook, { isLoading: isAdding }] = useAddBookMutation();
-    const [addBookContent, { isLoading: isUploading }] = useAddBookContentMutation();
-    const [updateBookImage, { isLoading: isUpdatingImage }] = useUpdateBookImageMutation();
+    const [addBookContent] = useAddBookContentMutation();
+    const [updateBookImage] = useUpdateBookImageMutation();
+    const [saving, setSaving] = useState(false);
     const [status, setStatus] = useState("");
     const [requests, setRequests] = useState([]);
     const initialValue = {
@@ -260,39 +269,60 @@ const BooksUpload = () => {
     }, [addBook, addBookContent, libraryId, updateBookImage, updateRequest]);
 
     var onRetry = useCallback(async (retryRequests) => {
-        retryRequests.map(request => updateRequest({ id: request.id, status: ProcessStatus.Pending }));
+        let success = true;
+        for (var i = 0; i < retryRequests.length; i++) {
+            try {
+                const request = retryRequests[i];
+                updateRequest({ id: request.id, status: ProcessStatus.Pending })
+                await saveBook(request);
+            }
+            catch (e) {
+                console.error(e);
+                success = false;
+            }
+        }
 
-        const promises = requests.map((request) => saveBook(request));
+        if (success) {
+            setStatus(ProcessStatus.Completed);
+            message.success(t("books.actions.upload.success"));
+        } else {
+            setStatus(ProcessStatus.Failed);
+            message.error(t("books.actions.upload.error"))
+        }
+    }, [message, saveBook, t, updateRequest]);
 
-        Promise.all(promises)
-            .then(() => {
-                setStatus(ProcessStatus.Completed);
-                message.success(t("books.actions.upload.success"));
-            })
-            .catch((e) => {
-                setStatus(ProcessStatus.Failed);
-                message.error(t("books.actions.upload.error"))
-            })
+    var saveBooks = useCallback(async () => {
+        setSaving(true);
+        setStatus(ProcessStatus.InProcess);
+
+        let success = true;
+        for (var i = 0; i < requests.length; i++) {
+            let request = requests[i];
+            try {
+                updateRequest({ id: request.id, status: ProcessStatus.Pending })
+                await saveBook(request);
+            }
+            catch (e) {
+                console.error(e);
+                success = false;
+                updateRequest({ id: request.id, status: ProcessStatus.Failed, error: e });
+            }
+        }
+        setSaving(false)
+        if (success) {
+            setStatus(ProcessStatus.Completed);
+            message.success(t("books.actions.upload.success"));
+        } else {
+            setStatus(ProcessStatus.Failed);
+            message.error(t("books.actions.upload.error"))
+        }
     }, [message, requests, saveBook, t, updateRequest]);
 
     useEffect(() => {
         if (status === ProcessStatus.Pending && requests.length > 0) {
-            setStatus(ProcessStatus.InProcess);
-            const promises = requests.map((request) => {
-                return saveBook(request);
-            });
-            Promise.all(promises)
-                .then(() => {
-                    setStatus(ProcessStatus.Completed);
-                    message.success(t("books.actions.upload.success"));
-                })
-                .catch((e) => {
-                    setStatus(ProcessStatus.Failed);
-                    console.error(e);
-                    message.error(t("books.actions.upload.error"))
-                })
-        }
-    }, [status, requests, saveBook, message, t]);
+            saveBooks();
+        };
+    }, [status, requests, saveBooks]);
 
     const onFinished = (values) => {
         const books = values.books;
@@ -323,18 +353,18 @@ const BooksUpload = () => {
 
     const actions = hasUploadCompleted() ? null : [
         (<Button type="primary" htmlType="submit" size="large" block icon={<FaSave />}
-            disabled={isFetching | isAdding | isUploading | isUpdatingImage}>
+            disabled={isFetching | isAdding | saving}>
             {t("actions.save")}
         </Button>)
     ];
 
-
+    console.log(saving || hasUploadCompleted());
     const renderContents = () => {
-        if (hasUploadCompleted()) {
+        if (saving || hasUploadCompleted()) {
             return <BookUploadStatus t={t} status={status} requests={requests} libraryId={libraryId} onRetry={onRetry} />
         }
         else {
-            return (<Spin spinning={isFetching | isAdding | isUploading | isUpdatingImage}>
+            return (<Spin spinning={isFetching | isAdding | saving}>
                 <Card title={t('books.actions.upload.defaultProperties')} >
                     <BookUploadForm t={t} libraryId={libraryId} />
                 </Card>
