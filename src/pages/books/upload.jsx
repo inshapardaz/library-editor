@@ -437,8 +437,15 @@ const BooksUpload = () => {
                                                     <Form.Item  {...restField} name={[name, "publisher"]} label={t("book.publisher.label")}>
                                                         <Input placeholder={t("book.publisher.placeholder")} />
                                                     </Form.Item>
-                                                    <Form.Item  {...restField} name={[name, "seriesId"]} label={t("book.series.label")}>
-                                                        <SeriesSelect placeholder={t("book.series.placeholder")} t={t} libraryId={libraryId} />
+                                                    <Form.Item {...restField} label={t("book.series.label")}>
+                                                        <Space.Compact style={{ width: "100%" }}>
+                                                            <Form.Item name={[name, "seriesId"]} noStyle>
+                                                                <SeriesSelect placeholder={t("book.series.placeholder")} t={t} libraryId={libraryId} />
+                                                            </Form.Item>
+                                                            <Form.Item name={[name, "seriesIndex"]} noStyle>
+                                                                <InputNumber min={1} />
+                                                            </Form.Item>
+                                                        </Space.Compact>
                                                     </Form.Item>
                                                 </Col>
                                             </Row >

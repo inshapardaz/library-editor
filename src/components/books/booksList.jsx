@@ -4,7 +4,7 @@ import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
 import { Button, Input, List, Space, Switch } from "antd";
-import { FaBook, FaPlus } from "react-icons/fa";
+import { FaBook, FaCloudUploadAlt, FaPlus } from "react-icons/fa";
 
 // Local Imports
 import helpers from "../../helpers";
@@ -126,11 +126,18 @@ function BooksList({
             emptyImage={<FaBook size="5em" />}
             emptyDescription={t("books.empty.title")}
             emptyContent={
-                <Link to={`/libraries/${libraryId}/books/add`}>
-                    <Button type="dashed" icon={<FaPlus />}>
-                        {t("book.actions.add.label")}
-                    </Button>
-                </Link>
+                <Space>
+                    <Link to={`/libraries/${libraryId}/books/add`}>
+                        <Button type="dashed" icon={<FaPlus />}>
+                            {t("book.actions.add.label")}
+                        </Button>
+                    </Link>
+                    <Link to={`/libraries/${libraryId}/books/upload`}>
+                        <Button type="dashed" icon={<FaCloudUploadAlt />}>
+                            {t("books.actions.upload.label")}
+                        </Button>
+                    </Link>
+                </Space>
             }
             empty={books && books.data && books.data.length < 1}
             bordered={false}

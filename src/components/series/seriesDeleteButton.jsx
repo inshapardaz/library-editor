@@ -11,7 +11,7 @@ import { useDeleteSeriesMutation } from "../../features/api/seriesSlice";
 const { confirm } = Modal;
 
 // ------------------------------------------------------
-export default function SeriesDeleteButton({ children, libraryId, series, t, type,  onDeleted = () => {}, danger = false, block = false, size= "middle" }) {
+export default function SeriesDeleteButton({ children, libraryId, series, t, type, onDeleted = () => { }, danger = false, block = false, size }) {
     const { message } = App.useApp();
     const [deleteSeries, { isLoading: isDeleting }] = useDeleteSeriesMutation();
 
@@ -19,9 +19,9 @@ export default function SeriesDeleteButton({ children, libraryId, series, t, typ
         confirm({
             title: t("series.actions.delete.title"),
             icon: <ExclamationCircleFilled />,
-            content: t("series.actions.delete.message", { name : series.name }),
-            okButtonProps: { disabled:  isDeleting },
-            cancelButtonProps: { disabled:  isDeleting },
+            content: t("series.actions.delete.message", { name: series.name }),
+            okButtonProps: { disabled: isDeleting },
+            cancelButtonProps: { disabled: isDeleting },
             closable: { isDeleting },
             onOk() {
                 deleteSeries({ libraryId, seriesId: series.id })
@@ -33,5 +33,5 @@ export default function SeriesDeleteButton({ children, libraryId, series, t, typ
         });
     };
 
-    return (<Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash/>}>{children}</Button>);
+    return (<Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash />}>{children}</Button>);
 }
