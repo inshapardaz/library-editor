@@ -24,19 +24,19 @@ const ArticleContentEditor = ({ libraryId, article, t }) => {
     const location = useLocation();
     const [searchParams] = useSearchParams();
     const lang = useSelector(selectedLanguage);
-    const searchLang = searchParams.get("language") ??lang.key;
+    const searchLang = searchParams.get("language") ?? lang.key;
     const [layout, setLayout] = useState('normal');
     const { data: articleContents, error, isFetching }
-          = useGetArticleContentsQuery(
-            { libraryId, articleId : article.id, language: searchLang },
+        = useGetArticleContentsQuery(
+            { libraryId, articleId: article.id, language: searchLang },
             { skip: !libraryId || !article || !searchLang });
     const [contents, setContents] = useState('');
-    const [ addArticleContents, { isLoading: isAdding }] = useAddArticleContentsMutation();
-    const [ updateArticleContents, { isLoading: isUpdating }] = useUpdateArticleContentsMutation();
+    const [addArticleContents, { isLoading: isAdding }] = useAddArticleContentsMutation();
+    const [updateArticleContents, { isLoading: isUpdating }] = useUpdateArticleContentsMutation();
     const [saved, setSaved] = useState(articleContents);
     const onSubmit = async () => {
         if (saved || articleContents) {
-            updateArticleContents({ libraryId, articleId : article.id, language: searchLang, layout: layout, payload: contents })
+            updateArticleContents({ libraryId, articleId: article.id, language: searchLang, layout: layout, payload: contents })
                 .unwrap()
                 .then(() => message.success(t("article.actions.edit.success")))
                 .catch((_) => message.error(t("article.actions.edit.error")));
@@ -48,6 +48,11 @@ const ArticleContentEditor = ({ libraryId, article, t }) => {
                 .catch((_) => message.error(t("article.actions.add.error")));
         }
     };
+
+    const onSave = (c) => {
+        console.log(c)
+        setContents(c)
+    }
 
     useEffect(() => {
         if (!error && articleContents) {
@@ -72,29 +77,28 @@ const ArticleContentEditor = ({ libraryId, article, t }) => {
                         onChange={(val) => navigate(helpers.updateLinkToArticlesEditPage(location, {
                             language: val
                         }))}
-                        disabled={ isFetching | isAdding | isUpdating }
+                        disabled={isFetching | isAdding | isUpdating}
                     />
                     <ArticleLayoutSelect libraryId={libraryId}
                         placeholder={t("article.layout.placeholder")}
                         onChange={(val) => setLayout(val)}
                         value={layout}
-                        disabled={ isFetching | isAdding | isUpdating }
+                        disabled={isFetching | isAdding | isUpdating}
                         t={t} />
                     <Button onClick={onSubmit} icon={<FaSave />}
-                        disabled={ isFetching | isAdding | isUpdating }>
+                        disabled={isFetching | isAdding | isUpdating}>
                         {t("actions.save")}
                     </Button>
                     <Button onClick={() => navigate(-1)}
-                        disabled={ isFetching | isAdding | isUpdating }>
+                        disabled={isFetching | isAdding | isUpdating}>
                         {t("actions.cancel")}
                     </Button>
                 </Button.Group>
             </Col>
             <Col span={24}>
-                { error && error.status === 404 &&
-                    <Alert message={t('article.messages.newContent')} type="warning" closable showIcon banner /> }
-                <TextEditor value={contents} language={searchLang} showSave={false}
-                    onChange={setContents} />
+                {error && error.status === 404 &&
+                    <Alert message={t('article.messages.newContent')} type="warning" closable showIcon banner />}
+                <TextEditor value={articleContents?.text} language={searchLang} onChange={setContents} onSave={onSave} />
             </Col>
         </Row>
     </>);

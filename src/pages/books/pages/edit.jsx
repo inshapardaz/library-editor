@@ -59,7 +59,7 @@ const PageEditPage = () => {
     const [text, setText] = useState(null);
     const { libraryId, bookId, pageNumber } = useParams();
 
-    const { data: book, error: bookError, isFetching : loadingBook, } = useGetBookQuery(
+    const { data: book, error: bookError, isFetching: loadingBook, } = useGetBookQuery(
         { libraryId, bookId },
         { skip: !libraryId || !bookId }
     );
@@ -184,21 +184,21 @@ const PageEditPage = () => {
                 </Tooltip>
             )}
             <PageOcrButton pages={[page]} t={t} />
-        {page && page.links.assign && (
-            <PageAssignButton
-                libraryId={libraryId}
-                pages={[page]}
-                t={t}
-                showDetails={false}
-            />
+            {page && page.links.assign && (
+                <PageAssignButton
+                    libraryId={libraryId}
+                    pages={[page]}
+                    t={t}
+                    showDetails={false}
+                />
             )}
-        {page && page.links.update && (
-            <PageStatusButton
-                libraryId={libraryId}
-                pages={[page]}
-                t={t}
-            />
-        )}
+            {page && page.links.update && (
+                <PageStatusButton
+                    libraryId={libraryId}
+                    pages={[page]}
+                    t={t}
+                />
+            )}
         </Button.Group>,
     ];
 
@@ -206,19 +206,19 @@ const PageEditPage = () => {
         actions.push(
             <Button.Group>
                 <Tooltip title={t("actions.previous")}>
-                <Button disabled={!page || !page.links.previous}>
-                    <Link to={`/libraries/${libraryId}/books/${bookId}/pages/${parseInt(pageNumber) - 1}/edit`}>
-                        { lang.isRtl ? <FaAngleRight /> : <FaAngleLeft /> }
-                    </Link>
-                </Button>
-            </Tooltip>
-            <Tooltip title={t("actions.next")}>
-                <Button disabled={!page || !page.links.next}>
-                    <Link to={`/libraries/${libraryId}/books/${bookId}/pages/${parseInt(pageNumber) + 1}/edit`}>
-                        { lang.isRtl ? <FaAngleLeft /> : <FaAngleRight />}
-                    </Link>
-                </Button>
-            </Tooltip>
+                    <Button disabled={!page || !page.links.previous}>
+                        <Link to={`/libraries/${libraryId}/books/${bookId}/pages/${parseInt(pageNumber) - 1}/edit`}>
+                            {lang.isRtl ? <FaAngleRight /> : <FaAngleLeft />}
+                        </Link>
+                    </Button>
+                </Tooltip>
+                <Tooltip title={t("actions.next")}>
+                    <Button disabled={!page || !page.links.next}>
+                        <Link to={`/libraries/${libraryId}/books/${bookId}/pages/${parseInt(pageNumber) + 1}/edit`}>
+                            {lang.isRtl ? <FaAngleLeft /> : <FaAngleRight />}
+                        </Link>
+                    </Button>
+                </Tooltip>
             </Button.Group>
         );
     }
@@ -248,30 +248,29 @@ const PageEditPage = () => {
                 breadcrumb={<Breadcrumb
                     items={[
                         {
-                        title: <Link to={`/libraries/${libraryId}/books/${bookId}`}><FaBook /> {book?.title}</Link>,
+                            title: <Link to={`/libraries/${libraryId}/books/${bookId}`}><FaBook /> {book?.title}</Link>,
                         },
                         {
-                        title: <Link to={`/libraries/${libraryId}/books/${bookId}?section=pages`}><FaRegFileAlt /> {t('pages.title')}</Link>
+                            title: <Link to={`/libraries/${libraryId}/books/${bookId}?section=pages`}><FaRegFileAlt /> {t('pages.title')}</Link>
                         },
                         {
-                        title: (<>
-                            <EditingStatusIcon
-                            status={page && page.status}
-                            style={{ width: 16, height: 16 }}
-                        /> {t('page.label', {sequenceNumber : page?.sequenceNumber})}
-                        </>),
+                            title: (<>
+                                <EditingStatusIcon
+                                    status={page && page.status}
+                                    style={{ width: 16, height: 16 }}
+                                /> {t('page.label', { sequenceNumber: page?.sequenceNumber })}
+                            </>),
                         }
                     ]}
-                    />}
+                />}
                 actions={actions}
             />
             <DataContainer error={error || bookError} busy={isFetching | isAdding | isUpdating | isUpdatingImage | loadingBook} >
                 <Row gutter={16}>
-                    <Col span={12} style={{display: 'flex'}}>
-                        <Button onClick={() => onSave(text)}>X</Button>
-                    <TextEditor value={ text }
+                    <Col span={showImage ? 12 : 24} style={{ display: 'flex' }}>
+                        <TextEditor value={text}
                             language={language}
-                            onSave={(c) => onSave(c)}/>
+                            onSave={(c) => onSave(c)} />
                     </Col>
                     {showImage && (
                         <Col span={12}>

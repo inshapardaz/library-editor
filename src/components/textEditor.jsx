@@ -17,12 +17,12 @@ import { getFonts } from '../i18n';
 
 //-----------------------------------------
 
-const TextEditor = ({ value, language, onSave, showSave = true}) => {
+const TextEditor = ({ value, language, onSave, onChange, showSave = true }) => {
     const { t } = useTranslation();
 
     const [fonts, setFonts] = useState([]);
 
-    useEffect (() => {
+    useEffect(() => {
         var fts = getFonts(t, language);
         setFonts(fts);
     }, [language, t]);
@@ -30,7 +30,7 @@ const TextEditor = ({ value, language, onSave, showSave = true}) => {
     const {
         data: punctuationList,
         error: punctuationListError,
-        isFetching : punctuationListLoading,
+        isFetching: punctuationListLoading,
     } = useGetPunctuationQuery(
         { language }
     );
@@ -38,12 +38,12 @@ const TextEditor = ({ value, language, onSave, showSave = true}) => {
     const {
         data: autoCorrectList,
         error: autoCorrectListError,
-        isFetching : autoCorrectListLoading,
+        isFetching: autoCorrectListLoading,
     } = useGetAutoCorrectQuery(
         { language }
     );
 
-    const editorConfiguration =   {
+    const editorConfiguration = {
         richText: true,
         language: language,
         toolbar: {
@@ -57,11 +57,11 @@ const TextEditor = ({ value, language, onSave, showSave = true}) => {
             showSave: showSave,
         },
         spellchecker: {
-            enabled : true,
+            enabled: true,
             language: language,
             punctuationCorrections: (lang) => punctuationList,
             autoCorrections: (lang) => autoCorrectList,
-            wordList : (lang) => []
+            wordList: (lang) => []
         },
         format: "markdown"
     }
@@ -76,9 +76,11 @@ const TextEditor = ({ value, language, onSave, showSave = true}) => {
 
     return (<>
         <Editor configuration={editorConfiguration}
-            value={ value }
+            value={value}
             onSave={onSave}
-            />
+            onChange={onChange}
+            style={{ flexGrow: 1 }}
+        />
     </>);
 }
 

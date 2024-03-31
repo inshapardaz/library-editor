@@ -37,13 +37,12 @@ const EditChapter = () => {
     const lang = useSelector(selectedLanguage)
     const { libraryId, bookId, chapterNumber } = useParams();
     const [isBusy, setIsBusy] = useState(false);
-
     const [updateChapter, { isLoading: isUpdatingChapter }] = useUpdateChapterMutation();
 
     const {
         data: book,
         error: bookError,
-        isFetching : loadingBook,
+        isFetching: loadingBook,
     } = useGetBookQuery(
         { libraryId, bookId },
         { skip: !libraryId || !bookId }
@@ -52,16 +51,16 @@ const EditChapter = () => {
     const {
         data: chapters,
         error: chaptersError,
-        isFetching : loadingChapters,
+        isFetching: loadingChapters,
     } = useGetBookChaptersQuery(
         { libraryId, bookId, chapterNumber },
-        { skip: loadingBook || !libraryId || !bookId  }
+        { skip: loadingBook || !libraryId || !bookId }
     );
 
     const {
         data: chapter,
         error: chapterError,
-        isFetching : loadingChapter,
+        isFetching: loadingChapter,
     } = useGetChapterQuery(
         { libraryId, bookId, chapterNumber },
         { skip: loadingBook || !libraryId || !bookId || !chapterNumber }
@@ -72,7 +71,7 @@ const EditChapter = () => {
     const {
         data: chapterContent,
         error: chapterContentError,
-        isFetching : loadingChapterContent,
+        isFetching: loadingChapterContent,
     } = useGetChapterContentsQuery(
         { libraryId, bookId, chapterNumber, language },
         { skip: !book || !chapter || !language }
@@ -82,16 +81,16 @@ const EditChapter = () => {
         return chapterContentError && chapterContentError.status === 404;
     }
 
-    const onEditorSave = (c) => {
+    const onEditorSave = (content) => {
         if (isNewContent()) {
             setIsBusy(true);
-            return addChapterContent({ chapter, language, payload: c })
-            .then(() => message.success(t("book.actions.edit.success")))
-            .catch((_) => message.error(t("book.actions.edit.error")))
-            .finally(() => setIsBusy(false));
-        } else if (chapterContent){
+            return addChapterContent({ chapter, language, payload: content })
+                .then(() => message.success(t("book.actions.edit.success")))
+                .catch((_) => message.error(t("book.actions.edit.error")))
+                .finally(() => setIsBusy(false));
+        } else if (chapterContent) {
             setIsBusy(true);
-            return updateChapterContent({ chapterContent, language, payload: c })
+            return updateChapterContent({ chapterContent, language, payload: content })
                 .then(() => message.success(t("book.actions.add.success")))
                 .catch((_) => message.error(t("book.actions.add.error")))
                 .finally(() => setIsBusy(false));
@@ -117,7 +116,7 @@ const EditChapter = () => {
         (chapter.status === EditingStatus.Typing ||
             chapter.status === EditingStatus.InReview);
 
-    const actions =  chapter ? [
+    const actions = chapter ? [
         <Button.Group>
             {showCompleteButton && (
                 <Tooltip title={t("actions.done")}>
@@ -132,7 +131,7 @@ const EditChapter = () => {
                     chapters={[chapter]}
                     t={t}
                     showDetails={false}
-                    />
+                />
             )}
             {chapter && chapter.links.update && (
                 <ChapterStatusButton
@@ -144,14 +143,14 @@ const EditChapter = () => {
             <Tooltip title={t("actions.previous")}>
                 <Button disabled={!chapter || !chapter.links.previous}>
                     <Link to={`/libraries/${libraryId}/books/${bookId}/chapters/${chapter.chapterNumber - 1}/edit`}>
-                        { lang.isRtl ? <FaAngleRight /> : <FaAngleLeft /> }
+                        {lang.isRtl ? <FaAngleRight /> : <FaAngleLeft />}
                     </Link>
                 </Button>
             </Tooltip>
             <Tooltip title={t("actions.next")}>
                 <Button disabled={!chapter || !chapter.links.next}>
                     <Link to={`/libraries/${libraryId}/books/${bookId}/chapters/${chapter.chapterNumber + 1}/edit`}>
-                        { lang.isRtl ? <FaAngleLeft /> : <FaAngleRight />}
+                        {lang.isRtl ? <FaAngleLeft /> : <FaAngleRight />}
                     </Link>
                 </Button>
             </Tooltip>
@@ -159,24 +158,24 @@ const EditChapter = () => {
     ] : [];
 
     const chaptersMenu = () => {
-        if (chapters){
+        if (chapters) {
             var menuItems = chapters?.data.map((c) => ({
                 key: c.id,
                 label: (
                     c.id === chapter?.id ? <> <EditingStatusIcon
-                             status={c && c.status}
-                             style={{ width: 16, height: 16 }}
-                         /> {c.title}</> :
-                    <Link to={`/libraries/${libraryId}/books/${bookId}/chapters/${c.chapterNumber}/edit`}>
-                         <EditingStatusIcon
-                             status={c && c.status}
-                             style={{ width: 16, height: 16 }}
-                         /> {c.title}
-                    </Link>
+                        status={c && c.status}
+                        style={{ width: 16, height: 16 }}
+                    /> {c.title}</> :
+                        <Link to={`/libraries/${libraryId}/books/${bookId}/chapters/${c.chapterNumber}/edit`}>
+                            <EditingStatusIcon
+                                status={c && c.status}
+                                style={{ width: 16, height: 16 }}
+                            /> {c.title}
+                        </Link>
                 )
             }));
 
-            return { items : menuItems };
+            return { items: menuItems };
         }
         return null;
     };
@@ -184,36 +183,36 @@ const EditChapter = () => {
     return (
         <>
             <Spin
-                spinning={loadingChapter | loadingChapterContent | isBusy | isUpdatingChapter | loadingChapters | loadingBook }
+                spinning={loadingChapter | loadingChapterContent | isBusy | isUpdatingChapter | loadingChapters | loadingBook}
             >
-                { isNewContent() && <Alert message={t("chapter.editor.newContents")} type="success" closable />}
+                {isNewContent() && <Alert message={t("chapter.editor.newContents")} type="success" closable />}
 
                 <PageHeader
                     breadcrumb={<Breadcrumb
                         items={[
-                          {
-                            title: <Link to={`/libraries/${libraryId}/books/${bookId}`}><FaBook /> {book?.title}</Link>,
-                          },
-                          {
-                            title: t('chapters.title')
-                          },
-                          {
-                            title: (<>
-                                <EditingStatusIcon
-                                status={chapter && chapter.status}
-                                style={{ width: 16, height: 16 }}
-                            /> {chapter?.title}
-                            </>),
-                            menu : chaptersMenu()
-                          }
+                            {
+                                title: <Link to={`/libraries/${libraryId}/books/${bookId}`}><FaBook /> {book?.title}</Link>,
+                            },
+                            {
+                                title: t('chapters.title')
+                            },
+                            {
+                                title: (<>
+                                    <EditingStatusIcon
+                                        status={chapter && chapter.status}
+                                        style={{ width: 16, height: 16 }}
+                                    /> {chapter?.title}
+                                </>),
+                                menu: chaptersMenu()
+                            }
                         ]}
-                      />}
+                    />}
                     actions={actions}
                 />
-                <DataContainer error={ chapterError | chapterContentError | bookError | chaptersError }>
-                    <TextEditor value={ chapterContent?.text }
-                                language={language}
-                                onSave={(c) => onEditorSave(c)}/>
+                <DataContainer error={chapterError | chapterContentError | bookError | chaptersError}>
+                    <TextEditor value={chapterContent?.text}
+                        language={language}
+                        onSave={onEditorSave} />
                 </DataContainer>
             </Spin>
         </>);

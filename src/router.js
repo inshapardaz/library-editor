@@ -44,6 +44,7 @@ import BookPagesUploadPage from "./pages/books/pages/upload";
 import ArticlePage from "./pages/articles/article";
 import BookProcessPage from "./pages/books/process";
 import BooksUpload from "./pages/books/upload";
+import EditorPage from "./pages/editor";
 
 const Router = () => {
     return (
@@ -194,6 +195,7 @@ const Router = () => {
                             element={<ArticlePage />}
                         />
                     </Route>
+                    <Route path="/editor" element={<EditorPage />} />
                     <Route path="/500" element={<Error500 />} />
                     <Route path="/403" element={<Error403 />} />
                     <Route path="*" element={<Error404 />} />
