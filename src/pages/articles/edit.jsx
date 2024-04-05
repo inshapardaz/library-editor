@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 // 3rd party libraries
 
-import { Button, Col, Form, Input, Row, App, Space, Spin, Select, Upload, Switch, Tabs } from "antd";
-import { FaFeatherAlt, FaInfoCircle, FaPenFancy, FaTimesCircle } from "react-icons/fa";
+import { Button, Col, Form, Input, Row, App, Space, Spin, Select, Upload, Switch } from "antd";
+import { FaPenFancy } from "react-icons/fa";
 import ImgCrop from "antd-img-crop";
 
 // Local imports
@@ -18,7 +18,6 @@ import helpers from "../../helpers";
 import AuthorsSelect from "../../components/author/authorsSelect";
 import CategoriesSelect from "../../components/categories/categoriesSelect";
 import EditingStatusSelect from "../../components/editingStatusSelect";
-import ArticleContentEditor from "../../components/articles/articleContentEditor";
 
 // ----------------------------------------------
 const { Dragger } = Upload;
@@ -30,8 +29,6 @@ const buttonItemLayout = { wrapperCol: { span: 14, offset: 4 } };
 const ArticleEditPage = () => {
     const { message } = App.useApp();
     const navigate = useNavigate();
-    const [searchParams] = useSearchParams();
-    const section = searchParams.get("section");
     const { t } = useTranslation();
     const { libraryId, articleId } = useParams();
     const [addArticle, { isLoading: isAdding }] = useAddArticleMutation();
@@ -97,16 +94,12 @@ const ArticleEditPage = () => {
 
     const title = article ? article.title : t("article.actions.add.label");
 
-    const tabs = [
-        {
-            key: "info",
-            label: (
-                <Space gutter={2}>
-                    <FaInfoCircle />
-                    {t("article.information.label")}
-                </Space>
-            ),
-            children: (
+    return (
+        <>
+            <PageHeader title={title}
+                icon={<FaPenFancy style={{ width: 36, height: 36 }} />}
+            />
+            <ContentsContainer>
                 <Row gutter={16}>
                     <Col l={4} md={6} xs={24}>
                         <ImgCrop modalTitle={t("actions.resizeImage")}>
@@ -181,7 +174,7 @@ const ArticleEditPage = () => {
                                         <Button type="primary" htmlType="submit" size="large" block>
                                             {t("actions.save")}
                                         </Button>
-                                        <Button size="large" onClick={() => navigate(`/libraries/${libraryId}/articles/${articleId}/`)} block>
+                                        <Button size="large" onClick={() => navigate(-1)} block>
                                             {t("actions.cancel")}
                                         </Button>
                                     </Space>
@@ -190,48 +183,6 @@ const ArticleEditPage = () => {
                         </Spin>
                     </Col>
                 </Row>
-            ),
-    }];
-
-    if (article && article.links.add_content) {
-        tabs.push({
-            key: "contents",
-            label: (
-                <Space gutter={2}>
-                    <FaFeatherAlt />
-                    {t("article.contents.label")}
-                </Space>
-            ),
-            children: (
-                <ArticleContentEditor libraryId={libraryId} article={article} t={t} />
-            ),
-        });
-    }
-
-    const onChange = (key) => {
-        navigate(`/libraries/${libraryId}/articles/${articleId}/edit?section=${key}`);
-    };
-
-    return (
-        <>
-            <PageHeader title={title}
-                icon={<FaPenFancy style={{ width: 36, height: 36 }} />}
-                actions={[
-                    <Button.Group>
-                        <Button
-                            onClick={() => navigate(`/libraries/${libraryId}/articles/${articleId}/`)}
-                        >
-                            <FaTimesCircle />
-                        </Button>
-                    </Button.Group>
-                ]}
-            />
-            <ContentsContainer>
-                <Tabs
-                    defaultActiveKey={section}
-                    items={tabs}
-                    onChange={onChange}
-                />
             </ContentsContainer>
         </>
     );

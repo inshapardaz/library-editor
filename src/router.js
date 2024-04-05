@@ -37,6 +37,7 @@ import BookReader from "./pages/books/reader";
 import ChapterEditor from "./pages/books/chapters/edit";
 import ArticleHomePage from "./pages/articles";
 import ArticleEditPage from "./pages/articles/edit";
+import ArticleContentEditPage from "./pages/articles/contentEdit";
 import LayoutWithHeader from "./components/layout/layoutWithHeader";
 import LayoutWithFooter from "./components/layout/layoutWithFooter";
 import SecurePage from "./components/layout/securePage";
@@ -193,6 +194,14 @@ const Router = () => {
                         <Route
                             path="/libraries/:libraryId/articles/:articleId"
                             element={<ArticlePage />}
+                        />
+                        <Route
+                            path="/libraries/:libraryId/articles/:articleId/contents/:language"
+                            element={<ArticlePage />}
+                        />
+                        <Route
+                            path="/libraries/:libraryId/articles/:articleId/contents/:language/edit"
+                            element={<ArticleContentEditPage />}
                         />
                     </Route>
                     <Route path="/editor" element={<EditorPage />} />

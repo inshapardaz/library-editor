@@ -1,4 +1,4 @@
-import { Select } from "antd";
+import { Select, Space } from "antd";
 import { FaAlignJustify } from "react-icons/fa";
 import { PiTextColumnsBold, PiFileTextLight } from "react-icons/pi";
 
@@ -9,8 +9,8 @@ const layouts = [{
     "value": "normal",
     "icon": <PiFileTextLight />
 }, {
-    "key" : "singleColumnPoetry",
-    "value" : "singleColumnPoetry",
+    "key": "singleColumnPoetry",
+    "value": "singleColumnPoetry",
     "icon": <FaAlignJustify />
 }, {
     "key": "twoColumnPoetry",
@@ -24,15 +24,15 @@ const ArticleLayoutSelect = ({ value, onChange, placeholder, t, disabled = false
         onChange={val => onChange(val)}
         style={style}
         disabled={disabled}>
-            {layouts.map(item => (
-            <Option key={item.key} value={item.value} >
-              <div>
-                {item.icon}
-                {t(`layouts.${item.key}.label`)}
-              </div>
+        {layouts.map(item => (
+            <Option key={item.key} value={item.value}  >
+                <Space>
+                    {item.icon}
+                    {t(`layouts.${item.key}.label`)}
+                </Space>
             </Option>
-          ))}
-        </Select>);
+        ))}
+    </Select>);
 
 }
 
