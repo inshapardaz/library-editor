@@ -126,7 +126,7 @@ const PageEditPage = () => {
                     message.error(t("book.actions.add.error"))
                 });;
         }
-    }, [addBookPage, bookId, libraryId, message, page, t, updateBookPage, uploadImage]);
+    }, [addBookPage, bookId, libraryId, message, navigate, page, t, updateBookPage, uploadImage]);
 
     useEffect(() => {
         setText(page?.text || null);
