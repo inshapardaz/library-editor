@@ -613,6 +613,9 @@ const ur = {
                 error_one: "صفحہ نفویض نہیں کیا جا سکا۔",
                 error_other: "{{count}} صفحات تفویض نہیں کیے جا سکے۔",
             },
+            uploadImage: {
+                label: "عکس اپ لوڈ",
+            },
             uploadPage: {
                 label: "صفحہ اپ لوڈ",
                 title: "صفحہ اپ لوڈ کریں",

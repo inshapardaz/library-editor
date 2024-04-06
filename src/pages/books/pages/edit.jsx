@@ -4,7 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 // 3rd party libraries
 import { useLocalStorage } from "usehooks-ts";
-import { App, Button, Col, Row, Upload, Tooltip, Breadcrumb } from "antd";
+import { App, Button, Col, Row, Tooltip, Breadcrumb } from "antd";
 import {
     FaAngleLeft,
     FaAngleRight,
@@ -20,7 +20,6 @@ import {
     MdImage,
 } from "react-icons/md";
 
-
 // Local imports
 import {
     useGetBookQuery,
@@ -33,16 +32,13 @@ import PageHeader from "../../../components/layout/pageHeader";
 import DataContainer from "../../../components/layout/dataContainer";
 import EditingStatusIcon from "../../../components/editingStatusIcon";
 import { selectedLanguage } from '../../../features/ui/uiSlice'
-import helpers from "../../../helpers";
 import PageStatus from "../../../models/pageStatus";
 import PageOcrButton from "../../../components/books/pages/pageOcrButton";
 import { useSelector } from "react-redux";
 import TextEditor from "../../../components/textEditor";
 import PageAssignButton from "../../../components/books/pages/pageAssignButton";
 import PageStatusButton from "../../../components/books/pages/pageStatusButton";
-
-// -----------------------------------------
-const { Dragger } = Upload;
+import PageImage from "../../../components/books/pages/pageImage";
 
 // -----------------------------------------
 
@@ -54,7 +50,6 @@ const PageEditPage = () => {
 
     const [fullScreen, setFullScreen] = useState(false);
     const [showImage, setShowImage] = useLocalStorage("page-editor-show-image", true);
-    const [previewImage, setPreviewImage] = useState(null);
     const [fileList, setFileList] = useState();
     const [text, setText] = useState(null);
     const { libraryId, bookId, pageNumber } = useParams();
@@ -75,9 +70,7 @@ const PageEditPage = () => {
     const [updateBookPageImage, { isLoading: isUpdatingImage }] = useUpdateBookPageImageMutation();
 
     const uploadImage = useCallback((p) => {
-        console.log('upload image called', fileList, fileList[0])
         if (fileList && fileList[0]) {
-            console.log('saving image', p.links)
             return updateBookPageImage({
                 page: p,
                 payload: fileList[0],
@@ -149,31 +142,6 @@ const PageEditPage = () => {
         }
     };
 
-    const onImageChange = (file) => {
-        const isImage = ["image/png", "image/jpeg"].includes(file.type);
-        if (!isImage) {
-            message.error(t("errors.imageRequired"));
-            return;
-        }
-        setFileList([file]);
-        const fileReader = new FileReader();
-        fileReader.addEventListener("load", () => {
-            setPreviewImage(fileReader.result);
-        });
-        fileReader.readAsDataURL(file);
-        return false;
-    };
-
-    const getCoverSrc = () => {
-        if (previewImage) {
-            return previewImage;
-        } else if (page && page.links.image) {
-            return page.links.image;
-        }
-
-        return helpers.defaultPageImage;
-    };
-
     const actions = [
         <Button.Group>
             {showCompleteButton && (
@@ -241,7 +209,7 @@ const PageEditPage = () => {
             </Button>
         </Button.Group>
     );
-    console.log('text', text)
+
     return (
         <>
             <PageHeader
@@ -274,15 +242,7 @@ const PageEditPage = () => {
                     </Col>
                     {showImage && (
                         <Col span={12}>
-                            <Dragger fileList={fileList} beforeUpload={onImageChange} showUploadList={false}>
-                                <img
-                                    src={getCoverSrc()}
-                                    height="300"
-                                    className="ant-upload-drag-icon"
-                                    alt={page && page.title}
-                                    onError={helpers.setDefaultPageImage}
-                                />
-                            </Dragger>
+                            <PageImage page={page} t={t} fileList={fileList} setFileList={setFileList} />
                         </Col>
                     )}
                 </Row>

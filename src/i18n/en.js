@@ -617,6 +617,9 @@ const en = {
                 error_one: "Error assigning page.",
                 error_other: "Error assigning {{count}} pages.",
             },
+            uploadImage: {
+                label: "Upload image",
+            },
             uploadPage: {
                 label: "Upload new page",
                 title: "Upload page",
