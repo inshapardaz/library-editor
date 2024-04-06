@@ -11,7 +11,7 @@ import { useDeleteCategoryMutation } from "../../features/api/categoriesSlice";
 const { confirm } = Modal;
 
 // ------------------------------------------------------
-export default function CategoryDeleteButton({ children, libraryId, category, t, type,  onDeleted = () => {}, danger = false, block = false, size= "middle" }) {
+export default function CategoryDeleteButton({ children, libraryId, category, t, type, onDeleted = () => { }, danger = false, block = false, size = "middle" }) {
     const { message } = App.useApp();
     const [deleteCategory, { isLoading: isDeleting }] = useDeleteCategoryMutation();
 
@@ -19,12 +19,12 @@ export default function CategoryDeleteButton({ children, libraryId, category, t,
         confirm({
             title: t("category.actions.delete.title"),
             icon: <ExclamationCircleFilled />,
-            content: t("category.actions.delete.message", { name : category.name }),
-            okButtonProps: { disabled:  isDeleting },
-            cancelButtonProps: { disabled:  isDeleting },
-            closable: { isDeleting },
+            content: t("category.actions.delete.message", { name: category.name }),
+            okButtonProps: { disabled: isDeleting },
+            cancelButtonProps: { disabled: isDeleting },
+            closable: isDeleting,
             onOk() {
-                deleteCategory({ libraryId, categoryId: category.id })
+                return deleteCategory({ libraryId, categoryId: category.id })
                     .unwrap()
                     .then(() => message.success(t("category.actions.delete.success")))
                     .then(() => onDeleted())
@@ -33,5 +33,5 @@ export default function CategoryDeleteButton({ children, libraryId, category, t,
         });
     };
 
-    return (<Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash/>}>{children}</Button>);
+    return (<Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash />}>{children}</Button>);
 }

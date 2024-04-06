@@ -11,7 +11,7 @@ import { useDeleteArticleMutation } from "../../features/api/articlesSlice";
 const { confirm } = Modal;
 
 // ------------------------------------------------------
-export default function ArticleDeleteButton({ children, libraryId, article, t, type,  onDeleted = () => {}, danger = false, block = false, size= "middle" }) {
+export default function ArticleDeleteButton({ children, libraryId, article, t, type, onDeleted = () => { }, danger = false, block = false, size = "middle" }) {
     const { message } = App.useApp();
     const [deleteArticle, { isLoading: isDeleting }] = useDeleteArticleMutation();
 
@@ -19,12 +19,12 @@ export default function ArticleDeleteButton({ children, libraryId, article, t, t
         confirm({
             title: t("article.actions.delete.title"),
             icon: <ExclamationCircleFilled />,
-            content: t("article.actions.delete.message", { title : article.title }),
-            okButtonProps: { disabled:  isDeleting },
-            cancelButtonProps: { disabled:  isDeleting },
-            closable: { isDeleting },
+            content: t("article.actions.delete.message", { title: article.title }),
+            okButtonProps: { disabled: isDeleting },
+            cancelButtonProps: { disabled: isDeleting },
+            closable: isDeleting,
             onOk() {
-                deleteArticle({ libraryId, articleId: article.id })
+                return deleteArticle({ libraryId, articleId: article.id })
                     .unwrap()
                     .then(() => message.success(t("article.actions.delete.success")))
                     .then(() => onDeleted())
@@ -33,5 +33,5 @@ export default function ArticleDeleteButton({ children, libraryId, article, t, t
         });
     };
 
-    return (<Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash/>}>{children}</Button>);
+    return (<Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash />}>{children}</Button>);
 }

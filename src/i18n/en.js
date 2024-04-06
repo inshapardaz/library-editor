@@ -439,6 +439,13 @@ const en = {
                 success: "Book image set successfully",
                 error: "Unable to set book image",
             },
+            publish: {
+                title: "Publish Book",
+                message:
+                    "Are you sure you want to publish book '{{title}}'? It will merge text in all pages and save into chapters. It will overwrite all chapter contents.",
+                success: "Book published successfully.",
+                error: "Error publishing book.",
+            },
         },
         errors: {
             loading: {

@@ -11,7 +11,7 @@ import { useDeletePeriodicalMutation } from "../../features/api/periodicalsSlice
 const { confirm } = Modal;
 
 // ------------------------------------------------------
-export default function PeriodicalDeleteButton({ children, libraryId, periodical, t, type,  onDeleted = () => {}, danger = false, block = false, size= "middle" }) {
+export default function PeriodicalDeleteButton({ children, libraryId, periodical, t, type, onDeleted = () => { }, danger = false, block = false, size = "middle" }) {
     const { message } = App.useApp();
     const [deletePeriodical, { isLoading: isDeleting }] = useDeletePeriodicalMutation();
 
@@ -19,12 +19,12 @@ export default function PeriodicalDeleteButton({ children, libraryId, periodical
         confirm({
             title: t("periodical.actions.delete.title"),
             icon: <ExclamationCircleFilled />,
-            content: t("periodical.actions.delete.message", { name : periodical.name }),
-            okButtonProps: { disabled:  isDeleting },
-            cancelButtonProps: { disabled:  isDeleting },
-            closable: { isDeleting },
+            content: t("periodical.actions.delete.message", { name: periodical.name }),
+            okButtonProps: { disabled: isDeleting },
+            cancelButtonProps: { disabled: isDeleting },
+            closable: isDeleting,
             onOk() {
-                deletePeriodical({ libraryId, periodicalId: periodical.id })
+                return deletePeriodical({ libraryId, periodicalId: periodical.id })
                     .unwrap()
                     .then(() => message.success(t("periodical.actions.delete.success")))
                     .then(() => onDeleted())
@@ -33,5 +33,5 @@ export default function PeriodicalDeleteButton({ children, libraryId, periodical
         });
     };
 
-    return (<Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash/>}>{children}</Button>);
+    return (<Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash />}>{children}</Button>);
 }

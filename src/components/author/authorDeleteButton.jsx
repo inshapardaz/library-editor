@@ -11,7 +11,7 @@ import { useDeleteAuthorMutation } from "../../features/api/authorsSlice";
 const { confirm } = Modal;
 
 // ------------------------------------------------------
-export default function AuthorDeleteButton({ children, libraryId, author, t, type,  onDeleted = () => {}, danger = false, block = false, size= "middle" }) {
+export default function AuthorDeleteButton({ children, libraryId, author, t, type, onDeleted = () => { }, danger = false, block = false, size = "middle" }) {
     const { message } = App.useApp();
     const [deleteAuthor, { isLoading: isDeleting }] = useDeleteAuthorMutation();
 
@@ -19,12 +19,12 @@ export default function AuthorDeleteButton({ children, libraryId, author, t, typ
         confirm({
             title: t("author.actions.delete.title"),
             icon: <ExclamationCircleFilled />,
-            content: t("author.actions.delete.message", { name : author.name }),
-            okButtonProps: { disabled:  isDeleting },
-            cancelButtonProps: { disabled:  isDeleting },
-            closable: { isDeleting },
+            content: t("author.actions.delete.message", { name: author.name }),
+            okButtonProps: { disabled: isDeleting },
+            cancelButtonProps: { disabled: isDeleting },
+            closable: isDeleting,
             onOk() {
-                deleteAuthor({ libraryId, authorId: author.id })
+                return deleteAuthor({ libraryId, authorId: author.id })
                     .unwrap()
                     .then(() => message.success(t("author.actions.delete.success")))
                     .then(() => onDeleted())
@@ -33,5 +33,5 @@ export default function AuthorDeleteButton({ children, libraryId, author, t, typ
         });
     };
 
-    return (<Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash/>}>{children}</Button>);
+    return (<Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash />}>{children}</Button>);
 }

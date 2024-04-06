@@ -24,7 +24,7 @@ export default function FileDeleteButton({ content, t, type }) {
             okButtonProps: { loading: isDeleting },
             okType: "danger",
             cancelButtonProps: { disabled: isDeleting },
-            closable: { isDeleting },
+            closable: isDeleting,
             onOk() {
                 if (content && content.links && content.links.delete) {
                     return deleteBookContent({ content }).unwrap()

@@ -26,7 +26,7 @@ export default function ChapterDeleteButton({ chapters = [], t, type }) {
             okButtonProps: { loading: isDeleting },
             okType: "danger",
             cancelButtonProps: { disabled: isDeleting },
-            closable: { isDeleting },
+            closable: isDeleting,
             onOk() {
                 const promises = chapters
                     .map((chapter) => {
@@ -36,7 +36,7 @@ export default function ChapterDeleteButton({ chapters = [], t, type }) {
                         return Promise.resolve();
                     });
 
-                Promise.all(promises)
+                return Promise.all(promises)
                     .then(() =>
                         message.success(
                             t("chapter.actions.delete.success", { count })

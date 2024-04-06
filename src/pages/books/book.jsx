@@ -19,6 +19,7 @@ import Error from "../../components/common/error";
 import Loading from "../../components/common/loader";
 import BookDeleteButton from "../../components/books/bookDeleteButton";
 import AuthorAvatar from "../../components/author/authorAvatar";
+import BookPublishButton from "../../components/books/bookPublishButton";
 // ----------------------------------------------
 
 const BookPage = () => {
@@ -125,6 +126,15 @@ const BookPage = () => {
                         >
                             {t("actions.edit")}
                         </Button>
+                        <BookPublishButton
+                            block
+                            size="large"
+                            libraryId={libraryId}
+                            book={book}
+                            t={t}
+                        >
+                            {t("actions.delete")}
+                        </BookPublishButton>
                         <BookDeleteButton
                             block
                             size="large"

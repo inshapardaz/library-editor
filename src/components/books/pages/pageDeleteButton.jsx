@@ -15,7 +15,7 @@ export default function PageDeleteButton({
     pages = [],
     t,
     type,
-    onDeleted = () => {},
+    onDeleted = () => { },
 }) {
     const { message } = App.useApp();
     const [deleteBookPage, { isLoading: isDeleting }] =
@@ -41,7 +41,7 @@ export default function PageDeleteButton({
                         return Promise.resolve();
                     });
 
-                Promise.all(promises)
+                return Promise.all(promises)
                     .then(() =>
                         message.success(t("page.actions.delete.success"))
                     )

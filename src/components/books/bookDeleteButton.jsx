@@ -11,7 +11,7 @@ import { useDeleteBookMutation } from "../../features/api/booksSlice";
 const { confirm } = Modal;
 
 // ------------------------------------------------------
-export default function BookDeleteButton({ children, libraryId, book, t, type,  onDeleted = () => {}, danger = false, block = false, size= "middle" }) {
+export default function BookDeleteButton({ children, libraryId, book, t, type, onDeleted = () => { }, danger = false, block = false, size = "middle" }) {
     const { message } = App.useApp();
     const [deleteBook, { isLoading: isDeleting }] = useDeleteBookMutation();
 
@@ -19,12 +19,12 @@ export default function BookDeleteButton({ children, libraryId, book, t, type,  
         confirm({
             title: t("book.actions.delete.title"),
             icon: <ExclamationCircleFilled />,
-            content: t("book.actions.delete.message", { title : book.title }),
-            okButtonProps: { disabled:  isDeleting },
-            cancelButtonProps: { disabled:  isDeleting },
-            closable: { isDeleting },
+            content: t("book.actions.delete.message", { title: book.title }),
+            okButtonProps: { disabled: isDeleting },
+            cancelButtonProps: { disabled: isDeleting },
+            closable: isDeleting,
             onOk() {
-                deleteBook({ libraryId, bookId: book.id })
+                return deleteBook({ libraryId, bookId: book.id })
                     .unwrap()
                     .then(() => message.success(t("book.actions.delete.success")))
                     .then(() => onDeleted())
@@ -33,5 +33,5 @@ export default function BookDeleteButton({ children, libraryId, book, t, type,  
         });
     };
 
-    return (<Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash/>}>{children}</Button>);
+    return (<Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash />}>{children}</Button>);
 }

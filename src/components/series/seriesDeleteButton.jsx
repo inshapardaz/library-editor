@@ -22,9 +22,9 @@ export default function SeriesDeleteButton({ children, libraryId, series, t, typ
             content: t("series.actions.delete.message", { name: series.name }),
             okButtonProps: { disabled: isDeleting },
             cancelButtonProps: { disabled: isDeleting },
-            closable: { isDeleting },
+            closable: isDeleting,
             onOk() {
-                deleteSeries({ libraryId, seriesId: series.id })
+                return deleteSeries({ libraryId, seriesId: series.id })
                     .unwrap()
                     .then(() => message.success(t("series.actions.delete.success")))
                     .then(() => onDeleted())

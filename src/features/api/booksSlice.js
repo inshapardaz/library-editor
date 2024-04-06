@@ -1,16 +1,17 @@
-import { createApi } from '@reduxjs/toolkit/query/react'
+import { createApi } from "@reduxjs/toolkit/query/react";
 
-import { axiosBaseQuery } from '../../helpers/axios.helpers'
+import { axiosBaseQuery } from "../../helpers/axios.helpers";
 
-import { parseResponse, removeLinks } from '../../helpers/parseResponse';
+import { parseResponse, removeLinks } from "../../helpers/parseResponse";
 
 // ----------------------------------------------
 export const booksApi = createApi({
-    reducerPath: 'books',
+    reducerPath: "books",
     baseQuery: axiosBaseQuery({ baseUrl: process.env.REACT_APP_API_URL }),
     endpoints: (builder) => ({
         getBooks: builder.query({
-            query: ({ libraryId,
+            query: ({
+                libraryId,
                 query = null,
                 author = null,
                 categories = null,
@@ -21,8 +22,9 @@ export const booksApi = createApi({
                 read = null,
                 status = null,
                 pageNumber = 1,
-                pageSize = 12 }) => {
-                let queryVal = query ? `&query=${query}` : '';
+                pageSize = 12,
+            }) => {
+                let queryVal = query ? `&query=${query}` : "";
                 if (author) {
                     queryVal += `&authorId=${author}`;
                 }
@@ -36,7 +38,7 @@ export const booksApi = createApi({
                     queryVal += `&sortBy=${sortBy}`;
                 }
                 if (favorite) {
-                    queryVal += '&favorite=true';
+                    queryVal += "&favorite=true";
                 }
                 if (read !== undefined && read !== null) {
                     queryVal += `&read=${read}`;
@@ -47,13 +49,17 @@ export const booksApi = createApi({
                 if (sortDirection) {
                     queryVal += `&sortDirection=${sortDirection}`;
                 }
-                return ({ url: `/libraries/${libraryId}/books?pageNumber=${pageNumber}&pageSize=${pageSize}${queryVal}`, method: 'get' })
+                return {
+                    url: `/libraries/${libraryId}/books?pageNumber=${pageNumber}&pageSize=${pageSize}${queryVal}`,
+                    method: "get",
+                };
             },
             transformResponse: (response) => parseResponse(response),
-            providesTags: [ 'Books' ]
+            providesTags: ["Books"],
         }),
         getMyBooks: builder.query({
-            query: ({ libraryId,
+            query: ({
+                libraryId,
                 query = null,
                 author = null,
                 categories = null,
@@ -64,8 +70,9 @@ export const booksApi = createApi({
                 read = null,
                 status = null,
                 pageNumber = 1,
-                pageSize = 12 }) => {
-                let queryVal = query ? `&query=${query}` : '';
+                pageSize = 12,
+            }) => {
+                let queryVal = query ? `&query=${query}` : "";
                 if (author) {
                     queryVal += `&authorId=${author}`;
                 }
@@ -79,7 +86,7 @@ export const booksApi = createApi({
                     queryVal += `&sortBy=${sortBy}`;
                 }
                 if (favorite) {
-                    queryVal += '&favorite=true';
+                    queryVal += "&favorite=true";
                 }
                 if (read !== undefined && read !== null) {
                     queryVal += `&read=${read}`;
@@ -90,207 +97,246 @@ export const booksApi = createApi({
                 if (sortDirection) {
                     queryVal += `&sortDirection=${sortDirection}`;
                 }
-                return ({ url: `/libraries/${libraryId}/my/books?pageNumber=${pageNumber}&pageSize=${pageSize}${queryVal}`, method: 'get' })
+                return {
+                    url: `/libraries/${libraryId}/my/books?pageNumber=${pageNumber}&pageSize=${pageSize}${queryVal}`,
+                    method: "get",
+                };
             },
             transformResponse: (response) => parseResponse(response),
-            providesTags: [ 'Books' ]
+            providesTags: ["Books"],
         }),
         getBook: builder.query({
-            query: ({ libraryId, bookId }) => ({ url: `/libraries/${libraryId}/books/${bookId}`, method: 'get' }),
+            query: ({ libraryId, bookId }) => ({
+                url: `/libraries/${libraryId}/books/${bookId}`,
+                method: "get",
+            }),
             transformResponse: (response) => parseResponse(response),
-            providesTags: [ 'Book' ]
+            providesTags: ["Book"],
         }),
         getBookChapters: builder.query({
-            query: ({ libraryId, bookId }) => ({ url: `/libraries/${libraryId}/books/${bookId}/chapters`, method: 'get' }),
+            query: ({ libraryId, bookId }) => ({
+                url: `/libraries/${libraryId}/books/${bookId}/chapters`,
+                method: "get",
+            }),
             transformResponse: (response) => parseResponse(response),
-            providesTags: [ 'Chapters' ]
+            providesTags: ["Chapters"],
         }),
         getChapter: builder.query({
-            query: ({ libraryId, bookId, chapterNumber }) => ({ url: `/libraries/${libraryId}/books/${bookId}/chapters/${chapterNumber}`, method: 'get' }),
+            query: ({ libraryId, bookId, chapterNumber }) => ({
+                url: `/libraries/${libraryId}/books/${bookId}/chapters/${chapterNumber}`,
+                method: "get",
+            }),
             transformResponse: (response) => parseResponse(response),
-            providesTags: [ 'Chapters' ]
+            providesTags: ["Chapters"],
         }),
         getChapterContents: builder.query({
             query: ({ libraryId, bookId, chapterNumber, language }) => ({
                 url: `/libraries/${libraryId}/books/${bookId}/chapters/${chapterNumber}/contents?language=${language}`,
-                method: 'get',
+                method: "get",
                 headers: {
-                    'Accept-Language': language || 'en-US'
-                }
+                    "Accept-Language": language || "en-US",
+                },
             }),
             transformResponse: (response) => parseResponse(response),
-            providesTags: [ 'ChapterContents' ]
+            providesTags: ["ChapterContents"],
         }),
         addBook: builder.mutation({
             query: ({ libraryId, payload }) => ({
                 url: `/libraries/${libraryId}/books`,
-                method: 'POST',
-                data: removeLinks(payload)
+                method: "POST",
+                data: removeLinks(payload),
             }),
             transformResponse: (response) => parseResponse(response),
-            invalidatesTags: [ 'Books' ]
+            invalidatesTags: ["Books"],
         }),
         updateBook: builder.mutation({
             query: ({ libraryId, bookId, payload }) => ({
                 url: `/libraries/${libraryId}/books/${bookId}`,
-                method: 'PUT',
-                data: removeLinks(payload)
+                method: "PUT",
+                data: removeLinks(payload),
             }),
             transformResponse: (response) => parseResponse(response),
-            invalidatesTags: [ 'Books', 'Book' ]
+            invalidatesTags: ["Books", "Book"],
         }),
         deleteBook: builder.mutation({
             query: ({ libraryId, bookId }) => ({
                 url: `/libraries/${libraryId}/books/${bookId}`,
-                method: 'DELETE'
+                method: "DELETE",
             }),
-            invalidatesTags: [ 'Books', 'Book' ]
+            invalidatesTags: ["Books", "Book"],
+        }),
+        publishBook: builder.mutation({
+            query: ({ book }) => ({
+                url: book.links.publish,
+                method: "POST",
+            }),
+            invalidatesTags: ["Books", "Book"],
         }),
         updateBookImage: builder.mutation({
             query: ({ libraryId, bookId, payload }) => {
                 const formData = new FormData();
-                formData.append('file', payload, payload.fileName);
-                return ({
+                formData.append("file", payload, payload.fileName);
+                return {
                     url: `/libraries/${libraryId}/books/${bookId}/image`,
-                    method: 'PUT',
+                    method: "PUT",
                     data: formData,
                     formData: true,
                     headers: {
-                        'content-type': 'multipart/form-data'
-                    }
-                });
+                        "content-type": "multipart/form-data",
+                    },
+                };
             },
-            invalidatesTags: [ 'Book' ]
+            invalidatesTags: ["Book"],
         }),
         addChapter: builder.mutation({
             query: ({ libraryId, bookId, payload }) => ({
                 url: `/libraries/${libraryId}/books/${bookId}/chapters`,
-                method: 'POST',
-                data: removeLinks(payload)
+                method: "POST",
+                data: removeLinks(payload),
             }),
             transformResponse: (response) => parseResponse(response),
-            invalidatesTags: [ 'Chapters' ]
+            invalidatesTags: ["Chapters"],
         }),
         updateChapter: builder.mutation({
             query: ({ chapter }) => ({
                 url: chapter.links.update,
-                method: 'PUT',
-                data: removeLinks(chapter)
+                method: "PUT",
+                data: removeLinks(chapter),
             }),
             transformResponse: (response) => parseResponse(response),
-            invalidatesTags: [ 'Chapters' ]
+            invalidatesTags: ["Chapters"],
         }),
         deleteChapter: builder.mutation({
             query: ({ chapter }) => ({
                 url: chapter.links.delete,
-                method: 'DELETE'
+                method: "DELETE",
             }),
-            invalidatesTags: [ 'Chapters' ]
+            invalidatesTags: ["Chapters"],
         }),
         assignChapter: builder.mutation({
             query: ({ chapter, payload }) => ({
                 url: chapter.links.assign,
-                method: 'POST',
-                data: removeLinks(payload)
+                method: "POST",
+                data: removeLinks(payload),
             }),
-            invalidatesTags: [ 'Chapters' ]
+            invalidatesTags: ["Chapters"],
         }),
         updateChapterSequence: builder.mutation({
             query: ({ libraryId, bookId, payload }) => ({
                 url: `/libraries/${libraryId}/books/${bookId}/chapters/sequence`,
-                method: 'POST',
-                data: removeLinks(payload)
+                method: "POST",
+                data: removeLinks(payload),
             }),
-            invalidatesTags: [ 'Chapters' ]
+            invalidatesTags: ["Chapters"],
         }),
         getBookPages: builder.query({
-            query: ({ libraryId, bookId, status = 'Typing', assignment = null, reviewerAssignmentFilter = null, assignmentTo = null, pageNumber = 1, pageSize = 12 }) => {
-                let queryVal = `?pageNumber=${pageNumber}&pageSize=${pageSize}${status ? `&status=${status}` : ''}${assignment ? `&assignmentFilter=${assignment}` : ''}${reviewerAssignmentFilter ? `&reviewerAssignmentFilter=${reviewerAssignmentFilter}` : ''}`;
-                return ({ url: `/libraries/${libraryId}/books/${bookId}/pages${queryVal}` })
+            query: ({
+                libraryId,
+                bookId,
+                status = "Typing",
+                assignment = null,
+                reviewerAssignmentFilter = null,
+                assignmentTo = null,
+                pageNumber = 1,
+                pageSize = 12,
+            }) => {
+                let queryVal = `?pageNumber=${pageNumber}&pageSize=${pageSize}${
+                    status ? `&status=${status}` : ""
+                }${assignment ? `&assignmentFilter=${assignment}` : ""}${
+                    reviewerAssignmentFilter
+                        ? `&reviewerAssignmentFilter=${reviewerAssignmentFilter}`
+                        : ""
+                }`;
+                return {
+                    url: `/libraries/${libraryId}/books/${bookId}/pages${queryVal}`,
+                };
             },
             transformResponse: (response) => parseResponse(response),
-            providesTags: [ 'BookPages' ]
+            providesTags: ["BookPages"],
         }),
         getBookPage: builder.query({
             query: ({ libraryId, bookId, pageNumber }) => ({
                 url: `/libraries/${libraryId}/books/${bookId}/pages/${pageNumber}`,
-                method: 'GET',
+                method: "GET",
             }),
             transformResponse: (response) => parseResponse(response),
-            providesTags: [ 'BookPages' ]
+            providesTags: ["BookPages"],
         }),
         getBookPageContents: builder.query({
             query: ({ libraryId, bookId, pageNumber }) => ({
                 url: `/libraries/${libraryId}/books/${bookId}/pages/${pageNumber}`,
-                method: 'GET',
+                method: "GET",
             }),
             transformResponse: (response) => parseResponse(response),
-            providesTags: [ 'BookPages' ]
+            providesTags: ["BookPages"],
         }),
         addBookPage: builder.mutation({
             query: ({ libraryId, bookId, payload }) => ({
                 url: `/libraries/${libraryId}/books/${bookId}/pages`,
-                method: 'POST',
-                data: removeLinks(payload)
+                method: "POST",
+                data: removeLinks(payload),
             }),
             transformResponse: (response) => parseResponse(response),
-            invalidatesTags: [ 'BookPages' ]
+            invalidatesTags: ["BookPages"],
         }),
         updateBookPage: builder.mutation({
             query: ({ page }) => ({
                 url: page.links.update,
-                method: 'PUT',
-                data: removeLinks(page)
+                method: "PUT",
+                data: removeLinks(page),
             }),
             transformResponse: (response) => parseResponse(response),
-            invalidatesTags: [ 'BookPages' ]
+            invalidatesTags: ["BookPages"],
         }),
         deleteBookPage: builder.mutation({
             query: ({ page }) => ({
                 url: page.links.delete,
-                method: 'DELETE'
+                method: "DELETE",
             }),
-            invalidatesTags: [ 'BookPages' ]
+            invalidatesTags: ["BookPages"],
         }),
         assignBookPage: builder.mutation({
             query: ({ page, payload }) => ({
-                url: payload.accountId === "me" ?  page.links.assign_to_me :  page.links.assign,
-                method: 'POST',
-                data: removeLinks(payload)
+                url:
+                    payload.accountId === "me"
+                        ? page.links.assign_to_me
+                        : page.links.assign,
+                method: "POST",
+                data: removeLinks(payload),
             }),
-            invalidatesTags: [ 'BookPages' ]
+            invalidatesTags: ["BookPages"],
         }),
         ocrBookPage: builder.mutation({
             query: ({ page, key }) => ({
                 url: page.links.ocr,
-                method: 'POST',
-                data: ({ key: key })
+                method: "POST",
+                data: { key: key },
             }),
-            invalidatesTags: [ 'BookPages' ]
+            invalidatesTags: ["BookPages"],
         }),
         updateBookPageImage: builder.mutation({
             query: ({ page, payload }) => {
                 const formData = new FormData();
-                formData.append('file', payload, payload.fileName);
-                return ({
+                formData.append("file", payload, payload.fileName);
+                return {
                     url: page.links.image_upload,
-                    method: 'PUT',
+                    method: "PUT",
                     data: formData,
                     formData: true,
                     headers: {
-                        'content-type': 'multipart/form-data'
-                    }
-                });
+                        "content-type": "multipart/form-data",
+                    },
+                };
             },
-            invalidatesTags: [ 'BookPages' ]
+            invalidatesTags: ["BookPages"],
         }),
         updateBookPageSequence: builder.mutation({
             query: ({ page, payload }) => ({
                 url: page.links.page_sequence,
-                method: 'POST',
-                data: removeLinks(payload)
+                method: "POST",
+                data: removeLinks(payload),
             }),
-            invalidatesTags: [ 'BookPages' ]
+            invalidatesTags: ["BookPages"],
         }),
         createBookPageWithImage: builder.mutation({
             query: ({ book, fileList }) => {
@@ -298,61 +344,61 @@ export const booksApi = createApi({
                 fileList.forEach((file, index) => {
                     formData.append(index, file, `${index}.jpg`);
                 });
-                return ({
+                return {
                     url: book.links.create_multiple,
-                    method: 'POST',
+                    method: "POST",
                     data: formData,
                     formData: true,
                     headers: {
-                        'content-type': 'multipart/form-data'
-                    }
-                });
+                        "content-type": "multipart/form-data",
+                    },
+                };
             },
-            invalidatesTags: [ 'Book', 'BookPages' ]
+            invalidatesTags: ["Book", "BookPages"],
         }),
         addBookContent: builder.mutation({
             query: ({ book, payload }) => {
                 const formData = new FormData();
-                formData.append('file', payload, payload.fileName);
-                return ({
+                formData.append("file", payload, payload.fileName);
+                return {
                     url: book.links.add_file,
-                    method: 'POST',
+                    method: "POST",
                     data: formData,
                     formData: true,
                     headers: {
-                        'content-type': 'multipart/form-data'
-                    }
-                });
+                        "content-type": "multipart/form-data",
+                    },
+                };
             },
             transformResponse: (response) => parseResponse(response),
-            invalidatesTags: [ 'Book' ]
+            invalidatesTags: ["Book"],
         }),
         updateBookContent: builder.mutation({
             query: ({ content, payload }) => {
                 const formData = new FormData();
-                formData.append('file', payload, payload.fileName);
-                return ({
+                formData.append("file", payload, payload.fileName);
+                return {
                     url: content.links.update,
-                    method: 'PUT',
+                    method: "PUT",
                     data: formData,
                     formData: true,
                     headers: {
-                        'content-type': 'multipart/form-data'
-                    }
-                });
+                        "content-type": "multipart/form-data",
+                    },
+                };
             },
             transformResponse: (response) => parseResponse(response),
-            invalidatesTags: [ 'Book' ]
+            invalidatesTags: ["Book"],
         }),
         deleteBookContent: builder.mutation({
             query: ({ content }) => ({
                 url: content.links.delete,
-                method: 'DELETE',
+                method: "DELETE",
             }),
-            invalidatesTags: [ 'Book' ]
+            invalidatesTags: ["Book"],
         }),
     }),
-})
+});
 
 export const {
     useGetBooksQuery,
@@ -365,6 +411,7 @@ export const {
     useAddBookMutation,
     useUpdateBookMutation,
     useDeleteBookMutation,
+    usePublishBookMutation,
     useUpdateBookImageMutation,
     useAddChapterMutation,
     useUpdateChapterMutation,
@@ -383,4 +430,4 @@ export const {
     useAddBookContentMutation,
     useUpdateBookContentMutation,
     useDeleteBookContentMutation,
- } = booksApi
+} = booksApi;
