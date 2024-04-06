@@ -24,6 +24,7 @@ function PeriodicalPage() {
     const query = searchParams.get("query");
     const status = searchParams.get("status");
     const sortBy = searchParams.get("sortBy") ?? "DateCreated";
+    const year = searchParams.get("year");
     const sortDirection = searchParams.get("sortDirection") ?? "descending";
     const pageNumber = searchParams.get("pageNumber") ?? 1;
     const pageSize = searchParams.get("pageSize") ?? 12;
@@ -55,10 +56,10 @@ function PeriodicalPage() {
             <ContentsContainer>
                 <Row gutter={16}>
                     <Col l={4} md={6} xs={24}>
-                        <PeriodicalInfo libraryId={libraryId} periodical={periodical} t={t} />
+                        <PeriodicalInfo libraryId={libraryId} periodical={periodical} t={t} selectedYear={year} />
                     </Col>
                     <Col l={20} md={18} xs={24}>
-                        <IssuesList libraryId={libraryId} query={query} periodicalId={periodicalId} sortBy={sortBy} sortDirection={sortDirection} status={status} pageNumber={pageNumber} pageSize={pageSize} />
+                        <IssuesList libraryId={libraryId} query={query} periodicalId={periodicalId} year={year} sortBy={sortBy} sortDirection={sortDirection} status={status} pageNumber={pageNumber} pageSize={pageSize} />
                     </Col>
                 </Row>
             </ContentsContainer>

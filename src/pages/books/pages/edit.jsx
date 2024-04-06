@@ -102,8 +102,7 @@ const PageEditPage = () => {
                     message.error(t("book.actions.edit.error"))
                 });
         } else {
-            console.log('adding page')
-
+            var newPage = null;
             return addBookPage({
                 libraryId,
                 bookId,
@@ -113,7 +112,14 @@ const PageEditPage = () => {
                 },
             })
                 .unwrap()
+                .then(r => {
+                    newPage = r;
+                    return r;
+                })
                 .then(uploadImage)
+                .then(_ => navigate(
+                    `/libraries/${libraryId}/books/${bookId}/pages/${newPage.sequenceNumber}/edit`
+                ))
                 .then(() => message.success(t("book.actions.add.success")))
                 .catch((e) => {
                     console.error(e);
