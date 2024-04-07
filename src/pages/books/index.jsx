@@ -43,7 +43,7 @@ function BooksHomePage() {
             </Button>
         </Link>
     );
-    const uploadButton =(
+    const uploadButton = (
         <Link to={`/libraries/${libraryId}/books/upload`}>
             <Button type="dashed" icon={<FaCloudUploadAlt />}>
                 {t("books.actions.upload.label")}
@@ -77,7 +77,9 @@ function BooksHomePage() {
                             read={read}
                         />
                     </Sider>
-                    <Content>
+                    <Content style={{
+                        margin: '0 16px',
+                    }}>
                         <BooksList
                             libraryId={libraryId}
                             query={query}

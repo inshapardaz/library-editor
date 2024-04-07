@@ -19,10 +19,10 @@ const grid = {
     gutter: 4,
     xs: 1,
     sm: 2,
-    md: 3,
+    md: 2,
     lg: 3,
-    xl: 4,
-    xxl: 5,
+    xl: 3,
+    xxl: 4,
 };
 
 // ------------------------------------------------------
@@ -153,6 +153,7 @@ function IssuesList({
                     showSizeChanger: true,
                     responsive: true,
                     showQuickJumper: true,
+                    position: 'both',
                     pageSizeOptions: [12, 24, 48, 96],
                 }}
                 renderItem={renderItem}

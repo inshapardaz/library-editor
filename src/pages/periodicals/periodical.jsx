@@ -1,9 +1,9 @@
-import { useParams, useSearchParams, Link } from "react-router-dom";
+import { useParams, useSearchParams, Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // 3rd party libraries
-import { Button, Col, Row } from "antd";
-import { FaEdit, FaPlus } from "react-icons/fa";
+import { Breadcrumb, Button, Layout, Space, theme } from "antd";
+import { FaEdit, FaHome, FaPlus } from "react-icons/fa";
 import { ImNewspaper } from "react-icons/im";
 
 // Local Imports
@@ -14,11 +14,17 @@ import { useGetPeriodicalByIdQuery } from "../../features/api/periodicalsSlice";
 import Loading from "../../components/common/loader";
 import Error from "../../components/common/error";
 import PeriodicalInfo from "../../components/periodicals/periodicalInfo";
-
+import PeriodicalDeleteButton from "../../components/periodicals/periodicalDeleteButton";
+//--------------------------------------------------------
+const { Content, Sider } = Layout;
 //--------------------------------------------------------
 
 function PeriodicalPage() {
     const { t } = useTranslation();
+    const navigate = useNavigate();
+    const {
+        token: { colorBgContainer },
+    } = theme.useToken();
     const { libraryId, periodicalId } = useParams();
     const [searchParams] = useSearchParams();
     const query = searchParams.get("query");
@@ -50,18 +56,40 @@ function PeriodicalPage() {
         </Link>
     );
 
+    const deletePeriodicalButton = (<PeriodicalDeleteButton type="dashed" danger libraryId={libraryId} periodical={periodical} t={t}
+        onDeleted={() => navigate(`/libraries/${libraryId}/periodicals`)}>
+        {t('actions.delete')}
+    </PeriodicalDeleteButton>)
+
     return (
         <>
-            <PageHeader title={periodical.title} icon={<ImNewspaper style={{ width: 36, height: 36 }} />} actions={[editButton, addIssueButton]} />
+            <PageHeader title={periodical.title} icon={<ImNewspaper style={{ width: 36, height: 36 }} />} actions={[addIssueButton, editButton, deletePeriodicalButton]}
+                breadcrumb={< Breadcrumb
+                    items={[
+                        {
+                            title: <Link to={`/libraries/${libraryId}`}><FaHome /></Link>,
+                        },
+                        {
+                            title: <Link to={`/libraries/${libraryId}/perioricals/`}><Space><ImNewspaper />{t("header.periodicals")}</Space></Link>,
+                        },
+                        {
+                            title: periodical?.title,
+                        }]}
+                />} />
             <ContentsContainer>
-                <Row gutter={16}>
-                    <Col l={4} md={6} xs={24}>
+                <Layout
+                    style={{ padding: "24px 0", background: colorBgContainer }}
+                >
+                    <Sider style={{ background: colorBgContainer }}
+                        width={200}
+                        breakpoint="lg"
+                        collapsedWidth={0}>
                         <PeriodicalInfo libraryId={libraryId} periodical={periodical} t={t} selectedYear={year} />
-                    </Col>
-                    <Col l={20} md={18} xs={24}>
+                    </Sider>
+                    <Content>
                         <IssuesList libraryId={libraryId} query={query} periodicalId={periodicalId} year={year} sortBy={sortBy} sortDirection={sortDirection} status={status} pageNumber={pageNumber} pageSize={pageSize} />
-                    </Col>
-                </Row>
+                    </Content>
+                </Layout>
             </ContentsContainer>
         </>
     );
