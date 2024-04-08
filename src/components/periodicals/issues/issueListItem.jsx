@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import moment from "moment";
 
 // 3rd Party Libraries
-import { Button, Divider, List, Space, Typography } from "antd";
+import { Button, Divider, List, Space } from "antd";
 import { FiEdit, FiTrash } from "react-icons/fi";
 
 // Local Import

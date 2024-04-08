@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 
 // 3rd Party Libraries
-import { Card, Space, Typography } from "antd";
+import { Card, Space } from "antd";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import moment from "moment";
 
