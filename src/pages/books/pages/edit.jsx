@@ -139,13 +139,23 @@ const PageEditPage = () => {
             page.status === PageStatus.InReview);
 
     const onComplete = () => {
+        let newStatus = null;
         if (page.status === PageStatus.Typing) {
-            page.status = PageStatus.Typed;
+            newStatus = PageStatus.Typed;
         } else if (page.status === PageStatus.InReview) {
-            page.status = PageStatus.Completed;
+            newStatus = PageStatus.Completed;
         } else {
             return;
         }
+
+        const payload = { ...page, status: newStatus };
+        return updateBookPage({ page: payload })
+            .unwrap()
+            .then(() => message.success(t("book.actions.edit.success")))
+            .catch((e) => {
+                console.error(e);
+                message.error(t("book.actions.edit.error"))
+            });;
     };
 
     const actions = [
