@@ -33,6 +33,7 @@ import PeriodicalsHomePage from "./pages/periodicals/index";
 import PeriodicalPage from "./pages/periodicals/periodical";
 import PeriodicalEditPage from "./pages/periodicals/edit";
 import IssueEditPage from "./pages/periodicals/issues/edit";
+import IssuePage from "./pages/periodicals/issues";
 import BookReader from "./pages/books/reader";
 import ChapterEditor from "./pages/books/chapters/edit";
 import ArticleHomePage from "./pages/articles";
@@ -178,6 +179,10 @@ const Router = () => {
                         <Route
                             path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber/issues/:issueNumber/edit"
                             element={<IssueEditPage />}
+                        />
+                        <Route
+                            path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber/issues/:issueNumber"
+                            element={<IssuePage />}
                         />
                         <Route
                             path="/libraries/:libraryId/articles"

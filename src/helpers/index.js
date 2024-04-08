@@ -574,7 +574,7 @@ const helpers = {
             case "Monthly":
                 return "MMMM YYYY";
             case "Quarterly":
-                return "Q YYYY";
+                return "Q (MMMM) YYYY";
             case "Annually":
                 return "YYYY";
             case "Daily":

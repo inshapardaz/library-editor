@@ -70,7 +70,7 @@ function PeriodicalPage() {
                             title: <Link to={`/libraries/${libraryId}`}><FaHome /></Link>,
                         },
                         {
-                            title: <Link to={`/libraries/${libraryId}/perioricals/`}><Space><ImNewspaper />{t("header.periodicals")}</Space></Link>,
+                            title: <Link to={`/libraries/${libraryId}/periodicals`}><Space><ImNewspaper />{t("header.periodicals")}</Space></Link>,
                         },
                         {
                             title: periodical?.title,

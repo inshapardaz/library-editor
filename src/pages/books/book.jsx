@@ -94,6 +94,7 @@ const BookPage = () => {
     const onChange = (key) => {
         navigate(`/libraries/${libraryId}/books/${book.id}/?section=${key}`);
     };
+
     return (
         <>
             <PageHeader

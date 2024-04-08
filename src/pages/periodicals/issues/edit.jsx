@@ -43,11 +43,11 @@ const IssueEditPage = () => {
     if (error || periodicalError) return <Error t={t} />;
 
     const onSubmit = async (issue) => {
-        if (periodicalId) {
+        if (issue) {
             updateIssue({ libraryId, periodicalId, volumeNumber: issue.volumeNumber, issueNumber: issue.issueNumber, payload: issue })
                 .unwrap()
                 .then(() => uploadImage(periodicalId, issue.volumeNumber, issue.issueNumber))
-                .then(() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}/issues`))
+                .then(() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}`))
                 .then(() => message.success(t("issue.actions.edit.success")))
                 .catch((_) => message.error(t("issue.actions.edit.error")));
         } else {
@@ -100,7 +100,7 @@ const IssueEditPage = () => {
             <ContentsContainer>
                 <Row gutter={16}>
                     <Col l={4} md={6} xs={24}>
-                        <ImgCrop modalTitle={t("actions.resizeImage")}>
+                        <ImgCrop aspect={262 / 400} rotationSlider modalTitle={t("actions.resizeImage")}>
                             <Dragger fileList={fileList} beforeUpload={onImageChange} showUploadList={false}>
                                 <img src={getCoverSrc()} height="300" alt={issue && issue.name} onError={helpers.setDefaultIssueImage} />
                             </Dragger>

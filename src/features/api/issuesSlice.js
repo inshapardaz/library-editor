@@ -45,6 +45,7 @@ export const issuesApi = createApi({
                 };
             },
             transformResponse: (response) => parseResponse(response),
+            providesTags: ["Issues"],
         }),
         getIssuesYears: builder.query({
             query: ({ libraryId, periodicalId, sortDirection = null }) => {
@@ -57,6 +58,7 @@ export const issuesApi = createApi({
                 };
             },
             transformResponse: (response) => parseResponse(response),
+            providesTags: ["Issues"],
         }),
         getIssue: builder.query({
             query: ({
@@ -69,6 +71,7 @@ export const issuesApi = createApi({
                 method: "get",
             }),
             transformResponse: (response) => parseResponse(response),
+            providesTags: ["Issue"],
         }),
         getIssueArticles: builder.query({
             query: ({
@@ -81,6 +84,7 @@ export const issuesApi = createApi({
                 method: "get",
             }),
             transformResponse: (response) => parseResponse(response),
+            providesTags: ["IssueArticles"],
         }),
         getArticle: builder.query({
             query: ({
@@ -94,6 +98,7 @@ export const issuesApi = createApi({
                 method: "get",
             }),
             transformResponse: (response) => parseResponse(response),
+            providesTags: ["Article"],
         }),
         getArticleContents: builder.query({
             query: ({
@@ -107,6 +112,7 @@ export const issuesApi = createApi({
                 method: "get",
             }),
             transformResponse: (response) => parseResponse(response),
+            providesTags: ["IssueArticlesContent"],
         }),
         addIssue: builder.mutation({
             query: ({
@@ -120,6 +126,7 @@ export const issuesApi = createApi({
                 method: "POST",
                 data: removeLinks(payload),
             }),
+            invalidatesTags: ["Issues"],
         }),
         updateIssue: builder.mutation({
             query: ({
@@ -133,6 +140,7 @@ export const issuesApi = createApi({
                 method: "PUT",
                 data: removeLinks(payload),
             }),
+            invalidatesTags: ["Issue"],
         }),
         updateIssueImage: builder.mutation({
             query: ({
@@ -154,6 +162,14 @@ export const issuesApi = createApi({
                     },
                 };
             },
+            invalidatesTags: ["Issue"],
+        }),
+        deleteIssue: builder.mutation({
+            query: ({ issue }) => ({
+                url: issue.links.delete,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Issues"],
         }),
     }),
 });
@@ -168,4 +184,5 @@ export const {
     useAddIssueMutation,
     useUpdateIssueMutation,
     useUpdateIssueImageMutation,
+    useDeleteIssueMutation,
 } = issuesApi;

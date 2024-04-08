@@ -1049,6 +1049,21 @@ const en = {
             label: "Issue Date",
             required: "Issue date is required for issue",
         },
+        articles: {
+            title: "Articles",
+            errors: {
+                loading: {
+                    title: "Error",
+                    subTitle: "Unable to load articles.",
+                },
+            },
+            empty: {
+                title: "No articles found",
+            },
+        },
+        files: {
+            title: "Files",
+        },
         actions: {
             add: {
                 label: "Add new issue",

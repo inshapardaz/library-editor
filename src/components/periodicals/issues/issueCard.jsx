@@ -24,12 +24,10 @@ function IssueCard({ libraryId, periodicalId, issue, t }) {
     );
     const description = (<Space>
         <IconText icon={GiStack}
-            text={t("issue.volumeNumber.label")}
-            secondaryText={issue.volumeNumber}
+            text={issue.volumeNumber}
             onClick={() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/`)} />
         <IconText icon={FaNewspaper}
-            text={t("issue.issueNumber.label")}
-            secondaryText={issue.issueNumber}
+            text={issue.issueNumber}
             onClick={() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}`)} />
     </Space>);
     const title = moment(issue.issueDate).format(helpers.getDateFormatFromFrequency(issue.frequency));
