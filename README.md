@@ -19,8 +19,24 @@ Run for development
 npm run start
 ```
 
-Build for production
+## Building for production
 
 ```sh
 npm run build
 ```
+
+## Building and running docker
+
+### Building image
+
+```sh
+docker build -t inshapardaz/library-editor .
+```
+
+### Running image
+
+```sh
+docker run -p 80:80 inshapardaz/library-editor
+```
+
+
