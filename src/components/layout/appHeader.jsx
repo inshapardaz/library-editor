@@ -10,12 +10,12 @@ import { ImBooks, ImNewspaper } from 'react-icons/im';
 
 // Local Imports
 import * as styles from '~/src/styles/common.module.scss'
+import { useGetLibraryQuery } from '~/src/store/slices/librariesSlice'
+import LibrariesDropdown from "~/src/components/libraries/librariesDropDown";
+import Logo from "./logo";
+import ProfileMenu from "./profileMenu";
 import LanguageSwitcher from "../languageSwitcher";
 import DarkModeToggle from "../darkModeToggle";
-import Logo from "./logo";
-import LibrariesDropdown from "~/src/components/libraries/librariesDropDown";
-import ProfileMenu from "./profileMenu";
-import { useGetLibraryQuery } from '~/src/store/slices/librariesSlice'
 import SearchBox from '../searchBox'
 
 //---------------------------------------------

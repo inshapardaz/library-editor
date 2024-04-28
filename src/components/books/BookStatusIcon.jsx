@@ -6,7 +6,7 @@ import {
 } from "react-icons/fa";
 
 // Local import
-import BookStatus from "../../models/bookStatus";
+import BookStatus from "~/src/models/bookStatus";
 //--------------------------------------------
 
 export default BookStatusIcon = ({ status, render = true }) => {
