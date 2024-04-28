@@ -19,7 +19,7 @@ import { EditingStatus } from "~/src/models";
 
 // ------------------------------------------------------
 
-export default function ArticleStatusFilterButton({ t, status }) {
+const ArticleStatusFilterButton = ({ t, status }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -80,4 +80,6 @@ export default function ArticleStatusFilterButton({ t, status }) {
             </Button>
         </Dropdown>
     );
-}
+};
+
+export default ArticleStatusFilterButton;

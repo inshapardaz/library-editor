@@ -27,7 +27,7 @@ const grid = {
 
 // ------------------------------------------------------
 
-function IssuesList({
+const IssuesList = ({
     libraryId,
     periodicalId,
     query,
@@ -38,7 +38,7 @@ function IssuesList({
     status,
     pageNumber,
     pageSize,
-}) {
+}) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [showList, setShowList] = useLocalStorage("issues-list-view", false);
@@ -160,6 +160,6 @@ function IssuesList({
             />
         </DataContainer>
     );
-}
+};
 
 export default IssuesList;

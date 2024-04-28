@@ -11,7 +11,7 @@ import AuthorAvatar from "~/src/components/author/authorAvatar";
 import ArticleDeleteButton from "./articleDeleteButton";
 // --------------------------------------------
 
-function ArticleCard({ libraryId, article, t }) {
+const ArticleCard = ({ libraryId, article, t }) => {
     const navigate = useNavigate();
 
     const cover = article.links.image ? (
@@ -70,6 +70,6 @@ function ArticleCard({ libraryId, article, t }) {
             </Link>
         </Card>
     );
-}
+};
 
 export default ArticleCard;

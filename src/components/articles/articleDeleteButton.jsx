@@ -10,7 +10,7 @@ import { useDeleteArticleMutation } from "~/src/store/slices/articlesSlice";
 const { confirm } = Modal;
 // ------------------------------------------------------
 
-export default ArticleDeleteButton = ({ children,
+const ArticleDeleteButton = ({ children,
     libraryId,
     article,
     t,
@@ -41,4 +41,6 @@ export default ArticleDeleteButton = ({ children,
     };
 
     return (<Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash />}>{children}</Button>);
-}
+};
+
+export default ArticleDeleteButton;

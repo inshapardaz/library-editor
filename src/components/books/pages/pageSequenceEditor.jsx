@@ -9,7 +9,7 @@ import { useUpdateBookPageSequenceMutation } from "~/src/store/slices/booksSlice
 
 // ------------------------------------------------------
 
-export default function PageSequenceEditor({ page, t, type }) {
+const PageSequenceEditor = ({ page, t, type }) => {
     const { message } = App.useApp();
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
@@ -72,4 +72,6 @@ export default function PageSequenceEditor({ page, t, type }) {
             </Modal>
         </>
     );
-}
+};
+
+export default PageSequenceEditor;

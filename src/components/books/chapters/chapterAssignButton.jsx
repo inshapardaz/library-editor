@@ -8,10 +8,9 @@ import { FaUserAlt } from "react-icons/fa";
 // Local imports
 import { useAssignChapterMutation } from "~/src/store/slices/booksSlice";
 import UserSelect from "~/src/components/userSelect";
-
 // ------------------------------------------------------
 
-export default ChapterAssignButton = ({ libraryId, chapters, t, type, showDetails = true }) => {
+const ChapterAssignButton = ({ libraryId, chapters, t, type, showDetails = true }) => {
     const { message } = App.useApp();
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
@@ -54,23 +53,20 @@ export default ChapterAssignButton = ({ libraryId, chapters, t, type, showDetail
             });
 
         Promise.all(promises)
-            .then(() =>
-                message.success(t("chapter.actions.assign.success", { count }))
+            .then(() => message.success(t("chapter.actions.assign.success", { count }))
             )
-            .catch(() =>
-                message.error(t("chapter.actions.assign.error", { count }))
+            .catch(() => message.error(t("chapter.actions.assign.error", { count }))
             );
     };
 
-    const onOk = () =>
-        form
-            .validateFields()
-            .then((values) => {
-                onSubmit(values);
-            })
-            .catch((info) => {
-                console.error(info);
-            });
+    const onOk = () => form
+        .validateFields()
+        .then((values) => {
+            onSubmit(values);
+        })
+        .catch((info) => {
+            console.error(info);
+        });
 
     const onShow = () => {
         form.resetFields();
@@ -125,11 +121,12 @@ export default ChapterAssignButton = ({ libraryId, chapters, t, type, showDetail
                             t={t}
                             placeholder={t("chapter.user.placeholder")}
                             label={data.name}
-                            addMeOption
-                        />
+                            addMeOption />
                     </Form.Item>
                 </Form>
             </Modal>
         </>
     );
-}
+};
+
+export default ChapterAssignButton;

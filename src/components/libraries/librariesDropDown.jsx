@@ -9,7 +9,7 @@ import { useGetLibrariesQuery } from '~/src/store/slices/librariesSlice'
 
 
 // ---------------------------------------------------
-export default LibrariesDropdown = () => {
+const LibrariesDropdown = () => {
     const { data: libraries, isError, isFetching } = useGetLibrariesQuery({})
     const items = !isError && !isFetching && libraries && libraries.data ? libraries.data
         .map(l => ({
@@ -27,4 +27,6 @@ export default LibrariesDropdown = () => {
     }
 
     return null;
-}
+};
+
+export default LibrariesDropdown;

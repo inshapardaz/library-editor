@@ -20,7 +20,7 @@ import SearchBox from '../searchBox'
 
 //---------------------------------------------
 
-function AppHeader() {
+const AppHeader = () => {
     const { t } = useTranslation();
     const { token } = theme.useToken();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

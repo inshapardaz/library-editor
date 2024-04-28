@@ -12,7 +12,7 @@ import DataContainer from "~/src/components/layout/dataContainer";
 import CategoryListItem from "./categoryListItem";
 // ------------------------------------------------------
 
-function SeriesList({ libraryId, query, pageNumber, pageSize }) {
+const SeriesList = ({ libraryId, query, pageNumber, pageSize }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 

@@ -11,7 +11,7 @@ import { useDeleteAuthorMutation } from "~/src/store/slices/authorsSlice";
 const { confirm } = Modal;
 
 // ------------------------------------------------------
-export default function AuthorDeleteButton({ children, libraryId, author, t, type, onDeleted = () => { }, danger = false, block = false, size = "middle" }) {
+const AuthorDeleteButton = ({ children, libraryId, author, t, type, onDeleted = () => { }, danger = false, block = false, size = "middle" }) => {
     const { message } = App.useApp();
     const [deleteAuthor, { isLoading: isDeleting }] = useDeleteAuthorMutation();
 
@@ -34,4 +34,6 @@ export default function AuthorDeleteButton({ children, libraryId, author, t, typ
     };
 
     return (<Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash />}>{children}</Button>);
-}
+};
+
+export default AuthorDeleteButton;

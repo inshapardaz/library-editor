@@ -17,7 +17,7 @@ const { Text, Paragraph } = Typography;
 
 // ------------------------------------------------------
 
-function AuthorListItem({ libraryId, author, t }) {
+const AuthorListItem = ({ libraryId, author, t }) => {
     const navigate = useNavigate();
     const avatar = <img src={author.links.image || authorPlaceholderImage} onError={setDefaultAuthorImage} className={styles["author__image--small"]} alt={author.name} />;
     const title = <Link to={`/libraries/${libraryId}/authors/${author.id}`}>{author.name}</Link>;
@@ -53,6 +53,6 @@ function AuthorListItem({ libraryId, author, t }) {
             <List.Item.Meta title={title} avatar={avatar} description={description} />
         </List.Item>
     );
-}
+};
 
 export default AuthorListItem;

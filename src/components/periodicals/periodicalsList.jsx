@@ -28,7 +28,7 @@ const grid = {
 
 // ------------------------------------------------------
 
-export default PeriodicalsList = ({
+const PeriodicalsList = ({
     libraryId,
     query,
     sortBy,
@@ -179,3 +179,5 @@ export default PeriodicalsList = ({
         </DataContainer>
     );
 };
+
+export default PeriodicalsList;

@@ -17,7 +17,7 @@ import { AssignmentStatus, BookStatus } from "~/src/models";
 
 // ------------------------------------------------------
 
-export default function PageAssignmentFilterButton({ book, t }) {
+const PageAssignmentFilterButton = ({ book, t }) => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const location = useLocation();
@@ -76,4 +76,6 @@ export default function PageAssignmentFilterButton({ book, t }) {
             </Button>
         </Dropdown>
     );
-}
+};
+
+export default PageAssignmentFilterButton;

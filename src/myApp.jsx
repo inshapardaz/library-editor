@@ -8,8 +8,9 @@ import { App, ConfigProvider, theme } from "antd";
 import Router from "~/src/router";
 import { themeAlgorithm, selectedLanguage } from "~/src/store/slices/uiSlice";
 import "~/src/styles/App.css";
+//------------------------------------
 
-export default MyApp = () => {
+const MyApp = () => {
     const themeAlgo = useSelector(themeAlgorithm);
     const lang = useSelector(selectedLanguage);
 
@@ -36,4 +37,6 @@ export default MyApp = () => {
             </App>
         </ConfigProvider>
     );
-}
+};
+
+export default MyApp;

@@ -13,7 +13,7 @@ import {
 import { updateLinkToBooksPagesPage } from "~/src/util";
 // ------------------------------------------------------
 
-export default function PageSortButton({ t }) {
+const PageSortButton = ({ t }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -56,4 +56,6 @@ export default function PageSortButton({ t }) {
             </Button>
         </Dropdown>
     );
-}
+};
+
+export default PageSortButton;

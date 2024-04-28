@@ -13,7 +13,7 @@ import ContentsContainer from "~/src/components/layout/contentContainer";
 
 // ========================================================
 
-export default SeriesHomePage = () => {
+const SeriesHomePage = () => {
     const { t } = useTranslation();
     const { libraryId } = useParams();
     const [searchParams] = useSearchParams();
@@ -47,3 +47,5 @@ export default SeriesHomePage = () => {
         </>
     );
 };
+
+export default SeriesHomePage;

@@ -11,7 +11,7 @@ import { useDeleteCategoryMutation } from "~/src/store/slices/categoriesSlice";
 const { confirm } = Modal;
 
 // ------------------------------------------------------
-export default function CategoryDeleteButton({ children, libraryId, category, t, type, onDeleted = () => { }, danger = false, block = false, size = "middle" }) {
+const CategoryDeleteButton = ({ children, libraryId, category, t, type, onDeleted = () => { }, danger = false, block = false, size = "middle" }) => {
     const { message } = App.useApp();
     const [deleteCategory, { isLoading: isDeleting }] = useDeleteCategoryMutation();
 
@@ -34,4 +34,6 @@ export default function CategoryDeleteButton({ children, libraryId, category, t,
     };
 
     return (<Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash />}>{children}</Button>);
-}
+};
+
+export default CategoryDeleteButton;

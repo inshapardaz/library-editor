@@ -18,44 +18,44 @@ import AuthorInfo from '~/src/components/author/authorInfo';
 const { Content } = Layout;
 //--------------------------------------------------------
 
-function AuthorPage() {
-  const { t } = useTranslation()
-  const { libraryId, authorId } = useParams()
-  const [searchParams] = useSearchParams()
-  const query = searchParams.get('query')
-  const status = searchParams.get('status')
-  const sortBy = searchParams.get('sortBy') ?? 'DateCreated'
-  const sortDirection = searchParams.get('sortDirection') ?? 'descending'
-  const pageNumber = searchParams.get('pageNumber') ?? 1
-  const pageSize = searchParams.get('pageSize') ?? 12
+const AuthorPage = () => {
+    const { t } = useTranslation()
+    const { libraryId, authorId } = useParams()
+    const [searchParams] = useSearchParams()
+    const query = searchParams.get('query')
+    const status = searchParams.get('status')
+    const sortBy = searchParams.get('sortBy') ?? 'DateCreated'
+    const sortDirection = searchParams.get('sortDirection') ?? 'descending'
+    const pageNumber = searchParams.get('pageNumber') ?? 1
+    const pageSize = searchParams.get('pageSize') ?? 12
 
-  const { data: author, error, isFetching } = useGetAuthorByIdQuery({ libraryId, authorId })
+    const { data: author, error, isFetching } = useGetAuthorByIdQuery({ libraryId, authorId })
 
-  if (isFetching) return <Loading />
-  if (error) return (<Error t={t} />)
+    if (isFetching) return <Loading />
+    if (error) return (<Error t={t} />)
 
-  return (<>
-    <PageHeader title={author.name} icon={<FaFeatherAlt style={{ width: 36, height: 36 }} />} />
-    <ContentsContainer>
-      <Content style={{ padding: '0 24px', minHeight: 280 }}>
-        <Row gutter={16}>
-          <Col span={6}>
-            <AuthorInfo libraryId={libraryId} author={author} t={t} />
-          </Col>
-          <Col span={18}>
-            <BooksList libraryId={libraryId}
-              query={query}
-              author={authorId}
-              sortBy={sortBy}
-              sortDirection={sortDirection}
-              status={status}
-              pageNumber={pageNumber}
-              pageSize={pageSize}
-            />
-          </Col>
-        </Row>
-      </Content>
-    </ContentsContainer>
-  </>);
+    return (<>
+        <PageHeader title={author.name} icon={<FaFeatherAlt style={{ width: 36, height: 36 }} />} />
+        <ContentsContainer>
+            <Content style={{ padding: '0 24px', minHeight: 280 }}>
+                <Row gutter={16}>
+                    <Col span={6}>
+                        <AuthorInfo libraryId={libraryId} author={author} t={t} />
+                    </Col>
+                    <Col span={18}>
+                        <BooksList libraryId={libraryId}
+                            query={query}
+                            author={authorId}
+                            sortBy={sortBy}
+                            sortDirection={sortDirection}
+                            status={status}
+                            pageNumber={pageNumber}
+                            pageSize={pageSize}
+                        />
+                    </Col>
+                </Row>
+            </Content>
+        </ContentsContainer>
+    </>);
 }
 export default AuthorPage;

@@ -7,7 +7,7 @@ import { Input } from "antd";
 
 // --------------------------------------------
 
-function SearchBox() {
+const SearchBox = () => {
     const { t } = useTranslation();
     const { libraryId } = useParams();
     const [searchParams] = useSearchParams();

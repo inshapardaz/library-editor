@@ -10,7 +10,7 @@ import * as styles from '~/src/styles/common.module.scss'
 
 // -----------------------------------------
 
-function LayoutWithHeader() {
+const LayoutWithHeader = () => {
     return (
         <Layout>
             <AppHeader />

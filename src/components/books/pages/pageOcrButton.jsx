@@ -51,7 +51,7 @@ const ProcessingIcon = ({ status }) => {
 
 // ------------------------------------------------------
 
-export default function PageOcrButton({ pages, t, type }) {
+const PageOcrButton = ({ pages, t, type }) => {
     const { message } = App.useApp();
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
@@ -201,4 +201,6 @@ export default function PageOcrButton({ pages, t, type }) {
             </Modal>
         </>
     );
-}
+};
+
+export default PageOcrButton;

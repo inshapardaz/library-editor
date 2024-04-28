@@ -17,7 +17,7 @@ const { Text, Paragraph } = Typography;
 
 // ------------------------------------------------------
 
-function SeriesCard({ libraryId, series, t }) {
+const SeriesCard = ({ libraryId, series, t }) => {
     const cover = <img src={series.links.image || seriesPlaceholderImage} onError={setDefaultSeriesImage} className={styles["series__image"]} alt={series.name} />;
     const description = series.description ? (
         <Paragraph ellipsis type="secondary">

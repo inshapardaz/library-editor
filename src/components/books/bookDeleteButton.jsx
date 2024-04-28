@@ -11,7 +11,7 @@ import { useDeleteBookMutation } from "~/src/store/slices/booksSlice";
 const { confirm } = Modal;
 
 // ------------------------------------------------------
-export default function BookDeleteButton({ children, libraryId, book, t, type, onDeleted = () => { }, danger = false, block = false, size = "middle" }) {
+const BookDeleteButton = ({ children, libraryId, book, t, type, onDeleted = () => { }, danger = false, block = false, size = "middle" }) => {
     const { message } = App.useApp();
     const [deleteBook, { isLoading: isDeleting }] = useDeleteBookMutation();
 
@@ -34,4 +34,6 @@ export default function BookDeleteButton({ children, libraryId, book, t, type, o
     };
 
     return (<Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash />}>{children}</Button>);
-}
+};
+
+export default BookDeleteButton;

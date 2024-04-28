@@ -17,7 +17,7 @@ const { Text, Paragraph } = Typography;
 
 // ------------------------------------------------------
 
-function SeriesListItem({ libraryId, series, t }) {
+const SeriesListItem = ({ libraryId, series, t }) => {
     const avatar = <img src={series.links.image || seriesPlaceholderImage}
         onError={setDefaultSeriesImage}
         className={styles["series__image--small"]}
@@ -49,6 +49,6 @@ function SeriesListItem({ libraryId, series, t }) {
             <List.Item.Meta title={title} avatar={avatar} description={description} />
         </List.Item>
     );
-}
+};
 
 export default SeriesListItem;

@@ -17,7 +17,7 @@ const { Text, Paragraph } = Typography;
 
 // ------------------------------------------------------
 
-export default PeriodicalCard = ({ libraryId, periodical, t }) => {
+const PeriodicalCard = ({ libraryId, periodical, t }) => {
     const cover = periodical.links.image ? <img src={periodical.links.image} onError={setDefaultPeriodicalImage} className={styles["periodical__image"]} alt={periodical.title} /> : <img src={periodicalPlaceholderImage} className={styles["periodical__image"]} alt={periodical.title} />;
 
     const description = periodical.description ? <Paragraph ellipsis>{periodical.description}</Paragraph> : <Text type="secondary">{t("book.noDescription")}</Text>;
@@ -41,4 +41,6 @@ export default PeriodicalCard = ({ libraryId, periodical, t }) => {
             </Card>
         </Link>
     );
-}
+};
+
+export default PeriodicalCard;

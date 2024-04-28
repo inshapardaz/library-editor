@@ -6,17 +6,19 @@ import { FaTags } from 'react-icons/fa';
 
 // ------------------------------------------------
 
-export default PeriodicalCategory = ({ libraryId, periodical }) => {
-  if (periodical && periodical.categories && periodical.categories.length > 0) {
-    const list = periodical.categories.map(c => (<Tag key={c.id}>
-      <Link to={`/libraries/${libraryId}/periodicals?categories=${c.id}`}>{c.name}</Link>
-    </Tag>));
+const PeriodicalCategory = ({ libraryId, periodical }) => {
+    if (periodical && periodical.categories && periodical.categories.length > 0) {
+        const list = periodical.categories.map(c => (<Tag key={c.id}>
+            <Link to={`/libraries/${libraryId}/periodicals?categories=${c.id}`}>{c.name}</Link>
+        </Tag>));
 
-    return (<Space wrap align="start">
-      <FaTags />
-      {list}
-    </Space>);
-  }
+        return (<Space wrap align="start">
+            <FaTags />
+            {list}
+        </Space>);
+    }
 
-  return null;
-}
+    return null;
+};
+
+export default PeriodicalCategory;

@@ -10,7 +10,7 @@ import UserSelect from "~/src/components/userSelect";
 
 // ------------------------------------------------------
 
-export default function PageAssignButton({ libraryId, pages, t, type }) {
+const PageAssignButton = ({ libraryId, pages, t, type }) => {
     const { message } = App.useApp();
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
@@ -109,4 +109,6 @@ export default function PageAssignButton({ libraryId, pages, t, type }) {
             </Modal>
         </>
     );
-}
+};
+
+export default PageAssignButton;

@@ -13,7 +13,7 @@ import BookListItem from "./bookListItem";
 
 // ------------------------------------------------------
 
-function ShowMoreButton({ libraryId, t }) {
+const ShowMoreButton = ({ libraryId, t }) => {
     const navigate = useNavigate();
     return (
         <div
@@ -101,6 +101,6 @@ function LatestBooks() {
             />
         </DataContainer>
     );
-}
+};
 
 export default LatestBooks;

@@ -14,7 +14,7 @@ const { Text, Paragraph } = Typography;
 
 // ------------------------------------------------------
 
-function LibraryListItem({ library, t }) {
+const LibraryListItem = ({ library, t }) => {
     const cover = <img src={library.links.image || libraryPlaceholderImage} onError={setDefaultLibraryImage} className={styles["library__image"]} alt={library.name} />;
 
     const title = (
@@ -54,6 +54,6 @@ function LibraryListItem({ library, t }) {
             />
         </List.Item>
     );
-}
+};
 
 export default LibraryListItem;

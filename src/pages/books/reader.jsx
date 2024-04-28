@@ -23,7 +23,6 @@ import ChaptersMenu from "~/src/components/books/chapters/chaptersMenu";
 
 //------------------------------------------------
 
-
 const readerViews = [{
     value: 'vertical',
     icon: <TiDocumentText />

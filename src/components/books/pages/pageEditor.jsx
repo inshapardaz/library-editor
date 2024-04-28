@@ -11,7 +11,7 @@ import EditingStatusSelect from "~/src/components/editingStatusSelect";
 
 // ------------------------------------------------------
 
-export default function PageEditor({ libraryId, bookId, chapter, t, buttonType = "text" }) {
+const PageEditor = ({ libraryId, bookId, chapter, t, buttonType = "text" }) => {
     const { message } = App.useApp();
     const navigate = useNavigate();
     const [form] = Form.useForm();
@@ -84,4 +84,6 @@ export default function PageEditor({ libraryId, bookId, chapter, t, buttonType =
             </Modal>
         </>
     );
-}
+};
+
+export default PageEditor;

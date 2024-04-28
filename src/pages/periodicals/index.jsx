@@ -12,7 +12,7 @@ import PeriodicalsList from "~/src/components/periodicals/periodicalsList";
 import ContentsContainer from "~/src/components/layout/contentContainer";
 //------------------------------------------------
 
-export default PeriodicalsHomePage = () => {
+const PeriodicalsHomePage = () => {
     const { t } = useTranslation();
     const { libraryId } = useParams();
     const [searchParams] = useSearchParams();
@@ -35,4 +35,6 @@ export default PeriodicalsHomePage = () => {
             </ContentsContainer>
         </>
     );
-}
+};
+
+export default PeriodicalsHomePage;

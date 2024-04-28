@@ -21,7 +21,7 @@ import SeriesDeleteButton from "~/src/components/series/seriesDeleteButton";
 const ButtonGroup = Button.Group;
 //--------------------------------------------------------
 
-function SeriesPage() {
+const SeriesPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { libraryId, seriesId } = useParams();
@@ -73,5 +73,6 @@ function SeriesPage() {
             </ContentsContainer>
         </>
     );
-}
+};
+
 export default SeriesPage;

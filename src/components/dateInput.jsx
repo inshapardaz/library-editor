@@ -27,7 +27,7 @@ const normalizeDate = (value) => dayjs(value);
 
 // -------------------------------------------------
 
-export default DateInput = ({ value, onChange, placeholder, frequency, allowFutureValues = true }) => {
+const DateInput = ({ value, onChange, placeholder, frequency, allowFutureValues = true }) => {
     return (
         <DatePicker
             placeholder={placeholder}
@@ -41,3 +41,5 @@ export default DateInput = ({ value, onChange, placeholder, frequency, allowFutu
         />
     );
 };
+
+export default DateInput;

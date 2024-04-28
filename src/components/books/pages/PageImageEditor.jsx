@@ -9,7 +9,7 @@ import { FaFileImage, FaRegSave } from "react-icons/fa";
 import * as styles from '~/src/styles/common.module.scss';
 
 // --------------------------------------
-export const PageImageEditor = ({ image, t, zoom = 100, isRtl = false, onUpdate = () => { } }) => {
+const PageImageEditor = ({ image, t, zoom = 100, isRtl = false, onUpdate = () => { } }) => {
     const max = 1000;
     const marks = { 0: '|', 500: '|', 1000: '|' };
     const [dirty, setDirty] = useState(false);
@@ -81,3 +81,5 @@ export const PageImageEditor = ({ image, t, zoom = 100, isRtl = false, onUpdate 
         </Card>
     </>);
 };
+
+export default PageImageEditor;

@@ -12,7 +12,7 @@ import ContentsContainer from "~/src/components/layout/contentContainer";
 
 // ---------------------------------------------------
 
-function AuthorsHomePage() {
+const AuthorsHomePage = () => {
     const { t } = useTranslation();
     const { libraryId } = useParams();
     const [searchParams] = useSearchParams();

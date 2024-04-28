@@ -9,7 +9,7 @@ import { useUpdateChapterMutation } from "~/src/store/slices/booksSlice";
 import EditingStatusSelect from "~/src/components/editingStatusSelect";
 // ------------------------------------------------------
 
-export default function ChapterStatusButton({ chapters, t, type }) {
+const ChapterStatusButton = ({ chapters, t, type }) => {
     const { message } = App.useApp();
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
@@ -98,4 +98,6 @@ export default function ChapterStatusButton({ chapters, t, type }) {
             </Modal>
         </>
     );
-}
+};
+
+export default ChapterStatusButton;

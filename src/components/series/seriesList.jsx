@@ -28,13 +28,13 @@ const grid = {
 
 // ------------------------------------------------------
 
-function SeriesList({
+const SeriesList = ({
     libraryId,
     query,
     pageNumber,
     pageSize,
     showSearch = true,
-}) {
+}) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
@@ -156,6 +156,6 @@ function SeriesList({
             />
         </DataContainer>
     );
-}
+};
 
 export default SeriesList;

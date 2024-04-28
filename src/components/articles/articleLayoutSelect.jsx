@@ -21,7 +21,7 @@ const layouts = [{
     "icon": <PiTextColumnsBold />
 }]
 
-export default ArticleLayoutSelect = ({ value, onChange, placeholder, t, disabled = false, style = null }) => {
+const ArticleLayoutSelect = ({ value, onChange, placeholder, t, disabled = false, style = null }) => {
     return (<Select placeholder={placeholder}
         defaultValue={value}
         onChange={val => onChange(val)}
@@ -38,3 +38,5 @@ export default ArticleLayoutSelect = ({ value, onChange, placeholder, t, disable
     </Select>);
 
 };
+
+export default ArticleLayoutSelect;

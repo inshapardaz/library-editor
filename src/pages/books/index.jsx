@@ -16,7 +16,7 @@ import { SortDirection } from "~/src/models";
 const { Content, Sider } = Layout;
 //--------------------------------------------------------
 
-function BooksHomePage() {
+const BooksHomePage = () => {
     const { t } = useTranslation();
     const {
         token: { colorBgContainer },

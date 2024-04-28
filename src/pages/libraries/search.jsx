@@ -14,7 +14,7 @@ import AuthorsList from "~/src/components/author/authorsList";
 import PeriodicalsList from "~/src/components/periodicals/periodicalsList";
 import SeriesList from "~/src/components/series/seriesList";
 
-export default function SearchPage() {
+const SearchPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
@@ -136,4 +136,6 @@ export default function SearchPage() {
             </ContentsContainer>
         </>
     );
-}
+};
+
+export default SearchPage;

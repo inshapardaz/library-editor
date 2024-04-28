@@ -10,7 +10,7 @@ import ArticleCategory from "./articleCategory";
 import ArticleDeleteButton from "./articleDeleteButton";
 // ------------------------------------------------------
 
-function ArticleListItem({ libraryId, article, t }) {
+const ArticleListItem = ({ libraryId, article, t }) => {
     const navigate = useNavigate();
     const avatar = (
         <Avatar.Group maxCount="2" size="large">
@@ -82,6 +82,6 @@ function ArticleListItem({ libraryId, article, t }) {
             />
         </List.Item>
     );
-}
+};
 
 export default ArticleListItem;

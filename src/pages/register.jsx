@@ -13,7 +13,7 @@ import FullPageFormContainer from '~/src/components/layout/fullPageFormContainer
 
 // ------------------------------------------------------
 
-function Register() {
+const Register = () => {
     //const { message } = App.useApp();
     const { t } = useTranslation()
     //const navigate = useNavigate();

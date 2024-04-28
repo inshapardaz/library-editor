@@ -17,7 +17,7 @@ const { Text, Paragraph } = Typography;
 
 // ------------------------------------------------------
 
-function AuthorCard({ libraryId, author, t }) {
+const AuthorCard = ({ libraryId, author, t }) => {
     const navigate = useNavigate();
 
     const cover = <img src={author.links.image || authorPlaceholderImage} onError={setDefaultAuthorImage} className={styles["author__image"]} alt={author.name} />;

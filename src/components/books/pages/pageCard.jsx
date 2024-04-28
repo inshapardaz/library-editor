@@ -15,14 +15,14 @@ import PageStatusButton from "./pageStatusButton";
 
 // ------------------------------------------------------
 
-function PageCard({
+const PageCard = ({
     libraryId,
     book,
     page,
     t,
     selected = false,
     onSelectChanged = () => { },
-}) {
+}) => {
     let description = page.chapterTitle ? (
         <Typography.Text>{page.chapterTitle}</Typography.Text>
     ) : null;
@@ -124,6 +124,6 @@ function PageCard({
             )}
         </Draggable>
     );
-}
+};
 
 export default PageCard;

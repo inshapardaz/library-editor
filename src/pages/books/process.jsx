@@ -15,7 +15,7 @@ import { useGetBookQuery, useCreateBookPageWithImageMutation } from "~/src/store
 import { languages } from '~/src/store/slices/uiSlice';
 import { downloadFile, loadPdfPage, splitImage, dataURItoBlob } from '~/src/util';
 import DataContainer from "~/src/components/layout/dataContainer";
-import { PageImageEditor } from "~/src/components/books/pages/PageImageEditor";
+import PageImageEditor from "~/src/components/books/pages/PageImageEditor";
 import { pdfjsLib } from '~/src/util/pdf'
 
 // --------------------------------------

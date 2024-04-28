@@ -10,7 +10,7 @@ import ChapterSelect from "~/src/components/books/chapters/chapterSelect";
 
 // ------------------------------------------------------
 
-export default function PageChapterButton({ libraryId, book, pages, t, type }) {
+const PageChapterButton = ({ libraryId, book, pages, t, type }) => {
     const { message } = App.useApp();
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
@@ -100,4 +100,6 @@ export default function PageChapterButton({ libraryId, book, pages, t, type }) {
             </Modal>
         </>
     );
-}
+};
+
+export default PageChapterButton;

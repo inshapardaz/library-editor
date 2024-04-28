@@ -20,7 +20,7 @@ import AuthorAvatar from "~/src/components/author/authorAvatar";
 import ArticleDeleteButton from "~/src/components/articles/articleDeleteButton";
 // ------------------------------------------------------
 
-export default ArticlePage = () => {
+const ArticlePage = () => {
     const navigate = useNavigate();
     const lang = useSelector(selectedLanguage);
     const { t } = useTranslation();
@@ -105,4 +105,6 @@ export default ArticlePage = () => {
             </div>
         </DataContainer>
     </>);
-}
+};
+
+export default ArticlePage;

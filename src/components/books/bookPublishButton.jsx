@@ -11,7 +11,7 @@ import { usePublishBookMutation } from "~/src/store/slices/booksSlice";
 const { confirm } = Modal;
 
 // ------------------------------------------------------
-export default function BookPublishButton({ children, book, t, onPublished = () => { }, ...props }) {
+const BookPublishButton = ({ children, book, t, onPublished = () => { }, ...props }) => {
     const { message } = App.useApp();
     const [publishBook, { isLoading: isPublishing }] = usePublishBookMutation();
 
@@ -34,4 +34,6 @@ export default function BookPublishButton({ children, book, t, onPublished = () 
     };
 
     return (<Button {...props} onClick={showConfirm} icon={<MdPublishedWithChanges />} disabled={book && book.links && !book.links.publish}>{children}</Button>);
-}
+};
+
+export default BookPublishButton;

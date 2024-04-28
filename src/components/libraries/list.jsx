@@ -14,7 +14,7 @@ import LibraryCard from "./libraryCard";
 import LibraryListItem from "./libraryListItem";
 
 // ------------------------------------------------------
-function ShowMoreButton({ t }) {
+const ShowMoreButton = ({ t }) => {
     const navigate = useNavigate();
     return (
         <div
@@ -39,7 +39,8 @@ const LibrariesList = ({
     pageNumber,
     pageSize,
     showSearch = true,
-    showMore = false }) => {
+    showMore = false
+}) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();

@@ -10,7 +10,7 @@ import { downloadFile, loadPdfPage, dataURItoBlob } from "~/src/util";
 import { pdfjsLib } from '~/src/util/pdf'
 // ------------------------------------------------------
 
-export default BookImageFromFile = ({ libraryId, book, content, t, disabled }) => {
+const BookImageFromFile = ({ libraryId, book, content, t, disabled }) => {
     const { message } = App.useApp();
     const [progress, setProgress] = useState(null);
     const [open, setOpen] = useState(false);
@@ -63,3 +63,5 @@ export default BookImageFromFile = ({ libraryId, book, content, t, disabled }) =
     </>
     );
 };
+
+export default BookImageFromFile;

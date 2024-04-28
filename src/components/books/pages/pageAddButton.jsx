@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 
 // ------------------------------------------------------
 
-export default function PageAddButton({ libraryId, book, t }) {
+const PageAddButton = ({ libraryId, book, t }) => {
     const items = [
         {
             key: "pages-add-new",
@@ -60,4 +60,6 @@ export default function PageAddButton({ libraryId, book, t }) {
             </Button>
         </Dropdown>
     );
-}
+};
+
+export default PageAddButton;

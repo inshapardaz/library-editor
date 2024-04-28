@@ -10,7 +10,7 @@ import {
 // Local Import
 import { updateLinkToBooksPage } from "~/src/util";
 import { BookStatus } from "~/src/models";
-import BookStatusIcon from "./BookStatusIcon";
+import BookStatusIcon from "./bookStatusIcon";
 
 // ------------------------------------------------------
 

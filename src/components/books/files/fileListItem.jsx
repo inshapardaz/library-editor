@@ -11,13 +11,13 @@ import FileTypeIcon from "./fileTypeIcon";
 import BookImageFromFile from "./bookImageFromFile";
 // ------------------------------------------------------
 
-function FileListItem({
+const FileListItem = ({
     libraryId,
     book,
     content,
     t,
     message
-}) {
+}) => {
     const [updateBookContent, { isLoading: isUpdating }] = useUpdateBookContentMutation();
 
     const title = (<Link
@@ -86,6 +86,6 @@ function FileListItem({
         />
     </List.Item>
     );
-}
+};
 
 export default FileListItem;

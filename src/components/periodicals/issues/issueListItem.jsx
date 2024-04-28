@@ -13,7 +13,7 @@ import { bookPlaceholderImage, setDefaultIssueImage, getDateFormatFromFrequency 
 import IconText from "~/src/components/common/iconText";
 // ------------------------------------------------------
 
-export default IssueListItem = ({ libraryId, periodicalId, issue, t }) => {
+const IssueListItem = ({ libraryId, periodicalId, issue, t }) => {
     const navigate = useNavigate();
     const cover = issue.links.image ? <img src={issue.links.image} onError={setDefaultIssueImage} className={styles["issue__image--small"]} alt={issue.id} /> : <img src={bookPlaceholderImage} className={styles["issue__image--small"]} alt={`${issue.volume}-${issue.issueNumber}`} />;
     const title = <Link to={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}`}>{moment(issue.issueDate).format(getDateFormatFromFrequency(issue.frequency))}</Link>;
@@ -40,3 +40,5 @@ export default IssueListItem = ({ libraryId, periodicalId, issue, t }) => {
         </List.Item>
     );
 };
+
+export default IssueListItem;

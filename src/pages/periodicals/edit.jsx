@@ -30,7 +30,7 @@ const { Dragger } = Upload;
 const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 14 } };
 const buttonItemLayout = { wrapperCol: { span: 14, offset: 4 } };
 
-export default PeriodicalEditPage = () => {
+const PeriodicalEditPage = () => {
     const { message } = App.useApp();
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -178,4 +178,6 @@ export default PeriodicalEditPage = () => {
             </ContentsContainer>
         </>
     );
-}
+};
+
+export default PeriodicalEditPage;

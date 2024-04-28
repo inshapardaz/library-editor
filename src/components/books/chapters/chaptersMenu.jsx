@@ -18,6 +18,6 @@ const ChaptersMenu = ({ libraryId, bookId, t, selectedChapterNumber = null, onCh
     const items = chapters?.data.map(c => ({ key: c.chapterNumber, label: c.title, icon: <Avatar>{c.chapterNumber}</Avatar> }))
     const onClick = ({ key }) => onChanged(key)
     return (<Menu mode="inline" items={items} selectedKeys={selectedChapterNumber} onClick={onClick} />)
-}
+};
 
 export default ChaptersMenu;

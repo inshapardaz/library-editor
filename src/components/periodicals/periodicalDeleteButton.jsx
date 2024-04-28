@@ -9,7 +9,7 @@ import { useDeletePeriodicalMutation } from "~/src/store/slices/periodicalsSlice
 const { confirm } = Modal;
 // ------------------------------------------------------
 
-export default PeriodicalDeleteButton = ({
+const PeriodicalDeleteButton = ({
     children,
     libraryId,
     periodical,
@@ -42,4 +42,6 @@ export default PeriodicalDeleteButton = ({
     };
 
     return (<Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash />}>{children}</Button>);
-}
+};
+
+export default PeriodicalDeleteButton;

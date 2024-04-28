@@ -9,7 +9,7 @@ import * as styles from "~/src/styles/common.module.scss";
 
 // ----------------------------------------------------
 
-function PageHeader({ title, subTitle, breadcrumb, icon, actions }) {
+const PageHeader = ({ title, subTitle, breadcrumb, icon, actions }) => {
     //const { t } = useTranslation();
 
     let actionColumns = [];

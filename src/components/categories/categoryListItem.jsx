@@ -11,7 +11,7 @@ import CategoryDeleteButton from "./categoryDeleteButton";
 
 // ------------------------------------------------------
 
-function CategoryListItem({ libraryId, category, t }) {
+const CategoryListItem = ({ libraryId, category, t }) => {
     const avatar = <FaTags />;
     const title = <Link to={`/libraries/${libraryId}/books?categories=${category.id}`}>{category.name}</Link>;
     const bookCount = (
@@ -30,6 +30,6 @@ function CategoryListItem({ libraryId, category, t }) {
             <List.Item.Meta title={title} avatar={avatar} />
         </List.Item>
     );
-}
+};
 
 export default CategoryListItem;

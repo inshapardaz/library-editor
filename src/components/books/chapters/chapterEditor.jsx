@@ -12,7 +12,7 @@ import {
 import EditingStatusSelect from "~/src/components/editingStatusSelect";
 // ------------------------------------------------------
 
-export default function ChapterEditor({ libraryId, bookId, chapter, t, type }) {
+const ChapterEditor = ({ libraryId, bookId, chapter, t, type }) => {
     const { message } = App.useApp();
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
@@ -110,4 +110,6 @@ export default function ChapterEditor({ libraryId, bookId, chapter, t, type }) {
             </Modal>
         </>
     );
-}
+};
+
+export default ChapterEditor;

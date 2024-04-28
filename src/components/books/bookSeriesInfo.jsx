@@ -3,8 +3,7 @@ import { ImBooks } from "react-icons/im";
 // Local Imports
 import IconText from "~/src/components/common/iconText";
 // ------------------------------------------------------
-
-export default BookSeriesInfo = ({ libraryId, book, t, navigate }) => {
+const BookSeriesInfo = ({ libraryId, book, t }) => {
     if (book && book.seriesName) {
         if (book.seriesIndex && book.seriesIndex > 0) {
             return <IconText icon={ImBooks}
@@ -19,4 +18,6 @@ export default BookSeriesInfo = ({ libraryId, book, t, navigate }) => {
     }
 
     return null;
-}
+};
+
+export default BookSeriesInfo;

@@ -13,7 +13,7 @@ import IconText from "~/src/components/common/iconText";
 
 //------------------------------------
 
-export default IssueInfo = ({ libraryId, periodical, issue, t }) => {
+const IssueInfo = ({ libraryId, periodical, issue, t }) => {
     const navigate = useNavigate();
 
     if (!issue) return null;
@@ -55,3 +55,5 @@ export default IssueInfo = ({ libraryId, periodical, issue, t }) => {
         </Space>
     </>;
 };
+
+export default IssueInfo;

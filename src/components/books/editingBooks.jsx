@@ -13,7 +13,7 @@ import BookListItem from "./bookListItem";
 
 // ------------------------------------------------------
 
-function ShowMoreButton({ libraryId, t, status }) {
+const ShowMoreButton = ({ libraryId, t, status }) => {
     const navigate = useNavigate();
     return (
         <div
@@ -46,7 +46,7 @@ const grid = {
     xxl: 5,
 };
 
-function EditingBooks({ status }) {
+const EditingBooks = ({ status }) => {
     const { t } = useTranslation();
     const { libraryId } = useParams();
     const {
@@ -102,6 +102,6 @@ function EditingBooks({ status }) {
             />
         </DataContainer>
     );
-}
+};
 
 export default EditingBooks;

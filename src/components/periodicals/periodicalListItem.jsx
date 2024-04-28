@@ -17,7 +17,7 @@ const { Text, Paragraph } = Typography;
 
 // ------------------------------------------------------
 
-export default PeriodicalListItem = ({ libraryId, periodical, t }) => {
+const PeriodicalListItem = ({ libraryId, periodical, t }) => {
     const cover = periodical.links.image ? <img src={periodical.links.image} onError={setDefaultPeriodicalImage} className={styles["periodical__image--small"]} alt={periodical.title} /> : <img src={periodicalPlaceholderImage} className={styles["periodical__image--small"]} alt={periodical.title} />;
 
     const title = <Link to={`/libraries/${libraryId}/periodicals/${periodical.id}`}>{periodical.title}</Link>;
@@ -48,3 +48,5 @@ export default PeriodicalListItem = ({ libraryId, periodical, t }) => {
         </List.Item>
     );
 };
+
+export default PeriodicalListItem;

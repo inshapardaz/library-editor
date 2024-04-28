@@ -5,27 +5,29 @@ import { useNavigate } from "react-router-dom";
 import { Space, Typography } from 'antd';
 
 // ------------------------------------------------
-export default IconText = ({
-  icon,
-  text,
-  secondaryText = null,
-  href = null,
-  onClick = () => { }
+const IconText = ({
+    icon,
+    text,
+    secondaryText = null,
+    href = null,
+    onClick = () => { }
 }) => {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const handleClick = () => {
-    if (href) {
-      navigate(href);
-    } else {
-      onClick();
+    const handleClick = () => {
+        if (href) {
+            navigate(href);
+        } else {
+            onClick();
+        }
     }
-  }
-  return (
-    <Space onClick={handleClick} style={{ cursor: href ? 'pointer' : 'default' }}>
-      {React.createElement(icon)}
-      {text}
-      {secondaryText && <Typography.Text type="secondary">{secondaryText}</Typography.Text>}
-    </Space>
-  );
-}
+    return (
+        <Space onClick={handleClick} style={{ cursor: href ? 'pointer' : 'default' }}>
+            {React.createElement(icon)}
+            {text}
+            {secondaryText && <Typography.Text type="secondary">{secondaryText}</Typography.Text>}
+        </Space>
+    );
+};
+
+export default IconText;

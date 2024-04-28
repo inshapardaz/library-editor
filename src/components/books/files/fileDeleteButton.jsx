@@ -9,7 +9,8 @@ import { useDeleteBookContentMutation } from "~/src/store/slices/booksSlice";
 // ------------------------------------------------------
 const { confirm } = Modal;
 // ------------------------------------------------------
-export default function FileDeleteButton({ content, t, type }) {
+
+const FileDeleteButton = ({ content, t, type }) => {
     const { message } = App.useApp();
     const [deleteBookContent, { isLoading: isDeleting }] = useDeleteBookContentMutation();
 
@@ -47,4 +48,6 @@ export default function FileDeleteButton({ content, t, type }) {
             />
         </Tooltip>
     );
-}
+};
+
+export default FileDeleteButton;

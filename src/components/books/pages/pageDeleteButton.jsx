@@ -9,12 +9,12 @@ import { useDeleteBookPageMutation } from "~/src/store/slices/booksSlice";
 // ------------------------------------------------------
 const { confirm } = Modal;
 // ------------------------------------------------------
-export default function PageDeleteButton({
+const PageDeleteButton = ({
     pages = [],
     t,
     type,
     onDeleted = () => { },
-}) {
+}) => {
     const { message } = App.useApp();
     const [deleteBookPage, { isLoading: isDeleting }] =
         useDeleteBookPageMutation();
@@ -57,4 +57,6 @@ export default function PageDeleteButton({
             icon={<FaTrash />}
         ></Button>
     );
-}
+};
+
+export default PageDeleteButton;

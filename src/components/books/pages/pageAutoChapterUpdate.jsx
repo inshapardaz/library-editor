@@ -9,7 +9,7 @@ import { useUpdateBookPageMutation } from "~/src/store/slices/booksSlice";
 
 // ------------------------------------------------------
 
-export default function PageAutoChapterUpdate({ pages, t, type }) {
+const PageAutoChapterUpdate = ({ pages, t, type }) => {
     const { message } = App.useApp();
     const [open, setOpen] = useState(false);
     const [updateBookPage, { isLoading: isAssigning }] = useUpdateBookPageMutation();
@@ -71,4 +71,6 @@ export default function PageAutoChapterUpdate({ pages, t, type }) {
             </Modal>
         </>
     );
-}
+};
+
+export default PageAutoChapterUpdate;

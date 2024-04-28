@@ -9,7 +9,7 @@ import { MdOutlineDarkMode, MdOutlineWbSunny } from 'react-icons/md'
 import { toggleUiMode } from '~/src/store/slices/uiSlice';
 // -------------------------------------------------
 
-function DarkModeToggle() {
+const DarkModeToggle = () => {
     const dispatch = useDispatch();
     const mode = useSelector(state => state.ui.uiMode);
     const toggleDarkMode = () => dispatch(toggleUiMode())
@@ -20,6 +20,6 @@ function DarkModeToggle() {
         checked={mode === 'dark'}
         onChange={toggleDarkMode}
     />);
-}
+};
 
 export default DarkModeToggle;

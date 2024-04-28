@@ -9,7 +9,7 @@ import {
 import BookStatus from "~/src/models/bookStatus";
 //--------------------------------------------
 
-export default BookStatusIcon = ({ status, render = true }) => {
+const BookStatusIcon = ({ status, render = true }) => {
     switch (status) {
         case BookStatus.All:
             return render ? <FaStarOfLife /> : FaStarOfLife;
@@ -26,4 +26,6 @@ export default BookStatusIcon = ({ status, render = true }) => {
         default:
             return null;
     }
-}
+};
+
+export default BookStatusIcon;

@@ -28,7 +28,7 @@ import AuthorAvatar from "~/src/components/author/authorAvatar";
 
 // ----------------------------------------------
 
-export default ArticleContentEditPage = () => {
+const ArticleContentEditPage = () => {
     const { t } = useTranslation();
     const { libraryId, articleId, language } = useParams();
 
@@ -129,3 +129,5 @@ export default ArticleContentEditPage = () => {
         </>
     );
 };
+
+export default ArticleContentEditPage;

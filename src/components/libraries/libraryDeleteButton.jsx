@@ -11,7 +11,16 @@ import { useDeleteLibraryMutation } from "~/src/store/slices/librariesSlice";
 const { confirm } = Modal;
 
 // ------------------------------------------------------
-export default function LibraryDeleteButton({ children, library, t, type, onDeleted = () => { }, danger = false, block = false, size = "middle" }) {
+const LibraryDeleteButton = ({
+    children,
+    library,
+    t,
+    type,
+    onDeleted = () => { },
+    danger = false,
+    block = false,
+    size = "middle"
+}) => {
     const { message } = App.useApp();
     const [deleteLibrary, { isLoading: isDeleting }] = useDeleteLibraryMutation();
 
@@ -34,4 +43,6 @@ export default function LibraryDeleteButton({ children, library, t, type, onDele
     };
 
     return (<Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash />}>{children}</Button>);
-}
+};
+
+export default LibraryDeleteButton;

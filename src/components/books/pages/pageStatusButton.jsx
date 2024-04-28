@@ -10,7 +10,7 @@ import EditingStatusSelect from "~/src/components/editingStatusSelect";
 
 // ------------------------------------------------------
 
-export default function PageStatusButton({ pages, t, type }) {
+const PageStatusButton = ({ pages, t, type }) => {
     const { message } = App.useApp();
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
@@ -100,4 +100,6 @@ export default function PageStatusButton({ pages, t, type }) {
             </Modal>
         </>
     );
-}
+};
+
+export default PageStatusButton;

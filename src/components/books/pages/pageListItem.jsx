@@ -14,14 +14,14 @@ import PageStatusButton from "./pageStatusButton";
 
 // ------------------------------------------------------
 
-function PageListItem({
+const PageListItem = ({
     libraryId,
     book,
     page,
     t,
     selected = false,
     onSelectChanged = () => { },
-}) {
+}) => {
     let description = page.chapterTitle ? (
         <Typography.Text>{page.chapterTitle}</Typography.Text>
     ) : null;
@@ -116,6 +116,6 @@ function PageListItem({
             )}
         </Draggable>
     );
-}
+};
 
 export default PageListItem;

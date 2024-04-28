@@ -15,7 +15,7 @@ import { SortDirection } from "~/src/models";
 
 // ------------------------------------------------------
 
-export default function AuthorSortButton({ sortBy, sortDirection, t }) {
+const AuthorSortButton = ({ sortBy, sortDirection, t }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -61,4 +61,6 @@ export default function AuthorSortButton({ sortBy, sortDirection, t }) {
             </Button>
         </Dropdown>
     );
-}
+};
+
+export default AuthorSortButton;

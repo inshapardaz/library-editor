@@ -12,7 +12,7 @@ import BookSeriesInfo from "./bookSeriesInfo";
 import BookDeleteButton from "./bookDeleteButton";
 // --------------------------------------------
 
-function BookCard({ libraryId, book, t }) {
+const BookCard = ({ libraryId, book, t }) => {
     const cover = book.links.image ? (
         <img
             src={book.links.image}

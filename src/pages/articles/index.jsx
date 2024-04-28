@@ -16,7 +16,7 @@ import ArticlesSideBar from "~/src/components/articles/articlesSideBar";
 const { Content, Sider } = Layout;
 //--------------------------------------------------------
 
-export default ArticleHomePage = () => {
+const ArticleHomePage = () => {
     const { t } = useTranslation();
     const {
         token: { colorBgContainer },
@@ -91,3 +91,5 @@ export default ArticleHomePage = () => {
         </>
     );
 };
+
+export default ArticleHomePage;

@@ -19,7 +19,7 @@ import PeriodicalDeleteButton from "~/src/components/periodicals/periodicalDelet
 const { Content, Sider } = Layout;
 //--------------------------------------------------------
 
-export default PeriodicalPage = () => {
+const PeriodicalPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const {
@@ -93,4 +93,6 @@ export default PeriodicalPage = () => {
             </ContentsContainer>
         </>
     );
-}
+};
+
+export default PeriodicalPage;

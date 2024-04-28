@@ -13,7 +13,7 @@ import { bookPlaceholderImage, setDefaultIssueImage, getDateFormatFromFrequency 
 import IconText from "~/src/components/common/iconText";
 // ------------------------------------------------------
 
-function IssueCard({ libraryId, periodicalId, issue }) {
+const IssueCard = ({ libraryId, periodicalId, issue }) => {
     var navigate = useNavigate();
     const cover = issue.links.image ? <img src={issue.links.image} onError={setDefaultIssueImage} className={styles["book__image"]} alt={issue.id} /> : <img src={bookPlaceholderImage} className={styles["book__image"]} alt={`${issue.volume}-${issue.issueNumber}`} />;
 
@@ -39,6 +39,6 @@ function IssueCard({ libraryId, periodicalId, issue }) {
             </Card>
         </Link>
     );
-}
+};
 
 export default IssueCard;

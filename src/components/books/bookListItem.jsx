@@ -19,7 +19,7 @@ const { Text, Paragraph } = Typography;
 
 // ------------------------------------------------------
 
-function BookListItem({ libraryId, book, t }) {
+const BookListItem = ({ libraryId, book, t }) => {
     const navigate = useNavigate();
 
     const cover = book.links.image ? (

@@ -29,7 +29,7 @@ const grid = {
 
 // ------------------------------------------------------
 
-function ArticlesList({
+const ArticlesList = ({
     libraryId,
     query,
     author,
@@ -43,7 +43,7 @@ function ArticlesList({
     pageNumber,
     pageSize,
     showSearch = true,
-}) {
+}) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();

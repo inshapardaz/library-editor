@@ -28,7 +28,7 @@ const grid = {
 
 // ------------------------------------------------------
 
-function AuthorsList({
+const AuthorsList = ({
     libraryId,
     query,
     authorType,
@@ -36,7 +36,7 @@ function AuthorsList({
     pageSize,
     sortDirection,
     showSearch = true,
-}) {
+}) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
@@ -171,6 +171,6 @@ function AuthorsList({
             />
         </DataContainer>
     );
-}
+};
 
 export default AuthorsList;

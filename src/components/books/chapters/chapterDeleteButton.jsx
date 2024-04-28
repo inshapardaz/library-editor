@@ -8,7 +8,8 @@ import { useDeleteChapterMutation } from "~/src/store/slices/booksSlice";
 // ------------------------------------------------------
 const { confirm } = Modal;
 // ------------------------------------------------------
-export default function ChapterDeleteButton({ chapters = [], t, type }) {
+
+const ChapterDeleteButton = ({ chapters = [], t, type }) => {
     const { message } = App.useApp();
     const [deleteChapter, { isLoading: isDeleting }] =
         useDeleteChapterMutation();
@@ -55,4 +56,6 @@ export default function ChapterDeleteButton({ chapters = [], t, type }) {
             />
         </Tooltip>
     );
-}
+};
+
+export default ChapterDeleteButton;

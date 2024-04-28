@@ -17,7 +17,7 @@ import {
 } from '~/src/store/slices/authSlice';
 
 
-function ChangePassword() {
+const ChangePassword = () => {
     const { message } = App.useApp();
     const dispatch = useDispatch()
     const { t } = useTranslation()
@@ -108,6 +108,6 @@ function ChangePassword() {
         </Spin>
     </FullPageFormContainer>
     );
-}
+};
 
 export default ChangePassword;

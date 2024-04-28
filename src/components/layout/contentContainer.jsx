@@ -6,7 +6,7 @@ import * as styles from '~/src/styles/common.module.scss'
 
 // -----------------------------------------
 
-function ContentsContainer({ children }) {
+const ContentsContainer = ({ children }) => {
     const {
         token: { colorBgContainer, borderRadius },
     } = theme.useToken();

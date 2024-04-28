@@ -10,13 +10,13 @@ import { authorPlaceholderImage } from "~/src/util";
 import IconText from "~/src/components/common/iconText";
 
 // --------------------------------------------------
-function AuthorAvatar({
+const AuthorAvatar = ({
     author,
     libraryId,
     t,
     showImage = true,
     showName = false,
-}) {
+}) => {
     const navigate = useNavigate();
 
     const avatar = author.links.image ? (
@@ -51,6 +51,6 @@ function AuthorAvatar({
             {showImage && avatar} {showName && author.name}
         </Popover>
     );
-}
+};
 
 export default AuthorAvatar;

@@ -30,7 +30,7 @@ const { Dragger } = Upload;
 const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 14 } };
 const buttonItemLayout = { wrapperCol: { span: 14, offset: 4 } };
 
-export default IssueEditPage = () => {
+const IssueEditPage = () => {
     const { message } = App.useApp();
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -166,4 +166,6 @@ export default IssueEditPage = () => {
             </ContentsContainer>
         </>
     );
-}
+};
+
+export default IssueEditPage;

@@ -11,7 +11,7 @@ import { getDateFormatFromFrequency } from "~/src/util";
 const { confirm } = Modal;
 // ------------------------------------------------------
 
-export default IssueDeleteButton = ({
+const IssueDeleteButton = ({
     children,
     issue,
     t,
@@ -45,4 +45,6 @@ export default IssueDeleteButton = ({
     };
 
     return (<Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash />}>{children}</Button>);
-}
+};
+
+export default IssueDeleteButton;

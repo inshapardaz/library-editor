@@ -14,14 +14,14 @@ import ChapterStatusButton from "./chapterStatusButton";
 
 // ------------------------------------------------------
 
-function ChapterListItem({
+const ChapterListItem = ({
     libraryId,
     bookId,
     chapter,
     selected = false,
     onSelectChanged = () => { },
     t,
-}) {
+}) => {
     const title = (<Link
         to={`/libraries/${libraryId}/books/${bookId}/chapters/${chapter.chapterNumber}`}
     >
@@ -109,6 +109,6 @@ function ChapterListItem({
             )}
         </Draggable>
     );
-}
+};
 
 export default ChapterListItem;

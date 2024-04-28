@@ -13,7 +13,7 @@ import { isLoggedIn } from "~/src/store/slices/authSlice";
 
 // --------------------------------------
 
-function ArticlesSideBar({ libraryId, selectedCategories, sortBy, sortDirection, favorites, read }) {
+const ArticlesSideBar = ({ libraryId, selectedCategories, sortBy, sortDirection, favorites, read }) => {
     const { t } = useTranslation();
     const isUserLoggedIn = useSelector(isLoggedIn);
     const { data: categories, error, isFetching } = useGetCategoriesQuery({ libraryId });
@@ -86,6 +86,6 @@ function ArticlesSideBar({ libraryId, selectedCategories, sortBy, sortDirection,
     }
 
     return <Menu mode="inline" selectedKeys={selection} defaultOpenKeys={["side-bar-categories"]} style={{ height: "100%" }} items={items} />;
-}
+};
 
 export default ArticlesSideBar;

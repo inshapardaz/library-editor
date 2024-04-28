@@ -18,7 +18,7 @@ import { updateLinkToBooksPagesPage } from "~/src/util";
 
 // ------------------------------------------------------
 
-export default function PageStatusFilterButton({ t }) {
+const PageStatusFilterButton = ({ t }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const [searchParams] = useSearchParams();
@@ -83,4 +83,6 @@ export default function PageStatusFilterButton({ t }) {
             </Button>
         </Dropdown>
     );
-}
+};
+
+export default PageStatusFilterButton;
