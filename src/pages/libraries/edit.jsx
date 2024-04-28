@@ -9,13 +9,13 @@ import { FaFeatherAlt } from "react-icons/fa";
 import ImgCrop from "antd-img-crop";
 
 // Local imports
-import { useGetLibraryQuery, useAddLibraryMutation, useUpdateLibraryMutation, useUpdateLibraryImageMutation } from "../../features/api/librariesSlice";
-import ContentsContainer from "../../components/layout/contentContainer";
-import PageHeader from "../../components/layout/pageHeader";
-import LanguageSelect from "../../components/languageSelect";
-import Error from "../../components/common/error";
-import Loading from "../../components/common/loader";
-import helpers from "../../helpers";
+import { useGetLibraryQuery, useAddLibraryMutation, useUpdateLibraryMutation, useUpdateLibraryImageMutation } from "~/src/store/slices/librariesSlice";
+import { libraryPlaceholderImage, setDefaultBookImage } from "~/src/util";
+import ContentsContainer from "~/src/components/layout/contentContainer";
+import PageHeader from "~/src/components/layout/pageHeader";
+import LanguageSelect from "~/src/components/languageSelect";
+import Error from "~/src/components/common/error";
+import Loading from "~/src/components/common/loader";
 
 // ----------------------------------------------
 const { Dragger } = Upload;
@@ -47,15 +47,15 @@ const LibraryEditPage = () => {
                 .then(() => uploadImage(library))
                 .then(() => navigate(`/libraries/${library.id}`))
                 .then(() => message.success(t("library.actions.edit.success")))
-                .catch((_) => message.error(t("library.actions.edit.error")));
+                .catch(() => message.error(t("library.actions.edit.error")));
         } else {
             addLibrary({ library })
-            .unwrap()
+                .unwrap()
                 .then((res) => library = res)
                 .then(() => uploadImage(library))
                 .then(() => navigate(`/libraries/${library.id}`))
                 .then(() => message.success(t("library.actions.add.success")))
-                .catch((_) => message.error(t("library.actions.add.error")));
+                .catch(() => message.error(t("library.actions.add.error")));
         }
     };
 
@@ -87,7 +87,7 @@ const LibraryEditPage = () => {
             return library.links.image;
         }
 
-        return helpers.defaultLibraryImage;
+        return libraryPlaceholderImage;
     };
     const title = library ? library.name : t("library.actions.add.label");
 
@@ -99,7 +99,7 @@ const LibraryEditPage = () => {
                     <Col l={4} md={6} xs={24}>
                         <ImgCrop modalTitle={t("actions.resizeImage")}>
                             <Dragger fileList={fileList} beforeUpload={onImageChange} showUploadList={false}>
-                                <img src={getCoverSrc()} height="300" alt={library && library.name} onError={helpers.setDefaultBookImage} />
+                                <img src={getCoverSrc()} height="300" alt={library && library.name} onError={setDefaultBookImage} />
                             </Dragger>
                         </ImgCrop>
                     </Col>

@@ -4,7 +4,7 @@ import { FaTrash } from 'react-icons/fa';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 
 // Local imports
-import { useDeleteBookMutation } from "../../features/api/booksSlice";
+import { useDeleteBookMutation } from "~/src/store/slices/booksSlice";
 
 // ------------------------------------------------------
 
@@ -26,9 +26,9 @@ export default function BookDeleteButton({ children, libraryId, book, t, type, o
             onOk() {
                 return deleteBook({ libraryId, bookId: book.id })
                     .unwrap()
-                    .then(() => message.success(t("book.actions.delete.success")))
                     .then(() => onDeleted())
-                    .catch((_) => message.error(t("book.actions.delete.error")));
+                    .then(() => message.success(t("book.actions.delete.success")))
+                    .catch(() => message.error(t("book.actions.delete.error")));
             }
         });
     };

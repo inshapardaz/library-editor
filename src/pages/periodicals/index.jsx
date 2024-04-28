@@ -7,11 +7,12 @@ import { FaPlus } from "react-icons/fa";
 import { ImNewspaper } from "react-icons/im";
 
 // Local Imports
-import PageHeader from "../../components/layout/pageHeader";
-import PeriodicalsList from "../../components/periodicals/periodicalsList";
-import ContentsContainer from "../../components/layout/contentContainer";
+import PageHeader from "~/src/components/layout/pageHeader";
+import PeriodicalsList from "~/src/components/periodicals/periodicalsList";
+import ContentsContainer from "~/src/components/layout/contentContainer";
+//------------------------------------------------
 
-function PeriodicalsHomePage() {
+export default PeriodicalsHomePage = () => {
     const { t } = useTranslation();
     const { libraryId } = useParams();
     const [searchParams] = useSearchParams();
@@ -35,4 +36,3 @@ function PeriodicalsHomePage() {
         </>
     );
 }
-export default PeriodicalsHomePage;

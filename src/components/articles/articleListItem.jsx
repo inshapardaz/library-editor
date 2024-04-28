@@ -2,12 +2,12 @@ import { Link, useNavigate } from "react-router-dom";
 
 // 3rd Party Libraries
 import { Avatar, Button, Divider, List } from "antd";
+import { FaEdit, FaPlusCircle } from "react-icons/fa";
 
 // Local Import
-import AuthorAvatar from "../author/authorAvatar";
-import { ArticleCategory } from "./articleCategory";
+import AuthorAvatar from "~/src/components/author/authorAvatar";
+import ArticleCategory from "./articleCategory";
 import ArticleDeleteButton from "./articleDeleteButton";
-import { FaEdit, FaPlusCircle } from "react-icons/fa";
 // ------------------------------------------------------
 
 function ArticleListItem({ libraryId, article, t }) {

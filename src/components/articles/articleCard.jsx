@@ -5,9 +5,9 @@ import { Avatar, Card } from "antd";
 import { FiEdit } from "react-icons/fi";
 
 // Local Imports
-import styles from "../../styles/common.module.scss";
-import AuthorAvatar from "../author/authorAvatar";
-import helpers from "../../helpers/index";
+import * as styles from "~/src/styles/common.module.scss";
+import { articlePlaceholderImage, setDefaultArticleImage } from "~/src/util";
+import AuthorAvatar from "~/src/components/author/authorAvatar";
 import ArticleDeleteButton from "./articleDeleteButton";
 // --------------------------------------------
 
@@ -17,13 +17,13 @@ function ArticleCard({ libraryId, article, t }) {
     const cover = article.links.image ? (
         <img
             src={article.links.image}
-            onError={helpers.setDefaultArticleImage}
+            onError={setDefaultArticleImage}
             className={styles["article__image"]}
             alt={article.title}
         />
     ) : (
         <img
-            src={helpers.defaultArticleImage}
+            src={articlePlaceholderImage}
             className={styles["article__image"]}
             alt={article.title}
         />

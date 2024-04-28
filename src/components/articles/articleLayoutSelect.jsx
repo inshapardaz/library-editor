@@ -1,8 +1,11 @@
+// 3rd party libraries
 import { Select, Space } from "antd";
 import { FaAlignJustify } from "react-icons/fa";
 import { PiTextColumnsBold, PiFileTextLight } from "react-icons/pi";
 
+// ------------------------------------------------------
 const { Option } = Select;
+// ------------------------------------------------------
 
 const layouts = [{
     "key": "normal",
@@ -16,9 +19,9 @@ const layouts = [{
     "key": "twoColumnPoetry",
     "value": "twoColumnPoetry",
     "icon": <PiTextColumnsBold />
-}
-]
-const ArticleLayoutSelect = ({ value, onChange, placeholder, t, disabled = false, style = null }) => {
+}]
+
+export default ArticleLayoutSelect = ({ value, onChange, placeholder, t, disabled = false, style = null }) => {
     return (<Select placeholder={placeholder}
         defaultValue={value}
         onChange={val => onChange(val)}
@@ -34,6 +37,4 @@ const ArticleLayoutSelect = ({ value, onChange, placeholder, t, disabled = false
         ))}
     </Select>);
 
-}
-
-export default ArticleLayoutSelect;
+};

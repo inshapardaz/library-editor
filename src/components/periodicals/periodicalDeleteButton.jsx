@@ -4,14 +4,22 @@ import { FaTrash } from 'react-icons/fa';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 
 // Local imports
-import { useDeletePeriodicalMutation } from "../../features/api/periodicalsSlice";
-
+import { useDeletePeriodicalMutation } from "~/src/store/slices/periodicalsSlice";
 // ------------------------------------------------------
-
 const { confirm } = Modal;
-
 // ------------------------------------------------------
-export default function PeriodicalDeleteButton({ children, libraryId, periodical, t, type, onDeleted = () => { }, danger = false, block = false, size = "middle" }) {
+
+export default PeriodicalDeleteButton = ({
+    children,
+    libraryId,
+    periodical,
+    t,
+    type,
+    onDeleted = () => { },
+    danger = false,
+    block = false,
+    size = "middle"
+}) => {
     const { message } = App.useApp();
     const [deletePeriodical, { isLoading: isDeleting }] = useDeletePeriodicalMutation();
 
@@ -26,9 +34,9 @@ export default function PeriodicalDeleteButton({ children, libraryId, periodical
             onOk() {
                 return deletePeriodical({ libraryId, periodicalId: periodical.id })
                     .unwrap()
-                    .then(() => message.success(t("periodical.actions.delete.success")))
                     .then(() => onDeleted())
-                    .catch((_) => message.error(t("periodical.actions.delete.error")));
+                    .then(() => message.success(t("periodical.actions.delete.success")))
+                    .catch(() => message.error(t("periodical.actions.delete.error")));
             }
         });
     };

@@ -7,19 +7,19 @@ import { FaEdit, FaHome, FaPlus } from "react-icons/fa";
 import { ImNewspaper } from "react-icons/im";
 
 // Local Imports
-import PageHeader from "../../components/layout/pageHeader";
-import IssuesList from "../../components/periodicals/issues/issuesList";
-import ContentsContainer from "../../components/layout/contentContainer";
-import { useGetPeriodicalByIdQuery } from "../../features/api/periodicalsSlice";
-import Loading from "../../components/common/loader";
-import Error from "../../components/common/error";
-import PeriodicalInfo from "../../components/periodicals/periodicalInfo";
-import PeriodicalDeleteButton from "../../components/periodicals/periodicalDeleteButton";
+import { useGetPeriodicalByIdQuery } from "~/src/store/slices/periodicalsSlice";
+import PageHeader from "~/src/components/layout/pageHeader";
+import IssuesList from "~/src/components/periodicals/issues/issuesList";
+import ContentsContainer from "~/src/components/layout/contentContainer";
+import Loading from "~/src/components/common/loader";
+import Error from "~/src/components/common/error";
+import PeriodicalInfo from "~/src/components/periodicals/periodicalInfo";
+import PeriodicalDeleteButton from "~/src/components/periodicals/periodicalDeleteButton";
 //--------------------------------------------------------
 const { Content, Sider } = Layout;
 //--------------------------------------------------------
 
-function PeriodicalPage() {
+export default PeriodicalPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const {
@@ -94,4 +94,3 @@ function PeriodicalPage() {
         </>
     );
 }
-export default PeriodicalPage;

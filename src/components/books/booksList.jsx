@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
@@ -7,12 +8,11 @@ import { Button, Input, List, Space, Switch } from "antd";
 import { FaBook, FaCloudUploadAlt, FaPlus } from "react-icons/fa";
 
 // Local Imports
-import helpers from "../../helpers";
-import DataContainer from "../layout/dataContainer";
+import { updateLinkToBooksPage } from "~/src/util";
+import { useGetBooksQuery } from "~/src/store/slices/booksSlice";
+import DataContainer from "~/src/components/layout/dataContainer";
 import BookCard from "./bookCard";
 import BookListItem from "./bookListItem";
-import { useGetBooksQuery } from "../../features/api/booksSlice";
-import { useState } from "react";
 import BookStatusFilterButton from "./bookStatusFilterButton";
 import BookSortButton from "./bookSortButton";
 // ------------------------------------------------------
@@ -96,7 +96,7 @@ function BooksList({
 
     const onPageChanged = (newPage, newPageSize) => {
         navigate(
-            helpers.updateLinkToBooksPage(location, {
+            updateLinkToBooksPage(location, {
                 pageNumber: newPage,
                 pageSize: newPageSize,
             })
@@ -105,7 +105,7 @@ function BooksList({
 
     const onSearch = () => {
         navigate(
-            helpers.updateLinkToBooksPage(location, {
+            updateLinkToBooksPage(location, {
                 pageNumber: 1,
                 query: search,
             })

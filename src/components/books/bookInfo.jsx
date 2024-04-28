@@ -1,16 +1,16 @@
 // 3rd party imports
 import { Divider, Progress, Space, Typography } from "antd";
+import { FiLayers } from "react-icons/fi";
+import { AiOutlineCopy } from "react-icons/ai";
 
 // Local imports
-import helpers from "../../helpers";
-import { BookCategory } from "./bookCategory";
-import { BookSeriesInfo } from "./bookSeriesInfo";
-import styles from "../../styles/common.module.scss";
-import { IconText } from "../common/iconText";
-import BookStatusIcon from './BookStatusIcon';
-import { AiOutlineCopy } from "react-icons/ai";
-import { FiLayers } from "react-icons/fi";
-import EditingStatusIcon from "../editingStatusIcon";
+import * as styles from "~/src/styles/common.module.scss";
+import { setDefaultBookImage, bookPlaceholderImage } from "~/src/util";
+import IconText from "~/src/components/common/iconText";
+import EditingStatusIcon from "~/src/components/editingStatusIcon";
+import BookCategory from "./bookCategory";
+import BookSeriesInfo from "./bookSeriesInfo";
+import BookStatusIcon from './bookStatusIcon';
 // -----------------------------------------
 const { Paragraph } = Typography;
 // ---------------------------------------------
@@ -20,13 +20,13 @@ const BookInfo = ({ libraryId, book, t }) => {
         <img
             className={styles["book__image--thumbnail"]}
             src={book.links.image}
-            onError={helpers.setDefaultBookImage}
+            onError={setDefaultBookImage}
             alt={book.title}
         />
     ) : (
         <img
             className={styles["book__image--thumbnail"]}
-            src={helpers.defaultBookImage}
+            src={bookPlaceholderImage}
             alt={book.title}
         />
     );
@@ -44,14 +44,14 @@ const BookInfo = ({ libraryId, book, t }) => {
                 <BookSeriesInfo book={book} t={t} />
                 <IconText icon={FiLayers} text={t("book.chapterCount", { count: book.chapterCount })} />
                 <IconText icon={AiOutlineCopy} text={t("book.pageCount", { count: book.pageCount })} />
-                <IconText icon={BookStatusIcon({status : book.status, render:false })} text={t(`bookStatus.${book.status}`)} />
+                <IconText icon={BookStatusIcon({ status: book.status, render: false })} text={t(`bookStatus.${book.status}`)} />
                 {book?.pageStatus && <Divider />}
                 {book?.pageStatus?.map(s => (
                     <Space direction="vertical" key={`status-${s.status}`} style={{ width: "100%" }}>
                         <IconText
-                            icon={EditingStatusIcon({status : s.status, render:false })}
+                            icon={EditingStatusIcon({ status: s.status, render: false })}
                             text={t(`editingStatus.${s.status}`)}
-                            secondaryText={ s.count }/>
+                            secondaryText={s.count} />
                         <Progress percent={s.percentage} size="small" />
                     </Space>
                 ))}

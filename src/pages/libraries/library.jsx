@@ -4,24 +4,25 @@ import { useParams } from "react-router-dom";
 import { Spin } from "antd";
 
 // Local Imports
-import ContentsContainer from '../../components/layout/contentContainer';
-import LatestBooks from "../../components/books/latestBooks";
-import EditingBooks from "../../components/books/editingBooks";
-import { useGetLibraryQuery }  from '../../features/api/librariesSlice'
+import * as styles from '~/src/styles/common.module.scss'
 
-import styles from '../../styles/common.module.scss'
+import ContentsContainer from '~/src/components/layout/contentContainer';
+import LatestBooks from "~/src/components/books/latestBooks";
+import EditingBooks from "~/src/components/books/editingBooks";
+import { useGetLibraryQuery } from '~/src/store/slices/librariesSlice'
+
 // -------------------------------------------------------
 
 const LibraryHome = () => {
   const { libraryId } = useParams()
-  const { isFetching  } = useGetLibraryQuery({libraryId}, { skip : libraryId === null})
+  const { isFetching } = useGetLibraryQuery({ libraryId }, { skip: libraryId === null })
 
   if (isFetching) {
     return <Spin />
   }
 
   return (<>
-    <div className={styles.home}/>
+    <div className={styles.home} />
     <ContentsContainer>
       <EditingBooks status="BeingTyped" />
       <EditingBooks status="ProofRead" />

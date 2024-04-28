@@ -6,9 +6,8 @@ import { FaTags } from 'react-icons/fa';
 
 // ------------------------------------------------
 
-export function PeriodicalCategory({ libraryId, periodical }) {
-  if (periodical && periodical.categories && periodical.categories.length > 0)
-  {
+export default PeriodicalCategory = ({ libraryId, periodical }) => {
+  if (periodical && periodical.categories && periodical.categories.length > 0) {
     const list = periodical.categories.map(c => (<Tag key={c.id}>
       <Link to={`/libraries/${libraryId}/periodicals?categories=${c.id}`}>{c.name}</Link>
     </Tag>));

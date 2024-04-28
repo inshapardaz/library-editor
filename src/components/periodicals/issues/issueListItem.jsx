@@ -4,18 +4,19 @@ import moment from "moment";
 // 3rd Party Libraries
 import { Button, Divider, List, Space } from "antd";
 import { FiEdit, FiTrash } from "react-icons/fi";
-
-// Local Import
-import styles from "../../../styles/common.module.scss";
-import helpers from "../../../helpers/index";
-import { IconText } from "../../common/iconText";
 import { GiStack } from "react-icons/gi";
 import { FaNewspaper } from "react-icons/fa";
+
+// Local Import
+import * as styles from "~/src/styles/common.module.scss";
+import { bookPlaceholderImage, setDefaultIssueImage, getDateFormatFromFrequency } from "~/src/util";
+import IconText from "~/src/components/common/iconText";
 // ------------------------------------------------------
-function IssueListItem({ libraryId, periodicalId, issue, t }) {
+
+export default IssueListItem = ({ libraryId, periodicalId, issue, t }) => {
     const navigate = useNavigate();
-    const cover = issue.links.image ? <img src={issue.links.image} onError={helpers.setDefaultIssueImage} className={styles["issue__image--small"]} alt={issue.id} /> : <img src={helpers.defaultBookImage} className={styles["issue__image--small"]} alt={`${issue.volume}-${issue.issueNumber}`} />;
-    const title = <Link to={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}`}>{moment(issue.issueDate).format(helpers.getDateFormatFromFrequency(issue.frequency))}</Link>;
+    const cover = issue.links.image ? <img src={issue.links.image} onError={setDefaultIssueImage} className={styles["issue__image--small"]} alt={issue.id} /> : <img src={bookPlaceholderImage} className={styles["issue__image--small"]} alt={`${issue.volume}-${issue.issueNumber}`} />;
+    const title = <Link to={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}`}>{moment(issue.issueDate).format(getDateFormatFromFrequency(issue.frequency))}</Link>;
     const edit = (<Button type="text" size="small"
         onClick={() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}/edit`)}
         icon={<FiEdit />} />);
@@ -38,6 +39,4 @@ function IssueListItem({ libraryId, periodicalId, issue, t }) {
             <List.Item.Meta title={title} description={description} />
         </List.Item>
     );
-}
-
-export default IssueListItem;
+};

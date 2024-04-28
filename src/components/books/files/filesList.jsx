@@ -3,9 +3,9 @@ import { App, List, Space, Typography, Upload } from "antd";
 import { FaBook, FaFileUpload } from "react-icons/fa";
 
 // Internal Imports
-import { useAddBookContentMutation } from "../../../features/api/booksSlice";
-import FileListItem from "../files/fileListItem";
-import DataContainer from "../../layout/dataContainer";
+import { useAddBookContentMutation } from "~/src/store/slices/booksSlice";
+import DataContainer from "~/src/components/layout/dataContainer";
+import FileListItem from "./fileListItem";
 // ----------------------------------------------
 const { Dragger } = Upload;
 // ----------------------------------------------
@@ -29,7 +29,7 @@ const FilesList = ({
 
         addBookContent({ book: book, payload: file }).unwrap()
             .then(() => message.success(t("book.actions.addFile.success")))
-            .catch((_) => message.error(t("book.actions.addFile.error")));
+            .catch(() => message.error(t("book.actions.addFile.error")));
     }
 
     return (

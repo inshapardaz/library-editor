@@ -6,8 +6,8 @@ import { FaFeatherAlt, FaPenFancy } from "react-icons/fa";
 import { ImBooks } from "react-icons/im";
 
 // Local imports
-import helpers from "../../helpers/index";
-import { IconText } from "../common/iconText";
+import { authorPlaceholderImage } from "~/src/util";
+import IconText from "~/src/components/common/iconText";
 
 // --------------------------------------------------
 function AuthorAvatar({
@@ -22,7 +22,7 @@ function AuthorAvatar({
     const avatar = author.links.image ? (
         <Avatar src={author.links.image}></Avatar>
     ) : (
-        <Avatar src={helpers.defaultAuthorImage}></Avatar>
+        <Avatar src={authorPlaceholderImage}></Avatar>
     );
     const popoverTitle = (
         <Space>
@@ -34,16 +34,14 @@ function AuthorAvatar({
     );
     const popoverContent = (
         <Space direction="vertical">
-            <IconText
-                icon={FaFeatherAlt}
-                link={false}
+            <IconText icon={FaFeatherAlt}
                 text={author.type === "writer"
-                ? t("author.writer")
-                : t("author.poet")} />
-            <IconText onClick={() => navigate(`/libraries/${libraryId}/books?author=${author.id}`)}
+                    ? t("author.writer")
+                    : t("author.poet")} />
+            <IconText href={`/libraries/${libraryId}/books?author=${author.id}`}
                 icon={ImBooks}
                 text={t("author.bookCount", { count: author.bookCount })} />
-            <IconText onClick={() => navigate(`/libraries/${libraryId}/articles?author=${author.id}`)}
+            <IconText href={`/libraries/${libraryId}/articles?author=${author.id}`}
                 icon={FaPenFancy}
                 text={t("author.writingCount", { count: author.articleCount })} />
         </Space>

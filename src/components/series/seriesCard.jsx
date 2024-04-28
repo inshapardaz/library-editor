@@ -6,9 +6,9 @@ import { FaEdit } from "react-icons/fa";
 import { ImBooks } from "react-icons/im";
 
 // Local Imports
-import styles from "../../styles/common.module.scss";
-import { IconText } from "../common/iconText";
-import helpers from "../../helpers/index";
+import * as styles from "~/src/styles/common.module.scss";
+import { seriesPlaceholderImage, setDefaultSeriesImage } from "~/src/util";
+import IconText from "~/src/components/common/iconText";
 import SeriesDeleteButton from "./seriesDeleteButton";
 
 // ------------------------------------------------------
@@ -18,7 +18,7 @@ const { Text, Paragraph } = Typography;
 // ------------------------------------------------------
 
 function SeriesCard({ libraryId, series, t }) {
-    const cover = <img src={series.links.image || helpers.defaultSeriesImage} onError={helpers.setDefaultSeriesImage} className={styles["series__image"]} alt={series.name} />;
+    const cover = <img src={series.links.image || seriesPlaceholderImage} onError={setDefaultSeriesImage} className={styles["series__image"]} alt={series.name} />;
     const description = series.description ? (
         <Paragraph ellipsis type="secondary">
             {series.description}

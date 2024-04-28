@@ -1,12 +1,10 @@
-import React from "react";
 import dayjs from "dayjs";
 
 // 3rd party libraries
 import { DatePicker } from "antd";
 
-// local imports
-
 // -------------------------------------------------
+
 const datePickerType = (frequency) => {
     switch (frequency) {
         case "Weekly":
@@ -29,7 +27,7 @@ const normalizeDate = (value) => dayjs(value);
 
 // -------------------------------------------------
 
-const DateInput = ({ value, onChange, placeholder, frequency, allowFutureValues = true }) => {
+export default DateInput = ({ value, onChange, placeholder, frequency, allowFutureValues = true }) => {
     return (
         <DatePicker
             placeholder={placeholder}
@@ -43,5 +41,3 @@ const DateInput = ({ value, onChange, placeholder, frequency, allowFutureValues 
         />
     );
 };
-
-export default DateInput;

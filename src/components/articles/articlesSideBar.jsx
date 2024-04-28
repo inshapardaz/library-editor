@@ -8,8 +8,8 @@ import { FaTags, FaTag, FaRegHeart, FaEye, FaPen, FaPenAlt } from "react-icons/f
 import { MdNewReleases } from "react-icons/md";
 
 // Local Imports
-import { useGetCategoriesQuery } from "../../features/api/categoriesSlice";
-import { isLoggedIn } from "../../features/auth/authSlice";
+import { useGetCategoriesQuery } from "~/src/store/slices/categoriesSlice";
+import { isLoggedIn } from "~/src/store/slices/authSlice";
 
 // --------------------------------------
 

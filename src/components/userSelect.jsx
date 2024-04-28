@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 // 3rd party libraries
 import { Empty, Select } from "antd";
 import { FaUser } from "react-icons/fa";
 
 // local imports
-import { useGetWritersQuery } from "../features/api/accountsSlice";
+import { useGetWritersQuery } from "~/src/store/slices/accountsSlice";
 
 // -------------------------------------------------
+
 
 const UserSelect = ({
     libraryId,

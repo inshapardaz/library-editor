@@ -14,21 +14,20 @@ import {
     useGetBookChaptersQuery,
     useGetChapterContentsQuery,
     useUpdateChapterMutation,
-} from "../../../features/api/booksSlice";
+} from "~/src/store/slices/booksSlice";
+import { selectedLanguage } from '~/src/store/slices/uiSlice'
 
 import {
     addChapterContent,
     updateChapterContent
-} from '../../../domain/bookService'
-
-import { selectedLanguage } from '../../../features/ui/uiSlice'
-import PageHeader from "../../../components/layout/pageHeader";
-import DataContainer from "../../../components/layout/dataContainer";
-import EditingStatus from "../../../models/editingStatus";
-import TextEditor from "../../../components/textEditor";
-import EditingStatusIcon from "../../../components/editingStatusIcon";
-import ChapterAssignButton from "../../../components/books/chapters/chapterAssignButton";
-import ChapterStatusButton from "../../../components/books/chapters/chapterStatusButton";
+} from '~/src/domain/bookService'
+import { EditingStatus } from "~/src/models";
+import PageHeader from "~/src/components/layout/pageHeader";
+import DataContainer from "~/src/components/layout/dataContainer";
+import TextEditor from "~/src/components/textEditor";
+import EditingStatusIcon from "~/src/components/editingStatusIcon";
+import ChapterAssignButton from "~/src/components/books/chapters/chapterAssignButton";
+import ChapterStatusButton from "~/src/components/books/chapters/chapterStatusButton";
 // ------------------------------------------
 
 const EditChapter = () => {
@@ -86,13 +85,13 @@ const EditChapter = () => {
             setIsBusy(true);
             return addChapterContent({ chapter, language, payload: content })
                 .then(() => message.success(t("book.actions.edit.success")))
-                .catch((_) => message.error(t("book.actions.edit.error")))
+                .catch(() => message.error(t("book.actions.edit.error")))
                 .finally(() => setIsBusy(false));
         } else if (chapterContent) {
             setIsBusy(true);
             return updateChapterContent({ chapterContent, language, payload: content })
                 .then(() => message.success(t("book.actions.add.success")))
-                .catch((_) => message.error(t("book.actions.add.error")))
+                .catch(() => message.error(t("book.actions.add.error")))
                 .finally(() => setIsBusy(false));
         }
     };
@@ -106,7 +105,7 @@ const EditChapter = () => {
             return updateChapter({ chapter: payload })
                 .unwrap()
                 .then(() => message.success(t("chapter.actions.edit.success")))
-                .catch((_) => message.error(t("chapter.actions.edit.error")));
+                .catch(() => message.error(t("chapter.actions.edit.error")));
         }
     };
 
@@ -117,7 +116,7 @@ const EditChapter = () => {
             chapter.status === EditingStatus.InReview);
 
     const actions = chapter ? [
-        <Button.Group>
+        <Button.Group key={chapter.id}>
             {showCompleteButton && (
                 <Tooltip title={t("actions.done")}>
                     <Button onClick={onComplete}>

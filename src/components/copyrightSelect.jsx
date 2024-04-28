@@ -1,5 +1,3 @@
-import React from 'react';
-
 // 3rd party libraries
 import { Select } from 'antd';
 
@@ -7,8 +5,8 @@ import { Select } from 'antd';
 
 const CopyrightSelect = ({ t, value, onChange, placeholder }) => {
     return (<Select placeholder={placeholder}
-                defaultValue={value}
-                onChange={val => onChange(val)} >
+        defaultValue={value}
+        onChange={val => onChange(val)} >
         <Select.Option value="Unknown">{t('copyrights.Unknown')}</Select.Option>
         <Select.Option value="Copyright">{t('copyrights.Copyright')}</Select.Option>
         <Select.Option value="PublicDomain">{t('copyrights.PublicDomain')}</Select.Option>

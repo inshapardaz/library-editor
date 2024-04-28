@@ -4,7 +4,10 @@ import {
     FaFileSignature, FaGlasses,
     FaStarOfLife
 } from "react-icons/fa";
+
+// Local import
 import BookStatus from "../../models/bookStatus";
+//--------------------------------------------
 
 const BookStatusIcon = ({ status, render = true }) => {
     switch (status) {
@@ -15,7 +18,7 @@ const BookStatusIcon = ({ status, render = true }) => {
         case BookStatus.BeingTyped:
             return render ? <FaFileSignature /> : FaFileSignature;
         case BookStatus.ProofRead:
-            return render ?  <FaGlasses /> : FaGlasses;
+            return render ? <FaGlasses /> : FaGlasses;
         case BookStatus.Published:
             return render ? <FaCheck /> : FaCheck;
         case BookStatus.ReadyForProofRead:

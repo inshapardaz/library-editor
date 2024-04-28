@@ -8,18 +8,18 @@ import { FaRegClone, FaRegFileAlt, FaRegFileWord } from "react-icons/fa";
 import { ImBooks } from "react-icons/im";
 
 // Local imports
-import { useGetBookQuery } from "../../features/api/booksSlice";
-import ContentsContainer from "../../components/layout/contentContainer";
-import PageHeader from "../../components/layout/pageHeader";
-import BookInfo from "../../components/books/bookInfo";
-import ChaptersList from "../../components/books/chapters/chaptersList";
-import PagesList from "../../components/books/pages/pagesList";
-import FilesList from "../../components/books/files/filesList";
-import Error from "../../components/common/error";
-import Loading from "../../components/common/loader";
-import BookDeleteButton from "../../components/books/bookDeleteButton";
-import AuthorAvatar from "../../components/author/authorAvatar";
-import BookPublishButton from "../../components/books/bookPublishButton";
+import { useGetBookQuery } from "~/src/store/slices/booksSlice";
+import ContentsContainer from "~/src/components/layout/contentContainer";
+import PageHeader from "~/src/components/layout/pageHeader";
+import BookInfo from "~/src/components/books/bookInfo";
+import ChaptersList from "~/src/components/books/chapters/chaptersList";
+import PagesList from "~/src/components/books/pages/pagesList";
+import FilesList from "~/src/components/books/files/filesList";
+import Error from "~/src/components/common/error";
+import Loading from "~/src/components/common/loader";
+import BookDeleteButton from "~/src/components/books/bookDeleteButton";
+import AuthorAvatar from "~/src/components/author/authorAvatar";
+import BookPublishButton from "~/src/components/books/bookPublishButton";
 // ----------------------------------------------
 
 const BookPage = () => {
@@ -115,8 +115,9 @@ const BookPage = () => {
                 }
                 icon={<ImBooks style={{ width: 36, height: 36 }} />}
                 actions={[
-                    <Button.Group>
+                    <Button.Group key="button-group">
                         <Button
+                            key="edit-button"
                             block
                             icon={<FiEdit />}
                             onClick={() =>
@@ -128,15 +129,16 @@ const BookPage = () => {
                             {t("actions.edit")}
                         </Button>
                         <BookPublishButton
+                            key="publish-button"
                             block
                             size="large"
-                            libraryId={libraryId}
                             book={book}
                             t={t}
                         >
                             {t("actions.delete")}
                         </BookPublishButton>
                         <BookDeleteButton
+                            key="delete-button"
                             block
                             size="large"
                             libraryId={libraryId}

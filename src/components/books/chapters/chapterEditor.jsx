@@ -8,9 +8,8 @@ import { FaEdit, FaPlus } from "react-icons/fa";
 import {
     useAddChapterMutation,
     useUpdateChapterMutation,
-} from "../../../features/api/booksSlice";
-import EditingStatusSelect from "../../editingStatusSelect";
-
+} from "~/src/store/slices/booksSlice";
+import EditingStatusSelect from "~/src/components/editingStatusSelect";
 // ------------------------------------------------------
 
 export default function ChapterEditor({ libraryId, bookId, chapter, t, type }) {
@@ -32,13 +31,13 @@ export default function ChapterEditor({ libraryId, bookId, chapter, t, type }) {
                 .unwrap()
                 .then(() => setOpen(false))
                 .then(() => message.success(t("chapter.actions.edit.success")))
-                .catch((_) => message.error(t("chapter.actions.edit.error")));
+                .catch(() => message.error(t("chapter.actions.edit.error")));
         } else {
             return addChapter({ libraryId, bookId, payload: values })
                 .unwrap()
                 .then(() => setOpen(false))
                 .then(() => message.success(t("chapter.actions.add.success")))
-                .catch((_) => message.error(t("chapter.actions.add.error")));
+                .catch(() => message.error(t("chapter.actions.add.error")));
         }
     };
     const onOk = () =>

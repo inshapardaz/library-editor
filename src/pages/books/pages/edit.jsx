@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
@@ -27,18 +28,17 @@ import {
     useAddBookPageMutation,
     useUpdateBookPageMutation,
     useUpdateBookPageImageMutation,
-} from "../../../features/api/booksSlice";
-import PageHeader from "../../../components/layout/pageHeader";
-import DataContainer from "../../../components/layout/dataContainer";
-import EditingStatusIcon from "../../../components/editingStatusIcon";
-import { selectedLanguage } from '../../../features/ui/uiSlice'
-import PageStatus from "../../../models/pageStatus";
-import PageOcrButton from "../../../components/books/pages/pageOcrButton";
-import { useSelector } from "react-redux";
-import TextEditor from "../../../components/textEditor";
-import PageAssignButton from "../../../components/books/pages/pageAssignButton";
-import PageStatusButton from "../../../components/books/pages/pageStatusButton";
-import PageImage from "../../../components/books/pages/pageImage";
+} from "~/src/store/slices/booksSlice";
+import { selectedLanguage } from '~/src/store/slices/uiSlice'
+import { PageStatus } from "~/src/models";
+import PageHeader from "~/src/components/layout/pageHeader";
+import DataContainer from "~/src/components/layout/dataContainer";
+import EditingStatusIcon from "~/src/components/editingStatusIcon";
+import PageOcrButton from "~/src/components/books/pages/pageOcrButton";
+import TextEditor from "~/src/components/textEditor";
+import PageAssignButton from "~/src/components/books/pages/pageAssignButton";
+import PageStatusButton from "~/src/components/books/pages/pageStatusButton";
+import PageImage from "~/src/components/books/pages/pageImage";
 
 // -----------------------------------------
 
@@ -117,14 +117,14 @@ const PageEditPage = () => {
                     return r;
                 })
                 .then(uploadImage)
-                .then(_ => navigate(
+                .then(() => navigate(
                     `/libraries/${libraryId}/books/${bookId}/pages/${newPage.sequenceNumber}/edit`
                 ))
                 .then(() => message.success(t("book.actions.add.success")))
                 .catch((e) => {
                     console.error(e);
                     message.error(t("book.actions.add.error"))
-                });;
+                });
         }
     }, [addBookPage, bookId, libraryId, message, navigate, page, t, updateBookPage, uploadImage]);
 
@@ -155,11 +155,11 @@ const PageEditPage = () => {
             .catch((e) => {
                 console.error(e);
                 message.error(t("book.actions.edit.error"))
-            });;
+            });
     };
 
     const actions = [
-        <Button.Group>
+        <Button.Group key="complete-button">
             {showCompleteButton && (
                 <Tooltip title={t("actions.done")}>
                     <Button onClick={onComplete}>
@@ -167,9 +167,10 @@ const PageEditPage = () => {
                     </Button>
                 </Tooltip>
             )}
-            <PageOcrButton pages={[page]} t={t} />
+            <PageOcrButton key="ocr-button" pages={[page]} t={t} />
             {page && page.links.assign && (
                 <PageAssignButton
+                    key="assign-button"
                     libraryId={libraryId}
                     pages={[page]}
                     t={t}
@@ -178,6 +179,7 @@ const PageEditPage = () => {
             )}
             {page && page.links.update && (
                 <PageStatusButton
+                    key="status-button"
                     libraryId={libraryId}
                     pages={[page]}
                     t={t}

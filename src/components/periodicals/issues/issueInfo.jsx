@@ -2,35 +2,35 @@ import moment from "moment";
 
 // 3rd party libraries
 import { Divider, Space, Typography } from "antd";
-
-// Local imports
-import helpers from "../../../helpers";
-import styles from "../../../styles/common.module.scss";
-import { IconText } from "../../common/iconText";
 import { GiStack } from "react-icons/gi";
 import { FaNewspaper } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
+// Local imports
+import { issuePlaceholderImage, setDefaultIssueImage, getDateFormatFromFrequency } from "~/src/util";
+import * as styles from "~/src/styles/common.module.scss";
+import IconText from "~/src/components/common/iconText";
+
 //------------------------------------
 
-const IssueInfo = ({ libraryId, periodical, issue, t, errorLoading, isFetching }) => {
+export default IssueInfo = ({ libraryId, periodical, issue, t }) => {
     const navigate = useNavigate();
 
     if (!issue) return null;
 
-    const title = issue && moment(issue.issueDate).format(helpers.getDateFormatFromFrequency(issue.frequency));
+    const title = issue && moment(issue.issueDate).format(getDateFormatFromFrequency(issue.frequency));
 
     const cover = issue.links.image ? (
         <img
             className={styles["book__image--thumbnail"]}
             src={issue.links.image}
-            onError={helpers.setDefaultIssueImage}
+            onError={setDefaultIssueImage}
             alt={title}
         />
     ) : (
         <img
             className={styles["book__image--thumbnail"]}
-            src={helpers.defaultIssueImage}
+            src={issuePlaceholderImage}
             alt={title}
         />
     );
@@ -54,7 +54,4 @@ const IssueInfo = ({ libraryId, periodical, issue, t, errorLoading, isFetching }
                 onClick={() => navigate(`/libraries/${libraryId}/periodicals/${periodical?.id}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}`)} />
         </Space>
     </>;
-}
-
-
-export default IssueInfo;
+};

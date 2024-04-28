@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 
 // 3rd party imports
 import { Layout } from 'antd';
-import styles from '../../styles/common.module.scss';
+import * as styles from '~/src/styles/common.module.scss';
 
 // ----------------------------------------------
 

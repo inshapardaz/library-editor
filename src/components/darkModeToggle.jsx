@@ -6,13 +6,12 @@ import { Switch } from "antd";
 import { MdOutlineDarkMode, MdOutlineWbSunny } from 'react-icons/md'
 
 // Local imports
-import { uiMode, toggleUiMode } from '../features/ui/uiSlice';
-
+import { toggleUiMode } from '~/src/store/slices/uiSlice';
 // -------------------------------------------------
 
 function DarkModeToggle() {
     const dispatch = useDispatch();
-    const mode = useSelector(uiMode);
+    const mode = useSelector(state => state.ui.uiMode);
     const toggleDarkMode = () => dispatch(toggleUiMode())
 
     return (<Switch

@@ -14,7 +14,7 @@ import {
 } from "react-icons/fa";
 
 // Local Import
-import helpers from "../../../helpers";
+import { updateLinkToBooksPagesPage } from "~/src/util";
 
 // ------------------------------------------------------
 
@@ -27,11 +27,11 @@ export default function PageStatusFilterButton({ t }) {
 
     const setStatus = (newStatus) => {
         navigate(
-            helpers.updateLinkToBooksPagesPage(
+            updateLinkToBooksPagesPage(
                 location, {
-                    pageNumber : 1,
-                    statusFilter: newStatus
-                }
+                pageNumber: 1,
+                statusFilter: newStatus
+            }
             )
         );
     };

@@ -1,4 +1,5 @@
 import { FileOutlined, FilePdfOutlined, FileWordOutlined } from "@ant-design/icons";
+//----------------------------------------------------------------
 
 const FileTypeIcon = ({ type }) => {
     switch (type) {

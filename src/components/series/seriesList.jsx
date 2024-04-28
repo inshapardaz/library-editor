@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
@@ -8,12 +9,11 @@ import { FaPlus } from "react-icons/fa";
 import { ImBooks } from "react-icons/im";
 
 // Local Imports
-import DataContainer from "../layout/dataContainer";
+import { useGetSeriesQuery } from "~/src/store/slices/seriesSlice";
+import { updateLinkToSeriesPage } from "~/src/util";
+import DataContainer from "~/src/components/layout/dataContainer";
 import SeriesCard from "./seriesCard";
-import helpers from "../../helpers";
 import SeriesListItem from "./seriesListItem";
-import { useGetSeriesQuery } from "../../features/api/seriesSlice";
-import { useState } from "react";
 // ------------------------------------------------------
 
 const grid = {
@@ -78,7 +78,7 @@ function SeriesList({
 
     const onPageChanged = (newPage, newPageSize) => {
         navigate(
-            helpers.updateLinkToSeriesPage(location, {
+            updateLinkToSeriesPage(location, {
                 pageNumber: newPage,
                 pageSize: newPageSize,
                 query,
@@ -88,7 +88,7 @@ function SeriesList({
 
     const onSearch = () => {
         navigate(
-            helpers.updateLinkToSeriesPage(location, {
+            updateLinkToSeriesPage(location, {
                 pageNumber: 1,
                 query: search,
             })

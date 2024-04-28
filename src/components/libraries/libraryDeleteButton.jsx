@@ -4,7 +4,7 @@ import { FaTrash } from 'react-icons/fa';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 
 // Local imports
-import { useDeleteLibraryMutation } from "../../features/api/librariesSlice";
+import { useDeleteLibraryMutation } from "~/src/store/slices/librariesSlice";
 
 // ------------------------------------------------------
 
@@ -26,9 +26,9 @@ export default function LibraryDeleteButton({ children, library, t, type, onDele
             onOk() {
                 return deleteLibrary({ library })
                     .unwrap()
-                    .then(() => message.success(t("library.actions.delete.success")))
                     .then(() => onDeleted())
-                    .catch((_) => message.error(t("library.actions.delete.error")));
+                    .then(() => message.success(t("library.actions.delete.success")))
+                    .catch(() => message.error(t("library.actions.delete.error")));
             }
         });
     };

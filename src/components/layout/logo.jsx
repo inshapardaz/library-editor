@@ -1,16 +1,12 @@
 import { Link } from "react-router-dom";
 
-// 3rd party imports
-import { Space } from 'antd';
-
 // Local import
-import styles from '../../styles/common.module.scss';
-
+import * as styles from '~/src/styles/common.module.scss';
+import logo from '~/src/assets/images/logo.png';
 // ---------------------------------------------------
-export function Logo() {
-  return (<Space size={8} className={styles['header__logo']}>
-      <Link to="/" className={styles["header__logo-text"]}>
-        <img src="/images/logo.png" alt="logo" height={24} width={24} />
-      </Link>
-    </Space>)
+export default Logo = ({ height = 24, width = 24 }) => {
+  return (
+    <Link to="/" className={styles["header__logo-text"]}>
+      <img src={logo} alt="logo" height={height} width={width} />
+    </Link>)
 }

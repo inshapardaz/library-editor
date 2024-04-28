@@ -8,13 +8,13 @@ import { Button, Input, List, Space, Switch } from "antd";
 import { FaPenFancy, FaPlus } from "react-icons/fa";
 
 // Local Imports
-import { useGetArticlesQuery } from "../../features/api/articlesSlice";
-import helpers from "../../helpers";
-import DataContainer from "../layout/dataContainer";
+import { useGetArticlesQuery } from "~/src/store/slices/articlesSlice";
+import { updateLinkToArticlesPage } from "~/src/util";
+import DataContainer from "~/src/components/layout/dataContainer";
 import ArticleSortButton from "./articleSortButton";
+import ArticleStatusFilterButton from "./articleStatusFilterButton";
 import ArticleListItem from "./articleListItem";
 import ArticleCard from "./articleCard";
-import ArticleStatusFilterButton from "./articleStatusFilterButton";
 // ------------------------------------------------------
 
 const grid = {
@@ -96,7 +96,7 @@ function ArticlesList({
 
     const onPageChanged = (newPage, newPageSize) => {
         navigate(
-            helpers.updateLinkToArticlesPage(location, {
+            updateLinkToArticlesPage(location, {
                 pageNumber: newPage,
                 pageSize: newPageSize,
             })
@@ -105,7 +105,7 @@ function ArticlesList({
 
     const onSearch = () => {
         navigate(
-            helpers.updateLinkToArticlesPage(location, {
+            updateLinkToArticlesPage(location, {
                 pageNumber: 1,
                 query: search,
             })

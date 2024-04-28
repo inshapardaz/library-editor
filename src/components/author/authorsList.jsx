@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
@@ -7,12 +8,11 @@ import { Button, Input, List, Space, Switch } from "antd";
 import { FaFeatherAlt, FaPlus } from "react-icons/fa";
 
 // Local Imports
-import DataContainer from "../layout/dataContainer";
+import { buildLinkToAuthorsPage } from "~/src/util";
+import { useGetAuthorsQuery } from "~/src/store/slices/authorsSlice";
+import DataContainer from "~/src/components/layout/dataContainer";
 import AuthorCard from "./authorCard";
-import helpers from "../../helpers";
 import AuthorListItem from "./authorListItem";
-import { useGetAuthorsQuery } from "../../features/api/authorsSlice";
-import { useState } from "react";
 import AuthorSortButton from "./authorSortButton";
 // ------------------------------------------------------
 
@@ -34,7 +34,6 @@ function AuthorsList({
     authorType,
     pageNumber,
     pageSize,
-    sortBy,
     sortDirection,
     showSearch = true,
 }) {
@@ -87,7 +86,7 @@ function AuthorsList({
 
     const onPageChanged = (newPage, newPageSize) => {
         navigate(
-            helpers.buildLinkToAuthorsPage(
+            buildLinkToAuthorsPage(
                 location.pathname,
                 newPage,
                 newPageSize,
@@ -99,7 +98,7 @@ function AuthorsList({
 
     const onSearch = () => {
         navigate(
-            helpers.buildLinkToAuthorsPage(
+            buildLinkToAuthorsPage(
                 location.pathname,
                 1,
                 pageSize,

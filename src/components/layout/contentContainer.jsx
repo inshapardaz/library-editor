@@ -2,7 +2,7 @@
 import { theme } from "antd";
 
 // Local imports
-import styles from '../../styles/common.module.scss'
+import * as styles from '~/src/styles/common.module.scss'
 
 // -----------------------------------------
 

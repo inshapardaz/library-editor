@@ -6,7 +6,7 @@ import { Button, Card, Space, Slider, Switch, Tooltip, Result } from "antd";
 import { FaFileImage, FaRegSave } from "react-icons/fa";
 
 // Local imports
-import styles from '../../../styles/common.module.scss';
+import * as styles from '~/src/styles/common.module.scss';
 
 // --------------------------------------
 export const PageImageEditor = ({ image, t, zoom = 100, isRtl = false, onUpdate = () => { } }) => {
@@ -34,8 +34,8 @@ export const PageImageEditor = ({ image, t, zoom = 100, isRtl = false, onUpdate 
     };
 
     //------------------------------------------------------
-    useHotkeys(isRtl ? 'ctrl+shift+left' : 'ctrl+right', () => onChangeSplitValue(sliderValue + 10), { enabled : checked, preventDefault: true })
-    useHotkeys(isRtl ? 'ctrl+shift+right': 'ctrl+left' , () => onChangeSplitValue(sliderValue - 10), { enabled: checked, preventDefault: true })
+    useHotkeys(isRtl ? 'ctrl+shift+left' : 'ctrl+right', () => onChangeSplitValue(sliderValue + 10), { enabled: checked, preventDefault: true })
+    useHotkeys(isRtl ? 'ctrl+shift+right' : 'ctrl+left', () => onChangeSplitValue(sliderValue - 10), { enabled: checked, preventDefault: true })
     useHotkeys('ctrl+shift+x', () => setChecked(true), { enabled: !checked })
     useHotkeys('ctrl+shift+.', () => save(), { enabled: checked, preventDefault: true })
     //------------------------------------------------------
@@ -55,27 +55,27 @@ export const PageImageEditor = ({ image, t, zoom = 100, isRtl = false, onUpdate 
 
     //------------------------------------------------------
     const toolbar = (<Space>
-        <Tooltip title={t('book.actions.split.title') + '(ctrl+shift+x)' } >
+        <Tooltip title={t('book.actions.split.title') + '(ctrl+shift+x)'} >
             <Switch
                 size="small"
                 checked={checked}
                 onChange={onChangeSplit} />
         </Tooltip>
-        <Tooltip title={t('actions.save') + '(ctrl+shift+.)' } >
-            <Button onClick={save} icon={<FaRegSave />}  disabled={!dirty} />
+        <Tooltip title={t('actions.save') + '(ctrl+shift+.)'} >
+            <Button onClick={save} icon={<FaRegSave />} disabled={!dirty} />
         </Tooltip>
     </Space>);
 
     return (<>
         <Card title={toolbar}>
             <Space direction="vertical" style={{ width: `${zoom}%` }}>
-                { checked && <Slider min={0} max={max} marks={marks}
+                {checked && <Slider min={0} max={max} marks={marks}
                     onChange={onChangeSplitValue}
-                    value={typeof sliderValue === 'number' ? sliderValue : 0} /> }
+                    value={typeof sliderValue === 'number' ? sliderValue : 0} />}
                 <div className={styles.imageSplitDivider}>
                     <span className={styles.imageSplitDividerLine}
                         style={{ right: `${sliderValue * 100 / max}%`, visibility: checked ? 'visible' : 'hidden' }} />
-                    <img src={image.data} alt={image.index} style={{   objectFit: 'contain' }} width="100%" />
+                    <img src={image.data} alt={image.index} style={{ objectFit: 'contain' }} width="100%" />
                 </div>
             </Space>
         </Card>

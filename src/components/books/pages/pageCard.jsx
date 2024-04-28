@@ -6,12 +6,12 @@ import { FaRegKeyboard, FaGlasses, FaGripLines } from "react-icons/fa";
 import { Draggable } from "react-beautiful-dnd";
 
 // Local Import
+import * as styles from "~/src/styles/common.module.scss";
+import { pagePlaceholderImage } from "~/src/util";
 import PageSequenceEditor from "./pageSequenceEditor";
 import PageDeleteButton from "./pageDeleteButton";
 import PageAssignButton from "./pageAssignButton";
 import PageStatusButton from "./pageStatusButton";
-import helpers from "../../../helpers";
-import styles from "../../../styles/common.module.scss";
 
 // ------------------------------------------------------
 
@@ -21,7 +21,7 @@ function PageCard({
     page,
     t,
     selected = false,
-    onSelectChanged = () => {},
+    onSelectChanged = () => { },
 }) {
     let description = page.chapterTitle ? (
         <Typography.Text>{page.chapterTitle}</Typography.Text>
@@ -60,8 +60,8 @@ function PageCard({
 
     const cover = (
         <img
-            src={page.links.image || helpers.defaultPageImage}
-            onError={helpers.setDefaultPageImage}
+            src={page.links.image || pagePlaceholderImage}
+            onError={pagePlaceholderImage}
             className={styles["page__image"]}
             alt={page.sequenceNumber}
         />

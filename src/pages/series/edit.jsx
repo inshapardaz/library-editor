@@ -9,12 +9,12 @@ import { ImBooks } from "react-icons/im";
 import ImgCrop from "antd-img-crop";
 
 // Local imports
-import { useGetSeriesByIdQuery, useAddSeriesMutation, useUpdateSeriesMutation, useUpdateSeriesImageMutation } from "../../features/api/seriesSlice";
-import ContentsContainer from "../../components/layout/contentContainer";
-import PageHeader from "../../components/layout/pageHeader";
-import Error from "../../components/common/error";
-import Loading from "../../components/common/loader";
-import helpers from "../../helpers";
+import { useGetSeriesByIdQuery, useAddSeriesMutation, useUpdateSeriesMutation, useUpdateSeriesImageMutation } from "~/src/store/slices/seriesSlice";
+import { seriesPlaceholderImage, setDefaultSeriesImage } from "~/src/util";
+import ContentsContainer from "~/src/components/layout/contentContainer";
+import PageHeader from "~/src/components/layout/pageHeader";
+import Error from "~/src/components/common/error";
+import Loading from "~/src/components/common/loader";
 
 // ----------------------------------------------
 const { Dragger } = Upload;
@@ -45,7 +45,7 @@ const SeriesEditPage = () => {
                 .then(() => uploadImage(seriesId))
                 .then(() => navigate(`/libraries/${libraryId}/series/${seriesId}`))
                 .then(() => message.success(t("series.actions.edit.success")))
-                .catch((_) => message.error(t("series.actions.edit.error")));
+                .catch(() => message.error(t("series.actions.edit.error")));
         } else {
             let response = null;
             addSeries({ libraryId, payload: series })
@@ -54,7 +54,7 @@ const SeriesEditPage = () => {
                 .then(() => uploadImage(response.id))
                 .then(() => navigate(`/libraries/${libraryId}/series/${response.id}`))
                 .then(() => message.success(t("series.actions.add.success")))
-                .catch((_) => message.error(t("series.actions.add.error")));
+                .catch(() => message.error(t("series.actions.add.error")));
         }
     };
 
@@ -86,7 +86,7 @@ const SeriesEditPage = () => {
             return series.links.image;
         }
 
-        return helpers.defaultSeriesImage;
+        return seriesPlaceholderImage;
     };
     const title = series ? series.name : t("series.actions.add.label");
 
@@ -98,7 +98,7 @@ const SeriesEditPage = () => {
                     <Col l={4} md={6} xs={24}>
                         <ImgCrop modalTitle={t("actions.resizeImage")}>
                             <Dragger fileList={fileList} beforeUpload={onImageChange} showUploadList={false}>
-                                <img src={getCoverSrc()} height="300" alt={series && series.name} onError={helpers.setDefaultSeriesImage} />
+                                <img src={getCoverSrc()} height="300" alt={series && series.name} onError={setDefaultSeriesImage} />
                             </Dragger>
                         </ImgCrop>
                     </Col>

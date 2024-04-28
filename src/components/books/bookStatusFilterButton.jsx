@@ -8,8 +8,8 @@ import {
 } from "react-icons/fa";
 
 // Local Import
-import helpers from "../../helpers";
-import BookStatus from "../../models/bookStatus";
+import { updateLinkToBooksPage } from "~/src/util";
+import { BookStatus } from "~/src/models";
 import BookStatusIcon from "./BookStatusIcon";
 
 // ------------------------------------------------------
@@ -20,7 +20,7 @@ export default function BookStatusFilterButton({ t, status }) {
 
     const setStatus = (newStatus) => {
         navigate(
-            helpers.updateLinkToBooksPage(location, {
+            updateLinkToBooksPage(location, {
                 pageNumber: 1,
                 status: newStatus,
             })

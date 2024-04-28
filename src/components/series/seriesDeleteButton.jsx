@@ -4,13 +4,14 @@ import { FaTrash } from 'react-icons/fa';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 
 // Local imports
-import { useDeleteSeriesMutation } from "../../features/api/seriesSlice";
+import { useDeleteSeriesMutation } from "~/src/store/slices/seriesSlice";
 
 // ------------------------------------------------------
 
 const { confirm } = Modal;
 
 // ------------------------------------------------------
+
 export default function SeriesDeleteButton({ children, libraryId, series, t, type, onDeleted = () => { }, danger = false, block = false, size }) {
     const { message } = App.useApp();
     const [deleteSeries, { isLoading: isDeleting }] = useDeleteSeriesMutation();
@@ -26,9 +27,9 @@ export default function SeriesDeleteButton({ children, libraryId, series, t, typ
             onOk() {
                 return deleteSeries({ libraryId, seriesId: series.id })
                     .unwrap()
-                    .then(() => message.success(t("series.actions.delete.success")))
                     .then(() => onDeleted())
-                    .catch((_) => message.error(t("series.actions.delete.error")));
+                    .then(() => message.success(t("series.actions.delete.success")))
+                    .catch(() => message.error(t("series.actions.delete.error")));
             }
         });
     };

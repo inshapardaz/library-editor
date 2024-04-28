@@ -2,16 +2,16 @@ import { useState } from "react";
 
 // Third party libraries
 import { App, Button, Modal, Form, Space, Tooltip, Tag } from "antd";
+import { EditOutlined, FileDoneOutlined } from "@ant-design/icons";
 import { FaUserAlt } from "react-icons/fa";
-import { useAssignChapterMutation } from "../../../features/api/booksSlice";
 
 // Local imports
-import UserSelect from "../../userSelect";
-import { EditOutlined, FileDoneOutlined } from "@ant-design/icons";
+import { useAssignChapterMutation } from "~/src/store/slices/booksSlice";
+import UserSelect from "~/src/components/userSelect";
 
 // ------------------------------------------------------
 
-export default function ChapterAssignButton({ libraryId, chapters, t, type, showDetails = true }) {
+export default ChapterAssignButton = ({ libraryId, chapters, t, type, showDetails = true }) => {
     const { message } = App.useApp();
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
@@ -38,12 +38,12 @@ export default function ChapterAssignButton({ libraryId, chapters, t, type, show
     }
 
     const onSubmit = (values) => {
-        const payload = values.id === "none"  ? {
-            unassign : true
+        const payload = values.id === "none" ? {
+            unassign: true
         } :
-        {
-            accountId: values.id === "me" ? null : values.id,
-        };
+            {
+                accountId: values.id === "me" ? null : values.id,
+            };
 
         const promises = chapters
             .map((chapter) => {
@@ -57,7 +57,7 @@ export default function ChapterAssignButton({ libraryId, chapters, t, type, show
             .then(() =>
                 message.success(t("chapter.actions.assign.success", { count }))
             )
-            .catch((_) =>
+            .catch(() =>
                 message.error(t("chapter.actions.assign.error", { count }))
             );
     };

@@ -6,9 +6,9 @@ import { Button } from "antd";
 import { FaPlus, FaTags } from "react-icons/fa";
 
 // Local Imports
-import PageHeader from "../../components/layout/pageHeader";
-import CategoriesList from "../../components/categories/categoriesList";
-import ContentsContainer from "../../components/layout/contentContainer";
+import PageHeader from "~/src/components/layout/pageHeader";
+import CategoriesList from "~/src/components/categories/categoriesList";
+import ContentsContainer from "~/src/components/layout/contentContainer";
 
 function CategoriesHomePage() {
     const { t } = useTranslation();

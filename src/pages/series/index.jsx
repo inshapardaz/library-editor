@@ -7,11 +7,13 @@ import { FaPlus } from "react-icons/fa";
 import { ImBooks } from "react-icons/im";
 
 // Local Imports
-import PageHeader from "../../components/layout/pageHeader";
-import SeriesList from "../../components/series/seriesList";
-import ContentsContainer from "../../components/layout/contentContainer";
+import PageHeader from "~/src/components/layout/pageHeader";
+import SeriesList from "~/src/components/series/seriesList";
+import ContentsContainer from "~/src/components/layout/contentContainer";
 
-function SeriesHomePage() {
+// ========================================================
+
+export default SeriesHomePage = () => {
     const { t } = useTranslation();
     const { libraryId } = useParams();
     const [searchParams] = useSearchParams();
@@ -44,5 +46,4 @@ function SeriesHomePage() {
             </ContentsContainer>
         </>
     );
-}
-export default SeriesHomePage;
+};

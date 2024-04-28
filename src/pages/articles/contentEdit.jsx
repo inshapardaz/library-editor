@@ -8,20 +8,27 @@ import { Button, App, Spin, Alert, Space } from "antd";
 import { FaPenFancy, FaTimesCircle } from "react-icons/fa";
 
 // Local imports
-import { useGetArticleQuery, useGetArticleContentsQuery, useAddArticleContentsMutation, useUpdateArticleContentsMutation } from "../../features/api/articlesSlice";
-import ContentsContainer from "../../components/layout/contentContainer";
-import PageHeader from "../../components/layout/pageHeader";
-import Error from "../../components/common/error";
-import { selectedLanguage } from '../../features/ui/uiSlice';
-import TextEditor from "../../components/textEditor";
+import {
+    useGetArticleQuery,
+    useGetArticleContentsQuery,
+    useAddArticleContentsMutation,
+    useUpdateArticleContentsMutation
+}
+    from "~/src/store/slices/articlesSlice";
+import { selectedLanguage } from '~/src/store/slices/uiSlice';
+//TODO: Replace this with component
 import Error404 from "../404";
-import LanguageSelect from "../../components/languageSelect";
-import ArticleLayoutSelect from "../../components/articles/articleLayoutSelect";
-import AuthorAvatar from "../../components/author/authorAvatar";
+import ContentsContainer from "~/src/components/layout/contentContainer";
+import PageHeader from "~/src/components/layout/pageHeader";
+import Error from "~/src/components/common/error";
+import TextEditor from "~/src/components/textEditor";
+import LanguageSelect from "~/src/components/languageSelect";
+import ArticleLayoutSelect from "~/src/components/articles/articleLayoutSelect";
+import AuthorAvatar from "~/src/components/author/authorAvatar";
 
 // ----------------------------------------------
 
-const ArticleContentEditPage = () => {
+export default ArticleContentEditPage = () => {
     const { t } = useTranslation();
     const { libraryId, articleId, language } = useParams();
 
@@ -54,7 +61,7 @@ const ArticleContentEditPage = () => {
             })
                 .unwrap()
                 .then(() => message.success(t("article.actions.edit.success")))
-                .catch((_) => message.error(t("article.actions.edit.error")));
+                .catch(() => message.error(t("article.actions.edit.error")));
         } else {
             addArticleContents({
                 libraryId,
@@ -65,7 +72,7 @@ const ArticleContentEditPage = () => {
             })
                 .unwrap()
                 .then(() => message.success(t("article.actions.add.success")))
-                .catch((_) => message.error(t("article.actions.add.error")));
+                .catch(() => message.error(t("article.actions.add.error")));
         }
     };
 
@@ -122,5 +129,3 @@ const ArticleContentEditPage = () => {
         </>
     );
 };
-
-export default ArticleContentEditPage;

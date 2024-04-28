@@ -8,11 +8,12 @@ import {
     FaSortAmountDown,
     FaSortAmountUp,
 } from "react-icons/fa";
-import helpers from "../../../helpers";
 
+// Local Imports
+import { updateLinkToBooksPagesPage } from "~/src/util";
 // ------------------------------------------------------
 
-export default function PageSortButton({ libraryId, bookId, t }) {
+export default function PageSortButton({ t }) {
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -22,10 +23,10 @@ export default function PageSortButton({ libraryId, bookId, t }) {
 
     const setSortDirection = (newSortDirection) => {
         navigate(
-            helpers.updateLinkToBooksPagesPage(
+            updateLinkToBooksPagesPage(
                 location, {
-                    sortDirection: newSortDirection
-                }
+                sortDirection: newSortDirection
+            }
             )
         );
     };

@@ -14,8 +14,8 @@ import {
 } from "react-icons/fa";
 
 // Local Import
-import helpers from "../../helpers";
-import EditingStatus from "../../models/editingStatus";
+import { updateLinkToArticlesPage } from "~/src/util";
+import { EditingStatus } from "~/src/models";
 
 // ------------------------------------------------------
 
@@ -25,7 +25,7 @@ export default function ArticleStatusFilterButton({ t, status }) {
 
     const setStatus = (newStatus) => {
         navigate(
-            helpers.updateLinkToArticlesPage(location, {
+            updateLinkToArticlesPage(location, {
                 pageNumber: 1,
                 status: newStatus,
             })

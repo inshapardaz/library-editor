@@ -6,7 +6,7 @@ import { FaRegKeyboard, FaGlasses, FaGripLines } from "react-icons/fa";
 import { Draggable } from "react-beautiful-dnd";
 
 // Local Import
-import EditingStatusIcon from "../../editingStatusIcon";
+import EditingStatusIcon from "~/src/components/editingStatusIcon";
 import PageSequenceEditor from "./pageSequenceEditor";
 import PageDeleteButton from "./pageDeleteButton";
 import PageAssignButton from "./pageAssignButton";
@@ -20,7 +20,7 @@ function PageListItem({
     page,
     t,
     selected = false,
-    onSelectChanged = () => {},
+    onSelectChanged = () => { },
 }) {
     let description = page.chapterTitle ? (
         <Typography.Text>{page.chapterTitle}</Typography.Text>

@@ -1,6 +1,4 @@
-
-@import url(https://fonts.nawishta.co.uk/stylesheet.css);
-@import './mixins/breakpoints.scss';
+@import "./mixins/breakpoints.scss";
 
 // Reader page
 .readerPage {
@@ -15,9 +13,8 @@
     grid-template-columns: auto 1fr auto;
     grid-template-rows: auto 1fr auto;
 
-
     .readerHeader {
-        height : 50px;
+        height: 50px;
     }
     .readerHeaderTitle {
         text-align: center;
@@ -36,9 +33,6 @@
     .readerFooter {
         grid-column-start: span 3;
     }
-
-
-
 }
 .readerLayout {
     &__nav {
@@ -80,7 +74,10 @@
                 margin: 0 auto;
                 padding: 20px;
                 text-align: justify;
-                box-shadow: 0px 8px 8px rgba(27,35,36,.04), 0px 8px 20px -3px rgba(27,35,36,.1), 0px 4px 8px -2px rgba(27,35,36,.06);
+                box-shadow:
+                    0px 8px 8px rgba(27, 35, 36, 0.04),
+                    0px 8px 20px -3px rgba(27, 35, 36, 0.1),
+                    0px 4px 8px -2px rgba(27, 35, 36, 0.06);
                 @include when-mobile-device {
                     box-shadow: none;
                 }
@@ -93,7 +90,9 @@
                 text-justify: inter-word;
                 user-select: none;
                 -webkit-user-select: none;
-                text-shadow: 1px 1px 1px whitesmoke, 1px 1px 1px whitesmoke;
+                text-shadow:
+                    1px 1px 1px whitesmoke,
+                    1px 1px 1px whitesmoke;
             }
             &__page-number {
                 display: none;
@@ -116,7 +115,7 @@
                 grid-template-columns: 1fr;
             }
         }
-         .reader {
+        .reader {
             &__container {
                 grid-column: 2;
                 padding: 20px;
@@ -128,7 +127,10 @@
                 flex-wrap: nowrap;
                 flex-direction: column;
 
-                box-shadow: 0px 8px 8px rgba(27,35,36,.04), 0px 8px 20px -3px rgba(27,35,36,.1), 0px 4px 8px -2px rgba(27,35,36,.06);
+                box-shadow:
+                    0px 8px 8px rgba(27, 35, 36, 0.04),
+                    0px 8px 20px -3px rgba(27, 35, 36, 0.1),
+                    0px 4px 8px -2px rgba(27, 35, 36, 0.06);
                 @include when-mobile-device {
                     box-shadow: none;
                     grid-column: 1;
@@ -182,7 +184,7 @@
                 grid-template-columns: 1fr;
             }
         }
-         .reader {
+        .reader {
             &__container {
                 grid-column: 2;
                 padding: 20px;
@@ -194,8 +196,8 @@
                 flex-wrap: nowrap;
                 flex-direction: column;
 
-                &::before{
-                    content: ' ';
+                &::before {
+                    content: " ";
                     position: absolute;
                     top: 0;
                     bottom: 0px;
@@ -204,7 +206,10 @@
                     box-shadow: -5px -5px 5px #888;
                 }
 
-                box-shadow: 0px 8px 8px rgba(27,35,36,.04), 0px 8px 20px -3px rgba(27,35,36,.1), 0px 4px 8px -2px rgba(27,35,36,.06);
+                box-shadow:
+                    0px 8px 8px rgba(27, 35, 36, 0.04),
+                    0px 8px 20px -3px rgba(27, 35, 36, 0.1),
+                    0px 4px 8px -2px rgba(27, 35, 36, 0.06);
                 @include when-mobile-device {
                     box-shadow: none;
                     grid-column: 1;
@@ -267,7 +272,6 @@
         }
     }
 
-
     // &__flipBook {
     //     flex: 1;
     //     overflow: hidden;
@@ -293,7 +297,6 @@
     //     text-align: center;
     // }
 }
-
 
 /* Article Reader */
 .article_reader {

@@ -4,7 +4,7 @@ import { FaTrash } from 'react-icons/fa';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 
 // Local imports
-import { useDeleteCategoryMutation } from "../../features/api/categoriesSlice";
+import { useDeleteCategoryMutation } from "~/src/store/slices/categoriesSlice";
 
 // ------------------------------------------------------
 
@@ -26,9 +26,9 @@ export default function CategoryDeleteButton({ children, libraryId, category, t,
             onOk() {
                 return deleteCategory({ libraryId, categoryId: category.id })
                     .unwrap()
-                    .then(() => message.success(t("category.actions.delete.success")))
                     .then(() => onDeleted())
-                    .catch((_) => message.error(t("category.actions.delete.error")));
+                    .then(() => message.success(t("category.actions.delete.success")))
+                    .catch(() => message.error(t("category.actions.delete.error")));
             }
         });
     };

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
@@ -7,9 +8,8 @@ import { Alert, Button, Form, Input, Space, Spin, Divider } from 'antd';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 
 // Internal imports
-import { login, reset, getLoginStatus, getLoginError, isLoggedIn } from '../features/auth/authSlice'
-import FullPageFormContainer from '../components/layout/fullPageFormContainer';
-import { useEffect } from 'react';
+import { login, reset, getLoginStatus, getLoginError, isLoggedIn } from '~/src/store/slices/authSlice'
+import FullPageFormContainer from '~/src/components/layout/fullPageFormContainer';
 
 // ---------------------------------------------------------------
 
@@ -22,12 +22,10 @@ const Login = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (isUserLoggedIn)
-        {
+        if (isUserLoggedIn) {
             navigate('/')
         }
-        else
-        {
+        else {
             dispatch(reset())
         }
 
@@ -37,38 +35,38 @@ const Login = () => {
         dispatch(login({ email, password }))
     };
 
-    const errorMessage = error ? (<Alert  showIcon message={t('login.error')} type="error" />) : null
+    const errorMessage = error ? (<Alert showIcon message={t('login.error')} type="error" />) : null
 
     return (
         <FullPageFormContainer title={t('login.title')}>
-            <Spin spinning={status === 'loading' }>
+            <Spin spinning={status === 'loading'}>
                 <Form name="login" onFinish={onSubmit} >
                     <Form.Item name="email"
                         rules={[
-                        {
-                            required: true,
-                            message: t('login.email.required'),
-                        },
-                        {
-                            type: 'email',
-                            message: t('login.email.error'),
-                        },
+                            {
+                                required: true,
+                                message: t('login.email.required'),
+                            },
+                            {
+                                type: 'email',
+                                message: t('login.email.error'),
+                            },
                         ]}
                     >
                         <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder={t('login.email.title')} />
                     </Form.Item>
                     <Form.Item name="password"
                         rules={[
-                        {
-                            required: true,
-                            message: t('login.password.required'),
-                        },
+                            {
+                                required: true,
+                                message: t('login.password.required'),
+                            },
                         ]}
                     >
                         <Input
-                        prefix={<LockOutlined className="site-form-item-icon" />}
-                        type="password"
-                        placeholder={t('login.password.title')}
+                            prefix={<LockOutlined className="site-form-item-icon" />}
+                            type="password"
+                            placeholder={t('login.password.title')}
                         />
                     </Form.Item>
                     <Form.Item>
@@ -77,8 +75,8 @@ const Login = () => {
                                 {t('login.title')}
                             </Button>
                             {errorMessage}
-                            <Divider  />
-                            <Button onClick={ () => navigate("/account/forgot-password")} type="text" block>
+                            <Divider />
+                            <Button onClick={() => navigate("/account/forgot-password")} type="text" block>
                                 {t('forgotPassword.title')}
                             </Button>
                             <Button onClick={() => navigate("/")} type="text" block>

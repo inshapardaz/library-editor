@@ -2,16 +2,15 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
 // 3rd party libraries
-
 import { Button, Form, Input, App, Space, Spin } from "antd";
+import { FaTags } from "react-icons/fa";
 
 // Local imports
-import { useGetCategoryByIdQuery, useAddCategoryMutation, useUpdateCategoryMutation } from "../../features/api/categoriesSlice";
-import ContentsContainer from "../../components/layout/contentContainer";
-import PageHeader from "../../components/layout/pageHeader";
-import Error from "../../components/common/error";
-import Loading from "../../components/common/loader";
-import { FaTags } from "react-icons/fa";
+import { useGetCategoryByIdQuery, useAddCategoryMutation, useUpdateCategoryMutation } from "~/src/store/slices/categoriesSlice";
+import ContentsContainer from "~/src/components/layout/contentContainer";
+import PageHeader from "~/src/components/layout/pageHeader";
+import Error from "~/src/components/common/error";
+import Loading from "~/src/components/common/loader";
 
 // ----------------------------------------------
 
@@ -36,13 +35,13 @@ const CategoryEditPage = () => {
                 .unwrap()
                 .then(() => navigate(`/libraries/${libraryId}/categories`))
                 .then(() => message.success(t("category.actions.edit.success")))
-                .catch((_) => message.error(t("category.actions.edit.error")));
+                .catch(() => message.error(t("category.actions.edit.error")));
         } else {
             addCategory({ libraryId, payload: values })
                 .unwrap()
                 .then(() => navigate(`/libraries/${libraryId}/categories`))
                 .then(() => message.success(t("category.actions.add.success")))
-                .catch((_) => message.error(t("category.actions.add.error")));
+                .catch(() => message.error(t("category.actions.add.error")));
         }
     };
 

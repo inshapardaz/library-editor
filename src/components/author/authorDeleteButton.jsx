@@ -4,7 +4,7 @@ import { FaTrash } from 'react-icons/fa';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 
 // Local imports
-import { useDeleteAuthorMutation } from "../../features/api/authorsSlice";
+import { useDeleteAuthorMutation } from "~/src/store/slices/authorsSlice";
 
 // ------------------------------------------------------
 
@@ -26,9 +26,9 @@ export default function AuthorDeleteButton({ children, libraryId, author, t, typ
             onOk() {
                 return deleteAuthor({ libraryId, authorId: author.id })
                     .unwrap()
-                    .then(() => message.success(t("author.actions.delete.success")))
                     .then(() => onDeleted())
-                    .catch((_) => message.error(t("author.actions.delete.error")));
+                    .then(() => message.success(t("author.actions.delete.success")))
+                    .catch(() => message.error(t("author.actions.delete.error")));
             }
         });
     };

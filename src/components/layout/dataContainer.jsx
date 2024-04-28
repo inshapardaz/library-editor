@@ -1,7 +1,7 @@
 import { Card, Empty, Result } from "antd";
 
 // Local Import
-import styles from "../../styles/common.module.scss";
+import * as styles from "~/src/styles/common.module.scss";
 
 // ------------------------------------------------
 
@@ -35,9 +35,7 @@ const DataContainer = ({
             icon={errorIcon}
             extra={errorAction}
         />);
-    } else if (busy) {
-        content = busyContent;
-    } else if (!!empty) {
+    } else if (empty) {
         content = (<Empty image={emptyImage} description={emptyDescription}>
             {emptyContent}
         </Empty>);

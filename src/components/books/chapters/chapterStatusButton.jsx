@@ -5,9 +5,8 @@ import { App, Button, Modal, Form, Tooltip } from "antd";
 import { FaTasks } from "react-icons/fa";
 
 // Local imports
-import { useUpdateChapterMutation } from "../../../features/api/booksSlice";
-import EditingStatusSelect from "../../editingStatusSelect";
-
+import { useUpdateChapterMutation } from "~/src/store/slices/booksSlice";
+import EditingStatusSelect from "~/src/components/editingStatusSelect";
 // ------------------------------------------------------
 
 export default function ChapterStatusButton({ chapters, t, type }) {
@@ -31,7 +30,7 @@ export default function ChapterStatusButton({ chapters, t, type }) {
             .then(() =>
                 message.success(t("chapter.actions.updateStatus.success"))
             )
-            .catch((_) =>
+            .catch(() =>
                 message.error(t("chapter.actions.updateStatus.error"))
             );
     };
@@ -41,7 +40,7 @@ export default function ChapterStatusButton({ chapters, t, type }) {
             .then((values) => {
                 onSubmit(values);
             })
-            .catch(() => {});
+            .catch(() => { });
 
     const onShow = () => {
         form.resetFields();

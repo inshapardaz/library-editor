@@ -6,8 +6,8 @@ import { App, Dropdown, Modal, Form, Input } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 
 // Local imports
-import { useAddChapterMutation, useUpdateChapterMutation } from "../../../features/api/booksSlice";
-import EditingStatusSelect from "../../editingStatusSelect";
+import { useAddChapterMutation, useUpdateChapterMutation } from "~/src/store/slices/booksSlice";
+import EditingStatusSelect from "~/src/components/editingStatusSelect";
 
 // ------------------------------------------------------
 
@@ -27,13 +27,13 @@ export default function PageEditor({ libraryId, bookId, chapter, t, buttonType =
                 .unwrap()
                 .then(() => setOpen(false))
                 .then(() => message.success(t("chapter.actions.edit.success")))
-                .catch((_) => message.error(t("chapter.actions.edit.error")));
+                .catch(() => message.error(t("chapter.actions.edit.error")));
         } else {
             return addChapter({ libraryId, bookId, payload: values })
                 .unwrap()
                 .then(() => setOpen(false))
                 .then(() => message.success(t("chapter.actions.add.success")))
-                .catch((_) => message.error(t("chapter.actions.add.error")));
+                .catch(() => message.error(t("chapter.actions.add.error")));
         }
     };
 
@@ -43,7 +43,7 @@ export default function PageEditor({ libraryId, bookId, chapter, t, buttonType =
             .then((values) => {
                 onSubmit(values);
             })
-            .catch((info) => {});
+            .catch(() => { });
 
     const onAddNewPage = () => navigate(`/libraries/${libraryId}/books/${bookId}/pages/add`);
 

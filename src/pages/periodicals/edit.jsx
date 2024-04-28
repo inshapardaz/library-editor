@@ -9,14 +9,19 @@ import { ImNewspaper } from "react-icons/im";
 import ImgCrop from "antd-img-crop";
 
 // Local imports
-import { useGetPeriodicalByIdQuery, useAddPeriodicalMutation, useUpdatePeriodicalMutation, useUpdatePeriodicalImageMutation } from "../../features/api/periodicalsSlice";
-import ContentsContainer from "../../components/layout/contentContainer";
-import PageHeader from "../../components/layout/pageHeader";
-import LanguageSelect from "../../components/languageSelect";
-import CategoriesSelect from "../../components/categories/categoriesSelect";
-import Error from "../../components/common/error";
-import Loading from "../../components/common/loader";
-import helpers from "../../helpers";
+import {
+    useGetPeriodicalByIdQuery,
+    useAddPeriodicalMutation,
+    useUpdatePeriodicalMutation,
+    useUpdatePeriodicalImageMutation
+} from "~/src/store/slices/periodicalsSlice";
+import { periodicalPlaceholderImage, setDefaultPeriodicalImage } from "~/src/util";
+import ContentsContainer from "~/src/components/layout/contentContainer";
+import PageHeader from "~/src/components/layout/pageHeader";
+import LanguageSelect from "~/src/components/languageSelect";
+import CategoriesSelect from "~/src/components/categories/categoriesSelect";
+import Error from "~/src/components/common/error";
+import Loading from "~/src/components/common/loader";
 
 // ----------------------------------------------
 const { Dragger } = Upload;
@@ -25,7 +30,7 @@ const { Dragger } = Upload;
 const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 14 } };
 const buttonItemLayout = { wrapperCol: { span: 14, offset: 4 } };
 
-const PeriodicalEditPage = () => {
+export default PeriodicalEditPage = () => {
     const { message } = App.useApp();
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -47,7 +52,7 @@ const PeriodicalEditPage = () => {
                 .then(() => uploadImage(periodicalId))
                 .then(() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}`))
                 .then(() => message.success(t("periodical.actions.edit.success")))
-                .catch((_) => message.error(t("periodical.actions.edit.error")));
+                .catch(() => message.error(t("periodical.actions.edit.error")));
         } else {
             let response = null;
             addPeriodical({ libraryId, payload: periodical })
@@ -56,7 +61,7 @@ const PeriodicalEditPage = () => {
                 .then(() => uploadImage(response.id))
                 .then(() => navigate(`/libraries/${libraryId}/periodicals/${response.id}`))
                 .then(() => message.success(t("periodical.actions.add.success")))
-                .catch((_) => message.error(t("periodical.actions.add.error")));
+                .catch(() => message.error(t("periodical.actions.add.error")));
         }
     };
 
@@ -88,7 +93,7 @@ const PeriodicalEditPage = () => {
             return periodical.links.image;
         }
 
-        return helpers.defaultPeriodicalImage;
+        return periodicalPlaceholderImage;
     };
     const title = periodical ? periodical.title : t("periodical.actions.add.label");
 
@@ -100,7 +105,7 @@ const PeriodicalEditPage = () => {
                     <Col l={4} md={6} xs={24}>
                         <ImgCrop modalTitle={t("actions.resizeImage")}>
                             <Dragger fileList={fileList} beforeUpload={onImageChange} showUploadList={false}>
-                                <img src={getCoverSrc()} height="300" alt={periodical && periodical.title} onError={helpers.setDefaultPeriodicalImage} />
+                                <img src={getCoverSrc()} height="300" alt={periodical && periodical.title} onError={setDefaultPeriodicalImage} />
                             </Dragger>
                         </ImgCrop>
                     </Col>
@@ -173,6 +178,4 @@ const PeriodicalEditPage = () => {
             </ContentsContainer>
         </>
     );
-};
-
-export default PeriodicalEditPage;
+}

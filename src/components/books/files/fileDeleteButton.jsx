@@ -2,13 +2,12 @@
 import { App, Button, Modal, Tooltip } from "antd";
 import { FaTrash } from "react-icons/fa";
 import { ExclamationCircleFilled } from "@ant-design/icons";
+
 // Local imports
-import { useDeleteBookContentMutation } from "../../../features/api/booksSlice";
+import { useDeleteBookContentMutation } from "~/src/store/slices/booksSlice";
 
 // ------------------------------------------------------
-
 const { confirm } = Modal;
-
 // ------------------------------------------------------
 export default function FileDeleteButton({ content, t, type }) {
     const { message } = App.useApp();
@@ -31,7 +30,7 @@ export default function FileDeleteButton({ content, t, type }) {
                         .then(() => {
                             message.success(t("chapter.actions.delete.success"))
                         })
-                        .catch((_) => {
+                        .catch(() => {
                             message.error(t("chapter.actions.delete.error"))
                         });
                 }

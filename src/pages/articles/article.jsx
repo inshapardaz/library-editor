@@ -7,19 +7,20 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button, Space } from "antd";
 import { FaPenFancy } from "react-icons/fa";
 import { FiEdit2 } from "react-icons/fi";
-import ReactMarkdown from "react-markdown";
+import Markdown from 'markdown-to-jsx'
 
 // Local imports
-import { useGetArticleQuery, useGetArticleContentsQuery } from "../../features/api/articlesSlice";
-import { selectedLanguage } from '../../features/ui/uiSlice';
-import styles from '../../styles/reader.module.scss';
-import DataContainer from "../../components/layout/dataContainer";
-import PageHeader from "../../components/layout/pageHeader";
-import Loading from "../../components/common/loader";
-import AuthorAvatar from "../../components/author/authorAvatar";
-import ArticleDeleteButton from "../../components/articles/articleDeleteButton";
+import * as styles from '~/src/styles/reader.module.scss';
+import { useGetArticleQuery, useGetArticleContentsQuery } from "~/src/store/slices/articlesSlice";
+import { selectedLanguage } from '~/src/store/slices/uiSlice';
+import DataContainer from "~/src/components/layout/dataContainer";
+import PageHeader from "~/src/components/layout/pageHeader";
+import Loading from "~/src/components/common/loader";
+import AuthorAvatar from "~/src/components/author/authorAvatar";
+import ArticleDeleteButton from "~/src/components/articles/articleDeleteButton";
+// ------------------------------------------------------
 
-const ArticlePage = () => {
+export default ArticlePage = () => {
     const navigate = useNavigate();
     const lang = useSelector(selectedLanguage);
     const { t } = useTranslation();
@@ -53,13 +54,16 @@ const ArticlePage = () => {
                 </Space>
             }
             actions={[
-                <Button.Group>
-                    {article && article.contents.map(c => (<Button key={c.language} onClick={() =>
-                        navigate(`/libraries/${libraryId}/articles/${article.id}/contents/${c.language}`)
-                    } disabled={c.language === (language ?? lang.key)}>
-                        {t(`languages.${c.language}`)}
-                    </Button>))}
+                <Button.Group key="button-group">
+                    {article && article.contents.map(c => (
+                        <Button key={c.language} onClick={() =>
+                            navigate(`/libraries/${libraryId}/articles/${article.id}/contents/${c.language}`)
+                        } disabled={c.language === (language ?? lang.key)}>
+                            {t(`languages.${c.language}`)}
+                        </Button>
+                    ))}
                     <Button
+                        key="edit-button"
                         block
                         icon={<FiEdit2 />}
                         onClick={() =>
@@ -69,6 +73,7 @@ const ArticlePage = () => {
                         {t("actions.edit")}
                     </Button>
                     <ArticleDeleteButton
+                        key="delete-button"
                         block
                         size="large"
                         libraryId={libraryId}
@@ -94,10 +99,10 @@ const ArticlePage = () => {
             }>
             <div className={[article?.layout ? styles[`article_reader__${article?.layout}`] : styles[`article_reader__normal`],
             article?.language ? styles[`article_reader__${article.language}`] : styles[`article_reader__${lang}`]]}>
-                <ReactMarkdown children={articleContents?.text} />
+                <Markdown>
+                    {articleContents?.text}
+                </Markdown>
             </div>
         </DataContainer>
     </>);
 }
-
-export default ArticlePage;

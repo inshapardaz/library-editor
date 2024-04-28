@@ -6,10 +6,10 @@ import { FiLayers } from "react-icons/fi";
 import { SlCalender } from "react-icons/sl";
 
 // Local Import
-import styles from "../../styles/common.module.scss";
-import { PeriodicalCategory } from "./periodicalCategory";
-import helpers from "../../helpers/index";
-import { IconText } from "../common/iconText";
+import * as styles from "~/src/styles/common.module.scss";
+import IconText from "~/src/components/common/iconText";
+import { periodicalPlaceholderImage, setDefaultPeriodicalImage } from "~/src/util";
+import PeriodicalCategory from "./periodicalCategory";
 import PeriodicalDeleteButton from "./periodicalDeleteButton";
 // ------------------------------------------------------
 
@@ -17,8 +17,8 @@ const { Text, Paragraph } = Typography;
 
 // ------------------------------------------------------
 
-function PeriodicalListItem({ libraryId, periodical, t }) {
-    const cover = periodical.links.image ? <img src={periodical.links.image} onError={helpers.setDefaultPeriodicalImage} className={styles["periodical__image--small"]} alt={periodical.title} /> : <img src={helpers.defaultPeriodicalImage} className={styles["periodical__image--small"]} alt={periodical.title} />;
+export default PeriodicalListItem = ({ libraryId, periodical, t }) => {
+    const cover = periodical.links.image ? <img src={periodical.links.image} onError={setDefaultPeriodicalImage} className={styles["periodical__image--small"]} alt={periodical.title} /> : <img src={periodicalPlaceholderImage} className={styles["periodical__image--small"]} alt={periodical.title} />;
 
     const title = <Link to={`/libraries/${libraryId}/periodicals/${periodical.id}`}>{periodical.title}</Link>;
     const description = periodical.description ? (
@@ -47,6 +47,4 @@ function PeriodicalListItem({ libraryId, periodical, t }) {
             <List.Item.Meta title={title} description={description} />
         </List.Item>
     );
-}
-
-export default PeriodicalListItem;
+};

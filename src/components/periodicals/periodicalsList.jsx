@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
@@ -8,12 +9,11 @@ import { FaPlus } from "react-icons/fa";
 import { ImNewspaper } from "react-icons/im";
 
 // Local Imports
-import helpers from "../../helpers";
-import DataContainer from "../layout/dataContainer";
+import { useGetPeriodicalsQuery } from "~/src/store/slices/periodicalsSlice";
+import { buildLinkToPeriodicalsPage } from "~/src/util";
+import DataContainer from "~/src/components/layout/dataContainer";
 import PeriodicalCard from "./periodicalCard";
 import PeriodicalListItem from "./periodicalListItem";
-import { useGetPeriodicalsQuery } from "../../features/api/periodicalsSlice";
-import { useState } from "react";
 // ------------------------------------------------------
 
 const grid = {
@@ -28,7 +28,7 @@ const grid = {
 
 // ------------------------------------------------------
 
-function PeriodicalsList({
+export default PeriodicalsList = ({
     libraryId,
     query,
     sortBy,
@@ -36,7 +36,7 @@ function PeriodicalsList({
     pageNumber,
     pageSize,
     showSearch = true,
-}) {
+}) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
@@ -90,7 +90,7 @@ function PeriodicalsList({
 
     const onPageChanged = (newPage, newPageSize) => {
         navigate(
-            helpers.buildLinkToPeriodicalsPage(
+            buildLinkToPeriodicalsPage(
                 location.pathname,
                 newPage,
                 newPageSize,
@@ -103,7 +103,7 @@ function PeriodicalsList({
 
     const onSearch = () => {
         navigate(
-            helpers.buildLinkToPeriodicalsPage(
+            buildLinkToPeriodicalsPage(
                 location.pathname,
                 1,
                 pageSize,
@@ -178,6 +178,4 @@ function PeriodicalsList({
             />
         </DataContainer>
     );
-}
-
-export default PeriodicalsList;
+};

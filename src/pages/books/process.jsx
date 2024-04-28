@@ -6,22 +6,20 @@ import { useHotkeys } from 'react-hotkeys-hook';
 
 // 3rd party libraries
 import { App, Button, Card, Col, theme, Layout, List, Progress, Row, Space, Typography, Image, Tooltip, Result } from "antd";
-import * as pdfjsLib from "pdfjs-dist";
 import { MdContentCopy, MdZoomIn, MdZoomOut } from "react-icons/md";
 import { TbSettingsCode, TbSettingsDown } from "react-icons/tb";
 import { FaArrowLeft, FaArrowRight, FaFilePdf, FaRegFilePdf, FaSave } from "react-icons/fa";
-import * as worker from 'pdfjs-dist/build/pdf.worker.mjs';
 
 // Local Imports
-import { useGetBookQuery, useCreateBookPageWithImageMutation } from "../../features/api/booksSlice";
-import { languages } from '../../features/ui/uiSlice';
-import DataContainer from "../../components/layout/dataContainer";
-import helpers from '../../helpers';
-import { PageImageEditor } from "../../components/books/pages/PageImageEditor";
+import { useGetBookQuery, useCreateBookPageWithImageMutation } from "~/src/store/slices/booksSlice";
+import { languages } from '~/src/store/slices/uiSlice';
+import { downloadFile, loadPdfPage, splitImage, dataURItoBlob } from '~/src/util';
+import DataContainer from "~/src/components/layout/dataContainer";
+import { PageImageEditor } from "~/src/components/books/pages/PageImageEditor";
+import { pdfjsLib } from '~/src/util/pdf'
 
 // --------------------------------------
 const { Content, Sider, Header } = Layout;
-pdfjsLib.GlobalWorkerOptions.workerSrc = worker;
 // --------------------------------------
 
 const BookProcessPage = () => {
@@ -61,7 +59,7 @@ const BookProcessPage = () => {
                 }
             }
 
-            const file = await helpers.downloadFile(content.links.download, onProgressDownload);
+            const file = await downloadFile(content.links.download, onProgressDownload);
 
             const onProgressPageLoading = ({ loaded, total }) => {
                 if (total > 0) {
@@ -76,7 +74,7 @@ const BookProcessPage = () => {
 
             for (let i = 1; i <= pdf.numPages; i++) {
 
-                let img = await helpers.loadPdfPage(pdf, i);
+                let img = await loadPdfPage(pdf, i);
                 imagesList.push({
                     index: i - 1,
                     data: img,
@@ -148,14 +146,14 @@ const BookProcessPage = () => {
             for (let i = 0; i < images.length; i++) {
                 const image = images[i];
                 if (image.split) {
-                    const splitImage = await helpers.splitImage({ URI: image.data, splitPercentage: image.splitValue, rtl: isRtl });
-                    data.push(splitImage);
+                    const splitImageObj = await splitImage({ URI: image.data, splitPercentage: image.splitValue, rtl: isRtl });
+                    data.push(splitImageObj);
                 } else {
                     data.push(image.data);
                 }
             }
 
-            const files = data.flat().map(d => helpers.dataURItoBlob(d));
+            const files = data.flat().map(d => dataURItoBlob(d));
             const chunkSize = 10;
             for (let i = 0; i < files.length; i += chunkSize) {
                 const chunk = files.slice(i, i + chunkSize);
@@ -286,7 +284,7 @@ const BookProcessPage = () => {
             icon={<FaFilePdf size="3em" />}
             title={t('book.actions.loadFileImages.messages.errorFileType')}
             extra={[
-                <a href={`/libraries/${libraryId}/books/${bookId}?section=files`}>
+                <a href={`/libraries/${libraryId}/books/${bookId}?section=files`} key={`${bookId}-files`}>
                     <Button>{t('book.actions.loadFileImages.selectOtherFile')}</Button>
                 </a>
             ]}

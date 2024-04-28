@@ -8,13 +8,12 @@ import { App, Button, Form, Input, Space, Divider, Spin, Alert } from 'antd';
 import { LockOutlined } from '@ant-design/icons';
 
 // Internal imports
-import styles from '../styles/common.module.scss'
-import FullPageFormContainer from '../components/layout/fullPageFormContainer';
+import FullPageFormContainer from '~/src/components/layout/fullPageFormContainer';
 import {
   resetPassword,
   getResetPasswordError,
   getResetPasswordStatus
-} from '../features/auth/authSlice';
+} from '~/src/store/slices/authSlice';
 
 
 function ResetPassword() {
@@ -42,12 +41,12 @@ function ResetPassword() {
       })
   };
 
-  const errorMessage = error ? (<Alert  showIcon message={t('resetPassword.error')} type="error" />) : null
+  const errorMessage = error ? (<Alert showIcon message={t('resetPassword.error')} type="error" />) : null
 
   return (
     <FullPageFormContainer title={t('resetPassword.title')}>
-       <Spin spinning={status === 'loading' }>
-          <Form name="reset-password" onFinish={onSubmit}
+      <Spin spinning={status === 'loading'}>
+        <Form name="reset-password" onFinish={onSubmit}
         >
           <Form.Item name="password" hasFeedback
             rules={[
@@ -63,12 +62,12 @@ function ResetPassword() {
             ]}
           >
             <Input
-              prefix={<LockOutlined className="reset-form-item-icon" />}
+              prefix={<LockOutlined />}
               type="password"
               placeholder={t('resetPassword.password.label')}
             />
           </Form.Item>
-            <Form.Item name="confirmPassword" hasFeedback
+          <Form.Item name="confirmPassword" hasFeedback
             rules={[
               {
                 required: true,
@@ -79,7 +78,7 @@ function ResetPassword() {
                   if (!value || getFieldValue('password') === value) {
                     return Promise.resolve();
                   }
-                  return Promise.reject(new Error(t('resetPassword.confirmPassword.match' )));
+                  return Promise.reject(new Error(t('resetPassword.confirmPassword.match')));
                 },
               }),
             ]}
@@ -92,7 +91,7 @@ function ResetPassword() {
           </Form.Item>
           <Form.Item>
             <Space direction="vertical" style={{ width: '100%' }}>
-              <Button type="primary" htmlType="submit" className={styles["reset-form-button"]} block>
+              <Button type="primary" htmlType="submit" block>
                 {t('resetPassword.submit')}
               </Button>
               {errorMessage}

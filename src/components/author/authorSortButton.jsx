@@ -8,8 +8,10 @@ import {
     FaSortAmountDown,
     FaSortAmountUp,
 } from "react-icons/fa";
-import helpers from "../../helpers";
-import SortDirection from "../../models/sortDirection";
+
+// Local Imports
+import { updateLinkToAuthorsPage } from "~/src/util";
+import { SortDirection } from "~/src/models";
 
 // ------------------------------------------------------
 
@@ -19,7 +21,7 @@ export default function AuthorSortButton({ sortBy, sortDirection, t }) {
 
     const setSortDirection = (newSortDirection) => {
         navigate(
-            helpers.updateLinkToAuthorsPage(location, {
+            updateLinkToAuthorsPage(location, {
                 pageNumber: 1,
                 sortDirection: newSortDirection,
             })

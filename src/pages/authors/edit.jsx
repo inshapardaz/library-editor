@@ -9,12 +9,12 @@ import { FaFeatherAlt } from "react-icons/fa";
 import ImgCrop from "antd-img-crop";
 
 // Local imports
-import { useGetAuthorByIdQuery, useAddAuthorMutation, useUpdateAuthorMutation, useUpdateAuthorImageMutation } from "../../features/api/authorsSlice";
-import ContentsContainer from "../../components/layout/contentContainer";
-import PageHeader from "../../components/layout/pageHeader";
-import Error from "../../components/common/error";
-import Loading from "../../components/common/loader";
-import helpers from "../../helpers";
+import { useGetAuthorByIdQuery, useAddAuthorMutation, useUpdateAuthorMutation, useUpdateAuthorImageMutation } from "~/src/store/slices/authorsSlice";
+import ContentsContainer from "~/src/components/layout/contentContainer";
+import PageHeader from "~/src/components/layout/pageHeader";
+import Error from "~/src/components/common/error";
+import Loading from "~/src/components/common/loader";
+import { authorPlaceholderImage, setDefaultBookImage } from "~/src/util";
 
 // ----------------------------------------------
 const { Dragger } = Upload;
@@ -45,7 +45,7 @@ const AuthorEditPage = () => {
                 .then(() => uploadImage(authorId))
                 .then(() => navigate(`/libraries/${libraryId}/authors/${authorId}`))
                 .then(() => message.success(t("author.actions.edit.success")))
-                .catch((_) => message.error(t("author.actions.edit.error")));
+                .catch(() => message.error(t("author.actions.edit.error")));
         } else {
             let response = null;
             addAuthor({ libraryId, payload: author })
@@ -54,7 +54,7 @@ const AuthorEditPage = () => {
                 .then(() => uploadImage(response.id))
                 .then(() => navigate(`/libraries/${libraryId}/authors/${response.id}`))
                 .then(() => message.success(t("author.actions.add.success")))
-                .catch((_) => message.error(t("author.actions.add.error")));
+                .catch(() => message.error(t("author.actions.add.error")));
         }
     };
 
@@ -86,7 +86,7 @@ const AuthorEditPage = () => {
             return author.links.image;
         }
 
-        return helpers.defaultAuthorImage;
+        return authorPlaceholderImage;
     };
     const title = author ? author.name : t("author.actions.add.label");
 
@@ -98,7 +98,7 @@ const AuthorEditPage = () => {
                     <Col l={4} md={6} xs={24}>
                         <ImgCrop modalTitle={t("actions.resizeImage")}>
                             <Dragger fileList={fileList} beforeUpload={onImageChange} showUploadList={false}>
-                                <img src={getCoverSrc()} height="300" alt={author && author.name} onError={helpers.setDefaultBookImage} />
+                                <img src={getCoverSrc()} height="300" alt={author && author.name} onError={setDefaultBookImage} />
                             </Dragger>
                         </ImgCrop>
                     </Col>

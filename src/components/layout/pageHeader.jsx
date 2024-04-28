@@ -5,7 +5,7 @@ import { /* Breadcrumb,*/ Col, Row, Space, Typography } from "antd";
 //import { FaHome } from 'react-icons/fa';
 
 // Local Imports
-import styles from "../../styles/common.module.scss";
+import * as styles from "~/src/styles/common.module.scss";
 
 // ----------------------------------------------------
 

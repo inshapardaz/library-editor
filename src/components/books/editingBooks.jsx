@@ -6,10 +6,10 @@ import { useLocalStorage } from "usehooks-ts";
 import { Button, List, Switch } from "antd";
 
 // Internal Imports
-import DataContainer from "../layout/dataContainer";
+import DataContainer from "~/src/components/layout/dataContainer";
+import { useGetMyBooksQuery } from "~/src/store/slices/booksSlice";
 import BookCard from "./bookCard";
 import BookListItem from "./bookListItem";
-import { useGetMyBooksQuery } from "../../features/api/booksSlice";
 
 // ------------------------------------------------------
 

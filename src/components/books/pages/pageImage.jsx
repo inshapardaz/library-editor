@@ -7,7 +7,7 @@ import { FaFileUpload } from "react-icons/fa";
 import { MdOutlineZoomIn, MdOutlineZoomOut } from "react-icons/md";
 
 // Local imports
-import helpers from "../../../helpers";
+import { pagePlaceholderImage, setDefaultPageImage } from "~/src/util";
 
 // -----------------------------------------
 const MIN_ZOOM = 10;
@@ -40,10 +40,10 @@ const PageImage = ({ page, t, fileList, setFileList }) => {
             return page.links.image;
         }
 
-        return helpers.defaultPageImage;
+        return pagePlaceholderImage;
     };
 
-    //const canZoom = useMemo(() => getCoverSrc() !== helpers.defaultPageImage, [getCoverSrc]);
+    //const canZoom = useMemo(() => getCoverSrc() !== pagePlaceholderImage, [getCoverSrc]);
     const canZoomIn = useMemo(() => zoom < MAX_ZOOM, [zoom]);
     const canZoomOut = useMemo(() => zoom > MIN_ZOOM, [zoom]);
 
@@ -74,13 +74,13 @@ const PageImage = ({ page, t, fileList, setFileList }) => {
                     {t('actions.zoonOut')}
                 </Button>
             </Flex>
-            <div flex={1} style={{ overflow: 'auto' }}>
+            <div style={{ overflow: 'auto', flex: 1 }}>
                 <img
                     src={getCoverSrc()}
                     height="300"
                     className="ant-upload-drag-icon"
                     alt={page && page.title}
-                    onError={helpers.setDefaultPageImage}
+                    onError={setDefaultPageImage}
                     style={{ width: `${zoom}%`, height: 'auto' }}
                 />
             </div>
@@ -88,4 +88,4 @@ const PageImage = ({ page, t, fileList, setFileList }) => {
     </>);
 }
 
-export default PageImage;;
+export default PageImage;

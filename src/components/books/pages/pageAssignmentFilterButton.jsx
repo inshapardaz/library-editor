@@ -12,31 +12,30 @@ import {
 } from "react-icons/fa";
 
 // Local Import
-import helpers from "../../../helpers";
-import AssignmentStatus from "../../../models/assignmentStatus";
-import BookStatus from "../../../models/bookStatus";
+import { updateLinkToBooksPagesPage } from "~/src/util";
+import { AssignmentStatus, BookStatus } from "~/src/models";
 
 // ------------------------------------------------------
 
-export default function PageAssignmentFilterButton({ libraryId, book, t }) {
+export default function PageAssignmentFilterButton({ book, t }) {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const location = useLocation();
 
     const assignment =
         (book.status === BookStatus.BeingTyped && searchParams.get("assignment")) ||
-        (book.status === BookStatus.ProofRead && searchParams.get("reviewerAssignment"))
-        ? AssignmentStatus.AssignedToMe
-        : AssignmentStatus.All;
+            (book.status === BookStatus.ProofRead && searchParams.get("reviewerAssignment"))
+            ? AssignmentStatus.AssignedToMe
+            : AssignmentStatus.All;
 
     const setAssignment = (newAvailabilityStatus) => {
         navigate(
-            helpers.updateLinkToBooksPagesPage(
+            updateLinkToBooksPagesPage(
                 location, {
-                    pageNumber : 1,
-                    assignmentFilter: BookStatus.BeingTyped === book.status ? newAvailabilityStatus : null,
-                    reviewerAssignmentFilter:  BookStatus.ProofRead === book.status ? newAvailabilityStatus : null,
-                }
+                pageNumber: 1,
+                assignmentFilter: BookStatus.BeingTyped === book.status ? newAvailabilityStatus : null,
+                reviewerAssignmentFilter: BookStatus.ProofRead === book.status ? newAvailabilityStatus : null,
+            }
             )
         );
     };

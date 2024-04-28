@@ -9,9 +9,9 @@ import { FiLogIn, FiLogOut } from 'react-icons/fi';
 import { ImProfile } from 'react-icons/im';
 import { MdPassword } from 'react-icons/md';
 
- // local imports
+// local imports
 
-import { logout, loggedInUser, isLoggedIn } from '../../features/auth/authSlice'
+import { logout, loggedInUser, isLoggedIn } from '~/src/store/slices/authSlice'
 
 // --------------------------------------------
 const ProfileMenu = () => {

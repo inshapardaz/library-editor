@@ -9,12 +9,12 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import {
     useGetBookChaptersQuery,
     useUpdateChapterSequenceMutation,
-} from "../../../features/api/booksSlice";
+} from "~/src/store/slices/booksSlice";
+import DataContainer from "~/src/components/layout/dataContainer";
+import CheckboxButton from "~/src/components/checkboxButton";
 import ChapterListItem from "./chapterListItem";
 import ChapterEditor from "./chapterEditor";
 import ChapterAssignButton from "./chapterAssignButton";
-import DataContainer from "../../layout/dataContainer";
-import CheckboxButton from "../../checkboxButton";
 import ChapterDeleteButton from "./chapterDeleteButton";
 import ChapterStatusButton from "./chapterStatusButton";
 
@@ -24,8 +24,7 @@ const ChaptersList = ({
     libraryId,
     bookId,
     t,
-    size = "default",
-    hideTitle = false,
+    size = "default"
 }) => {
     const { message } = App.useApp();
     const [selection, setSelection] = useState([]);
@@ -63,7 +62,7 @@ const ChaptersList = ({
                 .then(() =>
                     message.success(t("chapter.actions.reorder.success"))
                 )
-                .catch((_) =>
+                .catch(() =>
                     message.error(t("chapter.actions.reorder.error"))
                 );
         }

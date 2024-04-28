@@ -7,24 +7,13 @@ import { Button, Input, List, Space, Switch } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 
 // Internal Imports
-import { useGetLibrariesQuery } from "../../features/api/librariesSlice";
-import DataContainer from "../layout/dataContainer";
+import { useGetLibrariesQuery } from "~/src/store/slices/librariesSlice";
+import { grid, updateLinkToLibrariesPage } from "~/src/util";
+import DataContainer from "~/src/components/layout/dataContainer";
 import LibraryCard from "./libraryCard";
-import helpers from "../../helpers";
 import LibraryListItem from "./libraryListItem";
 
 // ------------------------------------------------------
-
-const grid = {
-    gutter: 8,
-    xs: 1,
-    sm: 2,
-    md: 2,
-    lg: 3,
-    xl: 4,
-    xxl: 6,
-};
-
 function ShowMoreButton({ t }) {
     const navigate = useNavigate();
     return (
@@ -50,7 +39,7 @@ const LibrariesList = ({
     pageNumber,
     pageSize,
     showSearch = true,
-    showMore = false}) => {
+    showMore = false }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
@@ -66,7 +55,7 @@ const LibrariesList = ({
 
     const onPageChanged = (newPage, newPageSize) => {
         navigate(
-            helpers.updateLinkToLibrariesPage(location, {
+            updateLinkToLibrariesPage(location, {
                 pageNumber: newPage,
                 pageSize: newPageSize,
             })
@@ -75,7 +64,7 @@ const LibrariesList = ({
 
     const onSearch = () => {
         navigate(
-            helpers.updateLinkToLibrariesPage(location, {
+            updateLinkToLibrariesPage(location, {
                 pageNumber: 1,
                 query: search,
             })
@@ -88,7 +77,7 @@ const LibrariesList = ({
         } else {
             return (
                 <List.Item>
-                        <LibraryCard key={l.id} library={l} t={t} />
+                    <LibraryCard key={l.id} library={l} t={t} />
                 </List.Item>
             );
         }
@@ -136,7 +125,7 @@ const LibrariesList = ({
                     showSizeChanger: true,
                     responsive: true,
                     showQuickJumper: true,
-                    hideOnSinglePage:true,
+                    hideOnSinglePage: true,
                     pageSizeOptions: [12, 24, 48, 96],
                 }}
             />

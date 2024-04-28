@@ -5,8 +5,8 @@ import { App, Button, Modal, Form } from "antd";
 import { FaTasks } from "react-icons/fa";
 
 // Local imports
-import { useUpdateBookPageMutation } from "../../../features/api/booksSlice";
-import EditingStatusSelect from "../../editingStatusSelect";
+import { useUpdateBookPageMutation } from "~/src/store/slices/booksSlice";
+import EditingStatusSelect from "~/src/components/editingStatusSelect";
 
 // ------------------------------------------------------
 
@@ -29,7 +29,7 @@ export default function PageStatusButton({ pages, t, type }) {
             });
 
         Promise.all(promises)
-            .then(() =>{
+            .then(() => {
                 setOpen(false);
                 message.success(t("page.actions.updateStatus.success"))
             })
@@ -44,7 +44,7 @@ export default function PageStatusButton({ pages, t, type }) {
             .then((values) => {
                 onSubmit(values);
             })
-            .catch(() => {});
+            .catch(() => { });
 
     const onShow = () => {
         form.resetFields();

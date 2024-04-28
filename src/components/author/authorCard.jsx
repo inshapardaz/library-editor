@@ -6,9 +6,9 @@ import { ImBooks } from "react-icons/im";
 import { FaPenFancy, FaEdit } from "react-icons/fa";
 
 // Local Imports
-import styles from "../../styles/common.module.scss";
-import { IconText } from "../common/iconText";
-import helpers from "../../helpers/index";
+import * as styles from "~/src/styles/common.module.scss";
+import { authorPlaceholderImage, setDefaultAuthorImage } from "~/src/util";
+import IconText from "~/src/components/common/iconText";
 import AuthorDeleteButton from "./authorDeleteButton";
 
 // ------------------------------------------------------
@@ -18,7 +18,9 @@ const { Text, Paragraph } = Typography;
 // ------------------------------------------------------
 
 function AuthorCard({ libraryId, author, t }) {
-    const cover = <img src={author.links.image || helpers.defaultAuthorImage} onError={helpers.setDefaultAuthorImage} className={styles["author__image"]} alt={author.name} />;
+    const navigate = useNavigate();
+
+    const cover = <img src={author.links.image || authorPlaceholderImage} onError={setDefaultAuthorImage} className={styles["author__image"]} alt={author.name} />;
     const description = author.description ? (
         <Paragraph ellipsis type="secondary">
             {author.description}
@@ -27,30 +29,26 @@ function AuthorCard({ libraryId, author, t }) {
         <Text type="secondary">{t("author.noDescription")}</Text>
     );
     const bookCount = (
-        <Link to={`/libraries/${libraryId}/books?author=${author.id}`}>
-            <IconText icon={ImBooks} text={t("author.bookCount", { count: author.bookCount })} key="auhtor-book-count" />
-        </Link>
+        <IconText icon={ImBooks} text={t("author.bookCount", { count: author.bookCount })} key="auhtor-book-count"
+            href={`/libraries/${libraryId}/books?author=${author.id}`} />
     );
     const writingsCount = (
-        <Link to={`/libraries/${libraryId}/articles?author=${author.id}`}>
-            <IconText icon={FaPenFancy} text={t("author.writingCount", { count: 0 })} key="author-writings-count" />
-        </Link>
+        <IconText icon={FaPenFancy} text={t("author.writingCount", { count: 0 })} key="author-writings-count"
+            href={`/libraries/${libraryId}/articles?author=${author.id}`} />
     );
 
     const editLink = (
-        <Link to={`/libraries/${libraryId}/authors/${author.id}/edit`}>
-            <FaEdit />
-        </Link>
+        <IconText icon={FaEdit} text={t("actions.edit")} key="author-edit"
+            href={`/libraries/${libraryId}/authors/${author.id}/edit`} />
     );
 
     const deleteAuthor = (<AuthorDeleteButton libraryId={libraryId} author={author} t={t} type="ghost" size="small" />)
 
     return (
-        <Link to={`/libraries/${libraryId}/authors/${author.id}`}>
-            <Card key={author.id} cover={cover} hoverable actions={[editLink, deleteAuthor, bookCount, writingsCount]}>
-                <Card.Meta title={author.name} description={description} />
-            </Card>
-        </Link>
+        <Card key={author.id} cover={cover} hoverable actions={[editLink, deleteAuthor, bookCount, writingsCount]}
+            onClick={() => navigate(`/libraries/${libraryId}/authors/${author.id}`)}>
+            <Card.Meta title={author.name} description={description} />
+        </Card>
     );
 }
 

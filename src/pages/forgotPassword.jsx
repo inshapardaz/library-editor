@@ -7,13 +7,13 @@ import { App, Button, Form, Input, Space, Divider, Spin, Alert } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
 // Internal imports
-import styles from '../styles/common.module.scss'
-import FullPageFormContainer from '../components/layout/fullPageFormContainer';
+import * as styles from '~/src/styles/common.module.scss'
+import FullPageFormContainer from '~/src/components/layout/fullPageFormContainer';
 import {
   forgetPassword,
   getForgetPasswordError,
   getForgetPasswordStatus
-} from '../features/auth/authSlice';
+} from '~/src/store/slices/authSlice';
 
 
 function ForgotPassword() {
@@ -32,42 +32,42 @@ function ForgotPassword() {
       })
   };
 
-  const errorMessage = error ? (<Alert  showIcon message={t('forgotPassword.error')} type="error" />) : null
+  const errorMessage = error ? (<Alert showIcon message={t('forgotPassword.error')} type="error" />) : null
 
   return (
     <FullPageFormContainer title={t('forgotPassword.title')}>
-       <Spin spinning={status === 'loading' }>
-          <Form name="forgot-password" onFinish={onSubmit}
+      <Spin spinning={status === 'loading'}>
+        <Form name="forgot-password" onFinish={onSubmit}
+        >
+          <Form.Item name="email"
+            rules={[
+              {
+                required: true,
+                message: t('forgotPassword.email.required'),
+              },
+              {
+                type: 'email',
+                message: t('forgotPassword.email.error'),
+              },
+            ]}
           >
-            <Form.Item name="email"
-              rules={[
-                {
-                  required: true,
-                  message: t('forgotPassword.email.required'),
-                },
-                {
-                  type: 'email',
-                  message: t('forgotPassword.email.error'),
-                },
-              ]}
-            >
-              <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder={t('forgotPassword.email.title')} />
-            </Form.Item>
-            <Form.Item>
-              <Space direction="vertical" style={{ width: '100%' }}>
-                <Button type="primary" htmlType="submit" className={styles["forgot-form-button"]} block>
-                  {t('forgotPassword.submit')}
-                </Button>
-                  {errorMessage}
-                <Divider />
-                <Button className={styles["forgot-form-forgot"]} type="text" block href="/account/login">
-                  {t('login.title')}
-                </Button>
-                <Button href="/account/register" type="text" block>{t('register.title')}</Button>
-                </Space>
-            </Form.Item>
-          </Form>
-        </Spin>
+            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder={t('forgotPassword.email.title')} />
+          </Form.Item>
+          <Form.Item>
+            <Space direction="vertical" style={{ width: '100%' }}>
+              <Button type="primary" htmlType="submit" block>
+                {t('forgotPassword.submit')}
+              </Button>
+              {errorMessage}
+              <Divider />
+              <Button type="text" block href="/account/login">
+                {t('login.title')}
+              </Button>
+              <Button href="/account/register" type="text" block>{t('register.title')}</Button>
+            </Space>
+          </Form.Item>
+        </Form>
+      </Spin>
     </FullPageFormContainer>
   );
 }

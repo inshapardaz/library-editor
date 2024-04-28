@@ -3,21 +3,25 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
 // 3rd party libraries
-
+import moment from "moment/moment";
 import { Button, Col, Form, InputNumber, Row, App, Space, Spin, Upload } from "antd";
 import { FiLayers } from "react-icons/fi";
 import ImgCrop from "antd-img-crop";
 
 // Local imports
-import { useGetIssueQuery, useAddIssueMutation, useUpdateIssueMutation, useUpdateIssueImageMutation } from "../../../features/api/issuesSlice";
-import { useGetPeriodicalByIdQuery } from "../../../features/api/periodicalsSlice";
-import ContentsContainer from "../../../components/layout/contentContainer";
-import PageHeader from "../../../components/layout/pageHeader";
-import Error from "../../../components/common/error";
-import Loading from "../../../components/common/loader";
-import helpers from "../../../helpers";
-import moment from "moment/moment";
-import DateInput from "../../../components/dateInput";
+import {
+    useGetIssueQuery,
+    useAddIssueMutation,
+    useUpdateIssueMutation,
+    useUpdateIssueImageMutation
+} from "~/src/store/slices/issuesSlice";
+import { useGetPeriodicalByIdQuery } from "~/src/store/slices/periodicalsSlice";
+import { issuePlaceholderImage, setDefaultIssueImage, getDateFormatFromFrequency } from "~/src/util";
+import ContentsContainer from "~/src/components/layout/contentContainer";
+import PageHeader from "~/src/components/layout/pageHeader";
+import Error from "~/src/components/common/error";
+import Loading from "~/src/components/common/loader";
+import DateInput from "~/src/components/dateInput";
 
 // ----------------------------------------------
 const { Dragger } = Upload;
@@ -26,7 +30,7 @@ const { Dragger } = Upload;
 const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 14 } };
 const buttonItemLayout = { wrapperCol: { span: 14, offset: 4 } };
 
-const IssueEditPage = () => {
+export default IssueEditPage = () => {
     const { message } = App.useApp();
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -49,7 +53,7 @@ const IssueEditPage = () => {
                 .then(() => uploadImage(periodicalId, issue.volumeNumber, issue.issueNumber))
                 .then(() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}`))
                 .then(() => message.success(t("issue.actions.edit.success")))
-                .catch((_) => message.error(t("issue.actions.edit.error")));
+                .catch(() => message.error(t("issue.actions.edit.error")));
         } else {
             let response = null;
             addIssue({ libraryId, periodicalId, volumeNumber: issue.volumeNumber, issueNumber: issue.issueNumber, payload: issue })
@@ -58,7 +62,7 @@ const IssueEditPage = () => {
                 .then(() => uploadImage(periodicalId, response.volumeNumber, response.issueNumber))
                 .then(() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}/issues/${response.id}`))
                 .then(() => message.success(t("issue.actions.add.success")))
-                .catch((_) => message.error(t("issue.actions.add.error")));
+                .catch(() => message.error(t("issue.actions.add.error")));
         }
     };
 
@@ -90,9 +94,9 @@ const IssueEditPage = () => {
             return issue.links.image;
         }
 
-        return helpers.defaultIssueImage;
+        return issuePlaceholderImage;
     };
-    const title = issue ? moment(issue.issueDate).format(helpers.getDateFormatFromFrequency(issue.frequency)) : t("issue.actions.add.label");
+    const title = issue ? moment(issue.issueDate).format(getDateFormatFromFrequency(issue.frequency)) : t("issue.actions.add.label");
 
     return (
         <>
@@ -102,7 +106,7 @@ const IssueEditPage = () => {
                     <Col l={4} md={6} xs={24}>
                         <ImgCrop aspect={262 / 400} rotationSlider modalTitle={t("actions.resizeImage")}>
                             <Dragger fileList={fileList} beforeUpload={onImageChange} showUploadList={false}>
-                                <img src={getCoverSrc()} height="300" alt={issue && issue.name} onError={helpers.setDefaultIssueImage} />
+                                <img src={getCoverSrc()} height="300" alt={issue && issue.name} onError={setDefaultIssueImage} />
                             </Dragger>
                         </ImgCrop>
                     </Col>
@@ -162,6 +166,4 @@ const IssueEditPage = () => {
             </ContentsContainer>
         </>
     );
-};
-
-export default IssueEditPage;
+}

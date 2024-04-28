@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 // 3rd party libraries
 import { useLocalStorage, useWindowSize } from "usehooks-ts";
-import { Drawer, Row, Col,  Divider, Typography, Slider, Segmented, theme, Button, Tooltip } from 'antd';
+import { Drawer, Row, Col, Divider, Typography, Slider, Segmented, theme, Button, Tooltip } from 'antd';
 import { ImMenu4, ImFileText2 } from 'react-icons/im'
 import { IoIosCloseCircle } from 'react-icons/io'
 import { BsFileEarmarkFont } from 'react-icons/bs'
@@ -14,42 +14,41 @@ import { TiDocumentText } from 'react-icons/ti'
 import { VscBook } from 'react-icons/vsc'
 
 // Local imports
-import styles from '../../styles/reader.module.scss'
-import { selectedLanguage } from '../../features/ui/uiSlice';
-import { useGetBookQuery, useGetChapterQuery, useGetChapterContentsQuery } from "../../features/api/booksSlice"
-import { languages } from '../../features/ui/uiSlice';
-import Reader from "../../components/reader";
-import FontList from "../../components/reader/fontList";
-import ChaptersMenu from "../../components/books/chapters/chaptersMenu";
+import * as styles from '~/src/styles/reader.module.scss'
+import { languages, selectedLanguage } from '~/src/store/slices/uiSlice';
+import { useGetBookQuery, useGetChapterQuery, useGetChapterContentsQuery } from "~/src/store/slices/booksSlice"
+import FontList from "~/src/components/reader/fontList";
+import Reader from "~/src/components/reader";
+import ChaptersMenu from "~/src/components/books/chapters/chaptersMenu";
 
 //------------------------------------------------
 
 
-    const readerViews = [{
-        value: 'vertical',
-        icon: <TiDocumentText />
-    }, {
-        value: 'singlePage',
-        icon: <ImFileText2 />
-    }, {
-            value: 'flipBook',
-        icon: <VscBook />
-    }];
+const readerViews = [{
+    value: 'vertical',
+    icon: <TiDocumentText />
+}, {
+    value: 'singlePage',
+    icon: <ImFileText2 />
+}, {
+    value: 'flipBook',
+    icon: <VscBook />
+}];
 
 // ------------------------------------------------------
 
 const BookReader = () => {
     const { t } = useTranslation()
     const {
-    token: { colorBgContainer },
+        token: { colorBgContainer },
     } = theme.useToken();
     const navigate = useNavigate()
     const windowSize = useWindowSize();
     const lang = useSelector(selectedLanguage)
     const { libraryId, bookId, chapterNumber } = useParams()
-    const { data: book, error: bookError } = useGetBookQuery({libraryId, bookId}, { skip : !libraryId || !bookId })
-    const { data : chapter, error: chapterError } = useGetChapterQuery({libraryId, bookId, chapterNumber}, { skip : !libraryId || !bookId || !chapterNumber || !book || bookError })
-    const { data : contents, error: contentsError, isFetching: contentsFetching } = useGetChapterContentsQuery({libraryId, bookId, chapterNumber}, { skip : !libraryId || !bookId || !chapterNumber || !chapter || chapterError })
+    const { data: book, error: bookError } = useGetBookQuery({ libraryId, bookId }, { skip: !libraryId || !bookId })
+    const { data: chapter, error: chapterError } = useGetChapterQuery({ libraryId, bookId, chapterNumber }, { skip: !libraryId || !bookId || !chapterNumber || !book || bookError })
+    const { data: contents, error: contentsError, isFetching: contentsFetching } = useGetChapterContentsQuery({ libraryId, bookId, chapterNumber }, { skip: !libraryId || !bookId || !chapterNumber || !chapter || chapterError })
 
     const [font, setFont] = useLocalStorage('reader-font', 'MehrNastaleeq')
     const [size, setSize] = useLocalStorage('reader-font-size', 2.0);
@@ -73,12 +72,11 @@ const BookReader = () => {
             navigate(`/libraries/${libraryId}/books/${bookId}/chapters/${chapterNumber}`)
         }
     }
-    const onNext = () => gotoChapter(chapter?.chapterNumber+1)
-    const onPrevious = () => gotoChapter(chapter?.chapterNumber-1, true)
+    const onNext = () => gotoChapter(chapter?.chapterNumber + 1)
+    const onPrevious = () => gotoChapter(chapter?.chapterNumber - 1, true)
 
     useEffect(() => {
-        if (contentsError && contentsError.status === 401)
-        {
+        if (contentsError && contentsError.status === 401) {
             navigate('/403')
         }
 
@@ -136,21 +134,21 @@ const BookReader = () => {
                 onPreviousChapter={onPrevious}
                 hasNextChapter={chapter && chapter.links.next}
                 onNextChapter={onNext}
-                direction={ getDirection() } />
+                direction={getDirection()} />
         </div>
         <div className={styles.readerFooter}></div>
         <Drawer title={t('reader.settings')} placement="left" onClose={onCloseSettings} open={showSetting}>
             <Typography>{t('reader.view.title')}</Typography>
-            <Segmented options={readerViews} block size="large" onChange={ setView } value={view} />
+            <Segmented options={readerViews} block size="large" onChange={setView} value={view} />
             <Divider />
             <Typography>{t('reader.fontSize')}</Typography>
-            <Slider defaultValue={size} min={0.5} max={3.0} step={0.1} onChange={ setSize } />
+            <Slider defaultValue={size} min={0.5} max={3.0} step={0.1} onChange={setSize} />
             <Divider />
             <Typography>{t('reader.lineSpacing')}</Typography>
-            <Slider defaultValue={lineHeight} min={1.0} max={3.0} step={0.1} onChange={ setLineHeight } />
+            <Slider defaultValue={lineHeight} min={1.0} max={3.0} step={0.1} onChange={setLineHeight} />
             <Divider />
             <Row><Col><BsFileEarmarkFont /></Col><Col><Typography>{t('reader.font')}</Typography></Col></Row>
-            <FontList selectedFont={font} onChanged={f => setFont(f)} t={t} language={book?.language ?? lang?.key ?? 'en'}  />
+            <FontList selectedFont={font} onChanged={f => setFont(f)} t={t} language={book?.language ?? lang?.key ?? 'en'} />
         </Drawer>
         <Drawer title={t('chapters.title')} placement="left" onClose={onCloseChapters} open={showChapters}>
             <ChaptersMenu selectedChapterNumber={chapter?.chapterNumber} t={t} libraryId={libraryId} bookId={bookId} onChanged={gotoChapter} />

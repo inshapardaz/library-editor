@@ -10,8 +10,10 @@ import {
     FaSortAmountDown,
     FaSortAmountUp,
 } from "react-icons/fa";
-import helpers from "../../helpers";
-import SortDirection from "../../models/sortDirection";
+
+// Local Imports
+import { updateLinkToArticlesPage } from "~/src/util";
+import { SortDirection } from "~/src/models";
 
 // ------------------------------------------------------
 
@@ -21,7 +23,7 @@ export default function ArticleSortButton({ sortBy, sortDirection, t }) {
 
     const setSortDirection = (newSortDirection) => {
         navigate(
-            helpers.updateLinkToArticlesPage(location, {
+            updateLinkToArticlesPage(location, {
                 pageNumber: 1,
                 sortDirection: newSortDirection,
             })
@@ -29,7 +31,7 @@ export default function ArticleSortButton({ sortBy, sortDirection, t }) {
     };
     const setSortBy = (newSortBy) => {
         navigate(
-            helpers.updateLinkToArticlesPage(location, {
+            updateLinkToArticlesPage(location, {
                 pageNumber: 1,
                 sortBy: newSortBy,
             })

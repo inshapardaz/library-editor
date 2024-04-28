@@ -5,8 +5,8 @@ import { App, Button, Modal, Form, Space } from "antd";
 import { FaUserAlt } from "react-icons/fa";
 
 // Local imports
-import { useAssignBookPageMutation } from "../../../features/api/booksSlice";
-import UserSelect from "../../userSelect";
+import { useAssignBookPageMutation } from "~/src/store/slices/booksSlice";
+import UserSelect from "~/src/components/userSelect";
 
 // ------------------------------------------------------
 
@@ -47,7 +47,7 @@ export default function PageAssignButton({ libraryId, pages, t, type }) {
             .then((values) => {
                 onSubmit(values);
             })
-            .catch((info) => {});
+            .catch(() => { });
 
     const onShow = () => {
         form.resetFields();
