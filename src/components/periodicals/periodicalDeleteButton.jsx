@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 // Third party libraries
 import { App, Button, Modal } from "antd";
 import { FaTrash } from 'react-icons/fa';
@@ -21,6 +23,7 @@ const PeriodicalDeleteButton = ({
     size = "middle"
 }) => {
     const { message } = App.useApp();
+    const navigate = useNavigate();
     const [deletePeriodical, { isLoading: isDeleting }] = useDeletePeriodicalMutation();
 
     const showConfirm = () => {
@@ -35,8 +38,9 @@ const PeriodicalDeleteButton = ({
                 return deletePeriodical({ libraryId, periodicalId: periodical.id })
                     .unwrap()
                     .then(() => onDeleted())
-                    .then(() => message.success(t("periodical.actions.delete.success")))
-                    .catch(() => message.error(t("periodical.actions.delete.error")));
+                    .then(() => { message.success(t("periodical.actions.delete.success")) })
+                    .then(() => navigate(`/libraries/${libraryId}/periodicals`))
+                    .catch(() => { message.error(t("periodical.actions.delete.error")) });
             }
         });
     };

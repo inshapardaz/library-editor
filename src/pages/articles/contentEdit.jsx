@@ -38,7 +38,7 @@ const ArticleContentEditPage = () => {
     const searchLang = language ?? lang.key;
     const [layout, setLayout] = useState('normal');
 
-    const { data: article, articleError, isFetchingArticle }
+    const { refetch, data: article, articleError, isFetchingArticle }
         = useGetArticleQuery(
             { libraryId, articleId: articleId, language: searchLang },
             { skip: !libraryId || !articleId || !searchLang });
@@ -60,6 +60,7 @@ const ArticleContentEditPage = () => {
                 payload: c
             })
                 .unwrap()
+                .then(refetch)
                 .then(() => message.success(t("article.actions.edit.success")))
                 .catch(() => message.error(t("article.actions.edit.error")));
         } else {
@@ -71,6 +72,7 @@ const ArticleContentEditPage = () => {
                 payload: c
             })
                 .unwrap()
+                .then(refetch)
                 .then(() => message.success(t("article.actions.add.success")))
                 .catch(() => message.error(t("article.actions.add.error")));
         }

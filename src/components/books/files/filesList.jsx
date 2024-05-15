@@ -27,9 +27,9 @@ const FilesList = ({
             return;
         }
 
-        addBookContent({ book: book, payload: file }).unwrap()
-            .then(() => message.success(t("book.actions.addFile.success")))
-            .catch(() => message.error(t("book.actions.addFile.error")));
+        addBookContent({ book: book, payload: file, language: 'en' }).unwrap()
+            .then(() => { message.success(t("book.actions.addFile.success")) })
+            .catch(() => { message.error(t("book.actions.addFile.error")) });
     }
 
     return (

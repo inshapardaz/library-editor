@@ -41,9 +41,8 @@ const PageDeleteButton = ({
 
                 return Promise.all(promises)
                     .then(() => onDeleted())
-                    .then(() => message.success(t("page.actions.delete.success")))
-                    .catch(() =>
-                        message.error(t("page.actions.delete.error"))
+                    .then(() => { message.success(t("page.actions.delete.success")) })
+                    .catch(() => { message.error(t("page.actions.delete.error")) }
                     );
             },
         });

@@ -34,8 +34,8 @@ const ArticleDeleteButton = ({ children,
                 return deleteArticle({ libraryId, articleId: article.id })
                     .unwrap()
                     .then(() => onDeleted())
-                    .then(() => message.success(t("article.actions.delete.success")))
-                    .catch(() => message.error(t("article.actions.delete.error")));
+                    .then(() => { message.success(t("article.actions.delete.success")) })
+                    .catch(() => { message.error(t("article.actions.delete.error")) });
             }
         });
     };

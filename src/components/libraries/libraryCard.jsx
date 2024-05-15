@@ -7,6 +7,7 @@ import { FaEdit } from "react-icons/fa";
 // Internal Imports
 import * as styles from '~/src/styles/common.module.scss'
 import { libraryPlaceholderImage, setDefaultLibraryImage } from "~/src/util";
+import IconText from "~/src/components/common/iconText";
 import LibraryDeleteButton from "./libraryDeleteButton";
 // ------------------------------------------------------
 
@@ -25,10 +26,8 @@ const LibraryCard = ({ library, t }) => {
         <Text type="secondary">{t("library.noDescription")}</Text>
     );
 
-    const editLink = (
-        <Link to={`/libraries/${library.id}/edit`}>
-            <FaEdit />
-        </Link>
+    const editLink = (<IconText icon={FaEdit} key="library-edit"
+        href={`/libraries/${library.id}/edit`} />
     );
 
 

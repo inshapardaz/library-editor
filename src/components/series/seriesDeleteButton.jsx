@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 // Third party libraries
 import { App, Button, Modal } from "antd";
 import { FaTrash } from 'react-icons/fa';
@@ -11,6 +13,7 @@ const { confirm } = Modal;
 
 const SeriesDeleteButton = ({ children, libraryId, series, t, type, onDeleted = () => { }, danger = false, block = false, size }) => {
     const { message } = App.useApp();
+    const navigate = useNavigate();
     const [deleteSeries, { isLoading: isDeleting }] = useDeleteSeriesMutation();
 
     const showConfirm = () => {
@@ -25,8 +28,9 @@ const SeriesDeleteButton = ({ children, libraryId, series, t, type, onDeleted = 
                 return deleteSeries({ libraryId, seriesId: series.id })
                     .unwrap()
                     .then(() => onDeleted())
-                    .then(() => message.success(t("series.actions.delete.success")))
-                    .catch(() => message.error(t("series.actions.delete.error")));
+                    .then(() => navigate(`/libraries/${libraryId}/series`))
+                    .then(() => { message.success(t("series.actions.delete.success")) })
+                    .catch(() => { message.error(t("series.actions.delete.error")) });
             }
         });
     };

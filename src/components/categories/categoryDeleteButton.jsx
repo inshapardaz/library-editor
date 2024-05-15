@@ -27,8 +27,8 @@ const CategoryDeleteButton = ({ children, libraryId, category, t, type, onDelete
                 return deleteCategory({ libraryId, categoryId: category.id })
                     .unwrap()
                     .then(() => onDeleted())
-                    .then(() => message.success(t("category.actions.delete.success")))
-                    .catch(() => message.error(t("category.actions.delete.error")));
+                    .then(() => { message.success(t("category.actions.delete.success")) })
+                    .catch(() => { message.error(t("category.actions.delete.error")) });
             }
         });
     };

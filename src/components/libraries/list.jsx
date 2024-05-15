@@ -12,6 +12,7 @@ import { grid, updateLinkToLibrariesPage } from "~/src/util";
 import DataContainer from "~/src/components/layout/dataContainer";
 import LibraryCard from "./libraryCard";
 import LibraryListItem from "./libraryListItem";
+import { FaPlus } from "react-icons/fa";
 
 // ------------------------------------------------------
 const ShowMoreButton = ({ t }) => {
@@ -89,8 +90,17 @@ const LibrariesList = ({
             busy={isFetching}
             error={isError}
             empty={libraries && libraries.data && libraries.data.length < 1}
+            emptyContent={
+                libraries && libraries.links && libraries.links.create &&
+                (<Space>
+                    <Button size="small" icon={<FaPlus />}
+                        onClick={() => navigate(`/libraries/add`)}>
+                        {t("library.actions.add.label")}
+                    </Button>
+                </Space>)
+            }
             extra={
-                <Space>
+                < Space >
                     {showSearch && (
                         <Input.Search
                             size="medium"
@@ -107,7 +117,7 @@ const LibrariesList = ({
                         checked={showList}
                         onChange={(checked) => setShowList(checked)}
                     />
-                </Space>
+                </Space >
             }
         >
             <List
@@ -130,7 +140,7 @@ const LibrariesList = ({
                     pageSizeOptions: [12, 24, 48, 96],
                 }}
             />
-        </DataContainer>
+        </DataContainer >
     );
 };
 

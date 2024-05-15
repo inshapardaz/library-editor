@@ -153,6 +153,7 @@ const IssuePage = () => {
                         size="large"
                         onDeleted={() => navigate(`/libraries/${libraryId}/periodicals/${periodical.id}`)}
                         issue={issue}
+                        libraryId={libraryId}
                         t={t}
                         key="issue-delete-button"
                     >

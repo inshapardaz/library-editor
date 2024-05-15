@@ -36,7 +36,7 @@ const ChapterDeleteButton = ({ chapters = [], t, type }) => {
                     });
 
                 return Promise.all(promises)
-                    .then(() => message.success(t("chapter.actions.delete.success", { count })))
+                    .then(() => { message.success(t("chapter.actions.delete.success", { count })) })
                     .catch(() =>
                         message.error(
                             t("chapter.actions.delete.error", { count })

@@ -38,10 +38,12 @@ const LibraryEditPage = () => {
 
     if (isFetching) return <Loading />;
     if (error) return <Error t={t} />;
+    console.log(library)
 
     const onSubmit = async (library) => {
         if (libraryId) {
-            updateLibrary({ library })
+            console.log(library)
+            updateLibrary({ libraryId, library })
                 .unwrap()
                 .then((res) => library = res)
                 .then(() => uploadImage(library))
@@ -152,7 +154,7 @@ const LibraryEditPage = () => {
                                 <Form.Item name="public" valuePropName="checked" label={t("library.isPublic.label")}>
                                     <Switch />
                                 </Form.Item>
-                                <Form.Item name="supportPeriodicals" valuePropName="checked" label={t("library.supportPeriodicals.label")}>
+                                <Form.Item name="supportsPeriodicals" valuePropName="checked" label={t("library.supportPeriodicals.label")}>
                                     <Switch />
                                 </Form.Item>
                                 <Form.Item

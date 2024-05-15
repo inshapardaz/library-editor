@@ -141,11 +141,19 @@ export const init = createAsyncThunk("auth/init", async (_, { getState }) => {
             user?.accessToken &&
             new Date(user.accessTokenExpiry) < currentDate.getTime()
         ) {
-            const response = await axiosPublic.post("/accounts/refresh-token", {
-                refreshToken: user.refreshToken,
-            });
+            try {
+                const response = await axiosPublic.post(
+                    "/accounts/refresh-token",
+                    {
+                        refreshToken: user.refreshToken,
+                    }
+                );
 
-            setUser(response.data);
+                setUser(response.data);
+            } catch (e) {
+                clearUser();
+                window.location.href = "/account/login";
+            }
         }
     }
     return user;

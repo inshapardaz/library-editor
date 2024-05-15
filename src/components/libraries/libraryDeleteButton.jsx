@@ -36,8 +36,8 @@ const LibraryDeleteButton = ({
                 return deleteLibrary({ library })
                     .unwrap()
                     .then(() => onDeleted())
-                    .then(() => message.success(t("library.actions.delete.success")))
-                    .catch(() => message.error(t("library.actions.delete.error")));
+                    .then(() => { message.success(t("library.actions.delete.success")) })
+                    .catch(() => { message.error(t("library.actions.delete.error")) });
             }
         });
     };

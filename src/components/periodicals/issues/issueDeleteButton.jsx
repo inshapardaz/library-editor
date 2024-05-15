@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 // Third party libraries
 import moment from "moment";
 import { App, Button, Modal } from "antd";
@@ -12,6 +14,7 @@ const { confirm } = Modal;
 // ------------------------------------------------------
 
 const IssueDeleteButton = ({
+    libraryId,
     children,
     issue,
     t,
@@ -22,6 +25,7 @@ const IssueDeleteButton = ({
     size = "middle"
 }) => {
     const { message } = App.useApp();
+    const navigate = useNavigate();
     const [deleteIssue, { isLoading: isDeleting }] = useDeleteIssueMutation();
 
     const title = issue && moment(issue.issueDate).format(getDateFormatFromFrequency(issue.frequency));
@@ -38,8 +42,9 @@ const IssueDeleteButton = ({
                 return deleteIssue({ issue: issue })
                     .unwrap()
                     .then(() => onDeleted())
-                    .then(() => message.success(t("issue.actions.delete.success")))
-                    .catch(() => message.error(t("issue.actions.delete.error")));
+                    .then(() => { message.success(t("issue.actions.delete.success")) })
+                    .then(() => navigate(`/libraries/${libraryId}/periodicals/${issue.periodicalId}`))
+                    .catch((e) => { console.error(e); message.error(t("issue.actions.delete.error")) });
             }
         });
     };

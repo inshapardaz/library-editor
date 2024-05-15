@@ -7,6 +7,7 @@ import { FaEdit } from "react-icons/fa";
 // Local Import
 import * as styles from "~/src/styles/common.module.scss";
 import { libraryPlaceholderImage, setDefaultLibraryImage } from "~/src/util";
+import IconText from "~/src/components/common/iconText";
 import LibraryDeleteButton from "./libraryDeleteButton";
 // ------------------------------------------------------
 
@@ -35,9 +36,8 @@ const LibraryListItem = ({ library, t }) => {
         <List.Item
             key={library.id}
             actions={[
-                <Link key={`edit-${library.id}`} to={`/libraries/${library.id}/edit`}>
-                    <FaEdit />
-                </Link>,
+                <IconText icon={FaEdit} key="library-edit"
+                    href={`/libraries/${library.id}/edit`} />,
                 <LibraryDeleteButton
                     key={`delete-${library.id}`}
                     library={library}

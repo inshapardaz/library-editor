@@ -13,11 +13,12 @@ import "antd/dist/reset.css";
 //--------------------------------------------------
 
 createRoot(document.getElementById("app")).render(
-    <React.StrictMode>
-        <Provider store={store}>
-            <MyApp />
-        </Provider>
-    </React.StrictMode>
+    // TODO: Disabling because react-beautiful-dnd wouldn't work with it. https://github.com/atlassian/react-beautiful-dnd/issues/2350#issuecomment-1318179729
+    // <React.StrictMode>
+    <Provider store={store}>
+        <MyApp />
+    </Provider>
+    // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

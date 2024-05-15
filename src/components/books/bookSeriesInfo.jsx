@@ -13,7 +13,7 @@ const BookSeriesInfo = ({ libraryId, book, t }) => {
         } else {
             return <IconText icon={ImBooks}
                 text={t("book.series.indexLabel", { name: book.seriesName })}
-                href={`/libraries/${libraryId}/books?series=${book.series.id}`} />
+                href={`/libraries/${libraryId}/books?series=${book.seriesId}`} />
         }
     }
 

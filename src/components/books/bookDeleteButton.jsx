@@ -27,8 +27,8 @@ const BookDeleteButton = ({ children, libraryId, book, t, type, onDeleted = () =
                 return deleteBook({ libraryId, bookId: book.id })
                     .unwrap()
                     .then(() => onDeleted())
-                    .then(() => message.success(t("book.actions.delete.success")))
-                    .catch(() => message.error(t("book.actions.delete.error")));
+                    .then(() => { message.success(t("book.actions.delete.success")) })
+                    .catch(() => { message.error(t("book.actions.delete.error")) });
             }
         });
     };

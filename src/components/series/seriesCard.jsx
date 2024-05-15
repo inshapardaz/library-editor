@@ -27,24 +27,22 @@ const SeriesCard = ({ libraryId, series, t }) => {
         <Text type="secondary">{t("series.noDescription")}</Text>
     );
     const seriesCount = (
-        <Link to={`/libraries/${libraryId}/series/${series.id}`}>
-            <IconText icon={ImBooks} text={t("series.bookCount", { count: series.bookCount })} key="series-book-count" />
-        </Link>
+        <IconText icon={ImBooks} href={`/libraries/${libraryId}/series/${series.id}`}
+            text={series.bookCount} key="series-book-count" />
     );
 
     const editButton = (
-        <Link to={`/libraries/${libraryId}/series/${series.id}/edit`}>
-            <IconText icon={FaEdit} text={t("actions.edit")} key="series-edit" />
-        </Link>
+        <IconText icon={FaEdit} key="series-edit"
+            href={`/libraries/${libraryId}/series/${series.id}/edit`} />
     );
 
     const deleteSeries = (<SeriesDeleteButton libraryId={libraryId} series={series} t={t} type="ghost" size="small" />);
     return (
-        <Link to={`/libraries/${libraryId}/series/${series.id}`}>
-            <Card key={series.id} cover={cover} hoverable actions={[editButton, deleteSeries, seriesCount]}>
+        <Card key={series.id} cover={cover} hoverable actions={[editButton, deleteSeries, seriesCount]}>
+            <Link to={`/libraries/${libraryId}/series/${series.id}`}>
                 <Card.Meta title={series.name} description={description} />
-            </Card>
-        </Link>
+            </Link>
+        </Card>
     );
 }
 

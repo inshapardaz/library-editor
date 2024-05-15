@@ -27,8 +27,8 @@ const AuthorDeleteButton = ({ children, libraryId, author, t, type, onDeleted = 
                 return deleteAuthor({ libraryId, authorId: author.id })
                     .unwrap()
                     .then(() => onDeleted())
-                    .then(() => message.success(t("author.actions.delete.success")))
-                    .catch(() => message.error(t("author.actions.delete.error")));
+                    .then(() => { message.success(t("author.actions.delete.success")) })
+                    .catch(() => { message.error(t("author.actions.delete.error")) });
             }
         });
     };
