@@ -8,7 +8,7 @@ const BookSeriesInfo = ({ libraryId, book, t }) => {
         if (book.seriesIndex && book.seriesIndex > 0) {
             return <IconText icon={ImBooks}
                 text={t("book.series.seriesAndIndexLabel", { name: book.seriesName, index: book.seriesIndex })}
-                href={`/libraries/${libraryId}/books?series=${book.series.id}`} />
+                href={`/libraries/${libraryId}/books?series=${book.series?.id}`} />
 
         } else {
             return <IconText icon={ImBooks}
