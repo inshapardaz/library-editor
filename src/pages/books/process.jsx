@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
@@ -11,12 +11,12 @@ import { TbSettingsCode, TbSettingsDown } from "react-icons/tb";
 import { FaArrowLeft, FaArrowRight, FaFilePdf, FaRegFilePdf, FaSave } from "react-icons/fa";
 
 // Local Imports
-import { useGetBookQuery, useCreateBookPageWithImageMutation } from "~/src/store/slices/booksSlice";
-import { languages } from '~/src/store/slices/uiSlice';
-import { downloadFile, loadPdfPage, splitImage, dataURItoBlob } from '~/src/util';
-import DataContainer from "~/src/components/layout/dataContainer";
-import PageImageEditor from "~/src/components/books/pages/PageImageEditor";
-import { pdfjsLib } from '~/src/util/pdf'
+import { useGetBookQuery, useCreateBookPageWithImageMutation } from "/src/store/slices/booksSlice";
+import { languages } from '/src/store/slices/uiSlice';
+import { downloadFile, loadPdfPage, splitImage, dataURItoBlob } from '/src/util';
+import DataContainer from "/src/components/layout/dataContainer";
+import PageImageEditor from "/src/components/books/pages/PageImageEditor";
+import { pdfjsLib } from '/src/util/pdf'
 
 // --------------------------------------
 const { Content, Sider, Header } = Layout;

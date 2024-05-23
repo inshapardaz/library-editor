@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
@@ -9,9 +9,9 @@ import { FaPlus } from "react-icons/fa";
 import { ImNewspaper } from "react-icons/im";
 
 // Local Imports
-import { useGetPeriodicalsQuery } from "~/src/store/slices/periodicalsSlice";
-import { buildLinkToPeriodicalsPage } from "~/src/util";
-import DataContainer from "~/src/components/layout/dataContainer";
+import { useGetPeriodicalsQuery } from "/src/store/slices/periodicalsSlice";
+import { buildLinkToPeriodicalsPage } from "/src/util";
+import DataContainer from "/src/components/layout/dataContainer";
 import PeriodicalCard from "./periodicalCard";
 import PeriodicalListItem from "./periodicalListItem";
 // ------------------------------------------------------

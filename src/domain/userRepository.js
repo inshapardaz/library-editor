@@ -1,4 +1,4 @@
-import { isJsonString } from "~/src/util";
+import { isJsonString } from "/src/util";
 
 export const getUser = () => {
   if (window.localStorage.user && isJsonString(window.localStorage.user)) {

@@ -1,3 +1,6 @@
+import React from 'react';
+
+// Third party libraries
 import { Layout } from "antd";
 import { Outlet } from "react-router-dom";
 

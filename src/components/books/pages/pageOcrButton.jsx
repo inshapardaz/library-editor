@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
 
 // Third party libraries
@@ -23,7 +23,7 @@ import {
 } from "react-icons/fa";
 
 // Local imports
-import { useOcrBookPageMutation } from "~/src/store/slices/booksSlice";
+import { useOcrBookPageMutation } from "/src/store/slices/booksSlice";
 
 // ------------------------------------------------------
 

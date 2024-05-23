@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 // 3rd party libraries
 import { App, Button, Col, List, Row, Skeleton } from "antd";
@@ -9,9 +9,9 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import {
     useGetBookChaptersQuery,
     useUpdateChapterSequenceMutation,
-} from "~/src/store/slices/booksSlice";
-import DataContainer from "~/src/components/layout/dataContainer";
-import CheckboxButton from "~/src/components/checkboxButton";
+} from "/src/store/slices/booksSlice";
+import DataContainer from "/src/components/layout/dataContainer";
+import CheckboxButton from "/src/components/checkboxButton";
 import ChapterListItem from "./chapterListItem";
 import ChapterEditor from "./chapterEditor";
 import ChapterAssignButton from "./chapterAssignButton";

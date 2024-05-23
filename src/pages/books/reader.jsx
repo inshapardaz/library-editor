@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate, useParams } from "react-router-dom"
 import { useSelector } from "react-redux";
@@ -14,12 +14,12 @@ import { TiDocumentText } from 'react-icons/ti'
 import { VscBook } from 'react-icons/vsc'
 
 // Local imports
-import * as styles from '~/src/styles/reader.module.scss'
-import { languages, selectedLanguage } from '~/src/store/slices/uiSlice';
-import { useGetBookQuery, useGetChapterQuery, useGetChapterContentsQuery } from "~/src/store/slices/booksSlice"
-import FontList from "~/src/components/reader/fontList";
-import Reader from "~/src/components/reader";
-import ChaptersMenu from "~/src/components/books/chapters/chaptersMenu";
+import '/src/styles/reader.scss'
+import { languages, selectedLanguage } from '/src/store/slices/uiSlice';
+import { useGetBookQuery, useGetChapterQuery, useGetChapterContentsQuery } from "/src/store/slices/booksSlice"
+import FontList from "/src/components/reader/fontList";
+import Reader from "/src/components/reader";
+import ChaptersMenu from "/src/components/books/chapters/chaptersMenu";
 
 //------------------------------------------------
 
@@ -94,8 +94,8 @@ const BookReader = () => {
             return 'singlePage'
         return view
     }
-    return (<div className={styles.readerPage} style={{ direction: getDirection(), background: colorBgContainer }}>
-        <div className={styles.readerHeader}>
+    return (<div className="readerPage" style={{ direction: getDirection(), background: colorBgContainer }}>
+        <div className="readerHeader">
             <Row>
                 <Col>
                     <Tooltip placement="topLeft" title={t('chapters.title')}>
@@ -109,17 +109,17 @@ const BookReader = () => {
                 </Col>
             </Row>
         </div>
-        <div className={styles.readerHeader} >
-            <div className={styles.readerHeaderTitle} >
+        <div className="readerHeader" >
+            <div className="readerHeaderTitle" >
                 {book?.title}
             </div>
         </div>
-        <div className={styles.readerHeader}>
+        <div className="readerHeader">
             <Tooltip placement="topLeft" title={t('actions.close')}>
                 <Button type="text" shape="circle" onClick={onClose} icon={<IoIosCloseCircle />} />
             </Tooltip>
         </div>
-        <div className={styles.readerBody} data-ft="readerPage-body">
+        <div className="readerBody" data-ft="readerPage-body">
             <Reader loading={contentsFetching}
                 bookTitle={book?.title}
                 chapterTitle={chapter?.title}
@@ -135,7 +135,7 @@ const BookReader = () => {
                 onNextChapter={onNext}
                 direction={getDirection()} />
         </div>
-        <div className={styles.readerFooter}></div>
+        <div className="readerFooter"></div>
         <Drawer title={t('reader.settings')} placement="left" onClose={onCloseSettings} open={showSetting}>
             <Typography>{t('reader.view.title')}</Typography>
             <Segmented options={readerViews} block size="large" onChange={setView} value={view} />

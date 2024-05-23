@@ -1,3 +1,4 @@
+import React from 'react';
 import { useNavigate } from "react-router-dom";
 
 // Third party libraries
@@ -6,7 +7,7 @@ import { FaTrash } from 'react-icons/fa';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 
 // Local imports
-import { useDeleteSeriesMutation } from "~/src/store/slices/seriesSlice";
+import { useDeleteSeriesMutation } from "/src/store/slices/seriesSlice";
 // ------------------------------------------------------
 const { confirm } = Modal;
 // ------------------------------------------------------

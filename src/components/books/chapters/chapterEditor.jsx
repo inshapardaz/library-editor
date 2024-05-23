@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 // Third party libraries
 import { App, Button, Modal, Form, Input, Tooltip } from "antd";
@@ -8,8 +8,8 @@ import { FaEdit, FaPlus } from "react-icons/fa";
 import {
     useAddChapterMutation,
     useUpdateChapterMutation,
-} from "~/src/store/slices/booksSlice";
-import EditingStatusSelect from "~/src/components/editingStatusSelect";
+} from "/src/store/slices/booksSlice";
+import EditingStatusSelect from "/src/components/editingStatusSelect";
 // ------------------------------------------------------
 
 const ChapterEditor = ({ libraryId, bookId, chapter, t, type }) => {

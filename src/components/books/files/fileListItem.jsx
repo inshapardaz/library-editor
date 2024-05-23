@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
@@ -5,7 +6,7 @@ import { Avatar, Button, List, Tooltip, Typography, Upload } from "antd";
 import { FaCogs, FaFileDownload, FaFileUpload } from "react-icons/fa";
 
 // Local Import
-import { useUpdateBookContentMutation } from "~/src/store/slices/booksSlice";
+import { useUpdateBookContentMutation } from "/src/store/slices/booksSlice";
 import FileDeleteButton from "./fileDeleteButton";
 import FileTypeIcon from "./fileTypeIcon";
 import BookImageFromFile from "./bookImageFromFile";

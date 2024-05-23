@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
@@ -8,9 +8,9 @@ import { Button, Input, List, Space, Switch } from "antd";
 import { FaBook, FaCloudUploadAlt, FaPlus } from "react-icons/fa";
 
 // Local Imports
-import { updateLinkToBooksPage } from "~/src/util";
-import { useGetBooksQuery } from "~/src/store/slices/booksSlice";
-import DataContainer from "~/src/components/layout/dataContainer";
+import { updateLinkToBooksPage } from "/src/util";
+import { useGetBooksQuery } from "/src/store/slices/booksSlice";
+import DataContainer from "/src/components/layout/dataContainer";
 import BookCard from "./bookCard";
 import BookListItem from "./bookListItem";
 import BookStatusFilterButton from "./bookStatusFilterButton";

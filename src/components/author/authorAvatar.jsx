@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link, useNavigate } from "react-router-dom";
 
 // 3rd party
@@ -6,8 +7,8 @@ import { FaFeatherAlt, FaPenFancy } from "react-icons/fa";
 import { ImBooks } from "react-icons/im";
 
 // Local imports
-import { authorPlaceholderImage } from "~/src/util";
-import IconText from "~/src/components/common/iconText";
+import { authorPlaceholderImage } from "/src/util";
+import IconText from "/src/components/common/iconText";
 
 // --------------------------------------------------
 const AuthorAvatar = ({

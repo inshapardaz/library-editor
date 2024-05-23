@@ -1,8 +1,8 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 
-import axiosBaseQuery from "~/src/util/axiosBaseQuery";
+import axiosBaseQuery from "/src/util/axiosBaseQuery";
 
-import { parseResponse, removeLinks } from "~/src/util/parseResponse";
+import { parseResponse, removeLinks } from "/src/util/parseResponse";
 // ----------------------------------------------
 export const articlesApi = createApi({
   reducerPath: "articles",

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
@@ -9,9 +9,9 @@ import { FaPlus } from "react-icons/fa";
 import { ImBooks } from "react-icons/im";
 
 // Local Imports
-import { useGetSeriesQuery } from "~/src/store/slices/seriesSlice";
-import { updateLinkToSeriesPage } from "~/src/util";
-import DataContainer from "~/src/components/layout/dataContainer";
+import { useGetSeriesQuery } from "/src/store/slices/seriesSlice";
+import { updateLinkToSeriesPage } from "/src/util";
+import DataContainer from "/src/components/layout/dataContainer";
 import SeriesCard from "./seriesCard";
 import SeriesListItem from "./seriesListItem";
 // ------------------------------------------------------

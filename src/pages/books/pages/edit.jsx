@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -28,17 +28,17 @@ import {
     useAddBookPageMutation,
     useUpdateBookPageMutation,
     useUpdateBookPageImageMutation,
-} from "~/src/store/slices/booksSlice";
-import { selectedLanguage } from '~/src/store/slices/uiSlice'
-import { PageStatus } from "~/src/models";
-import PageHeader from "~/src/components/layout/pageHeader";
-import DataContainer from "~/src/components/layout/dataContainer";
-import EditingStatusIcon from "~/src/components/editingStatusIcon";
-import PageOcrButton from "~/src/components/books/pages/pageOcrButton";
-import TextEditor from "~/src/components/textEditor";
-import PageAssignButton from "~/src/components/books/pages/pageAssignButton";
-import PageStatusButton from "~/src/components/books/pages/pageStatusButton";
-import PageImage from "~/src/components/books/pages/pageImage";
+} from "/src/store/slices/booksSlice";
+import { selectedLanguage } from '/src/store/slices/uiSlice'
+import { PageStatus } from "/src/models";
+import PageHeader from "/src/components/layout/pageHeader";
+import DataContainer from "/src/components/layout/dataContainer";
+import EditingStatusIcon from "/src/components/editingStatusIcon";
+import PageOcrButton from "/src/components/books/pages/pageOcrButton";
+import TextEditor from "/src/components/textEditor";
+import PageAssignButton from "/src/components/books/pages/pageAssignButton";
+import PageStatusButton from "/src/components/books/pages/pageStatusButton";
+import PageImage from "/src/components/books/pages/pageImage";
 
 // -----------------------------------------
 

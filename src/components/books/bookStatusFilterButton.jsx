@@ -1,3 +1,4 @@
+import React from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 
 // Third party libraries
@@ -8,8 +9,8 @@ import {
 } from "react-icons/fa";
 
 // Local Import
-import { updateLinkToBooksPage } from "~/src/util";
-import { BookStatus } from "~/src/models";
+import { updateLinkToBooksPage } from "/src/util";
+import { BookStatus } from "/src/models";
 import BookStatusIcon from "./bookStatusIcon";
 
 // ------------------------------------------------------

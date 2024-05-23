@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
@@ -14,17 +14,17 @@ import {
     useAddArticleContentsMutation,
     useUpdateArticleContentsMutation
 }
-    from "~/src/store/slices/articlesSlice";
-import { selectedLanguage } from '~/src/store/slices/uiSlice';
+    from "/src/store/slices/articlesSlice";
+import { selectedLanguage } from '/src/store/slices/uiSlice';
 //TODO: Replace this with component
 import Error404 from "../404";
-import ContentsContainer from "~/src/components/layout/contentContainer";
-import PageHeader from "~/src/components/layout/pageHeader";
-import Error from "~/src/components/common/error";
-import TextEditor from "~/src/components/textEditor";
-import LanguageSelect from "~/src/components/languageSelect";
-import ArticleLayoutSelect from "~/src/components/articles/articleLayoutSelect";
-import AuthorAvatar from "~/src/components/author/authorAvatar";
+import ContentsContainer from "/src/components/layout/contentContainer";
+import PageHeader from "/src/components/layout/pageHeader";
+import Error from "/src/components/common/error";
+import TextEditor from "/src/components/textEditor";
+import LanguageSelect from "/src/components/languageSelect";
+import ArticleLayoutSelect from "/src/components/articles/articleLayoutSelect";
+import AuthorAvatar from "/src/components/author/authorAvatar";
 
 // ----------------------------------------------
 

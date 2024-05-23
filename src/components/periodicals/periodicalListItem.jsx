@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
@@ -6,9 +7,9 @@ import { FiLayers } from "react-icons/fi";
 import { SlCalender } from "react-icons/sl";
 
 // Local Import
-import * as styles from "~/src/styles/common.module.scss";
-import IconText from "~/src/components/common/iconText";
-import { periodicalPlaceholderImage, setDefaultPeriodicalImage } from "~/src/util";
+import "./styles.scss";
+import IconText from "/src/components/common/iconText";
+import { periodicalPlaceholderImage, setDefaultPeriodicalImage } from "/src/util";
 import PeriodicalCategory from "./periodicalCategory";
 import PeriodicalDeleteButton from "./periodicalDeleteButton";
 // ------------------------------------------------------

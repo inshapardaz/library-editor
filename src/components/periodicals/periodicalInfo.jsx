@@ -1,11 +1,12 @@
+import React from 'react';
 import { Link } from "react-router-dom";
 
 // 3rd party libraries
 import { Menu, Space, Typography } from "antd";
 
 // Local imports
-import { periodicalPlaceholderImage, setDefaultPeriodicalImage } from "~/src/util";
-import { useGetIssuesYearsQuery } from "~/src/store/slices/issuesSlice";
+import { periodicalPlaceholderImage, setDefaultPeriodicalImage } from "/src/util";
+import { useGetIssuesYearsQuery } from "/src/store/slices/issuesSlice";
 
 // -----------------------------------------
 const { Title, Paragraph } = Typography;

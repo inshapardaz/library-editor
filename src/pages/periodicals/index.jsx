@@ -1,3 +1,4 @@
+import React from 'react';
 import { useParams, useSearchParams, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -7,9 +8,9 @@ import { FaPlus } from "react-icons/fa";
 import { ImNewspaper } from "react-icons/im";
 
 // Local Imports
-import PageHeader from "~/src/components/layout/pageHeader";
-import PeriodicalsList from "~/src/components/periodicals/periodicalsList";
-import ContentsContainer from "~/src/components/layout/contentContainer";
+import PageHeader from "/src/components/layout/pageHeader";
+import PeriodicalsList from "/src/components/periodicals/periodicalsList";
+import ContentsContainer from "/src/components/layout/contentContainer";
 //------------------------------------------------
 
 const PeriodicalsHomePage = () => {

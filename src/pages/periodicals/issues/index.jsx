@@ -1,3 +1,4 @@
+import React from 'react';
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import moment from "moment";
@@ -9,15 +10,15 @@ import { FaHome, FaRegClone, FaRegFileAlt, FaRegFileWord } from "react-icons/fa"
 import { ImNewspaper } from "react-icons/im";
 
 // Local imports
-import { useGetIssueQuery } from "~/src/store/slices/issuesSlice";
-import { useGetPeriodicalByIdQuery } from "~/src/store/slices/periodicalsSlice";
-import { getDateFormatFromFrequency } from "~/src/util";
-import PageHeader from "~/src/components/layout/pageHeader";
-import ContentsContainer from "~/src/components/layout/contentContainer";
-import IssueInfo from "~/src/components/periodicals/issues/issueInfo";
-import IssueDeleteButton from "~/src/components/periodicals/issues/issueDeleteButton";
-import Loading from "~/src/components/common/loader";
-import Error from "~/src/components/common/error";
+import { useGetIssueQuery } from "/src/store/slices/issuesSlice";
+import { useGetPeriodicalByIdQuery } from "/src/store/slices/periodicalsSlice";
+import { getDateFormatFromFrequency } from "/src/util";
+import PageHeader from "/src/components/layout/pageHeader";
+import ContentsContainer from "/src/components/layout/contentContainer";
+import IssueInfo from "/src/components/periodicals/issues/issueInfo";
+import IssueDeleteButton from "/src/components/periodicals/issues/issueDeleteButton";
+import Loading from "/src/components/common/loader";
+import Error from "/src/components/common/error";
 
 //--------------------------------------------------------
 const { Content, Sider } = Layout;

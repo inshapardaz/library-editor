@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
@@ -8,9 +8,9 @@ import { Button, Input, List, Space, Switch } from "antd";
 import { FaFeatherAlt, FaPlus } from "react-icons/fa";
 
 // Local Imports
-import { buildLinkToAuthorsPage } from "~/src/util";
-import { useGetAuthorsQuery } from "~/src/store/slices/authorsSlice";
-import DataContainer from "~/src/components/layout/dataContainer";
+import { buildLinkToAuthorsPage } from "/src/util";
+import { useGetAuthorsQuery } from "/src/store/slices/authorsSlice";
+import DataContainer from "/src/components/layout/dataContainer";
 import AuthorCard from "./authorCard";
 import AuthorListItem from "./authorListItem";
 import AuthorSortButton from "./authorSortButton";

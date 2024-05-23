@@ -1,3 +1,4 @@
+import React from 'react';
 import { Outlet } from "react-router-dom";
 
 // 3rd party libraries
@@ -6,7 +7,7 @@ import { Layout } from "antd";
 // Local imports
 import Footer from "./footer";
 import AppHeader from "./appHeader";
-import * as styles from '~/src/styles/common.module.scss'
+import './styles.scss';
 
 // -----------------------------------------
 
@@ -14,7 +15,7 @@ const LayoutWithHeader = () => {
     return (
         <Layout>
             <AppHeader />
-            <Layout.Content className={styles.contents} >
+            <Layout.Content className="contents" >
                 <Outlet />
             </Layout.Content>
             <Footer />

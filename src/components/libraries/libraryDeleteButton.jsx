@@ -1,10 +1,12 @@
+import React from 'react';
+
 // Third party libraries
 import { App, Button, Modal } from "antd";
 import { FaTrash } from 'react-icons/fa';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 
 // Local imports
-import { useDeleteLibraryMutation } from "~/src/store/slices/librariesSlice";
+import { useDeleteLibraryMutation } from "/src/store/slices/librariesSlice";
 
 // ------------------------------------------------------
 

@@ -1,8 +1,10 @@
+import React from 'react';
+
 // 3rd party libraries
 import { Select } from 'antd';
 
 // local imports
-import { languages } from '~/src/store/slices/uiSlice';
+import { languages } from '/src/store/slices/uiSlice';
 
 // -------------------------------------------------
 

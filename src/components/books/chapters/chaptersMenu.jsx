@@ -1,10 +1,11 @@
+import React from 'react';
 
 // 3rd party libraries
 import { Avatar, Menu, Skeleton } from 'antd';
 
 // Internal Imports
-import { useGetBookChaptersQuery } from '~/src/store/slices/booksSlice';
-import Error from '~/src/components/common/error';
+import { useGetBookChaptersQuery } from '/src/store/slices/booksSlice';
+import Error from '/src/components/common/error';
 
 // ------------------------------------------------------
 

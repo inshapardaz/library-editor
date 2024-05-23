@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -9,18 +9,18 @@ import { ImBooks } from "react-icons/im";
 import ImgCrop from "antd-img-crop";
 
 // Local imports
-import { useGetBookQuery, useAddBookMutation, useUpdateBookMutation, useUpdateBookImageMutation } from "~/src/store/slices/booksSlice";
-import { bookPlaceholderImage, setDefaultBookImage } from "~/src/util";
-import ContentsContainer from "~/src/components/layout/contentContainer";
-import PageHeader from "~/src/components/layout/pageHeader";
-import Error from "~/src/components/common/error";
-import Loading from "~/src/components/common/loader";
-import AuthorsSelect from "~/src/components/author/authorsSelect";
-import SeriesSelect from "~/src/components/series/seriesSelect";
-import CategoriesSelect from "~/src/components/categories/categoriesSelect";
-import LanguageSelect from "~/src/components/languageSelect";
-import CopyrightSelect from "~/src/components/copyrightSelect";
-import PublishStatusSelect from "~/src/components/publishStatusSelect";
+import { useGetBookQuery, useAddBookMutation, useUpdateBookMutation, useUpdateBookImageMutation } from "/src/store/slices/booksSlice";
+import { bookPlaceholderImage, setDefaultBookImage } from "/src/util";
+import ContentsContainer from "/src/components/layout/contentContainer";
+import PageHeader from "/src/components/layout/pageHeader";
+import Error from "/src/components/common/error";
+import Loading from "/src/components/common/loader";
+import AuthorsSelect from "/src/components/author/authorsSelect";
+import SeriesSelect from "/src/components/series/seriesSelect";
+import CategoriesSelect from "/src/components/categories/categoriesSelect";
+import LanguageSelect from "/src/components/languageSelect";
+import CopyrightSelect from "/src/components/copyrightSelect";
+import PublishStatusSelect from "/src/components/publishStatusSelect";
 
 // ----------------------------------------------
 const { Dragger } = Upload;

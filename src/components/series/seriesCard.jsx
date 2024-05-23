@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
@@ -6,9 +7,9 @@ import { FaEdit } from "react-icons/fa";
 import { ImBooks } from "react-icons/im";
 
 // Local Imports
-import * as styles from "~/src/styles/common.module.scss";
-import { seriesPlaceholderImage, setDefaultSeriesImage } from "~/src/util";
-import IconText from "~/src/components/common/iconText";
+import "./styles.scss";
+import { seriesPlaceholderImage, setDefaultSeriesImage } from "/src/util";
+import IconText from "/src/components/common/iconText";
 import SeriesDeleteButton from "./seriesDeleteButton";
 
 // ------------------------------------------------------
@@ -18,7 +19,7 @@ const { Text, Paragraph } = Typography;
 // ------------------------------------------------------
 
 const SeriesCard = ({ libraryId, series, t }) => {
-    const cover = <img src={series.links.image || seriesPlaceholderImage} onError={setDefaultSeriesImage} className={styles["series__image"]} alt={series.name} />;
+    const cover = <img src={series.links.image || seriesPlaceholderImage} onError={setDefaultSeriesImage} className="series__image" alt={series.name} />;
     const description = series.description ? (
         <Paragraph ellipsis type="secondary">
             {series.description}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -9,13 +9,13 @@ import { FaFeatherAlt } from "react-icons/fa";
 import ImgCrop from "antd-img-crop";
 
 // Local imports
-import { useGetLibraryQuery, useAddLibraryMutation, useUpdateLibraryMutation, useUpdateLibraryImageMutation } from "~/src/store/slices/librariesSlice";
-import { libraryPlaceholderImage, setDefaultBookImage } from "~/src/util";
-import ContentsContainer from "~/src/components/layout/contentContainer";
-import PageHeader from "~/src/components/layout/pageHeader";
-import LanguageSelect from "~/src/components/languageSelect";
-import Error from "~/src/components/common/error";
-import Loading from "~/src/components/common/loader";
+import { useGetLibraryQuery, useAddLibraryMutation, useUpdateLibraryMutation, useUpdateLibraryImageMutation } from "/src/store/slices/librariesSlice";
+import { libraryPlaceholderImage, setDefaultBookImage } from "/src/util";
+import ContentsContainer from "/src/components/layout/contentContainer";
+import PageHeader from "/src/components/layout/pageHeader";
+import LanguageSelect from "/src/components/languageSelect";
+import Error from "/src/components/common/error";
+import Loading from "/src/components/common/loader";
 
 // ----------------------------------------------
 const { Dragger } = Upload;

@@ -1,3 +1,4 @@
+import React from 'react';
 import { useNavigate, Link } from "react-router-dom";
 
 // 3rd party libraries
@@ -7,7 +8,7 @@ import { ImBooks } from "react-icons/im";
 import { FiEdit } from "react-icons/fi";
 
 // Local imports
-import { setDefaultAuthorImage, authorPlaceholderImage } from "~/src/util";
+import { setDefaultAuthorImage, authorPlaceholderImage } from "/src/util";
 import AuthorDeleteButton from "./authorDeleteButton";
 
 // -----------------------------------------

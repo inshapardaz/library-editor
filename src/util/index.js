@@ -1,17 +1,16 @@
 import { axiosPrivate, axiosPublic } from "./axios.helpers";
 
 // --------------------------------------------------------------
-import defaultLibraryImage from "~/src/assets/images/library_placeholder.png";
-import defaultAuthorImage from "~/src/assets/images/author_placeholder.jpg";
-import defaultSeriesImage from "~/src/assets/images/series_placeholder.jpg";
-import defaultBookImage from "~/src/assets/images/book_placeholder.jpg";
-import defaultArticleImage from "~/src/assets/images/article_placeholder.png";
-import defaultPageImage from "~/src/assets/images/page_placeholder.jpg";
-import defaultPeriodicalImage from "~/src/assets/images/periodical_placeholder.png";
-import defaultIssueImage from "~/src/assets/images/periodical_placeholder.png";
+const defaultLibraryImage = "/assets/images/library_placeholder.png";
+const defaultAuthorImage = "/assets/images/author_placeholder.jpg";
+const defaultSeriesImage = "/assets/images/series_placeholder.jpg";
+const defaultBookImage = "/assets/images/book_placeholder.jpg";
+const defaultArticleImage = "/assets/images/article_placeholder.png";
+const defaultPageImage = "/assets/images/page_placeholder.jpg";
+const defaultPeriodicalImage = "/assets/images/periodical_placeholder.png";
+const defaultIssueImage = "/assets/images/periodical_placeholder.png";
 // --------------------------------------------------------------
 
-const apiUrl = process.env.API_URL;
 const parseReadFilter = (readFilter) => {
   switch (readFilter) {
     case true:

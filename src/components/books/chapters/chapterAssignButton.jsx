@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 // Third party libraries
 import { App, Button, Modal, Form, Space, Tooltip, Tag } from "antd";
@@ -6,8 +6,8 @@ import { EditOutlined, FileDoneOutlined } from "@ant-design/icons";
 import { FaUserAlt } from "react-icons/fa";
 
 // Local imports
-import { useAssignChapterMutation } from "~/src/store/slices/booksSlice";
-import UserSelect from "~/src/components/userSelect";
+import { useAssignChapterMutation } from "/src/store/slices/booksSlice";
+import UserSelect from "/src/components/userSelect";
 // ------------------------------------------------------
 
 const ChapterAssignButton = ({ libraryId, chapters, t, type, showDetails = true }) => {

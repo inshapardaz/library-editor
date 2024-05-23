@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -8,12 +8,12 @@ import { App, Button, Form, Input, Space, Divider, Spin, Alert } from 'antd';
 import { LockOutlined } from '@ant-design/icons';
 
 // Internal imports
-import FullPageFormContainer from '~/src/components/layout/fullPageFormContainer';
+import FullPageFormContainer from '/src/components/layout/fullPageFormContainer';
 import {
     resetPassword,
     getResetPasswordError,
     getResetPasswordStatus
-} from '~/src/store/slices/authSlice';
+} from '/src/store/slices/authSlice';
 
 const ResetPassword = () => {
     const { message } = App.useApp();

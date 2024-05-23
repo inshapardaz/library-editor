@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next'
 
@@ -7,7 +7,7 @@ import { Dropdown, Button } from 'antd';
 import { FaGlobe } from 'react-icons/fa';
 
 // local imports
-import { setLocale, languages, selectedLanguage } from '~/src/store/slices/uiSlice';
+import { setLocale, languages, selectedLanguage } from '/src/store/slices/uiSlice';
 // -------------------------------------------------
 
 const items = Object.values(languages)

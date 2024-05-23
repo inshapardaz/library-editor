@@ -1,3 +1,4 @@
+import React from 'react';
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -8,14 +9,14 @@ import { ImBooks } from "react-icons/im";
 import { FiEdit } from "react-icons/fi";
 
 // Local Imports
-import { useGetSeriesByIdQuery } from "~/src/store/slices/seriesSlice";
-import { setDefaultSeriesImage, seriesPlaceholderImage } from "~/src/util";
-import PageHeader from "~/src/components/layout/pageHeader";
-import BooksList from "~/src/components/books/booksList";
-import ContentsContainer from "~/src/components/layout/contentContainer";
-import Loading from "~/src/components/common/loader";
-import Error from "~/src/components/common/error";
-import SeriesDeleteButton from "~/src/components/series/seriesDeleteButton";
+import { useGetSeriesByIdQuery } from "/src/store/slices/seriesSlice";
+import { setDefaultSeriesImage, seriesPlaceholderImage } from "/src/util";
+import PageHeader from "/src/components/layout/pageHeader";
+import BooksList from "/src/components/books/booksList";
+import ContentsContainer from "/src/components/layout/contentContainer";
+import Loading from "/src/components/common/loader";
+import Error from "/src/components/common/error";
+import SeriesDeleteButton from "/src/components/series/seriesDeleteButton";
 
 //--------------------------------------------------------
 const ButtonGroup = Button.Group;

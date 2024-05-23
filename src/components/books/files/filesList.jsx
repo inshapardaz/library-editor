@@ -1,10 +1,12 @@
+import React from 'react';
+
 // 3rd party libraries
 import { App, List, Space, Typography, Upload } from "antd";
 import { FaBook, FaFileUpload } from "react-icons/fa";
 
 // Internal Imports
-import { useAddBookContentMutation } from "~/src/store/slices/booksSlice";
-import DataContainer from "~/src/components/layout/dataContainer";
+import { useAddBookContentMutation } from "/src/store/slices/booksSlice";
+import DataContainer from "/src/components/layout/dataContainer";
 import FileListItem from "./fileListItem";
 // ----------------------------------------------
 const { Dragger } = Upload;

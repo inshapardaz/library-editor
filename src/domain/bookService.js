@@ -1,4 +1,4 @@
-import { axiosPrivate } from "~/src/util/axios.helpers";
+import { axiosPrivate } from "/src/util/axios.helpers";
 
 const addChapterContent = ({ chapter, language, payload }) => {
   return axiosPrivate.post(chapter.links.add_content, payload, {

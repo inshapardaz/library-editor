@@ -1,9 +1,11 @@
+import React from 'react';
+
 // 3rd party libraries
 import { Empty, Select } from "antd";
 import { FaUser } from "react-icons/fa";
 
 // local imports
-import { useGetBookChaptersQuery } from "~/src/store/slices/booksSlice";
+import { useGetBookChaptersQuery } from "/src/store/slices/booksSlice";
 
 // -------------------------------------------------
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -14,15 +14,15 @@ import {
     useAddArticleMutation,
     useUpdateArticleMutation,
     useUpdateArticleImageMutation
-} from "~/src/store/slices/articlesSlice";
-import { articlePlaceholderImage, setDefaultBookImage } from "~/src/util";
-import ContentsContainer from "~/src/components/layout/contentContainer";
-import PageHeader from "~/src/components/layout/pageHeader";
-import Error from "~/src/components/common/error";
-import Loading from "~/src/components/common/loader";
-import AuthorsSelect from "~/src/components/author/authorsSelect";
-import CategoriesSelect from "~/src/components/categories/categoriesSelect";
-import EditingStatusSelect from "~/src/components/editingStatusSelect";
+} from "/src/store/slices/articlesSlice";
+import { articlePlaceholderImage, setDefaultBookImage } from "/src/util";
+import ContentsContainer from "/src/components/layout/contentContainer";
+import PageHeader from "/src/components/layout/pageHeader";
+import Error from "/src/components/common/error";
+import Loading from "/src/components/common/loader";
+import AuthorsSelect from "/src/components/author/authorsSelect";
+import CategoriesSelect from "/src/components/categories/categoriesSelect";
+import EditingStatusSelect from "/src/components/editingStatusSelect";
 
 // ----------------------------------------------
 const { Dragger } = Upload;

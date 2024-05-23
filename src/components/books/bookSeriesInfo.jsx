@@ -1,7 +1,10 @@
+import React from 'react';
+
+// Third party import 
 import { ImBooks } from "react-icons/im";
 
 // Local Imports
-import IconText from "~/src/components/common/iconText";
+import IconText from "/src/components/common/iconText";
 // ------------------------------------------------------
 const BookSeriesInfo = ({ libraryId, book, t }) => {
     if (book && book.seriesName) {

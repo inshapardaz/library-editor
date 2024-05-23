@@ -1,3 +1,4 @@
+import React from 'react';
 //import { useTranslation } from "react-i18next";
 
 // 3rd party imports
@@ -5,7 +6,7 @@ import { /* Breadcrumb,*/ Col, Row, Space, Typography } from "antd";
 //import { FaHome } from 'react-icons/fa';
 
 // Local Imports
-import * as styles from "~/src/styles/common.module.scss";
+import "./styles.scss";
 
 // ----------------------------------------------------
 
@@ -24,7 +25,7 @@ const PageHeader = ({ title, subTitle, breadcrumb, icon, actions }) => {
     }
 
     return (
-        <div className={styles.header}>
+        <div className="header">
             <Row align="middle" gutter={8} style={{ flex: "1" }}>
                 <Col>{icon}</Col>
                 <Col flex="1">

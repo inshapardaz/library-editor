@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -7,9 +7,9 @@ import { App, Button, Spin, Upload } from "antd";
 import { FaTimesCircle, FaFileUpload } from "react-icons/fa";
 
 // Local imports
-import { useGetBookQuery, useCreateBookPageWithImageMutation } from "~/src/store/slices/booksSlice";
-import PageHeader from "~/src/components/layout/pageHeader";
-import DataContainer from "~/src/components/layout/dataContainer";
+import { useGetBookQuery, useCreateBookPageWithImageMutation } from "/src/store/slices/booksSlice";
+import PageHeader from "/src/components/layout/pageHeader";
+import DataContainer from "/src/components/layout/dataContainer";
 
 //-----------------------------------------
 const { Dragger } = Upload;

@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // Third party libraries
 import { App, Button, Modal, Form } from "antd";
 import { FaTasks } from "react-icons/fa";
 
 // Local imports
-import { useUpdateBookPageMutation } from "~/src/store/slices/booksSlice";
-import EditingStatusSelect from "~/src/components/editingStatusSelect";
+import { useUpdateBookPageMutation } from "/src/store/slices/booksSlice";
+import EditingStatusSelect from "/src/components/editingStatusSelect";
 
 // ------------------------------------------------------
 

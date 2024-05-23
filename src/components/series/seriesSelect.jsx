@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 // 3rd party libraries
 import { Empty, Select } from 'antd';
 import { ImBooks } from 'react-icons/im';
 
 // local imports
-import { useGetSeriesQuery } from '~/src/store/slices/seriesSlice'
+import { useGetSeriesQuery } from '/src/store/slices/seriesSlice'
 
 // -------------------------------------------------
 

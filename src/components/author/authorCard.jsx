@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
@@ -6,9 +7,9 @@ import { ImBooks } from "react-icons/im";
 import { FaPenFancy, FaEdit } from "react-icons/fa";
 
 // Local Imports
-import * as styles from "~/src/styles/common.module.scss";
-import { authorPlaceholderImage, setDefaultAuthorImage } from "~/src/util";
-import IconText from "~/src/components/common/iconText";
+import "./styles.scss";
+import { authorPlaceholderImage, setDefaultAuthorImage } from "/src/util";
+import IconText from "/src/components/common/iconText";
 import AuthorDeleteButton from "./authorDeleteButton";
 
 // ------------------------------------------------------
@@ -20,7 +21,7 @@ const { Text, Paragraph } = Typography;
 const AuthorCard = ({ libraryId, author, t }) => {
     const navigate = useNavigate();
 
-    const cover = <img src={author.links.image || authorPlaceholderImage} onError={setDefaultAuthorImage} className={styles["author__image"]} alt={author.name} />;
+    const cover = <img src={author.links.image || authorPlaceholderImage} onError={setDefaultAuthorImage} className="author__image" alt={author.name} />;
     const description = author.description ? (
         <Paragraph ellipsis type="secondary">
             {author.description}

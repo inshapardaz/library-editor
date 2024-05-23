@@ -1,3 +1,4 @@
+import React from 'react';
 import { useNavigate } from "react-router-dom";
 
 // Third party libraries
@@ -7,8 +8,8 @@ import { FaTrash } from 'react-icons/fa';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 
 // Local imports
-import { useDeleteIssueMutation } from "~/src/store/slices/issuesSlice";
-import { getDateFormatFromFrequency } from "~/src/util";
+import { useDeleteIssueMutation } from "/src/store/slices/issuesSlice";
+import { getDateFormatFromFrequency } from "/src/util";
 // ------------------------------------------------------
 const { confirm } = Modal;
 // ------------------------------------------------------

@@ -1,7 +1,8 @@
 import { axiosPrivate } from "./axios.helpers";
+import { API_URL } from "env";
 
 const axiosBaseQuery =
-  ({ baseUrl } = { baseUrl: process.env.API_URL }) =>
+  ({ baseUrl } = { baseUrl: API_URL }) =>
   async ({ url, method, data, params }) => {
     try {
       var result = await axiosPrivate({

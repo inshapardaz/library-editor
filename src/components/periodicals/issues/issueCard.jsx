@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link, useNavigate } from "react-router-dom";
 
 // 3rd Party Libraries
@@ -8,14 +9,14 @@ import { FaNewspaper } from "react-icons/fa";
 import moment from "moment";
 
 // Local Imports
-import * as styles from "~/src/styles/common.module.scss";
-import { bookPlaceholderImage, setDefaultIssueImage, getDateFormatFromFrequency } from "~/src/util";
-import IconText from "~/src/components/common/iconText";
+import "./styles.scss";
+import { bookPlaceholderImage, setDefaultIssueImage, getDateFormatFromFrequency } from "/src/util";
+import IconText from "/src/components/common/iconText";
 // ------------------------------------------------------
 
 const IssueCard = ({ libraryId, periodicalId, issue }) => {
     var navigate = useNavigate();
-    const cover = issue.links.image ? <img src={issue.links.image} onError={setDefaultIssueImage} className={styles["book__image"]} alt={issue.id} /> : <img src={bookPlaceholderImage} className={styles["book__image"]} alt={`${issue.volume}-${issue.issueNumber}`} />;
+    const cover = issue.links.image ? <img src={issue.links.image} onError={setDefaultIssueImage} className="issue__image" alt={issue.id} /> : <img src={bookPlaceholderImage} className="issue__image" alt={`${issue.volume}-${issue.issueNumber}`} />;
 
     const edit = (
         <Link to={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}/edit`}>

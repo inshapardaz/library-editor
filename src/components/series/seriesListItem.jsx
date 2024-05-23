@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
@@ -6,9 +7,9 @@ import { FaEdit } from "react-icons/fa";
 import { ImBooks } from "react-icons/im";
 
 // Local Imports
-import * as styles from "~/src/styles/common.module.scss";
-import { seriesPlaceholderImage, setDefaultSeriesImage } from "~/src/util";
-import IconText from "~/src/components/common/iconText";
+import "./styles.scss";
+import { seriesPlaceholderImage, setDefaultSeriesImage } from "/src/util";
+import IconText from "/src/components/common/iconText";
 import SeriesDeleteButton from "./seriesDeleteButton";
 
 // ------------------------------------------------------
@@ -20,7 +21,7 @@ const { Text, Paragraph } = Typography;
 const SeriesListItem = ({ libraryId, series, t }) => {
     const avatar = <img src={series.links.image || seriesPlaceholderImage}
         onError={setDefaultSeriesImage}
-        className={styles["series__image--small"]}
+        className="series__image--small"
         alt={series.name} />;
     const title = <Link to={`/libraries/${libraryId}/series/${series.id}`}>{series.name}</Link>;
     const description = series.description ? (

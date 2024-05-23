@@ -1,4 +1,4 @@
-import { useEffect /*, useState*/ } from 'react';
+import React, { useEffect /*, useState*/ } from 'react';
 import { useTranslation } from 'react-i18next';
 //import { useNavigate, useSearchParams } from "react-router-dom";
 
@@ -7,9 +7,8 @@ import { /*App,*/ Button, Form, Input, Checkbox, Space, Divider } from 'antd';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 
 // Internal imports
-//import * as styles from '~/src/styles/common.module.scss'
 //import accountService from '@/services/accountService';
-import FullPageFormContainer from '~/src/components/layout/fullPageFormContainer';
+import FullPageFormContainer from '/src/components/layout/fullPageFormContainer';
 
 // ------------------------------------------------------
 

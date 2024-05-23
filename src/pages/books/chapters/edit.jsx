@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -14,20 +14,20 @@ import {
     useGetBookChaptersQuery,
     useGetChapterContentsQuery,
     useUpdateChapterMutation,
-} from "~/src/store/slices/booksSlice";
-import { selectedLanguage } from '~/src/store/slices/uiSlice'
+} from "/src/store/slices/booksSlice";
+import { selectedLanguage } from '/src/store/slices/uiSlice'
 
 import {
     addChapterContent,
     updateChapterContent
-} from '~/src/domain/bookService'
-import { EditingStatus } from "~/src/models";
-import PageHeader from "~/src/components/layout/pageHeader";
-import DataContainer from "~/src/components/layout/dataContainer";
-import TextEditor from "~/src/components/textEditor";
-import EditingStatusIcon from "~/src/components/editingStatusIcon";
-import ChapterAssignButton from "~/src/components/books/chapters/chapterAssignButton";
-import ChapterStatusButton from "~/src/components/books/chapters/chapterStatusButton";
+} from '/src/domain/bookService'
+import { EditingStatus } from "/src/models";
+import PageHeader from "/src/components/layout/pageHeader";
+import DataContainer from "/src/components/layout/dataContainer";
+import TextEditor from "/src/components/textEditor";
+import EditingStatusIcon from "/src/components/editingStatusIcon";
+import ChapterAssignButton from "/src/components/books/chapters/chapterAssignButton";
+import ChapterStatusButton from "/src/components/books/chapters/chapterStatusButton";
 // ------------------------------------------
 
 const EditChapter = () => {

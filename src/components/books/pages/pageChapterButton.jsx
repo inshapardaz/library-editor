@@ -1,12 +1,12 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 // Third party libraries
 import { App, Button, Modal, Form, Space } from "antd";
 import { FaLayerGroup } from "react-icons/fa";
 
 // Local imports
-import { useUpdateBookPageMutation } from "~/src/store/slices/booksSlice";
-import ChapterSelect from "~/src/components/books/chapters/chapterSelect";
+import { useUpdateBookPageMutation } from "/src/store/slices/booksSlice";
+import ChapterSelect from "/src/components/books/chapters/chapterSelect";
 
 // ------------------------------------------------------
 

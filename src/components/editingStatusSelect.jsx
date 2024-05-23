@@ -1,3 +1,4 @@
+import React from 'react';
 // 3rd party libraries
 import { Select } from 'antd';
 

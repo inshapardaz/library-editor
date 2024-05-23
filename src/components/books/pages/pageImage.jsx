@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
@@ -7,7 +7,7 @@ import { FaFileUpload } from "react-icons/fa";
 import { MdOutlineZoomIn, MdOutlineZoomOut } from "react-icons/md";
 
 // Local imports
-import { pagePlaceholderImage, setDefaultPageImage } from "~/src/util";
+import { pagePlaceholderImage, setDefaultPageImage } from "/src/util";
 
 // -----------------------------------------
 const MIN_ZOOM = 10;

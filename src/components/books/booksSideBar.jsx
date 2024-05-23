@@ -1,3 +1,4 @@
+import React from 'react';
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -8,8 +9,8 @@ import { FaTags, FaTag, FaRegHeart, FaBookOpen } from "react-icons/fa";
 import { MdNewReleases } from "react-icons/md";
 
 // Local Imports
-import { useGetCategoriesQuery } from "~/src/store/slices/categoriesSlice";
-import { isLoggedIn } from "~/src/store/slices/authSlice";
+import { useGetCategoriesQuery } from "/src/store/slices/categoriesSlice";
+import { isLoggedIn } from "/src/store/slices/authSlice";
 
 // --------------------------------------
 

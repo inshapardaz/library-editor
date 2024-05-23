@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocalStorage } from "usehooks-ts";
 
@@ -7,9 +7,9 @@ import { Button, Input, List, Space, Switch } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 
 // Internal Imports
-import { useGetLibrariesQuery } from "~/src/store/slices/librariesSlice";
-import { grid, updateLinkToLibrariesPage } from "~/src/util";
-import DataContainer from "~/src/components/layout/dataContainer";
+import { useGetLibrariesQuery } from "/src/store/slices/librariesSlice";
+import { grid, updateLinkToLibrariesPage } from "/src/util";
+import DataContainer from "/src/components/layout/dataContainer";
 import LibraryCard from "./libraryCard";
 import LibraryListItem from "./libraryListItem";
 import { FaPlus } from "react-icons/fa";

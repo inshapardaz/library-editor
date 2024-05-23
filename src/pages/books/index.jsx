@@ -1,3 +1,4 @@
+import React from 'react';
 import { useParams, useSearchParams, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -6,11 +7,11 @@ import { Layout, theme, Button } from "antd";
 import { FaBook, FaCloudUploadAlt, FaPlus } from "react-icons/fa";
 
 // Local Imports
-import PageHeader from "~/src/components/layout/pageHeader";
-import BooksList from "~/src/components/books/booksList";
-import ContentsContainer from "~/src/components/layout/contentContainer";
-import BooksSideBar from "~/src/components/books/booksSideBar";
-import { SortDirection } from "~/src/models";
+import PageHeader from "/src/components/layout/pageHeader";
+import BooksList from "/src/components/books/booksList";
+import ContentsContainer from "/src/components/layout/contentContainer";
+import BooksSideBar from "/src/components/books/booksSideBar";
+import { SortDirection } from "/src/models";
 
 //--------------------------------------------------------
 const { Content, Sider } = Layout;

@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link, useNavigate } from "react-router-dom";
 
 // 3rd Party Libraries
@@ -5,9 +6,9 @@ import { Avatar, Card } from "antd";
 import { FiEdit } from "react-icons/fi";
 
 // Local Imports
-import * as styles from "~/src/styles/common.module.scss";
-import { articlePlaceholderImage, setDefaultArticleImage } from "~/src/util";
-import AuthorAvatar from "~/src/components/author/authorAvatar";
+import "./styles.scss"
+import { articlePlaceholderImage, setDefaultArticleImage } from "/src/util";
+import AuthorAvatar from "/src/components/author/authorAvatar";
 import ArticleDeleteButton from "./articleDeleteButton";
 // --------------------------------------------
 
@@ -18,13 +19,13 @@ const ArticleCard = ({ libraryId, article, t }) => {
         <img
             src={article.links.image}
             onError={setDefaultArticleImage}
-            className={styles["article__image"]}
+            className="article__image"
             alt={article.title}
         />
     ) : (
         <img
             src={articlePlaceholderImage}
-            className={styles["article__image"]}
+            className="article__image"
             alt={article.title}
         />
     );

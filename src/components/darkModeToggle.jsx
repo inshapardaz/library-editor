@@ -1,4 +1,4 @@
-
+import React from 'react';
 import { useDispatch, useSelector } from "react-redux";
 
 // 3rd party imports
@@ -6,7 +6,7 @@ import { Switch } from "antd";
 import { MdOutlineDarkMode, MdOutlineWbSunny } from 'react-icons/md'
 
 // Local imports
-import { toggleUiMode } from '~/src/store/slices/uiSlice';
+import { toggleUiMode } from '/src/store/slices/uiSlice';
 // -------------------------------------------------
 
 const DarkModeToggle = () => {

@@ -1,3 +1,4 @@
+import React from 'react';
 import moment from "moment";
 
 // 3rd party libraries
@@ -7,9 +8,9 @@ import { FaNewspaper } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 // Local imports
-import { issuePlaceholderImage, setDefaultIssueImage, getDateFormatFromFrequency } from "~/src/util";
-import * as styles from "~/src/styles/common.module.scss";
-import IconText from "~/src/components/common/iconText";
+import "./styles.scss";
+import { issuePlaceholderImage, setDefaultIssueImage, getDateFormatFromFrequency } from "/src/util";
+import IconText from "/src/components/common/iconText";
 
 //------------------------------------
 
@@ -22,14 +23,14 @@ const IssueInfo = ({ libraryId, periodical, issue, t }) => {
 
     const cover = issue.links.image ? (
         <img
-            className={styles["book__image--thumbnail"]}
+            className="issue__image--thumbnail"
             src={issue.links.image}
             onError={setDefaultIssueImage}
             alt={title}
         />
     ) : (
         <img
-            className={styles["book__image--thumbnail"]}
+            className="issue__image--thumbnail"
             src={issuePlaceholderImage}
             alt={title}
         />

@@ -1,3 +1,4 @@
+import React from 'react';
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
@@ -7,12 +8,12 @@ import { FaBook, FaFeather, FaSearch } from "react-icons/fa";
 import { ImBooks, ImNewspaper } from "react-icons/im";
 
 // Local Imports
-import PageHeader from "~/src/components/layout/pageHeader";
-import ContentsContainer from "~/src/components/layout/contentContainer";
-import BooksList from "~/src/components/books/booksList";
-import AuthorsList from "~/src/components/author/authorsList";
-import PeriodicalsList from "~/src/components/periodicals/periodicalsList";
-import SeriesList from "~/src/components/series/seriesList";
+import PageHeader from "/src/components/layout/pageHeader";
+import ContentsContainer from "/src/components/layout/contentContainer";
+import BooksList from "/src/components/books/booksList";
+import AuthorsList from "/src/components/author/authorsList";
+import PeriodicalsList from "/src/components/periodicals/periodicalsList";
+import SeriesList from "/src/components/series/seriesList";
 
 const SearchPage = () => {
     const { t } = useTranslation();

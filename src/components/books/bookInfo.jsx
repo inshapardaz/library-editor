@@ -1,13 +1,15 @@
+import React from 'react';
+
 // 3rd party imports
 import { Divider, Progress, Space, Typography } from "antd";
 import { FiLayers } from "react-icons/fi";
 import { AiOutlineCopy } from "react-icons/ai";
 
 // Local imports
-import * as styles from "~/src/styles/common.module.scss";
-import { setDefaultBookImage, bookPlaceholderImage } from "~/src/util";
-import IconText from "~/src/components/common/iconText";
-import EditingStatusIcon from "~/src/components/editingStatusIcon";
+import "./styles.scss";
+import { setDefaultBookImage, bookPlaceholderImage } from "/src/util";
+import IconText from "/src/components/common/iconText";
+import EditingStatusIcon from "/src/components/editingStatusIcon";
 import BookCategory from "./bookCategory";
 import BookSeriesInfo from "./bookSeriesInfo";
 import BookStatusIcon from './bookStatusIcon';
@@ -18,14 +20,14 @@ const { Paragraph } = Typography;
 const BookInfo = ({ libraryId, book, t }) => {
     const cover = book.links.image ? (
         <img
-            className={styles["book__image--thumbnail"]}
+            className="book__image--thumbnail"
             src={book.links.image}
             onError={setDefaultBookImage}
             alt={book.title}
         />
     ) : (
         <img
-            className={styles["book__image--thumbnail"]}
+            className="book__image--thumbnail"
             src={bookPlaceholderImage}
             alt={book.title}
         />

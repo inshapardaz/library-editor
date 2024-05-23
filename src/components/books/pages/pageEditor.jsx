@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Third party libraries
@@ -6,8 +6,8 @@ import { App, Dropdown, Modal, Form, Input } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 
 // Local imports
-import { useAddChapterMutation, useUpdateChapterMutation } from "~/src/store/slices/booksSlice";
-import EditingStatusSelect from "~/src/components/editingStatusSelect";
+import { useAddChapterMutation, useUpdateChapterMutation } from "/src/store/slices/booksSlice";
+import EditingStatusSelect from "/src/components/editingStatusSelect";
 
 // ------------------------------------------------------
 

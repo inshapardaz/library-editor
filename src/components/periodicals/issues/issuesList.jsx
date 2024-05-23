@@ -1,3 +1,4 @@
+import React from 'react';
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
@@ -8,9 +9,9 @@ import { FaPlus } from "react-icons/fa";
 import { GiNewspaper } from "react-icons/gi";
 
 // Local Imports
-import { useGetIssuesQuery } from "~/src/store/slices/issuesSlice";
-import { buildLinkToIssuesPage } from "~/src/util";
-import DataContainer from "~/src/components/layout/dataContainer";
+import { useGetIssuesQuery } from "/src/store/slices/issuesSlice";
+import { buildLinkToIssuesPage } from "/src/util";
+import DataContainer from "/src/components/layout/dataContainer";
 import IssueCard from "./issueCard";
 import IssueListItem from "./issueListItem";
 // ------------------------------------------------------

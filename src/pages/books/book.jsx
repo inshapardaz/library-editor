@@ -1,3 +1,4 @@
+import React from 'react';
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
@@ -8,18 +9,18 @@ import { FaRegClone, FaRegFileAlt, FaRegFileWord } from "react-icons/fa";
 import { ImBooks } from "react-icons/im";
 
 // Local imports
-import { useGetBookQuery } from "~/src/store/slices/booksSlice";
-import ContentsContainer from "~/src/components/layout/contentContainer";
-import PageHeader from "~/src/components/layout/pageHeader";
-import BookInfo from "~/src/components/books/bookInfo";
-import ChaptersList from "~/src/components/books/chapters/chaptersList";
-import PagesList from "~/src/components/books/pages/pagesList";
-import FilesList from "~/src/components/books/files/filesList";
-import Error from "~/src/components/common/error";
-import Loading from "~/src/components/common/loader";
-import BookDeleteButton from "~/src/components/books/bookDeleteButton";
-import AuthorAvatar from "~/src/components/author/authorAvatar";
-import BookPublishButton from "~/src/components/books/bookPublishButton";
+import { useGetBookQuery } from "/src/store/slices/booksSlice";
+import ContentsContainer from "/src/components/layout/contentContainer";
+import PageHeader from "/src/components/layout/pageHeader";
+import BookInfo from "/src/components/books/bookInfo";
+import ChaptersList from "/src/components/books/chapters/chaptersList";
+import PagesList from "/src/components/books/pages/pagesList";
+import FilesList from "/src/components/books/files/filesList";
+import Error from "/src/components/common/error";
+import Loading from "/src/components/common/loader";
+import BookDeleteButton from "/src/components/books/bookDeleteButton";
+import AuthorAvatar from "/src/components/author/authorAvatar";
+import BookPublishButton from "/src/components/books/bookPublishButton";
 // ----------------------------------------------
 
 const BookPage = () => {

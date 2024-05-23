@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
@@ -8,8 +8,8 @@ import { Alert, Button, Form, Input, Space, Spin, Divider } from 'antd';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 
 // Internal imports
-import { login, reset, getLoginStatus, getLoginError, isLoggedIn } from '~/src/store/slices/authSlice'
-import FullPageFormContainer from '~/src/components/layout/fullPageFormContainer';
+import { login, reset, getLoginStatus, getLoginError, isLoggedIn } from '/src/store/slices/authSlice'
+import FullPageFormContainer from '/src/components/layout/fullPageFormContainer';
 
 // ---------------------------------------------------------------
 

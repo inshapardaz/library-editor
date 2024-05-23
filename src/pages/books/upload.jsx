@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 
@@ -8,18 +8,18 @@ import { App, Avatar, Button, Card, Col, Form, Input, InputNumber, List, Popover
 import { LoadingOutlined } from '@ant-design/icons';
 
 // Local Imports
-import { useGetLibraryQuery } from '~/src/store/slices/librariesSlice';
-import { useAddBookContentMutation, useAddBookMutation, useUpdateBookImageMutation } from '~/src/store/slices/booksSlice';
-import { readBinaryFile, loadPdfPage, dataURItoBlob } from '~/src/util';
-import { pdfjsLib } from '~/src/util/pdf'
-import PageHeader from '~/src/components/layout/pageHeader';
-import ContentsContainer from '~/src/components/layout/contentContainer';
-import AuthorsSelect from '~/src/components/author/authorsSelect';
-import CategoriesSelect from '~/src/components/categories/categoriesSelect';
-import LanguageSelect from '~/src/components/languageSelect';
-import PublishStatusSelect from '~/src/components/publishStatusSelect';
-import SeriesSelect from '~/src/components/series/seriesSelect';
-import CopyrightSelect from '~/src/components/copyrightSelect';
+import { useGetLibraryQuery } from '/src/store/slices/librariesSlice';
+import { useAddBookContentMutation, useAddBookMutation, useUpdateBookImageMutation } from '/src/store/slices/booksSlice';
+import { readBinaryFile, loadPdfPage, dataURItoBlob } from '/src/util';
+import { pdfjsLib } from '/src/util/pdf'
+import PageHeader from '/src/components/layout/pageHeader';
+import ContentsContainer from '/src/components/layout/contentContainer';
+import AuthorsSelect from '/src/components/author/authorsSelect';
+import CategoriesSelect from '/src/components/categories/categoriesSelect';
+import LanguageSelect from '/src/components/languageSelect';
+import PublishStatusSelect from '/src/components/publishStatusSelect';
+import SeriesSelect from '/src/components/series/seriesSelect';
+import CopyrightSelect from '/src/components/copyrightSelect';
 
 //--------------------------------------------------------
 const { Dragger } = Upload;

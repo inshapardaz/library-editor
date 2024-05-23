@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
@@ -8,9 +8,9 @@ import { Button, Input, List, Space, Switch } from "antd";
 import { FaPenFancy, FaPlus } from "react-icons/fa";
 
 // Local Imports
-import { useGetArticlesQuery } from "~/src/store/slices/articlesSlice";
-import { updateLinkToArticlesPage } from "~/src/util";
-import DataContainer from "~/src/components/layout/dataContainer";
+import { useGetArticlesQuery } from "/src/store/slices/articlesSlice";
+import { updateLinkToArticlesPage } from "/src/util";
+import DataContainer from "/src/components/layout/dataContainer";
 import ArticleSortButton from "./articleSortButton";
 import ArticleStatusFilterButton from "./articleStatusFilterButton";
 import ArticleListItem from "./articleListItem";

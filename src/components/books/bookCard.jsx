@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
@@ -5,9 +6,9 @@ import { Avatar, Card } from "antd";
 import { FiEdit } from "react-icons/fi";
 
 // Local Imports
-import * as styles from "~/src/styles/common.module.scss";
-import { setDefaultBookImage, bookPlaceholderImage } from "~/src/util";
-import AuthorAvatar from "~/src/components/author/authorAvatar";
+import "./styles.scss";
+import { setDefaultBookImage, bookPlaceholderImage } from "/src/util";
+import AuthorAvatar from "/src/components/author/authorAvatar";
 import BookSeriesInfo from "./bookSeriesInfo";
 import BookDeleteButton from "./bookDeleteButton";
 // --------------------------------------------
@@ -17,13 +18,13 @@ const BookCard = ({ libraryId, book, t }) => {
         <img
             src={book.links.image}
             onError={setDefaultBookImage}
-            className={styles["book__image"]}
+            className="book__image"
             alt={book.title}
         />
     ) : (
         <img
             src={bookPlaceholderImage}
-            className={styles["book__image"]}
+            className="book__image"
             alt={book.title}
         />
     );

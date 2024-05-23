@@ -1,8 +1,10 @@
+import React from 'react';
+
 // 3rd party libraries
 import { theme } from "antd";
 
 // Local imports
-import * as styles from '~/src/styles/common.module.scss'
+import './styles.scss'
 
 // -----------------------------------------
 
@@ -12,7 +14,7 @@ const ContentsContainer = ({ children }) => {
     } = theme.useToken();
 
     return (<div
-        className={styles.container}
+        className="container"
         style={{
             background: colorBgContainer,
             borderRadius: borderRadius

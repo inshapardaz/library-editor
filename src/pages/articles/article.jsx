@@ -1,3 +1,4 @@
+import React from 'react';
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -10,14 +11,14 @@ import { FiEdit2 } from "react-icons/fi";
 import Markdown from 'markdown-to-jsx'
 
 // Local imports
-import * as styles from '~/src/styles/reader.module.scss';
-import { useGetArticleQuery, useGetArticleContentsQuery } from "~/src/store/slices/articlesSlice";
-import { selectedLanguage } from '~/src/store/slices/uiSlice';
-import DataContainer from "~/src/components/layout/dataContainer";
-import PageHeader from "~/src/components/layout/pageHeader";
-import Loading from "~/src/components/common/loader";
-import AuthorAvatar from "~/src/components/author/authorAvatar";
-import ArticleDeleteButton from "~/src/components/articles/articleDeleteButton";
+import '/src/styles/reader.scss';
+import { useGetArticleQuery, useGetArticleContentsQuery } from "/src/store/slices/articlesSlice";
+import { selectedLanguage } from '/src/store/slices/uiSlice';
+import DataContainer from "/src/components/layout/dataContainer";
+import PageHeader from "/src/components/layout/pageHeader";
+import Loading from "/src/components/common/loader";
+import AuthorAvatar from "/src/components/author/authorAvatar";
+import ArticleDeleteButton from "/src/components/articles/articleDeleteButton";
 // ------------------------------------------------------
 
 const ArticlePage = () => {
@@ -97,8 +98,8 @@ const ArticlePage = () => {
                         {t(`languages.${c.language}`)}
                     </Button>)
             }>
-            <div className={[article?.layout ? styles[`article_reader__${article?.layout}`] : styles[`article_reader__normal`],
-            article?.language ? styles[`article_reader__${article.language}`] : styles[`article_reader__${lang}`]]}>
+            <div className={[article?.layout ? `article_reader__${article?.layout}` : `article_reader__normal`,
+            article?.language ? `article_reader__${article.language}` : `article_reader__${lang}`]}>
                 <Markdown>
                     {articleContents?.text}
                 </Markdown>

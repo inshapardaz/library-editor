@@ -1,12 +1,12 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 // Third party libraries
 import { App, Button, Modal, Form, Space } from "antd";
 import { FaUserAlt } from "react-icons/fa";
 
 // Local imports
-import { useAssignBookPageMutation } from "~/src/store/slices/booksSlice";
-import UserSelect from "~/src/components/userSelect";
+import { useAssignBookPageMutation } from "/src/store/slices/booksSlice";
+import UserSelect from "/src/components/userSelect";
 
 // ------------------------------------------------------
 

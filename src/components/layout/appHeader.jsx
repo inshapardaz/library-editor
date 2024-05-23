@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from "usehooks-ts";
 import { NavLink, useParams } from "react-router-dom";
@@ -9,9 +9,9 @@ import { FaBook, FaPenFancy, FaFeatherAlt, FaTags, FaHome, FaBars } from 'react-
 import { ImBooks, ImNewspaper } from 'react-icons/im';
 
 // Local Imports
-import * as styles from '~/src/styles/common.module.scss'
-import { useGetLibraryQuery } from '~/src/store/slices/librariesSlice'
-import LibrariesDropdown from "~/src/components/libraries/librariesDropDown";
+import './styles.scss';
+import { useGetLibraryQuery } from '/src/store/slices/librariesSlice'
+import LibrariesDropdown from "/src/components/libraries/librariesDropDown";
 import Logo from "./logo";
 import ProfileMenu from "./profileMenu";
 import LanguageSwitcher from "../languageSwitcher";
@@ -100,7 +100,7 @@ const AppHeader = () => {
     }
 
     const menu = (<Menu
-        className={isMobile ? styles['header__menu'] : null}
+        className={isMobile ? 'header__menu' : null}
         style={{ backgroundColor: 'transparent', border: 'none' }}
         mode={isMobile ? "inline" : "horizontal"}
         selectable={false}
@@ -111,9 +111,9 @@ const AppHeader = () => {
 
     if (isMobile) {
         return (
-            <Row className={styles.header} style={{ backgroundColor: token.colorBgContainer }}>
+            <Row className="header" style={{ backgroundColor: token.colorBgContainer }}>
                 <Col>
-                    <Space size={8} className={styles['header__logo']}>
+                    <Space size={8} className={'header__logo'}>
                         <Logo />
                     </Space>
                 </Col>
@@ -137,9 +137,9 @@ const AppHeader = () => {
             </Row>);
     }
 
-    return (<Row className={styles.header} gutter={{ m: 8, s: 4 }} style={{ backgroundColor: token.colorBgContainer }}>
+    return (<Row className="header" gutter={{ m: 8, s: 4 }} style={{ backgroundColor: token.colorBgContainer }}>
         <Col>
-            <Space size={8} className={styles['header__logo']}>
+            <Space size={8} className={'header__logo'}>
                 <Logo />
             </Space>
         </Col>

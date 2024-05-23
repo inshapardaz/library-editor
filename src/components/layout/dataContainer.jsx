@@ -1,7 +1,10 @@
+import React from 'react';
+
+// Third party libraries
 import { Card, Empty, Result } from "antd";
 
 // Local Import
-import * as styles from "~/src/styles/common.module.scss";
+import "./styles.scss";
 
 // ------------------------------------------------
 
@@ -49,7 +52,7 @@ const DataContainer = ({
             actions={actions}
             extra={extra}
             bordered={bordered}
-            className={styles["api_container"]}
+            className="api_container"
             loading={busy && !busyContent}
             style={style}
         >

@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +12,7 @@ import { MdPassword } from 'react-icons/md';
 
 // local imports
 
-import { logout, loggedInUser, isLoggedIn } from '~/src/store/slices/authSlice'
+import { logout, loggedInUser, isLoggedIn } from '/src/store/slices/authSlice'
 
 // --------------------------------------------
 const ProfileMenu = () => {

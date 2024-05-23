@@ -1,11 +1,11 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 // Third party libraries
 import { App, Button, Modal, Form, InputNumber } from "antd";
 import { FaSort } from "react-icons/fa";
 
 // Local imports
-import { useUpdateBookPageSequenceMutation } from "~/src/store/slices/booksSlice";
+import { useUpdateBookPageSequenceMutation } from "/src/store/slices/booksSlice";
 
 // ------------------------------------------------------
 

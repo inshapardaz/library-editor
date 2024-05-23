@@ -1,3 +1,4 @@
+import React from 'react';
 import { useParams, useSearchParams, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -6,11 +7,11 @@ import { Layout, theme, Button } from "antd";
 import { FaPenFancy, FaPlus } from "react-icons/fa";
 
 // Local Imports
-import SortDirection from "~/src/models/sortDirection";
-import PageHeader from "~/src/components/layout/pageHeader";
-import ContentsContainer from "~/src/components/layout/contentContainer";
-import ArticlesList from "~/src/components/articles/articlesList";
-import ArticlesSideBar from "~/src/components/articles/articlesSideBar";
+import SortDirection from "/src/models/sortDirection";
+import PageHeader from "/src/components/layout/pageHeader";
+import ContentsContainer from "/src/components/layout/contentContainer";
+import ArticlesList from "/src/components/articles/articlesList";
+import ArticlesSideBar from "/src/components/articles/articlesSideBar";
 
 //--------------------------------------------------------
 const { Content, Sider } = Layout;

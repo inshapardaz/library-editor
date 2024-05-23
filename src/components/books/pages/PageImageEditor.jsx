@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHotkeys } from 'react-hotkeys-hook';
 
 // 3rd party libraries
@@ -6,7 +6,7 @@ import { Button, Card, Space, Slider, Switch, Tooltip, Result } from "antd";
 import { FaFileImage, FaRegSave } from "react-icons/fa";
 
 // Local imports
-import * as styles from '~/src/styles/common.module.scss';
+import "./styles.scss";
 
 // --------------------------------------
 const PageImageEditor = ({ image, t, zoom = 100, isRtl = false, onUpdate = () => { } }) => {
@@ -72,8 +72,8 @@ const PageImageEditor = ({ image, t, zoom = 100, isRtl = false, onUpdate = () =>
                 {checked && <Slider min={0} max={max} marks={marks}
                     onChange={onChangeSplitValue}
                     value={typeof sliderValue === 'number' ? sliderValue : 0} />}
-                <div className={styles.imageSplitDivider}>
-                    <span className={styles.imageSplitDividerLine}
+                <div className="imageSplitDivider">
+                    <span className="imageSplitDividerLine"
                         style={{ right: `${sliderValue * 100 / max}%`, visibility: checked ? 'visible' : 'hidden' }} />
                     <img src={image.data} alt={image.index} style={{ objectFit: 'contain' }} width="100%" />
                 </div>

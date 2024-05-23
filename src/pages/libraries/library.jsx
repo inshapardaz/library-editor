@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -7,13 +8,11 @@ import { ImLibrary } from "react-icons/im";
 import { FaPencilAlt } from "react-icons/fa";
 
 // Local Imports
-import * as styles from '~/src/styles/common.module.scss'
-
-import { useGetLibraryQuery } from '~/src/store/slices/librariesSlice'
-import ContentsContainer from '~/src/components/layout/contentContainer';
-import LatestBooks from "~/src/components/books/latestBooks";
-import EditingBooks from "~/src/components/books/editingBooks";
-import PageHeader from "~/src/components/layout/pageHeader";
+import { useGetLibraryQuery } from '/src/store/slices/librariesSlice'
+import ContentsContainer from '/src/components/layout/contentContainer';
+import LatestBooks from "/src/components/books/latestBooks";
+import EditingBooks from "/src/components/books/editingBooks";
+import PageHeader from "/src/components/layout/pageHeader";
 
 // -------------------------------------------------------
 
@@ -35,7 +34,7 @@ const LibraryHome = () => {
     );
 
     return (<>
-        <div className={styles.home} />
+        <div style={{ marginTop: 50 }} />
         <PageHeader title={library?.name} icon={<ImLibrary />} actions={editButton} />
         <ContentsContainer>
             <EditingBooks status="BeingTyped" />

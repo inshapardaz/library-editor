@@ -1,3 +1,4 @@
+import React from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -6,13 +7,13 @@ import { Col, Layout, Row } from 'antd';
 import { FaFeatherAlt } from 'react-icons/fa';
 
 // Local Imports
-import { useGetAuthorByIdQuery } from '~/src/store/slices/authorsSlice';
-import PageHeader from '~/src/components/layout/pageHeader';
-import BooksList from '~/src/components/books/booksList';
-import ContentsContainer from '~/src/components/layout/contentContainer';
-import Loading from '~/src/components/common/loader';
-import Error from '~/src/components/common/error';
-import AuthorInfo from '~/src/components/author/authorInfo';
+import { useGetAuthorByIdQuery } from '/src/store/slices/authorsSlice';
+import PageHeader from '/src/components/layout/pageHeader';
+import BooksList from '/src/components/books/booksList';
+import ContentsContainer from '/src/components/layout/contentContainer';
+import Loading from '/src/components/common/loader';
+import Error from '/src/components/common/error';
+import AuthorInfo from '/src/components/author/authorInfo';
 
 //--------------------------------------------------------
 const { Content } = Layout;

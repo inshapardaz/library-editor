@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
@@ -6,8 +7,8 @@ import { FaRegKeyboard, FaGlasses, FaGripLines } from "react-icons/fa";
 import { Draggable } from "react-beautiful-dnd";
 
 // Local Import
-import * as styles from "~/src/styles/common.module.scss";
-import { pagePlaceholderImage } from "~/src/util";
+import "./styles.scss";
+import { pagePlaceholderImage } from "/src/util";
 import PageSequenceEditor from "./pageSequenceEditor";
 import PageDeleteButton from "./pageDeleteButton";
 import PageAssignButton from "./pageAssignButton";
@@ -62,7 +63,7 @@ const PageCard = ({
         <img
             src={page.links.image || pagePlaceholderImage}
             onError={pagePlaceholderImage}
-            className={styles["page__image"]}
+            className="page__image"
             alt={page.sequenceNumber}
         />
     );

@@ -1,3 +1,6 @@
+import React from 'react';
+
+// Third party import
 import {
     FaCheck, FaFile,
     FaFileAlt,
@@ -6,7 +9,7 @@ import {
 } from "react-icons/fa";
 
 // Local import
-import BookStatus from "~/src/models/bookStatus";
+import BookStatus from "/src/models/bookStatus";
 //--------------------------------------------
 
 const BookStatusIcon = ({ status, render = true }) => {

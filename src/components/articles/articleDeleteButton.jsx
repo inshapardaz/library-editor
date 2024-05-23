@@ -1,10 +1,12 @@
+import React from 'react';
+
 // Third party libraries
 import { App, Button, Modal } from "antd";
 import { FaTrash } from 'react-icons/fa';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 
 // Local imports
-import { useDeleteArticleMutation } from "~/src/store/slices/articlesSlice";
+import { useDeleteArticleMutation } from "/src/store/slices/articlesSlice";
 
 // ------------------------------------------------------
 const { confirm } = Modal;

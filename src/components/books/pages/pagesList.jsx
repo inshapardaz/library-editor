@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
@@ -12,11 +12,11 @@ import { FaRegImage, FaRegListAlt } from "react-icons/fa";
 import {
     useGetBookPagesQuery,
     useUpdateBookPageSequenceMutation,
-} from "~/src/store/slices/booksSlice";
-import { BookStatus, PageStatus, AssignmentStatus } from "~/src/models";
-import { buildLinkToBooksPagesPage } from "~/src/util";
-import DataContainer from "~/src/components/layout/dataContainer";
-import CheckboxButton from "~/src/components/checkboxButton";
+} from "/src/store/slices/booksSlice";
+import { BookStatus, PageStatus, AssignmentStatus } from "/src/models";
+import { buildLinkToBooksPagesPage } from "/src/util";
+import DataContainer from "/src/components/layout/dataContainer";
+import CheckboxButton from "/src/components/checkboxButton";
 import PageListItem from "./pageListItem";
 import PageAddButton from "./pageAddButton";
 import PageDeleteButton from "./pageDeleteButton";

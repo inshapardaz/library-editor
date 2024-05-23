@@ -1,3 +1,4 @@
+import React from 'react';
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -6,9 +7,9 @@ import { Button, List } from "antd";
 import { FaPlus, FaTags } from "react-icons/fa";
 
 // Local Imports
-import { useGetCategoriesQuery } from "~/src/store/slices/categoriesSlice";
-import { buildLinkToCategoriesList } from "~/src/util";
-import DataContainer from "~/src/components/layout/dataContainer";
+import { useGetCategoriesQuery } from "/src/store/slices/categoriesSlice";
+import { buildLinkToCategoriesList } from "/src/util";
+import DataContainer from "/src/components/layout/dataContainer";
 import CategoryListItem from "./categoryListItem";
 // ------------------------------------------------------
 

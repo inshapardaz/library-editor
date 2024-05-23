@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
@@ -6,7 +7,7 @@ import { FaGripLines, FaRegFileAlt } from "react-icons/fa";
 import { Draggable } from "react-beautiful-dnd";
 
 // Local Import
-import EditingStatusIcon from "~/src/components/editingStatusIcon";
+import EditingStatusIcon from "/src/components/editingStatusIcon";
 import ChapterEditor from "./chapterEditor";
 import ChapterDeleteButton from "./chapterDeleteButton";
 import ChapterAssignButton from "./chapterAssignButton";

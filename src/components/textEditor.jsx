@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 //-----------------------------------------
@@ -8,12 +8,12 @@ import Editor from 'urdu-web-editor'
 import {
     useGetPunctuationQuery,
     useGetAutoCorrectQuery
-} from "~/src/store/slices/toolsSlice";
+} from "/src/store/slices/toolsSlice";
 
-import Loading from "~/src/components/common/loader";
+import Loading from "/src/components/common/loader";
 import Error from './common/error';
 
-import { getFonts } from '~/src/lang';
+import { getFonts } from '/src/lang';
 
 //-----------------------------------------
 

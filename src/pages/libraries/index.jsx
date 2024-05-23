@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -7,10 +8,10 @@ import { Button } from "antd";
 import { FaPlus } from "react-icons/fa";
 
 // Local Imports
-import { SortDirection } from "~/src/models";
-import LibrariesList from "~/src/components/libraries/list";
-import PageHeader from "~/src/components/layout/pageHeader";
-import ContentsContainer from "~/src/components/layout/contentContainer";
+import { SortDirection } from "/src/models";
+import LibrariesList from "/src/components/libraries/list";
+import PageHeader from "/src/components/layout/pageHeader";
+import ContentsContainer from "/src/components/layout/contentContainer";
 
 // -------------------------------------------------------
 

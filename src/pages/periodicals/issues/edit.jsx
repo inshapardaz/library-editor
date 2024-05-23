@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -14,14 +14,14 @@ import {
     useAddIssueMutation,
     useUpdateIssueMutation,
     useUpdateIssueImageMutation
-} from "~/src/store/slices/issuesSlice";
-import { useGetPeriodicalByIdQuery } from "~/src/store/slices/periodicalsSlice";
-import { issuePlaceholderImage, setDefaultIssueImage, getDateFormatFromFrequency } from "~/src/util";
-import ContentsContainer from "~/src/components/layout/contentContainer";
-import PageHeader from "~/src/components/layout/pageHeader";
-import Error from "~/src/components/common/error";
-import Loading from "~/src/components/common/loader";
-import DateInput from "~/src/components/dateInput";
+} from "/src/store/slices/issuesSlice";
+import { useGetPeriodicalByIdQuery } from "/src/store/slices/periodicalsSlice";
+import { issuePlaceholderImage, setDefaultIssueImage, getDateFormatFromFrequency } from "/src/util";
+import ContentsContainer from "/src/components/layout/contentContainer";
+import PageHeader from "/src/components/layout/pageHeader";
+import Error from "/src/components/common/error";
+import Loading from "/src/components/common/loader";
+import DateInput from "/src/components/dateInput";
 
 // ----------------------------------------------
 const { Dragger } = Upload;

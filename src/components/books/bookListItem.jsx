@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link, useNavigate } from "react-router-dom";
 
 // 3rd Party Libraries
@@ -6,10 +7,10 @@ import { FiEdit, FiLayers } from "react-icons/fi";
 import { AiOutlineCopy } from "react-icons/ai";
 
 // Local Import
-import * as styles from "~/src/styles/common.module.scss";
-import { setDefaultBookImage, bookPlaceholderImage } from "~/src/util";
-import AuthorAvatar from "~/src/components/author/authorAvatar";
-import IconText from "~/src/components/common/iconText";
+import "./styles.scss";
+import { setDefaultBookImage, bookPlaceholderImage } from "/src/util";
+import AuthorAvatar from "/src/components/author/authorAvatar";
+import IconText from "/src/components/common/iconText";
 import BookCategory from "./bookCategory";
 import BookSeriesInfo from "./bookSeriesInfo";
 import BookDeleteButton from "./bookDeleteButton";
@@ -26,13 +27,13 @@ const BookListItem = ({ libraryId, book, t }) => {
         <img
             src={book.links.image}
             onError={setDefaultBookImage}
-            className={styles["book__image--small"]}
+            className="book__image--small"
             alt={book.title}
         />
     ) : (
         <img
             src={bookPlaceholderImage}
-            className={styles["book__image--small"]}
+            className="book__image--small"
             alt={book.title}
         />
     );
