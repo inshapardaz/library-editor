@@ -3,10 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 
 // 3rd Party Libraries
 import { Avatar, Card } from "antd";
-import { FiEdit } from "react-icons/fi";
 
 // Local Imports
 import "./styles.scss"
+import { FiEdit } from "/src/icons";
 import { articlePlaceholderImage, setDefaultArticleImage } from "/src/util";
 import AuthorAvatar from "/src/components/author/authorAvatar";
 import ArticleDeleteButton from "./articleDeleteButton";

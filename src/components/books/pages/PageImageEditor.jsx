@@ -3,10 +3,10 @@ import { useHotkeys } from 'react-hotkeys-hook';
 
 // 3rd party libraries
 import { Button, Card, Space, Slider, Switch, Tooltip, Result } from "antd";
-import { FaFileImage, FaRegSave } from "react-icons/fa";
 
 // Local imports
 import "./styles.scss";
+import { FaFileImage, FaRegSave } from "/src/icons";
 
 // --------------------------------------
 const PageImageEditor = ({ image, t, zoom = 100, isRtl = false, onUpdate = () => { } }) => {

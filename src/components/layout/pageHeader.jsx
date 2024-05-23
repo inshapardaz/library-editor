@@ -1,10 +1,8 @@
 import React from 'react';
-//import { useTranslation } from "react-i18next";
 
 // 3rd party imports
-import { /* Breadcrumb,*/ Col, Row, Space, Typography } from "antd";
-//import { FaHome } from 'react-icons/fa';
-
+import { Col, Row, Space, Typography } from "antd";
+1
 // Local Imports
 import "./styles.scss";
 

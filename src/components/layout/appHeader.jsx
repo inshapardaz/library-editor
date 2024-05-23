@@ -5,11 +5,10 @@ import { NavLink, useParams } from "react-router-dom";
 
 // 3rd party imports
 import { Menu, Button, theme, Drawer, Row, Col, Space } from 'antd';
-import { FaBook, FaPenFancy, FaFeatherAlt, FaTags, FaHome, FaBars } from 'react-icons/fa';
-import { ImBooks, ImNewspaper } from 'react-icons/im';
 
 // Local Imports
 import './styles.scss';
+import { FaBook, FaPenFancy, FaFeatherAlt, FaTags, FaHome, FaBars, ImBooks, ImNewspaper } from '/src/icons';
 import { useGetLibraryQuery } from '/src/store/slices/librariesSlice'
 import LibrariesDropdown from "/src/components/libraries/librariesDropDown";
 import Logo from "./logo";

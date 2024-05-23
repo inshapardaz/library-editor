@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 // 3rd party libraries
 import { Button, App, Spin, Alert, Space } from "antd";
-import { FaPenFancy, FaTimesCircle } from "react-icons/fa";
+import { FaPenFancy, FaTimesCircle } from "/src/icons";
 
 // Local imports
 import {

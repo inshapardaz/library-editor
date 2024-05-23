@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next'
 
 // 3rd party libraries
 import { Dropdown, Button } from 'antd';
-import { FaGlobe } from 'react-icons/fa';
 
 // local imports
+import { FaGlobe } from '/src/icons';
 import { setLocale, languages, selectedLanguage } from '/src/store/slices/uiSlice';
 // -------------------------------------------------
 

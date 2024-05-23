@@ -5,10 +5,9 @@ import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
 import { Button, List, Switch } from "antd";
-import { FaPlus } from "react-icons/fa";
-import { GiNewspaper } from "react-icons/gi";
 
 // Local Imports
+import { GiNewspaper, FaPlus } from "/src/icons";
 import { useGetIssuesQuery } from "/src/store/slices/issuesSlice";
 import { buildLinkToIssuesPage } from "/src/util";
 import DataContainer from "/src/components/layout/dataContainer";

@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 // Third party libraries
 import { Button, Dropdown, Space } from "antd";
+
+// Local Imports
 import {
     FaChevronDown,
     FaRegCalendarPlus,
@@ -10,9 +12,7 @@ import {
     FaSortAlphaUp,
     FaSortAmountDown,
     FaSortAmountUp,
-} from "react-icons/fa";
-
-// Local Imports
+} from "/src/icons";
 import { updateLinkToBooksPage } from "/src/util";
 import { SortDirection } from "/src/models";
 

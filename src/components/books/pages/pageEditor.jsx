@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 
 // Third party libraries
 import { App, Dropdown, Modal, Form, Input } from "antd";
-import { DownOutlined } from "@ant-design/icons";
 
 // Local imports
+import { DownOutlined } from "/src/icons";
 import { useAddChapterMutation, useUpdateChapterMutation } from "/src/store/slices/booksSlice";
 import EditingStatusSelect from "/src/components/editingStatusSelect";
 

@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
 import { Avatar, Card } from "antd";
-import { FiEdit } from "react-icons/fi";
 
 // Local Imports
 import "./styles.scss";
+import { FiEdit } from "/src/icons";
 import { setDefaultBookImage, bookPlaceholderImage } from "/src/util";
 import AuthorAvatar from "/src/components/author/authorAvatar";
 import BookSeriesInfo from "./bookSeriesInfo";

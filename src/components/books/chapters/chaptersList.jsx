@@ -2,10 +2,10 @@ import React, { useState } from "react";
 
 // 3rd party libraries
 import { App, Button, Col, List, Row, Skeleton } from "antd";
-import { FaBook } from "react-icons/fa";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 // Internal Imports
+import { FaBook } from "/src/icons";
 import {
     useGetBookChaptersQuery,
     useUpdateChapterSequenceMutation,

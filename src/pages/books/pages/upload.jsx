@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 // 3rd party libraries
 import { App, Button, Spin, Upload } from "antd";
-import { FaTimesCircle, FaFileUpload } from "react-icons/fa";
+import { FaTimesCircle, FaFileUpload } from "/src/icons";
 
 // Local imports
 import { useGetBookQuery, useCreateBookPageWithImageMutation } from "/src/store/slices/booksSlice";

@@ -5,9 +5,9 @@ import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
 import { Button, Input, List, Space, Switch } from "antd";
-import { FaPenFancy, FaPlus } from "react-icons/fa";
 
 // Local Imports
+import { FaPenFancy, FaPlus } from "/src/icons";
 import { useGetArticlesQuery } from "/src/store/slices/articlesSlice";
 import { updateLinkToArticlesPage } from "/src/util";
 import DataContainer from "/src/components/layout/dataContainer";

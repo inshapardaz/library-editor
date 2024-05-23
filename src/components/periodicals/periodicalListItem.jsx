@@ -3,11 +3,10 @@ import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
 import { List, Typography } from "antd";
-import { FiLayers } from "react-icons/fi";
-import { SlCalender } from "react-icons/sl";
 
 // Local Import
 import "./styles.scss";
+import { SlCalender, FiLayers } from "/src/icons";
 import IconText from "/src/components/common/iconText";
 import { periodicalPlaceholderImage, setDefaultPeriodicalImage } from "/src/util";
 import PeriodicalCategory from "./periodicalCategory";

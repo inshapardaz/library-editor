@@ -2,9 +2,9 @@ import React, { useState } from "react";
 
 // 3rd Party Imports
 import { App, Button, Modal, Progress, Tooltip } from "antd";
-import { FaFileImage } from "react-icons/fa";
 
 // Local Imports
+import { FaFileImage } from "/src/icons";
 import { useUpdateBookImageMutation } from "/src/store/slices/booksSlice";
 import { downloadFile, loadPdfPage, dataURItoBlob } from "/src/util";
 import { pdfjsLib } from '/src/util/pdf'

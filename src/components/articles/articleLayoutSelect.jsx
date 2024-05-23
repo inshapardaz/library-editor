@@ -2,9 +2,9 @@ import React from 'react';
 
 // 3rd party libraries
 import { Select, Space } from "antd";
-import { FaAlignJustify } from "react-icons/fa";
-import { PiTextColumnsBold, PiFileTextLight } from "react-icons/pi";
 
+// Local Imports
+import { FaAlignJustify, PiTextColumnsBold, PiFileTextLight } from "/src/icons";
 // ------------------------------------------------------
 const { Option } = Select;
 // ------------------------------------------------------

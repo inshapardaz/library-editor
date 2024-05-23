@@ -4,8 +4,8 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 // 3rd party libraries
 import { Space, Tabs } from "antd";
-import { FaBook, FaFeather, FaSearch } from "react-icons/fa";
-import { ImBooks, ImNewspaper } from "react-icons/im";
+import { FaBook, FaFeather, FaSearch } from "/src/icons";
+import { ImBooks, ImNewspaper } from "/src/icons";
 
 // Local Imports
 import PageHeader from "/src/components/layout/pageHeader";

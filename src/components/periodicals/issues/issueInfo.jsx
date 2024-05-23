@@ -3,12 +3,11 @@ import moment from "moment";
 
 // 3rd party libraries
 import { Divider, Space, Typography } from "antd";
-import { GiStack } from "react-icons/gi";
-import { FaNewspaper } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 // Local imports
 import "./styles.scss";
+import { GiStack, FaNewspaper } from "/src/icons";
 import { issuePlaceholderImage, setDefaultIssueImage, getDateFormatFromFrequency } from "/src/util";
 import IconText from "/src/components/common/iconText";
 

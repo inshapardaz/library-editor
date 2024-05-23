@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 // 3rd party libraries
 import { Alert, Button, Form, Input, Space, Spin, Divider } from 'antd';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { LockOutlined, UserOutlined } from '/src/icons';
 
 // Internal imports
 import { login, reset, getLoginStatus, getLoginError, isLoggedIn } from '/src/store/slices/authSlice'

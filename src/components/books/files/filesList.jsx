@@ -2,9 +2,9 @@ import React from 'react';
 
 // 3rd party libraries
 import { App, List, Space, Typography, Upload } from "antd";
-import { FaBook, FaFileUpload } from "react-icons/fa";
 
 // Internal Imports
+import { FaBook, FaFileUpload } from "/src/icons";
 import { useAddBookContentMutation } from "/src/store/slices/booksSlice";
 import DataContainer from "/src/components/layout/dataContainer";
 import FileListItem from "./fileListItem";

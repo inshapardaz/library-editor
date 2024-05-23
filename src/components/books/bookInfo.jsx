@@ -2,11 +2,10 @@ import React from 'react';
 
 // 3rd party imports
 import { Divider, Progress, Space, Typography } from "antd";
-import { FiLayers } from "react-icons/fi";
-import { AiOutlineCopy } from "react-icons/ai";
 
 // Local imports
 import "./styles.scss";
+import { FiLayers, AiOutlineCopy } from "/src/icons";
 import { setDefaultBookImage, bookPlaceholderImage } from "/src/util";
 import IconText from "/src/components/common/iconText";
 import EditingStatusIcon from "/src/components/editingStatusIcon";

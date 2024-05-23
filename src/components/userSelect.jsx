@@ -2,9 +2,9 @@ import React, { useState } from "react";
 
 // 3rd party libraries
 import { Empty, Select } from "antd";
-import { FaUser } from "react-icons/fa";
 
 // local imports
+import { FaUser } from "/src/icons";
 import { useGetWritersQuery } from "/src/store/slices/accountsSlice";
 
 // -------------------------------------------------

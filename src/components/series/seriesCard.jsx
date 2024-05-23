@@ -3,11 +3,10 @@ import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
 import { Card, Typography } from "antd";
-import { FaEdit } from "react-icons/fa";
-import { ImBooks } from "react-icons/im";
 
 // Local Imports
 import "./styles.scss";
+import { FaEdit, ImBooks } from "/src/icons";
 import { seriesPlaceholderImage, setDefaultSeriesImage } from "/src/util";
 import IconText from "/src/components/common/iconText";
 import SeriesDeleteButton from "./seriesDeleteButton";

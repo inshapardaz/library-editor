@@ -3,11 +3,10 @@ import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
 import { Card, Typography } from "antd";
-import { ImBooks } from "react-icons/im";
-import { FaPenFancy, FaEdit } from "react-icons/fa";
 
 // Local Imports
 import "./styles.scss";
+import { ImBooks, FaPenFancy, FaEdit } from "/src/icons";
 import { authorPlaceholderImage, setDefaultAuthorImage } from "/src/util";
 import IconText from "/src/components/common/iconText";
 import AuthorDeleteButton from "./authorDeleteButton";

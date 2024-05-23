@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 // 3rd party libraries
 import { Col, Layout, Row } from 'antd';
-import { FaFeatherAlt } from 'react-icons/fa';
+import { FaFeatherAlt } from '/src/icons';
 
 // Local Imports
 import { useGetAuthorByIdQuery } from '/src/store/slices/authorsSlice';

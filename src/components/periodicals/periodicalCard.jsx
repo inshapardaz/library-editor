@@ -3,12 +3,10 @@ import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
 import { Card, Typography } from "antd";
-import { FaEdit } from "react-icons/fa";
-import { FiLayers } from "react-icons/fi";
-import { SlCalender } from "react-icons/sl";
 
 // Local Imports
 import "./styles.scss"
+import { FaEdit, FiLayers, SlCalender } from "/src/icons";
 import { periodicalPlaceholderImage, setDefaultPeriodicalImage } from "/src/util";
 import IconText from "/src/components/common/iconText";
 import PeriodicalDeleteButton from "./periodicalDeleteButton";

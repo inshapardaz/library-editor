@@ -3,10 +3,9 @@ import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
 import { List } from "antd";
-import { FaEdit, FaTags } from "react-icons/fa";
-import { ImBooks } from "react-icons/im";
 
 // Local Imports
+import { FaEdit, FaTags, ImBooks } from "/src/icons";
 import IconText from "/src/components/common/iconText";
 import CategoryDeleteButton from "./categoryDeleteButton";
 

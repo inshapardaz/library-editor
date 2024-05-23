@@ -6,8 +6,8 @@ import { useNavigate, useParams } from "react-router-dom";
 
 // 3rd party imports
 import { Button, Space } from "antd";
-import { FaPenFancy } from "react-icons/fa";
-import { FiEdit2 } from "react-icons/fi";
+import { FaPenFancy } from "/src/icons";
+import { FiEdit2 } from "/src/icons";
 import Markdown from 'markdown-to-jsx'
 
 // Local imports

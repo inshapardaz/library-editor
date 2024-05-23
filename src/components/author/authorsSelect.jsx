@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 // 3rd party libraries
 import { Avatar, Empty, Select, Space } from 'antd';
-import { FaFeatherAlt } from 'react-icons/fa';
 
 // local imports
+import { FaFeatherAlt } from '/src/icons';
 import { useGetAuthorsQuery } from '/src/store/slices/authorsSlice'
 import { authorPlaceholderImage } from '/src/util';
 // -------------------------------------------------

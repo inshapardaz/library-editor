@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 // 3rd party libraries
 
 import { Button, Col, Form, Input, Row, App, Space, Spin, Select, Upload, Switch } from "antd";
-import { FaPenFancy } from "react-icons/fa";
+import { FaPenFancy } from "/src/icons";
 import ImgCrop from "antd-img-crop";
 
 // Local imports

@@ -13,16 +13,16 @@ import {
     Space,
     Avatar,
 } from "antd";
-import { MdImageSearch } from "react-icons/md";
+
+// Local imports
 import {
+    MdImageSearch,
     FaCircleNotch,
     FaRegCheckCircle,
     FaRegHourglass,
     FaRegTimesCircle,
     FaTrashAlt,
-} from "react-icons/fa";
-
-// Local imports
+} from "/src/icons";
 import { useOcrBookPageMutation } from "/src/store/slices/booksSlice";
 
 // ------------------------------------------------------

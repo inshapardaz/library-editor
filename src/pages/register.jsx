@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 // 3rd party libraries
 import { /*App,*/ Button, Form, Input, Checkbox, Space, Divider } from 'antd';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { LockOutlined, UserOutlined } from '/src/icons';
 
 // Internal imports
 //import accountService from '@/services/accountService';

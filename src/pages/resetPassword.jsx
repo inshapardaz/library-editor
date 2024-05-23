@@ -5,7 +5,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 
 // 3rd party libraries
 import { App, Button, Form, Input, Space, Divider, Spin, Alert } from 'antd';
-import { LockOutlined } from '@ant-design/icons';
+import { LockOutlined } from '/src/icons';
 
 // Internal imports
 import FullPageFormContainer from '/src/components/layout/fullPageFormContainer';

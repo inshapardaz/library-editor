@@ -5,9 +5,9 @@ import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
 import { Button, Input, List, Space, Switch } from "antd";
-import { FaFeatherAlt, FaPlus } from "react-icons/fa";
 
 // Local Imports
+import { FaFeatherAlt, FaPlus } from "/src/icons";
 import { buildLinkToAuthorsPage } from "/src/util";
 import { useGetAuthorsQuery } from "/src/store/slices/authorsSlice";
 import DataContainer from "/src/components/layout/dataContainer";

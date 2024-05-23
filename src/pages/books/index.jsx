@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 // 3rd party libraries
 import { Layout, theme, Button } from "antd";
-import { FaBook, FaCloudUploadAlt, FaPlus } from "react-icons/fa";
+import { FaBook, FaCloudUploadAlt, FaPlus } from "/src/icons";
 
 // Local Imports
 import PageHeader from "/src/components/layout/pageHeader";

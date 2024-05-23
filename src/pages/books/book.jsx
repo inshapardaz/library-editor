@@ -4,9 +4,9 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 // 3rd party libraries
 import { Button, Col, Row, Space, Tabs } from "antd";
-import { FiEdit } from "react-icons/fi";
-import { FaRegClone, FaRegFileAlt, FaRegFileWord } from "react-icons/fa";
-import { ImBooks } from "react-icons/im";
+import { FiEdit } from "/src/icons";
+import { FaRegClone, FaRegFileAlt, FaRegFileWord } from "/src/icons";
+import { ImBooks } from "/src/icons";
 
 // Local imports
 import { useGetBookQuery } from "/src/store/slices/booksSlice";

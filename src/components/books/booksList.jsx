@@ -5,9 +5,9 @@ import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
 import { Button, Input, List, Space, Switch } from "antd";
-import { FaBook, FaCloudUploadAlt, FaPlus } from "react-icons/fa";
 
 // Local Imports
+import { FaBook, FaCloudUploadAlt, FaPlus } from "/src/icons";
 import { updateLinkToBooksPage } from "/src/util";
 import { useGetBooksQuery } from "/src/store/slices/booksSlice";
 import DataContainer from "/src/components/layout/dataContainer";

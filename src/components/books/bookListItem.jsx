@@ -3,11 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 
 // 3rd Party Libraries
 import { Avatar, List, Typography } from "antd";
-import { FiEdit, FiLayers } from "react-icons/fi";
-import { AiOutlineCopy } from "react-icons/ai";
 
 // Local Import
 import "./styles.scss";
+import { FiEdit, FiLayers, AiOutlineCopy } from "/src/icons";
 import { setDefaultBookImage, bookPlaceholderImage } from "/src/util";
 import AuthorAvatar from "/src/components/author/authorAvatar";
 import IconText from "/src/components/common/iconText";

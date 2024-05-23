@@ -3,10 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 
 // 3rd party
 import { Avatar, Popover, Space, Typography } from "antd";
-import { FaFeatherAlt, FaPenFancy } from "react-icons/fa";
-import { ImBooks } from "react-icons/im";
 
 // Local imports
+import { FaFeatherAlt, FaPenFancy, ImBooks } from "/src/icons";
 import { authorPlaceholderImage } from "/src/util";
 import IconText from "/src/components/common/iconText";
 

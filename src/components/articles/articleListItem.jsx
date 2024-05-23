@@ -3,9 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 
 // 3rd Party Libraries
 import { Avatar, Button, Divider, List } from "antd";
-import { FaEdit, FaPlusCircle } from "react-icons/fa";
 
 // Local Import
+import { FaEdit, FaPlusCircle } from "/src/icons";
 import AuthorAvatar from "/src/components/author/authorAvatar";
 import ArticleCategory from "./articleCategory";
 import ArticleDeleteButton from "./articleDeleteButton";

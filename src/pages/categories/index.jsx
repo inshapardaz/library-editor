@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 // 3rd party libraries
 import { Button } from "antd";
-import { FaPlus, FaTags } from "react-icons/fa";
+import { FaPlus, FaTags } from "/src/icons";
 
 // Local Imports
 import PageHeader from "/src/components/layout/pageHeader";

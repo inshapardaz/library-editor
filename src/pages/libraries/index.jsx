@@ -3,9 +3,9 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // 3rd party libraries
-import { ImLibrary } from "react-icons/im";
+import { ImLibrary } from "/src/icons";
 import { Button } from "antd";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus } from "/src/icons";
 
 // Local Imports
 import { SortDirection } from "/src/models";

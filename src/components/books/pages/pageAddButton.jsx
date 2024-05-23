@@ -2,15 +2,16 @@ import React from 'react';
 
 // Third party libraries
 import { Button, Dropdown, Space } from "antd";
-import { FaFilePdf, FaPlus } from "react-icons/fa";
 
 // Local imports
 import {
+    FaFilePdf,
+    FaPlus,
     FaFileArrowUp,
     FaFileCirclePlus,
     FaFileZipper,
     FaChevronDown,
-} from "react-icons/fa6";
+} from "/src/icons";
 import { Link } from "react-router-dom";
 
 // ------------------------------------------------------

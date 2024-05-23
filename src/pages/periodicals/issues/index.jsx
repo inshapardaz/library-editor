@@ -5,9 +5,9 @@ import moment from "moment";
 
 // 3rd party libraries
 import { Breadcrumb, Button, Layout, Space, Tabs, Typography, theme } from "antd";
-import { FiEdit, FiLayers } from "react-icons/fi";
-import { FaHome, FaRegClone, FaRegFileAlt, FaRegFileWord } from "react-icons/fa";
-import { ImNewspaper } from "react-icons/im";
+import { FiEdit, FiLayers } from "/src/icons";
+import { FaHome, FaRegClone, FaRegFileAlt, FaRegFileWord } from "/src/icons";
+import { ImNewspaper } from "/src/icons";
 
 // Local imports
 import { useGetIssueQuery } from "/src/store/slices/issuesSlice";

@@ -2,9 +2,9 @@ import React, { useState } from "react";
 
 // Third party libraries
 import { App, Button, Modal, Form, Input, Tooltip } from "antd";
-import { FaEdit, FaPlus } from "react-icons/fa";
 
 // Local imports
+import { FaEdit, FaPlus } from "/src/icons";
 import {
     useAddChapterMutation,
     useUpdateChapterMutation,

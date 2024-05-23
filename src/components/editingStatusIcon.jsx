@@ -1,4 +1,6 @@
 import React from 'react';
+
+// Local imports
 import {
     FaFile,
     FaFileSignature,
@@ -6,7 +8,7 @@ import {
     FaCheck,
     FaGlasses,
     FaRegFile,
-} from "react-icons/fa";
+} from "/src/icons";
 
 // ------------------------------------------------------
 

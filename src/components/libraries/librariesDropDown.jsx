@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 
 // 3rd party imports
 import { Dropdown, Button, Typography } from 'antd';
-import { ImLibrary } from "react-icons/im";
 
 // Local import
+import { ImLibrary } from "/src/icons";
 import { useGetLibrariesQuery } from '/src/store/slices/librariesSlice'
 
 

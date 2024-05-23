@@ -2,8 +2,8 @@ import React from 'react';
 
 // Third party libraries
 import { App, Button, Modal, Tooltip } from "antd";
-import { FaTrash } from "react-icons/fa";
-import { ExclamationCircleFilled } from "@ant-design/icons";
+import { FaTrash } from "/src/icons";
+import { ExclamationCircleFilled } from "/src/icons";
 
 // Local imports
 import { useDeleteChapterMutation } from "/src/store/slices/booksSlice";

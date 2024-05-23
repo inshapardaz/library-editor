@@ -2,10 +2,9 @@ import React, { useState } from "react";
 
 // Third party libraries
 import { App, Button, Modal, Form, Space, Tooltip, Tag } from "antd";
-import { EditOutlined, FileDoneOutlined } from "@ant-design/icons";
-import { FaUserAlt } from "react-icons/fa";
 
 // Local imports
+import { EditOutlined, FileDoneOutlined, FaUserAlt } from "/src/icons";
 import { useAssignChapterMutation } from "/src/store/slices/booksSlice";
 import UserSelect from "/src/components/userSelect";
 // ------------------------------------------------------

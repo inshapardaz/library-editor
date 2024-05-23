@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 // 3rd party libraries
 import { Button, Form, Input, App, Space, Spin } from "antd";
-import { FaTags } from "react-icons/fa";
+import { FaTags } from "/src/icons";
 
 // Local imports
 import { useGetCategoryByIdQuery, useAddCategoryMutation, useUpdateCategoryMutation } from "/src/store/slices/categoriesSlice";

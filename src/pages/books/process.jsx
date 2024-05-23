@@ -6,9 +6,9 @@ import { useHotkeys } from 'react-hotkeys-hook';
 
 // 3rd party libraries
 import { App, Button, Card, Col, theme, Layout, List, Progress, Row, Space, Typography, Image, Tooltip, Result } from "antd";
-import { MdContentCopy, MdZoomIn, MdZoomOut } from "react-icons/md";
+import { MdContentCopy, MdZoomIn, MdZoomOut } from "/src/icons";
 import { TbSettingsCode, TbSettingsDown } from "react-icons/tb";
-import { FaArrowLeft, FaArrowRight, FaFilePdf, FaRegFilePdf, FaSave } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight, FaFilePdf, FaRegFilePdf, FaSave } from "/src/icons";
 
 // Local Imports
 import { useGetBookQuery, useCreateBookPageWithImageMutation } from "/src/store/slices/booksSlice";

@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 
 // 3rd party libraries
 import { Button, Spin } from "antd";
-import { ImLibrary } from "react-icons/im";
-import { FaPencilAlt } from "react-icons/fa";
+import { ImLibrary } from "/src/icons";
+import { FaPencilAlt } from "/src/icons";
 
 // Local Imports
 import { useGetLibraryQuery } from '/src/store/slices/librariesSlice'

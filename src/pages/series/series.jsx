@@ -4,9 +4,9 @@ import { useTranslation } from "react-i18next";
 
 // 3rd party libraries
 import { Button, Col, Row, Space } from "antd";
-import { FaCloudUploadAlt } from "react-icons/fa";
-import { ImBooks } from "react-icons/im";
-import { FiEdit } from "react-icons/fi";
+import { FaCloudUploadAlt } from "/src/icons";
+import { ImBooks } from "/src/icons";
+import { FiEdit } from "/src/icons";
 
 // Local Imports
 import { useGetSeriesByIdQuery } from "/src/store/slices/seriesSlice";

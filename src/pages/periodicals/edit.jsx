@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 // 3rd party libraries
 
 import { Button, Col, Form, Input, Row, App, Space, Select, Spin, Upload } from "antd";
-import { ImNewspaper } from "react-icons/im";
+import { ImNewspaper } from "/src/icons";
 import ImgCrop from "antd-img-crop";
 
 // Local imports

@@ -10,7 +10,7 @@ import {
     FaUserFriends,
     FaUserSlash,
     FaUsers,
-} from "react-icons/fa";
+} from "/src/icons";
 
 // Local Import
 import { updateLinkToBooksPagesPage } from "/src/util";

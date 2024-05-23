@@ -4,11 +4,10 @@ import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
 import { App, Button, Col, List, Radio, Row, Skeleton } from "antd";
-import { MdContentCopy } from "react-icons/md";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { FaRegImage, FaRegListAlt } from "react-icons/fa";
 
 // Internal Imports
+import { MdContentCopy, FaRegImage, FaRegListAlt } from "/src/icons";
 import {
     useGetBookPagesQuery,
     useUpdateBookPageSequenceMutation,

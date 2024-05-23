@@ -3,14 +3,14 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 // Third party libraries
 import { Button, Dropdown, Space } from "antd";
+
+// Local Imports
 import {
     FaChevronDown,
     FaSort,
     FaSortAmountDown,
     FaSortAmountUp,
-} from "react-icons/fa";
-
-// Local Imports
+} from "/src/icons";
 import { updateLinkToBooksPagesPage } from "/src/util";
 // ------------------------------------------------------
 

@@ -2,15 +2,15 @@ import React from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 
 // Third party libraries
+
+// Local Imports
 import { Button, Dropdown, Space } from "antd";
 import {
     FaChevronDown,
     FaSort,
     FaSortAmountDown,
     FaSortAmountUp,
-} from "react-icons/fa";
-
-// Local Imports
+} from "/src/icons";
 import { updateLinkToAuthorsPage } from "/src/util";
 import { SortDirection } from "/src/models";
 

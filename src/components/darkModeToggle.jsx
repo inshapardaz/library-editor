@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 // 3rd party imports
 import { Switch } from "antd";
-import { MdOutlineDarkMode, MdOutlineWbSunny } from 'react-icons/md'
 
 // Local imports
+import { MdOutlineDarkMode, MdOutlineWbSunny } from '/src/icons'
 import { toggleUiMode } from '/src/store/slices/uiSlice';
 // -------------------------------------------------
 

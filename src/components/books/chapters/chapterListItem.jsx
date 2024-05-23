@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
 import { Avatar, Button, Checkbox, List, Space, Tooltip, Typography } from "antd";
-import { FaGripLines, FaRegFileAlt } from "react-icons/fa";
 import { Draggable } from "react-beautiful-dnd";
 
 // Local Import
+import { FaGripLines, FaRegFileAlt } from "/src/icons";
 import EditingStatusIcon from "/src/components/editingStatusIcon";
 import ChapterEditor from "./chapterEditor";
 import ChapterDeleteButton from "./chapterDeleteButton";

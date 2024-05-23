@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 
 // 3rd party libraries
 import { Button } from "antd";
-import { FaPlus } from "react-icons/fa";
-import { ImNewspaper } from "react-icons/im";
+import { FaPlus } from "/src/icons";
+import { ImNewspaper } from "/src/icons";
 
 // Local Imports
 import PageHeader from "/src/components/layout/pageHeader";

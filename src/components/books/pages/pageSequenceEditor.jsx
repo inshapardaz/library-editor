@@ -2,9 +2,9 @@ import React, { useState } from "react";
 
 // Third party libraries
 import { App, Button, Modal, Form, InputNumber } from "antd";
-import { FaSort } from "react-icons/fa";
 
 // Local imports
+import { FaSort } from "/src/icons";
 import { useUpdateBookPageSequenceMutation } from "/src/store/slices/booksSlice";
 
 // ------------------------------------------------------

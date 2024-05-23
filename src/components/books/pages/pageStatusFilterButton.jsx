@@ -3,6 +3,8 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 // Third party libraries
 import { Button, Dropdown, Space } from "antd";
+
+// Local Import
 import {
     FaCheck,
     FaChevronDown,
@@ -12,9 +14,7 @@ import {
     FaFilter,
     FaGlasses,
     FaStarOfLife,
-} from "react-icons/fa";
-
-// Local Import
+} from "/src/icons";
 import { updateLinkToBooksPagesPage } from "/src/util";
 
 // ------------------------------------------------------

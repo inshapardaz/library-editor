@@ -3,12 +3,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 // Third party libraries
 import { Button, Dropdown, Space } from "antd";
+
+// Local Import
 import {
     FaChevronDown,
     FaFilter,
-} from "react-icons/fa";
-
-// Local Import
+} from "/src/icons";
 import { updateLinkToBooksPage } from "/src/util";
 import { BookStatus } from "/src/models";
 import BookStatusIcon from "./bookStatusIcon";

@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 // 3rd party libraries
 import moment from "moment/moment";
 import { Button, Col, Form, InputNumber, Row, App, Space, Spin, Upload } from "antd";
-import { FiLayers } from "react-icons/fi";
+import { FiLayers } from "/src/icons";
 import ImgCrop from "antd-img-crop";
 
 // Local imports

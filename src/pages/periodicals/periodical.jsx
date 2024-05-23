@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 
 // 3rd party libraries
 import { Breadcrumb, Button, Layout, Space, theme } from "antd";
-import { FaEdit, FaHome, FaPlus } from "react-icons/fa";
-import { ImNewspaper } from "react-icons/im";
+import { FaEdit, FaHome, FaPlus } from "/src/icons";
+import { ImNewspaper } from "/src/icons";
 
 // Local Imports
 import { useGetPeriodicalByIdQuery } from "/src/store/slices/periodicalsSlice";

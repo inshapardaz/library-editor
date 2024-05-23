@@ -13,13 +13,13 @@ import {
     FaCheckCircle,
     FaRegFileAlt,
     FaTimesCircle,
-} from "react-icons/fa";
+} from "/src/icons";
 import {
     MdFullscreen,
     MdFullscreenExit,
     MdHideImage,
     MdImage,
-} from "react-icons/md";
+} from "/src/icons";
 
 // Local imports
 import {

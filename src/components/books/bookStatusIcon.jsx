@@ -1,14 +1,12 @@
 import React from 'react';
 
-// Third party import
+// Local import
 import {
     FaCheck, FaFile,
     FaFileAlt,
     FaFileSignature, FaGlasses,
     FaStarOfLife
-} from "react-icons/fa";
-
-// Local import
+} from "/src/icons";
 import BookStatus from "/src/models/bookStatus";
 //--------------------------------------------
 

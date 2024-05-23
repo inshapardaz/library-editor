@@ -12,7 +12,7 @@ import { grid, updateLinkToLibrariesPage } from "/src/util";
 import DataContainer from "/src/components/layout/dataContainer";
 import LibraryCard from "./libraryCard";
 import LibraryListItem from "./libraryListItem";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus } from "/src/icons";
 
 // ------------------------------------------------------
 const ShowMoreButton = ({ t }) => {

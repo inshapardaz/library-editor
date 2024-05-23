@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
 import { Card, Checkbox, Space, Tag, Typography } from "antd";
-import { FaRegKeyboard, FaGlasses, FaGripLines } from "react-icons/fa";
 import { Draggable } from "react-beautiful-dnd";
 
 // Local Import
 import "./styles.scss";
+import { FaRegKeyboard, FaGlasses, FaGripLines } from "/src/icons";
 import { pagePlaceholderImage } from "/src/util";
 import PageSequenceEditor from "./pageSequenceEditor";
 import PageDeleteButton from "./pageDeleteButton";

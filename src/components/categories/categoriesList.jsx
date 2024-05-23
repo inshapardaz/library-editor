@@ -4,9 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 
 // 3rd party libraries
 import { Button, List } from "antd";
-import { FaPlus, FaTags } from "react-icons/fa";
 
 // Local Imports
+import { FaPlus, FaTags } from "/src/icons";
 import { useGetCategoriesQuery } from "/src/store/slices/categoriesSlice";
 import { buildLinkToCategoriesList } from "/src/util";
 import DataContainer from "/src/components/layout/dataContainer";

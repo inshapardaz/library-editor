@@ -3,10 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 
 // 3rd party libraries
 import { Card, Typography } from 'antd';
-import { FaEdit } from "react-icons/fa";
 
 // Internal Imports
 import './styles.scss';
+import { FaEdit } from "/src/icons";
 import { libraryPlaceholderImage, setDefaultLibraryImage } from "/src/util";
 import IconText from "/src/components/common/iconText";
 import LibraryDeleteButton from "./libraryDeleteButton";

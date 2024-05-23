@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 // 3rd party libraries
 import { App, Button, Form, Input, Space, Divider, Spin, Alert } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { UserOutlined } from '/src/icons';
 
 // Internal imports
 import FullPageFormContainer from '/src/components/layout/fullPageFormContainer';

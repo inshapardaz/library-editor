@@ -2,10 +2,9 @@ import React from 'react';
 
 // Third party libraries
 import { App, Button, Modal } from "antd";
-import { ExclamationCircleFilled } from '@ant-design/icons';
-import { MdPublishedWithChanges } from "react-icons/md";
 
 // Local imports
+import { ExclamationCircleFilled, MdPublishedWithChanges } from "/src/icons";
 import { usePublishBookMutation } from "/src/store/slices/booksSlice";
 
 // ------------------------------------------------------

@@ -4,10 +4,9 @@ import { useNavigate } from "react-router-dom";
 // Third party libraries
 import moment from "moment";
 import { App, Button, Modal } from "antd";
-import { FaTrash } from 'react-icons/fa';
-import { ExclamationCircleFilled } from '@ant-design/icons';
 
 // Local imports
+import { FaTrash, ExclamationCircleFilled } from '/src/icons';
 import { useDeleteIssueMutation } from "/src/store/slices/issuesSlice";
 import { getDateFormatFromFrequency } from "/src/util";
 // ------------------------------------------------------

@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 
 // 3rd party libraries
-import { FaCloudUploadAlt, FaFileUpload, FaHourglass, FaRedo, FaRegCheckCircle, FaRegTimesCircle, FaSave, FaTrash, FaUpload } from 'react-icons/fa';
+import { FaCloudUploadAlt, FaFileUpload, FaHourglass, FaRedo, FaRegCheckCircle, FaRegTimesCircle, FaSave, FaTrash, FaUpload } from '/src/icons';
 import { App, Avatar, Button, Card, Col, Form, Input, InputNumber, List, Popover, Row, Space, Spin, Switch, Tooltip, Upload } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
+import { LoadingOutlined } from '/src/icons';
 
 // Local Imports
 import { useGetLibraryQuery } from '/src/store/slices/librariesSlice';

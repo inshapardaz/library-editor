@@ -6,10 +6,10 @@ import { useSelector } from "react-redux";
 // 3rd party libraries
 import { useLocalStorage, useWindowSize } from "usehooks-ts";
 import { Drawer, Row, Col, Divider, Typography, Slider, Segmented, theme, Button, Tooltip } from 'antd';
-import { ImMenu4, ImFileText2 } from 'react-icons/im'
+import { ImMenu4, ImFileText2 } from '/src/icons'
 import { IoIosCloseCircle } from 'react-icons/io'
 import { BsFileEarmarkFont } from 'react-icons/bs'
-import { MdSettings } from 'react-icons/md'
+import { MdSettings } from '/src/icons'
 import { TiDocumentText } from 'react-icons/ti'
 import { VscBook } from 'react-icons/vsc'
 

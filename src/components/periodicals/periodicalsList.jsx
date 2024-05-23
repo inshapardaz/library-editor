@@ -5,10 +5,9 @@ import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
 import { Button, Input, List, Space, Switch } from "antd";
-import { FaPlus } from "react-icons/fa";
-import { ImNewspaper } from "react-icons/im";
 
 // Local Imports
+import { FaPlus, ImNewspaper } from "/src/icons";
 import { useGetPeriodicalsQuery } from "/src/store/slices/periodicalsSlice";
 import { buildLinkToPeriodicalsPage } from "/src/util";
 import DataContainer from "/src/components/layout/dataContainer";

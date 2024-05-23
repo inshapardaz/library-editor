@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 
 // 3rd party imports
 import { Alert, App, Breadcrumb, Button, Spin, Tooltip } from "antd";
-import { FaAngleLeft, FaAngleRight, FaBook, FaCheckCircle } from "react-icons/fa";
+import { FaAngleLeft, FaAngleRight, FaBook, FaCheckCircle } from "/src/icons";
 
 // Local imports
 import {

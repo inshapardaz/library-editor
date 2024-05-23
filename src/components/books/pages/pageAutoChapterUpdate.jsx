@@ -2,9 +2,9 @@ import React, { useState } from "react";
 
 // Third party libraries
 import { App, Button, Modal } from "antd";
-import { VscLayersActive } from "react-icons/vsc";
 
 // Local imports
+import { VscLayersActive } from "/src/icons";
 import { useUpdateBookPageMutation } from "/src/store/slices/booksSlice";
 
 // ------------------------------------------------------

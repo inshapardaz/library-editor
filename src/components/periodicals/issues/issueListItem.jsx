@@ -4,13 +4,10 @@ import moment from "moment";
 
 // 3rd Party Libraries
 import { Button, Divider, List, Space } from "antd";
-import { FiEdit, FiTrash } from "react-icons/fi";
-import { GiStack } from "react-icons/gi";
-import { FaNewspaper } from "react-icons/fa";
 
 // Local Import
 import "./styles.scss";
-
+import { FiEdit, FiTrash, GiStack, FaNewspaper } from "/src/icons";
 import { bookPlaceholderImage, setDefaultIssueImage, getDateFormatFromFrequency } from "/src/util";
 import IconText from "/src/components/common/iconText";
 // ------------------------------------------------------

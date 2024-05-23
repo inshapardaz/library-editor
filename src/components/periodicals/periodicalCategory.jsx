@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 
 // 3rd party
 import { Space, Tag } from 'antd';
-import { FaTags } from 'react-icons/fa';
+
+// Local Imports
+import { FaTags } from '/src/icons';
 
 // ------------------------------------------------
 

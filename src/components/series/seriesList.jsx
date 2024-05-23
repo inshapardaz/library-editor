@@ -5,10 +5,9 @@ import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
 import { Button, Input, List, Space, Switch } from "antd";
-import { FaPlus } from "react-icons/fa";
-import { ImBooks } from "react-icons/im";
 
 // Local Imports
+import { FaPlus, ImBooks } from "/src/icons";
 import { useGetSeriesQuery } from "/src/store/slices/seriesSlice";
 import { updateLinkToSeriesPage } from "/src/util";
 import DataContainer from "/src/components/layout/dataContainer";

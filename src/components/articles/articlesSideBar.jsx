@@ -5,10 +5,9 @@ import { useSelector } from "react-redux";
 
 // 3rd party imports
 import { Menu } from "antd";
-import { FaTags, FaTag, FaRegHeart, FaEye, FaPen, FaPenAlt } from "react-icons/fa";
-import { MdNewReleases } from "react-icons/md";
 
 // Local Imports
+import { FaTags, FaTag, FaRegHeart, FaEye, FaPen, FaPenAlt, MdNewReleases } from "/src/icons";
 import { useGetCategoriesQuery } from "/src/store/slices/categoriesSlice";
 import { isLoggedIn } from "/src/store/slices/authSlice";
 

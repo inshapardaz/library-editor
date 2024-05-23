@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
 import { List, Typography } from "antd";
-import { FaEdit } from "react-icons/fa";
 
 // Local Import
 import "./styles.scss";
+import { FaEdit } from "/src/icons";
 import { libraryPlaceholderImage, setDefaultLibraryImage } from "/src/util";
 import IconText from "/src/components/common/iconText";
 import LibraryDeleteButton from "./libraryDeleteButton";

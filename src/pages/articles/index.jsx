@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 // 3rd party libraries
 import { Layout, theme, Button } from "antd";
-import { FaPenFancy, FaPlus } from "react-icons/fa";
+import { FaPenFancy, FaPlus } from "/src/icons";
 
 // Local Imports
 import SortDirection from "/src/models/sortDirection";

@@ -1,9 +1,9 @@
 import React from 'react';
 
-// Third party import 
-import { ImBooks } from "react-icons/im";
+// Third party import
 
 // Local Imports
+import { ImBooks } from "/src/icons";
 import IconText from "/src/components/common/iconText";
 // ------------------------------------------------------
 const BookSeriesInfo = ({ libraryId, book, t }) => {

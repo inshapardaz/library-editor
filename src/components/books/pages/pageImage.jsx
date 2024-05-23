@@ -3,10 +3,9 @@ import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
 import { App, Button, Flex, Upload } from "antd";
-import { FaFileUpload } from "react-icons/fa";
-import { MdOutlineZoomIn, MdOutlineZoomOut } from "react-icons/md";
 
 // Local imports
+import { FaFileUpload, MdOutlineZoomIn, MdOutlineZoomOut } from "/src/icons";
 import { pagePlaceholderImage, setDefaultPageImage } from "/src/util";
 
 // -----------------------------------------
