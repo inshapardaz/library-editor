@@ -1,17 +1,27 @@
+import React from 'react';
+
 // Third party libraries
 import { App, Button, Modal } from "antd";
-import { FaTrash } from 'react-icons/fa';
-import { ExclamationCircleFilled } from '@ant-design/icons';
 
 // Local imports
-import { useDeleteLibraryMutation } from "../../features/api/librariesSlice";
+import { FaTrash, ExclamationCircleFilled } from '/src/icons';
+import { useDeleteLibraryMutation } from "/src/store/slices/librariesSlice";
 
 // ------------------------------------------------------
 
 const { confirm } = Modal;
 
 // ------------------------------------------------------
-export default function LibraryDeleteButton({ children, library, t, type, onDeleted = () => { }, danger = false, block = false, size = "middle" }) {
+const LibraryDeleteButton = ({
+    children,
+    library,
+    t,
+    type,
+    onDeleted = () => { },
+    danger = false,
+    block = false,
+    size = "middle"
+}) => {
     const { message } = App.useApp();
     const [deleteLibrary, { isLoading: isDeleting }] = useDeleteLibraryMutation();
 
@@ -26,12 +36,14 @@ export default function LibraryDeleteButton({ children, library, t, type, onDele
             onOk() {
                 return deleteLibrary({ library })
                     .unwrap()
-                    .then(() => message.success(t("library.actions.delete.success")))
                     .then(() => onDeleted())
-                    .catch((_) => message.error(t("library.actions.delete.error")));
+                    .then(() => { message.success(t("library.actions.delete.success")) })
+                    .catch(() => { message.error(t("library.actions.delete.error")) });
             }
         });
     };
 
     return (<Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash />}>{children}</Button>);
-}
+};
+
+export default LibraryDeleteButton;

@@ -1,23 +1,30 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
 // 3rd party libraries
 import { Button, App, Spin, Alert, Space } from "antd";
-import { FaPenFancy, FaTimesCircle } from "react-icons/fa";
+import { FaPenFancy, FaTimesCircle } from "/src/icons";
 
 // Local imports
-import { useGetArticleQuery, useGetArticleContentsQuery, useAddArticleContentsMutation, useUpdateArticleContentsMutation } from "../../features/api/articlesSlice";
-import ContentsContainer from "../../components/layout/contentContainer";
-import PageHeader from "../../components/layout/pageHeader";
-import Error from "../../components/common/error";
-import { selectedLanguage } from '../../features/ui/uiSlice';
-import TextEditor from "../../components/textEditor";
+import {
+    useGetArticleQuery,
+    useGetArticleContentsQuery,
+    useAddArticleContentsMutation,
+    useUpdateArticleContentsMutation
+}
+    from "/src/store/slices/articlesSlice";
+import { selectedLanguage } from '/src/store/slices/uiSlice';
+//TODO: Replace this with component
 import Error404 from "../404";
-import LanguageSelect from "../../components/languageSelect";
-import ArticleLayoutSelect from "../../components/articles/articleLayoutSelect";
-import AuthorAvatar from "../../components/author/authorAvatar";
+import ContentsContainer from "/src/components/layout/contentContainer";
+import PageHeader from "/src/components/layout/pageHeader";
+import Error from "/src/components/common/error";
+import TextEditor from "/src/components/textEditor";
+import LanguageSelect from "/src/components/languageSelect";
+import ArticleLayoutSelect from "/src/components/articles/articleLayoutSelect";
+import AuthorAvatar from "/src/components/author/authorAvatar";
 
 // ----------------------------------------------
 
@@ -31,7 +38,7 @@ const ArticleContentEditPage = () => {
     const searchLang = language ?? lang.key;
     const [layout, setLayout] = useState('normal');
 
-    const { data: article, articleError, isFetchingArticle }
+    const { refetch, data: article, articleError, isFetchingArticle }
         = useGetArticleQuery(
             { libraryId, articleId: articleId, language: searchLang },
             { skip: !libraryId || !articleId || !searchLang });
@@ -53,8 +60,9 @@ const ArticleContentEditPage = () => {
                 payload: c
             })
                 .unwrap()
+                .then(refetch)
                 .then(() => message.success(t("article.actions.edit.success")))
-                .catch((_) => message.error(t("article.actions.edit.error")));
+                .catch(() => message.error(t("article.actions.edit.error")));
         } else {
             addArticleContents({
                 libraryId,
@@ -64,8 +72,9 @@ const ArticleContentEditPage = () => {
                 payload: c
             })
                 .unwrap()
+                .then(refetch)
                 .then(() => message.success(t("article.actions.add.success")))
-                .catch((_) => message.error(t("article.actions.add.error")));
+                .catch(() => message.error(t("article.actions.add.error")));
         }
     };
 

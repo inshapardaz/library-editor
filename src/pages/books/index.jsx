@@ -1,22 +1,23 @@
+import React from 'react';
 import { useParams, useSearchParams, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // 3rd party libraries
 import { Layout, theme, Button } from "antd";
-import { FaBook, FaCloudUploadAlt, FaPlus } from "react-icons/fa";
+import { FaBook, FaCloudUploadAlt, FaPlus } from "/src/icons";
 
 // Local Imports
-import PageHeader from "../../components/layout/pageHeader";
-import BooksList from "../../components/books/booksList";
-import ContentsContainer from "../../components/layout/contentContainer";
-import BooksSideBar from "../../components/books/booksSideBar";
-import SortDirection from "../../models/sortDirection";
+import PageHeader from "/src/components/layout/pageHeader";
+import BooksList from "/src/components/books/booksList";
+import ContentsContainer from "/src/components/layout/contentContainer";
+import BooksSideBar from "/src/components/books/booksSideBar";
+import { SortDirection } from "/src/models";
 
 //--------------------------------------------------------
 const { Content, Sider } = Layout;
 //--------------------------------------------------------
 
-function BooksHomePage() {
+const BooksHomePage = () => {
     const { t } = useTranslation();
     const {
         token: { colorBgContainer },

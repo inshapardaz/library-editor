@@ -1,18 +1,19 @@
+import React from 'react';
 import { Link } from "react-router-dom";
 
 // 3rd party libraries
 import { Menu, Space, Typography } from "antd";
 
 // Local imports
-import helpers from "../../helpers";
-import { useGetIssuesYearsQuery } from "../../features/api/issuesSlice";
+import { periodicalPlaceholderImage, setDefaultPeriodicalImage } from "/src/util";
+import { useGetIssuesYearsQuery } from "/src/store/slices/issuesSlice";
 
 // -----------------------------------------
 const { Title, Paragraph } = Typography;
 // ---------------------------------------------
 
-const PeriodicalInfo = ({ libraryId, periodical, t, selectedYear }) => {
-    const cover = periodical.links.image ? <img src={periodical.links.image} onError={helpers.setDefaultPeriodicalImage} width="100%" alt={periodical.title} /> : <img src={helpers.defaultPeriodicalImage} width="100%" alt={periodical.title} />;
+const PeriodicalInfo = ({ libraryId, periodical, selectedYear }) => {
+    const cover = periodical.links.image ? <img src={periodical.links.image} onError={setDefaultPeriodicalImage} width="100%" alt={periodical.title} /> : <img src={periodicalPlaceholderImage} width="100%" alt={periodical.title} />;
 
     const { data: years, error, isFetching } = useGetIssuesYearsQuery({ libraryId, periodicalId: periodical.id }, { skip: !periodical });
     const yearsItems = years ? years.data.map(y => ({

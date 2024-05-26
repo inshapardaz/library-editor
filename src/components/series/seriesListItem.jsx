@@ -1,15 +1,14 @@
-import React from "react";
+import React from 'react';
 import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
 import { List, Typography } from "antd";
-import { FaEdit } from "react-icons/fa";
-import { ImBooks } from "react-icons/im";
 
 // Local Imports
-import styles from "../../styles/common.module.scss";
-import helpers from "../../helpers/index";
-import { IconText } from "../common/iconText";
+import "./styles.scss";
+import { FaEdit, ImBooks } from "/src/icons";
+import { seriesPlaceholderImage, setDefaultSeriesImage } from "/src/util";
+import IconText from "/src/components/common/iconText";
 import SeriesDeleteButton from "./seriesDeleteButton";
 
 // ------------------------------------------------------
@@ -18,8 +17,11 @@ const { Text, Paragraph } = Typography;
 
 // ------------------------------------------------------
 
-function SeriesListItem({ libraryId, series, t }) {
-    const avatar = <img src={series.links.image || helpers.defaultSeriesImage} onError={helpers.setDefaultSeriesImage} className={styles["series__image--small"]} alt={series.title} />;
+const SeriesListItem = ({ libraryId, series, t }) => {
+    const avatar = <img src={series.links.image || seriesPlaceholderImage}
+        onError={setDefaultSeriesImage}
+        className="series__image--small"
+        alt={series.name} />;
     const title = <Link to={`/libraries/${libraryId}/series/${series.id}`}>{series.name}</Link>;
     const description = series.description ? (
         <Paragraph ellipsis type="secondary">
@@ -47,6 +49,6 @@ function SeriesListItem({ libraryId, series, t }) {
             <List.Item.Meta title={title} avatar={avatar} description={description} />
         </List.Item>
     );
-}
+};
 
 export default SeriesListItem;

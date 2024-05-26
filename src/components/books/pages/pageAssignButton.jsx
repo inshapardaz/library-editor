@@ -1,16 +1,16 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 // Third party libraries
 import { App, Button, Modal, Form, Space } from "antd";
-import { FaUserAlt } from "react-icons/fa";
 
 // Local imports
-import { useAssignBookPageMutation } from "../../../features/api/booksSlice";
-import UserSelect from "../../userSelect";
+import { FaUserAlt } from "/src/icons";
+import { useAssignBookPageMutation } from "/src/store/slices/booksSlice";
+import UserSelect from "/src/components/userSelect";
 
 // ------------------------------------------------------
 
-export default function PageAssignButton({ libraryId, pages, t, type }) {
+const PageAssignButton = ({ libraryId, pages, t, type }) => {
     const { message } = App.useApp();
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
@@ -47,7 +47,7 @@ export default function PageAssignButton({ libraryId, pages, t, type }) {
             .then((values) => {
                 onSubmit(values);
             })
-            .catch((info) => {});
+            .catch(() => { });
 
     const onShow = () => {
         form.resetFields();
@@ -109,4 +109,6 @@ export default function PageAssignButton({ libraryId, pages, t, type }) {
             </Modal>
         </>
     );
-}
+};
+
+export default PageAssignButton;

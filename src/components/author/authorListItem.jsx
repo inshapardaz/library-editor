@@ -1,15 +1,14 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React from 'react';
+import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
 import { List, Typography } from "antd";
-import { ImBooks } from "react-icons/im";
-import { FaEdit, FaPenFancy } from "react-icons/fa";
 
 // Local Imports
-import styles from "../../styles/common.module.scss";
-import helpers from "../../helpers/index";
-import { IconText } from "../common/iconText";
+import "./styles.scss";
+import { ImBooks, FaEdit, FaPenFancy } from "/src/icons";
+import { authorPlaceholderImage, setDefaultAuthorImage } from "/src/util";
+import IconText from "/src/components/common/iconText";
 import AuthorDeleteButton from "./authorDeleteButton";
 
 // ------------------------------------------------------
@@ -18,9 +17,8 @@ const { Text, Paragraph } = Typography;
 
 // ------------------------------------------------------
 
-function AuthorListItem({ libraryId, author, t }) {
-    const navigate = useNavigate();
-    const avatar = <img src={author.links.image || helpers.defaultAuthorImage} onError={helpers.setDefaultAuthorImage} className={styles["author__image--small"]} alt={author.name} />;
+const AuthorListItem = ({ libraryId, author, t }) => {
+    const avatar = <img src={author.links.image || authorPlaceholderImage} onError={setDefaultAuthorImage} className="author__image--small" alt={author.name} />;
     const title = <Link to={`/libraries/${libraryId}/authors/${author.id}`}>{author.name}</Link>;
     const description = author.description ? (
         <Paragraph ellipsis type="secondary">
@@ -30,22 +28,22 @@ function AuthorListItem({ libraryId, author, t }) {
         <Text type="secondary">{t("author.noDescription")}</Text>
     );
     const bookCount = (
-        <IconText onClick={() => navigate(`/libraries/${libraryId}/books?author=${author.id}`)}
+        <IconText href={`/libraries/${libraryId}/books?author=${author.id}`}
             icon={ImBooks}
             text={t("author.bookCount", { count: author.bookCount })}
             key="auhtor-book-count" />
     );
     const writingsCount = (
-        <IconText onClick={() => navigate(`/libraries/${libraryId}/articles?author=${author.id}`)}
+        <IconText href={`/libraries/${libraryId}/articles?author=${author.id}`}
             icon={FaPenFancy}
             text={t("author.writingCount", { count: author.articleCount })}
-            key="author-writings-count"/>
+            key="author-writings-count" />
     );
     const editLink = (
-        <IconText onClick={() => navigate(`/libraries/${libraryId}/authors/${author.id}/edit`)}
+        <IconText href={`/libraries/${libraryId}/authors/${author.id}/edit`}
             icon={FaEdit}
             text={t("actions.edit")}
-            key="author-edit"/>
+            key="author-edit" />
     );
     const deleteAuthor = <AuthorDeleteButton libraryId={libraryId} author={author} t={t} type="ghost" size="small" />;
 
@@ -54,6 +52,6 @@ function AuthorListItem({ libraryId, author, t }) {
             <List.Item.Meta title={title} avatar={avatar} description={description} />
         </List.Item>
     );
-}
+};
 
 export default AuthorListItem;

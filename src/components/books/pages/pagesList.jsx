@@ -1,37 +1,33 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
 import { App, Button, Col, List, Radio, Row, Skeleton } from "antd";
-import { MdContentCopy } from "react-icons/md";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { FaRegImage, FaRegListAlt } from "react-icons/fa";
 
 // Internal Imports
+import { MdContentCopy, FaRegImage, FaRegListAlt } from "/src/icons";
 import {
     useGetBookPagesQuery,
     useUpdateBookPageSequenceMutation,
-} from "../../../features/api/booksSlice";
-import PageListItem from "../pages/pageListItem";
-import DataContainer from "../../layout/dataContainer";
+} from "/src/store/slices/booksSlice";
+import { BookStatus, PageStatus, AssignmentStatus } from "/src/models";
+import { buildLinkToBooksPagesPage } from "/src/util";
+import DataContainer from "/src/components/layout/dataContainer";
+import CheckboxButton from "/src/components/checkboxButton";
+import PageListItem from "./pageListItem";
 import PageAddButton from "./pageAddButton";
 import PageDeleteButton from "./pageDeleteButton";
 import PageAssignButton from "./pageAssignButton";
 import PageSortButton from "./pageSortButton";
 import PageStatusFilterButton from "./pageStatusFilterButton";
 import PageAssignmentFilterButton from "./pageAssignmentFilterButton";
-import CheckboxButton from "../../checkboxButton";
 import PageChapterButton from "./pageChapterButton";
 import PageAutoChapterUpdate from "./pageAutoChapterUpdate";
 import PageStatusButton from "./pageStatusButton";
-import helpers from "../../../helpers";
-import BookStatus from "../../../models/bookStatus";
-import PageStatus from "../../../models/pageStatus";
-import AssignmentStatus from "../../../models/assignmentStatus";
 import PageCard from "./pageCard";
 import PageOcrButton from "./pageOcrButton";
-
 // ------------------------------------------------------
 
 const getFilterFromBookStatus = (book) => {
@@ -96,8 +92,8 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
             libraryId,
             bookId: book.id,
             status,
-            assignment : BookStatus.BeingTyped === book.status ? assignment : null,
-            reviewerAssignmentFilter:  BookStatus.ProofRead === book.status ? reviewerAssignmentFilter : null,
+            assignment: BookStatus.BeingTyped === book.status ? assignment : null,
+            reviewerAssignmentFilter: BookStatus.ProofRead === book.status ? reviewerAssignmentFilter : null,
             sortDirection,
             pageNumber,
             pageSize,
@@ -129,7 +125,7 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
                     .then(() =>
                         message.success(t("chapter.actions.reorder.success"))
                     )
-                    .catch((_) =>
+                    .catch(() =>
                         message.error(t("chapter.actions.reorder.error"))
                     );
             }
@@ -163,14 +159,14 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
         }
     };
 
-    const hasAllSelected = selection.length  > 0 && selection.length === pages.data.length;
+    const hasAllSelected = selection.length > 0 && selection.length === pages.data.length;
     const hasPartialSelection =
         selection.length > 0 && selection.length < pages.data.length;
 
     //------------------------------------------------------
     const onPageChanged = (newPage, newPageSize) => {
         navigate(
-            helpers.buildLinkToBooksPagesPage(
+            buildLinkToBooksPagesPage(
                 location.pathname,
                 newPage,
                 newPageSize,
@@ -307,14 +303,14 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
                                         showList
                                             ? null
                                             : {
-                                                  gutter: 16,
-                                                  xs: 1,
-                                                  sm: 1,
-                                                  md: 2,
-                                                  lg: 2,
-                                                  xl: 3,
-                                                  xxl: 3,
-                                              }
+                                                gutter: 16,
+                                                xs: 1,
+                                                sm: 1,
+                                                md: 2,
+                                                lg: 2,
+                                                xl: 3,
+                                                xxl: 3,
+                                            }
                                     }
                                     dataSource={pages ? pages.data : []}
                                     renderItem={renderPage}

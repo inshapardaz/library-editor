@@ -1,20 +1,20 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
 import { Button, Input, List, Space, Switch } from "antd";
-import { FaPenFancy, FaPlus } from "react-icons/fa";
 
 // Local Imports
-import { useGetArticlesQuery } from "../../features/api/articlesSlice";
-import helpers from "../../helpers";
-import DataContainer from "../layout/dataContainer";
+import { FaPenFancy, FaPlus } from "/src/icons";
+import { useGetArticlesQuery } from "/src/store/slices/articlesSlice";
+import { updateLinkToArticlesPage } from "/src/util";
+import DataContainer from "/src/components/layout/dataContainer";
 import ArticleSortButton from "./articleSortButton";
+import ArticleStatusFilterButton from "./articleStatusFilterButton";
 import ArticleListItem from "./articleListItem";
 import ArticleCard from "./articleCard";
-import ArticleStatusFilterButton from "./articleStatusFilterButton";
 // ------------------------------------------------------
 
 const grid = {
@@ -29,7 +29,7 @@ const grid = {
 
 // ------------------------------------------------------
 
-function ArticlesList({
+const ArticlesList = ({
     libraryId,
     query,
     author,
@@ -43,7 +43,7 @@ function ArticlesList({
     pageNumber,
     pageSize,
     showSearch = true,
-}) {
+}) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
@@ -96,7 +96,7 @@ function ArticlesList({
 
     const onPageChanged = (newPage, newPageSize) => {
         navigate(
-            helpers.updateLinkToArticlesPage(location, {
+            updateLinkToArticlesPage(location, {
                 pageNumber: newPage,
                 pageSize: newPageSize,
             })
@@ -105,7 +105,7 @@ function ArticlesList({
 
     const onSearch = () => {
         navigate(
-            helpers.updateLinkToArticlesPage(location, {
+            updateLinkToArticlesPage(location, {
                 pageNumber: 1,
                 query: search,
             })

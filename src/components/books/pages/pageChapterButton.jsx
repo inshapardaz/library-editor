@@ -1,16 +1,16 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 // Third party libraries
 import { App, Button, Modal, Form, Space } from "antd";
-import { FaLayerGroup } from "react-icons/fa";
 
 // Local imports
-import { useUpdateBookPageMutation } from "../../../features/api/booksSlice";
-import ChapterSelect from "../chapters/chapterSelect";
+import { FaLayerGroup } from "/src/icons";
+import { useUpdateBookPageMutation } from "/src/store/slices/booksSlice";
+import ChapterSelect from "/src/components/books/chapters/chapterSelect";
 
 // ------------------------------------------------------
 
-export default function PageChapterButton({ libraryId, book, pages, t, type }) {
+const PageChapterButton = ({ libraryId, book, pages, t, type }) => {
     const { message } = App.useApp();
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
@@ -31,7 +31,7 @@ export default function PageChapterButton({ libraryId, book, pages, t, type }) {
             .then(() =>
                 message.success(t("page.actions.setChapter.success", { count }))
             )
-            .catch((_) =>
+            .catch(() =>
                 message.error(t("page.actions.setChapter.error", { count }))
             );
     };
@@ -100,4 +100,6 @@ export default function PageChapterButton({ libraryId, book, pages, t, type }) {
             </Modal>
         </>
     );
-}
+};
+
+export default PageChapterButton;

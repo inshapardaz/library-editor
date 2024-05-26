@@ -1,7 +1,10 @@
+import React from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 
 // Third party libraries
 import { Button, Dropdown, Space } from "antd";
+
+// Local Imports
 import {
     FaChevronDown,
     FaRegCalendarPlus,
@@ -9,9 +12,9 @@ import {
     FaSortAlphaUp,
     FaSortAmountDown,
     FaSortAmountUp,
-} from "react-icons/fa";
-import helpers from "../../helpers";
-import SortDirection from "../../models/sortDirection";
+} from "/src/icons";
+import { updateLinkToBooksPage } from "/src/util";
+import { SortDirection } from "/src/models";
 
 // ------------------------------------------------------
 
@@ -21,7 +24,7 @@ export default function BookSortButton({ sortBy, sortDirection, t }) {
 
     const setSortDirection = (newSortDirection) => {
         navigate(
-            helpers.updateLinkToBooksPage(location, {
+            updateLinkToBooksPage(location, {
                 pageNumber: 1,
                 sortDirection: newSortDirection,
             })
@@ -29,7 +32,7 @@ export default function BookSortButton({ sortBy, sortDirection, t }) {
     };
     const setSortBy = (newSortBy) => {
         navigate(
-            helpers.updateLinkToBooksPage(location, {
+            updateLinkToBooksPage(location, {
                 pageNumber: 1,
                 sortBy: newSortBy,
             })

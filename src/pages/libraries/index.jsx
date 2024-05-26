@@ -1,17 +1,17 @@
+import React from 'react';
 import { Link, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // 3rd party libraries
-import { ImLibrary } from "react-icons/im";
+import { ImLibrary } from "/src/icons";
 import { Button } from "antd";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus } from "/src/icons";
 
 // Local Imports
-import LibrariesList from "../../components/libraries/list";
-import PageHeader from "../../components/layout/pageHeader";
-import ContentsContainer from "../../components/layout/contentContainer";
-import SortDirection from "../../models/sortDirection";
-
+import { SortDirection } from "/src/models";
+import LibrariesList from "/src/components/libraries/list";
+import PageHeader from "/src/components/layout/pageHeader";
+import ContentsContainer from "/src/components/layout/contentContainer";
 
 // -------------------------------------------------------
 
@@ -42,7 +42,7 @@ const LibrariesHome = () => {
                     sortDirection={sortDirection}
                     pageNumber={pageNumber}
                     pageSize={pageSize}
-                    showSearch/>
+                    showSearch />
             </ContentsContainer>
         </>
     );

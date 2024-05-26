@@ -1,16 +1,17 @@
+import React from 'react';
+
 // Third party libraries
 import { App, Button, Modal, Tooltip } from "antd";
-import { FaTrash } from "react-icons/fa";
-import { ExclamationCircleFilled } from "@ant-design/icons";
+import { FaTrash } from "/src/icons";
+import { ExclamationCircleFilled } from "/src/icons";
+
 // Local imports
-import { useDeleteChapterMutation } from "../../../features/api/booksSlice";
-
+import { useDeleteChapterMutation } from "/src/store/slices/booksSlice";
 // ------------------------------------------------------
-
 const { confirm } = Modal;
-
 // ------------------------------------------------------
-export default function ChapterDeleteButton({ chapters = [], t, type }) {
+
+const ChapterDeleteButton = ({ chapters = [], t, type }) => {
     const { message } = App.useApp();
     const [deleteChapter, { isLoading: isDeleting }] =
         useDeleteChapterMutation();
@@ -37,12 +38,8 @@ export default function ChapterDeleteButton({ chapters = [], t, type }) {
                     });
 
                 return Promise.all(promises)
-                    .then(() =>
-                        message.success(
-                            t("chapter.actions.delete.success", { count })
-                        )
-                    )
-                    .catch((_) =>
+                    .then(() => { message.success(t("chapter.actions.delete.success", { count })) })
+                    .catch(() =>
                         message.error(
                             t("chapter.actions.delete.error", { count })
                         )
@@ -61,4 +58,6 @@ export default function ChapterDeleteButton({ chapters = [], t, type }) {
             />
         </Tooltip>
     );
-}
+};
+
+export default ChapterDeleteButton;

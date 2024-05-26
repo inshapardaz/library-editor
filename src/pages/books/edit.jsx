@@ -1,26 +1,26 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
 // 3rd party libraries
 
 import { Button, Col, Form, Input, InputNumber, Row, App, Space, Spin, Switch, Upload } from "antd";
-import { ImBooks } from "react-icons/im";
+import { ImBooks } from "/src/icons";
 import ImgCrop from "antd-img-crop";
 
 // Local imports
-import { useGetBookQuery, useAddBookMutation, useUpdateBookMutation, useUpdateBookImageMutation } from "../../features/api/booksSlice";
-import ContentsContainer from "../../components/layout/contentContainer";
-import PageHeader from "../../components/layout/pageHeader";
-import Error from "../../components/common/error";
-import Loading from "../../components/common/loader";
-import AuthorsSelect from "../../components/author/authorsSelect";
-import SeriesSelect from "../../components/series/seriesSelect";
-import CategoriesSelect from "../../components/categories/categoriesSelect";
-import LanguageSelect from "../../components/languageSelect";
-import CopyrightSelect from "../../components/copyrightSelect";
-import PublishStatusSelect from "../../components/publishStatusSelect";
-import helpers from "../../helpers";
+import { useGetBookQuery, useAddBookMutation, useUpdateBookMutation, useUpdateBookImageMutation } from "/src/store/slices/booksSlice";
+import { bookPlaceholderImage, setDefaultBookImage } from "/src/util";
+import ContentsContainer from "/src/components/layout/contentContainer";
+import PageHeader from "/src/components/layout/pageHeader";
+import Error from "/src/components/common/error";
+import Loading from "/src/components/common/loader";
+import AuthorsSelect from "/src/components/author/authorsSelect";
+import SeriesSelect from "/src/components/series/seriesSelect";
+import CategoriesSelect from "/src/components/categories/categoriesSelect";
+import LanguageSelect from "/src/components/languageSelect";
+import CopyrightSelect from "/src/components/copyrightSelect";
+import PublishStatusSelect from "/src/components/publishStatusSelect";
 
 // ----------------------------------------------
 const { Dragger } = Upload;
@@ -52,7 +52,7 @@ const BookEditPage = () => {
                 .then(() => uploadImage(bookId))
                 .then(() => navigate(`/libraries/${libraryId}/books/${bookId}`))
                 .then(() => message.success(t("book.actions.edit.success")))
-                .catch((_) => message.error(t("book.actions.edit.error")));
+                .catch(() => message.error(t("book.actions.edit.error")));
         } else {
             let response = null;
             addBook({ libraryId, payload: book })
@@ -61,7 +61,7 @@ const BookEditPage = () => {
                 .then(() => uploadImage(response.id))
                 .then(() => navigate(`/libraries/${libraryId}/books/${response.id}`))
                 .then(() => message.success(t("book.actions.add.success")))
-                .catch((_) => message.error(t("book.actions.add.error")));
+                .catch(() => message.error(t("book.actions.add.error")));
         }
     };
 
@@ -93,7 +93,7 @@ const BookEditPage = () => {
             return book.links.image;
         }
 
-        return helpers.defaultBookImage;
+        return bookPlaceholderImage;
     };
 
     const title = book ? book.title : t("book.actions.add.title");
@@ -107,7 +107,7 @@ const BookEditPage = () => {
                             <Col l={4} md={6} xs={24}>
                                 <ImgCrop aspect={262 / 400} rotationSlider modalTitle={t("actions.resizeImage")}>
                                     <Dragger fileList={fileList} beforeUpload={onImageChange} showUploadList={false}>
-                                        <img src={getCoverSrc()} height="300" className="ant-upload-drag-icon" alt={book && book.title} onError={helpers.setDefaultBookImage} />
+                                        <img src={getCoverSrc()} height="300" className="ant-upload-drag-icon" alt={book && book.title} onError={setDefaultBookImage} />
                                     </Dragger>
                                 </ImgCrop>
                             </Col>
@@ -163,7 +163,7 @@ const BookEditPage = () => {
                                     <InputNumber min={1} />
                                 </Form.Item>
                                 <Form.Item name="publisher" label={t("book.publisher.label")}>
-                                    <Input placeholder={t("book.publisher.placeholder")}/>
+                                    <Input placeholder={t("book.publisher.placeholder")} />
                                 </Form.Item>
                                 <Form.Item name="copyrights" label={t("book.copyrights.label")}>
                                     <CopyrightSelect t={t} />
@@ -179,7 +179,7 @@ const BookEditPage = () => {
                                     </Space.Compact>
                                 </Form.Item>
                                 <Form.Item name="source" label={t("book.source.label")}>
-                                    <Input placeholder={t("book.source.placeholder")}/>
+                                    <Input placeholder={t("book.source.placeholder")} />
                                 </Form.Item>
                                 <Form.Item name="status" label={t("book.status.label")} placeholder={t("book.status.placeholder")}>
                                     <PublishStatusSelect t={t} />

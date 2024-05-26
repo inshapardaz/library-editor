@@ -1,13 +1,14 @@
+import React from 'react';
+
 // Local imports
-import LibrariesList from '../components/libraries/list';
-import ContentsContainer from '../components/layout/contentContainer';
-import styles from '../styles/common.module.scss'
+import LibrariesList from '/src/components/libraries/list';
+import ContentsContainer from '/src/components/layout/contentContainer';
 
 // ------------------------------------------------------------------
 
 const Home = () => {
   return (<>
-    <div className={styles.home}/>
+    <div style={{ marginTop: 50 }} />
     <ContentsContainer>
       <LibrariesList showMore />
     </ContentsContainer>

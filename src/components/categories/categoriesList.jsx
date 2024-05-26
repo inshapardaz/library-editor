@@ -1,18 +1,19 @@
+import React from 'react';
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 
 // 3rd party libraries
 import { Button, List } from "antd";
-import { FaPlus, FaTags } from "react-icons/fa";
 
 // Local Imports
-import helpers from "../../helpers";
-import DataContainer from "../layout/dataContainer";
+import { FaPlus, FaTags } from "/src/icons";
+import { useGetCategoriesQuery } from "/src/store/slices/categoriesSlice";
+import { buildLinkToCategoriesList } from "/src/util";
+import DataContainer from "/src/components/layout/dataContainer";
 import CategoryListItem from "./categoryListItem";
-import { useGetCategoriesQuery } from "../../features/api/categoriesSlice";
 // ------------------------------------------------------
 
-function SeriesList({ libraryId, query, pageNumber, pageSize }) {
+const SeriesList = ({ libraryId, query, pageNumber, pageSize }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
@@ -29,7 +30,7 @@ function SeriesList({ libraryId, query, pageNumber, pageSize }) {
 
     const onPageChanged = (newPage, newPageSize) => {
         navigate(
-            helpers.buildLinkToCategoriesList(
+            buildLinkToCategoriesList(
                 libraryId,
                 newPage,
                 newPageSize,

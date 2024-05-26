@@ -1,34 +1,35 @@
+import React from 'react';
 import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
 import { Avatar, Button, Checkbox, List, Space, Tooltip, Typography } from "antd";
-import {  FaGripLines, FaRegFileAlt } from "react-icons/fa";
 import { Draggable } from "react-beautiful-dnd";
 
 // Local Import
+import { FaGripLines, FaRegFileAlt } from "/src/icons";
+import EditingStatusIcon from "/src/components/editingStatusIcon";
 import ChapterEditor from "./chapterEditor";
 import ChapterDeleteButton from "./chapterDeleteButton";
 import ChapterAssignButton from "./chapterAssignButton";
-import EditingStatusIcon from "../../editingStatusIcon";
 import ChapterStatusButton from "./chapterStatusButton";
 
 // ------------------------------------------------------
 
-function ChapterListItem({
+const ChapterListItem = ({
     libraryId,
     bookId,
     chapter,
     selected = false,
-    onSelectChanged = () => {},
+    onSelectChanged = () => { },
     t,
-}) {
+}) => {
     const title = (<Link
-            to={`/libraries/${libraryId}/books/${bookId}/chapters/${chapter.chapterNumber}`}
-        >
-            <Typography.Text>
-                {chapter.chapterNumber} - {chapter.title}
-            </Typography.Text>
-        </Link>);
+        to={`/libraries/${libraryId}/books/${bookId}/chapters/${chapter.chapterNumber}`}
+    >
+        <Typography.Text>
+            {chapter.chapterNumber} - {chapter.title}
+        </Typography.Text>
+    </Link>);
 
     return (
         <Draggable
@@ -41,11 +42,11 @@ function ChapterListItem({
                     actions={[
                         chapter && chapter.links.assign && (
                             <ChapterAssignButton
-                            libraryId={libraryId}
+                                libraryId={libraryId}
                                 chapters={[chapter]}
                                 t={t}
                                 type="text"
-                                />
+                            />
                         ),
                         chapter && chapter.links.update && (
                             <Tooltip title={t('chapter.editor.title')}>
@@ -60,12 +61,12 @@ function ChapterListItem({
                         ),
                         chapter && chapter.links.update && (
                             <ChapterStatusButton
-                            libraryId={libraryId}
-                            chapters={[chapter]}
-                            t={t}
-                            type="text"
+                                libraryId={libraryId}
+                                chapters={[chapter]}
+                                t={t}
+                                type="text"
                             />
-                            ),
+                        ),
                         chapter && chapter.links.update && (
                             <ChapterEditor
                                 libraryId={libraryId}
@@ -109,6 +110,6 @@ function ChapterListItem({
             )}
         </Draggable>
     );
-}
+};
 
 export default ChapterListItem;

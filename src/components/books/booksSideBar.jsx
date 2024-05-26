@@ -1,15 +1,15 @@
+import React from 'react';
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 // 3rd party imports
 import { Menu } from "antd";
-import { FaTags, FaTag, FaRegHeart, FaBookOpen } from "react-icons/fa";
-import { MdNewReleases } from "react-icons/md";
 
 // Local Imports
-import { useGetCategoriesQuery } from "../../features/api/categoriesSlice";
-import { isLoggedIn } from "../../features/auth/authSlice";
+import { FaTags, FaTag, FaRegHeart, FaBookOpen, MdNewReleases } from "/src/icons";
+import { useGetCategoriesQuery } from "/src/store/slices/categoriesSlice";
+import { isLoggedIn } from "/src/store/slices/authSlice";
 
 // --------------------------------------
 

@@ -1,16 +1,17 @@
+import React from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 
 // Third party libraries
 import { Button, Dropdown, Space } from "antd";
+
+// Local Import
 import {
     FaChevronDown,
     FaFilter,
-} from "react-icons/fa";
-
-// Local Import
-import helpers from "../../helpers";
-import BookStatus from "../../models/bookStatus";
-import BookStatusIcon from "./BookStatusIcon";
+} from "/src/icons";
+import { updateLinkToBooksPage } from "/src/util";
+import { BookStatus } from "/src/models";
+import BookStatusIcon from "./bookStatusIcon";
 
 // ------------------------------------------------------
 
@@ -20,7 +21,7 @@ export default function BookStatusFilterButton({ t, status }) {
 
     const setStatus = (newStatus) => {
         navigate(
-            helpers.updateLinkToBooksPage(location, {
+            updateLinkToBooksPage(location, {
                 pageNumber: 1,
                 status: newStatus,
             })

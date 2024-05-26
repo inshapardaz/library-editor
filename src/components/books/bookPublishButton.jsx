@@ -1,17 +1,18 @@
+import React from 'react';
+
 // Third party libraries
 import { App, Button, Modal } from "antd";
-import { ExclamationCircleFilled } from '@ant-design/icons';
 
 // Local imports
-import { usePublishBookMutation } from "../../features/api/booksSlice";
-import { MdPublishedWithChanges } from "react-icons/md";
+import { ExclamationCircleFilled, MdPublishedWithChanges } from "/src/icons";
+import { usePublishBookMutation } from "/src/store/slices/booksSlice";
 
 // ------------------------------------------------------
 
 const { confirm } = Modal;
 
 // ------------------------------------------------------
-export default function BookPublishButton({ children, libraryId, book, t, onPublished = () => { }, ...props }) {
+const BookPublishButton = ({ children, book, t, onPublished = () => { }, ...props }) => {
     const { message } = App.useApp();
     const [publishBook, { isLoading: isPublishing }] = usePublishBookMutation();
 
@@ -28,10 +29,12 @@ export default function BookPublishButton({ children, libraryId, book, t, onPubl
                     .unwrap()
                     .then(() => message.success(t("book.actions.publish.success")))
                     .then(() => onPublished())
-                    .catch((_) => message.error(t("book.actions.publish.error")));
+                    .catch(() => message.error(t("book.actions.publish.error")));
             }
         });
     };
 
     return (<Button {...props} onClick={showConfirm} icon={<MdPublishedWithChanges />} disabled={book && book.links && !book.links.publish}>{children}</Button>);
-}
+};
+
+export default BookPublishButton;

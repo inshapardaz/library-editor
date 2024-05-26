@@ -1,30 +1,34 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
 // 3rd party libraries
 
 import { Button, Col, Form, Input, Row, App, Space, Spin, Select, Upload, Switch } from "antd";
-import { FaPenFancy } from "react-icons/fa";
+import { FaPenFancy } from "/src/icons";
 import ImgCrop from "antd-img-crop";
 
 // Local imports
-import { useGetArticleQuery, useAddArticleMutation, useUpdateArticleMutation, useUpdateArticleImageMutation } from "../../features/api/articlesSlice";
-import ContentsContainer from "../../components/layout/contentContainer";
-import PageHeader from "../../components/layout/pageHeader";
-import Error from "../../components/common/error";
-import Loading from "../../components/common/loader";
-import helpers from "../../helpers";
-import AuthorsSelect from "../../components/author/authorsSelect";
-import CategoriesSelect from "../../components/categories/categoriesSelect";
-import EditingStatusSelect from "../../components/editingStatusSelect";
+import {
+    useGetArticleQuery,
+    useAddArticleMutation,
+    useUpdateArticleMutation,
+    useUpdateArticleImageMutation
+} from "/src/store/slices/articlesSlice";
+import { articlePlaceholderImage, setDefaultBookImage } from "/src/util";
+import ContentsContainer from "/src/components/layout/contentContainer";
+import PageHeader from "/src/components/layout/pageHeader";
+import Error from "/src/components/common/error";
+import Loading from "/src/components/common/loader";
+import AuthorsSelect from "/src/components/author/authorsSelect";
+import CategoriesSelect from "/src/components/categories/categoriesSelect";
+import EditingStatusSelect from "/src/components/editingStatusSelect";
 
 // ----------------------------------------------
 const { Dragger } = Upload;
-// ----------------------------------------------
-
 const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 14 } };
 const buttonItemLayout = { wrapperCol: { span: 14, offset: 4 } };
+// ----------------------------------------------
 
 const ArticleEditPage = () => {
     const { message } = App.useApp();
@@ -48,7 +52,7 @@ const ArticleEditPage = () => {
                 .then(() => uploadImage(articleId))
                 .then(() => navigate(`/libraries/${libraryId}/articles/${articleId}`))
                 .then(() => message.success(t("article.actions.edit.success")))
-                .catch((_) => message.error(t("article.actions.edit.error")));
+                .catch(() => message.error(t("article.actions.edit.error")));
         } else {
             let response = null;
             addArticle({ libraryId, payload: article })
@@ -57,7 +61,7 @@ const ArticleEditPage = () => {
                 .then(() => uploadImage(response.id))
                 .then(() => navigate(`/libraries/${libraryId}/articles/${response.id}`))
                 .then(() => message.success(t("article.actions.add.success")))
-                .catch((_) => message.error(t("article.actions.add.error")));
+                .catch(() => message.error(t("article.actions.add.error")));
         }
     };
 
@@ -89,7 +93,7 @@ const ArticleEditPage = () => {
             return article.links.image;
         }
 
-        return helpers.defaultArticleImage;
+        return articlePlaceholderImage;
     };
 
     const title = article ? article.title : t("article.actions.add.label");
@@ -104,7 +108,7 @@ const ArticleEditPage = () => {
                     <Col l={4} md={6} xs={24}>
                         <ImgCrop modalTitle={t("actions.resizeImage")}>
                             <Dragger fileList={fileList} beforeUpload={onImageChange} showUploadList={false}>
-                                <img src={getCoverSrc()} height="300" alt={article && article.name} onError={helpers.setDefaultBookImage} />
+                                <img src={getCoverSrc()} height="300" alt={article && article.name} onError={setDefaultBookImage} />
                             </Dragger>
                         </ImgCrop>
                     </Col>

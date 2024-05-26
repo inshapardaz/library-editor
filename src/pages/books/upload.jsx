@@ -3,27 +3,26 @@ import { useTranslation } from 'react-i18next';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 
 // 3rd party libraries
-import { FaCloudUploadAlt, FaFileUpload, FaHourglass, FaRedo, FaRegCheckCircle, FaRegTimesCircle, FaSave, FaTrash, FaUpload } from 'react-icons/fa';
+import { FaCloudUploadAlt, FaFileUpload, FaHourglass, FaRedo, FaRegCheckCircle, FaRegTimesCircle, FaSave, FaTrash, FaUpload } from '/src/icons';
 import { App, Avatar, Button, Card, Col, Form, Input, InputNumber, List, Popover, Row, Space, Spin, Switch, Tooltip, Upload } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
-import * as pdfjsLib from "pdfjs-dist";
+import { LoadingOutlined } from '/src/icons';
 
 // Local Imports
-import { useGetLibraryQuery } from '../../features/api/librariesSlice';
-import { useAddBookContentMutation, useAddBookMutation, useUpdateBookImageMutation } from '../../features/api/booksSlice';
-import PageHeader from '../../components/layout/pageHeader';
-import ContentsContainer from '../../components/layout/contentContainer';
-import AuthorsSelect from '../../components/author/authorsSelect';
-import CategoriesSelect from '../../components/categories/categoriesSelect';
-import LanguageSelect from '../../components/languageSelect';
-import PublishStatusSelect from '../../components/publishStatusSelect';
-import SeriesSelect from '../../components/series/seriesSelect';
-import CopyrightSelect from '../../components/copyrightSelect';
-import helpers from '../../helpers';
+import { useGetLibraryQuery } from '/src/store/slices/librariesSlice';
+import { useAddBookContentMutation, useAddBookMutation, useUpdateBookImageMutation } from '/src/store/slices/booksSlice';
+import { readBinaryFile, loadPdfPage, dataURItoBlob } from '/src/util';
+import { pdfjsLib } from '/src/util/pdf'
+import PageHeader from '/src/components/layout/pageHeader';
+import ContentsContainer from '/src/components/layout/contentContainer';
+import AuthorsSelect from '/src/components/author/authorsSelect';
+import CategoriesSelect from '/src/components/categories/categoriesSelect';
+import LanguageSelect from '/src/components/languageSelect';
+import PublishStatusSelect from '/src/components/publishStatusSelect';
+import SeriesSelect from '/src/components/series/seriesSelect';
+import CopyrightSelect from '/src/components/copyrightSelect';
 
 //--------------------------------------------------------
 const { Dragger } = Upload;
-//--------------------------------------------------------
 const trimExtension = (fileName) => fileName.replace(/\.[^/.]+$/, "");
 //--------------------------------------------------------
 const ProcessStatus = {
@@ -106,6 +105,7 @@ const BookUploadForm = ({ t, libraryId, showTitle = false }) => {
     </>)
 }
 
+//------------------------------------------------------
 
 const BookUploadStatus = ({ status, t, libraryId, requests, onRetry, key }) => {
     const navigate = useNavigate();
@@ -188,6 +188,7 @@ const BookUploadStatus = ({ status, t, libraryId, requests, onRetry, key }) => {
                 </List.Item>)} />
     </Card>
 }
+
 //--------------------------------------------------------
 const BooksUpload = () => {
     const { t } = useTranslation();
@@ -247,10 +248,10 @@ const BooksUpload = () => {
             if (!request.newBook) {
                 const newBook = await addBook({ libraryId, payload: request.book }).unwrap();
 
-                const pdfFile = await helpers.readBinaryFile(request.file)
+                const pdfFile = await readBinaryFile(request.file)
                 const pdf = await pdfjsLib.getDocument({ data: pdfFile }).promise;
-                const img = await helpers.loadPdfPage(pdf, 1);
-                await updateBookImage({ libraryId, bookId: newBook.id, payload: helpers.dataURItoBlob(img) }).unwrap();
+                const img = await loadPdfPage(pdf, 1);
+                await updateBookImage({ libraryId, bookId: newBook.id, payload: dataURItoBlob(img) }).unwrap();
                 request.newBook = newBook;
                 updateRequest({ id: request.id, newBook: request.newBook });
             }
@@ -321,7 +322,7 @@ const BooksUpload = () => {
     useEffect(() => {
         if (status === ProcessStatus.Pending && requests.length > 0) {
             saveBooks();
-        };
+        }
     }, [status, requests, saveBooks]);
 
     const onFinished = (values) => {
@@ -352,7 +353,7 @@ const BooksUpload = () => {
     const hasUploadCompleted = useCallback(() => status === ProcessStatus.Completed || status === ProcessStatus.Failed, [status]);
 
     const actions = hasUploadCompleted() ? null : [
-        (<Button type="primary" htmlType="submit" size="large" block icon={<FaSave />}
+        (<Button key="save-button" type="primary" htmlType="submit" size="large" block icon={<FaSave />}
             disabled={isFetching | isAdding | saving}>
             {t("actions.save")}
         </Button>)

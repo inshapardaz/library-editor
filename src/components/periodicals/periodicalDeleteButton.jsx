@@ -1,18 +1,29 @@
+import React from 'react';
+import { useNavigate } from "react-router-dom";
+
 // Third party libraries
 import { App, Button, Modal } from "antd";
-import { FaTrash } from 'react-icons/fa';
-import { ExclamationCircleFilled } from '@ant-design/icons';
 
 // Local imports
-import { useDeletePeriodicalMutation } from "../../features/api/periodicalsSlice";
-
+import { FaTrash, ExclamationCircleFilled } from '/src/icons';
+import { useDeletePeriodicalMutation } from "/src/store/slices/periodicalsSlice";
 // ------------------------------------------------------
-
 const { confirm } = Modal;
-
 // ------------------------------------------------------
-export default function PeriodicalDeleteButton({ children, libraryId, periodical, t, type, onDeleted = () => { }, danger = false, block = false, size = "middle" }) {
+
+const PeriodicalDeleteButton = ({
+    children,
+    libraryId,
+    periodical,
+    t,
+    type,
+    onDeleted = () => { },
+    danger = false,
+    block = false,
+    size = "middle"
+}) => {
     const { message } = App.useApp();
+    const navigate = useNavigate();
     const [deletePeriodical, { isLoading: isDeleting }] = useDeletePeriodicalMutation();
 
     const showConfirm = () => {
@@ -26,12 +37,15 @@ export default function PeriodicalDeleteButton({ children, libraryId, periodical
             onOk() {
                 return deletePeriodical({ libraryId, periodicalId: periodical.id })
                     .unwrap()
-                    .then(() => message.success(t("periodical.actions.delete.success")))
                     .then(() => onDeleted())
-                    .catch((_) => message.error(t("periodical.actions.delete.error")));
+                    .then(() => { message.success(t("periodical.actions.delete.success")) })
+                    .then(() => navigate(`/libraries/${libraryId}/periodicals`))
+                    .catch(() => { message.error(t("periodical.actions.delete.error")) });
             }
         });
     };
 
     return (<Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash />}>{children}</Button>);
-}
+};
+
+export default PeriodicalDeleteButton;

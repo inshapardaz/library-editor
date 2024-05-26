@@ -1,23 +1,24 @@
+import React from 'react';
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import moment from "moment";
 
 // 3rd party libraries
 import { Breadcrumb, Button, Layout, Space, Tabs, Typography, theme } from "antd";
-import { FiEdit, FiLayers } from "react-icons/fi";
-import { FaHome, FaRegClone, FaRegFileAlt, FaRegFileWord } from "react-icons/fa";
-import { ImNewspaper } from "react-icons/im";
+import { FiEdit, FiLayers } from "/src/icons";
+import { FaHome, FaRegClone, FaRegFileAlt, FaRegFileWord } from "/src/icons";
+import { ImNewspaper } from "/src/icons";
 
 // Local imports
-import { useGetIssueQuery } from "../../../features/api/issuesSlice";
-import { useGetPeriodicalByIdQuery } from "../../../features/api/periodicalsSlice";
-import helpers from "../../../helpers";
-import PageHeader from "../../../components/layout/pageHeader";
-import ContentsContainer from "../../../components/layout/contentContainer";
-import IssueInfo from "../../../components/periodicals/issues/issueInfo";
-import IssueDeleteButton from "../../../components/periodicals/issues/issueDeleteButton";
-import Loading from "../../../components/common/loader";
-import Error from "../../../components/common/error";
+import { useGetIssueQuery } from "/src/store/slices/issuesSlice";
+import { useGetPeriodicalByIdQuery } from "/src/store/slices/periodicalsSlice";
+import { getDateFormatFromFrequency } from "/src/util";
+import PageHeader from "/src/components/layout/pageHeader";
+import ContentsContainer from "/src/components/layout/contentContainer";
+import IssueInfo from "/src/components/periodicals/issues/issueInfo";
+import IssueDeleteButton from "/src/components/periodicals/issues/issueDeleteButton";
+import Loading from "/src/components/common/loader";
+import Error from "/src/components/common/error";
 
 //--------------------------------------------------------
 const { Content, Sider } = Layout;
@@ -99,7 +100,7 @@ const IssuePage = () => {
         navigate(`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}?section=${key}`);
     };
 
-    const title = issue && moment(issue.issueDate).format(helpers.getDateFormatFromFrequency(issue.frequency));
+    const title = issue && moment(issue.issueDate).format(getDateFormatFromFrequency(issue.frequency));
 
     // render
     //----------------------------------------------
@@ -127,7 +128,7 @@ const IssuePage = () => {
                     }
                 ]} />}
             actions={[
-                <Button.Group>
+                <Button.Group key="button-group">
                     <Button
                         block
                         icon={<FiEdit />}
@@ -153,7 +154,9 @@ const IssuePage = () => {
                         size="large"
                         onDeleted={() => navigate(`/libraries/${libraryId}/periodicals/${periodical.id}`)}
                         issue={issue}
+                        libraryId={libraryId}
                         t={t}
+                        key="issue-delete-button"
                     >
                         {t("actions.delete")}
                     </IssueDeleteButton>

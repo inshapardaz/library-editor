@@ -1,3 +1,4 @@
+import React from 'react';
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
@@ -6,14 +7,14 @@ import { useLocalStorage } from "usehooks-ts";
 import { Button, List, Switch } from "antd";
 
 // Internal Imports
-import DataContainer from "../layout/dataContainer";
+import DataContainer from "/src/components/layout/dataContainer";
+import { useGetBooksQuery } from "/src/store/slices/booksSlice";
 import BookCard from "./bookCard";
 import BookListItem from "./bookListItem";
-import { useGetBooksQuery } from "../../features/api/booksSlice";
 
 // ------------------------------------------------------
 
-function ShowMoreButton({ libraryId, t }) {
+const ShowMoreButton = ({ libraryId, t }) => {
     const navigate = useNavigate();
     return (
         <div
@@ -101,6 +102,6 @@ function LatestBooks() {
             />
         </DataContainer>
     );
-}
+};
 
 export default LatestBooks;

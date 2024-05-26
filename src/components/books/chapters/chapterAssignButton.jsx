@@ -1,17 +1,15 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 // Third party libraries
 import { App, Button, Modal, Form, Space, Tooltip, Tag } from "antd";
-import { FaUserAlt } from "react-icons/fa";
-import { useAssignChapterMutation } from "../../../features/api/booksSlice";
 
 // Local imports
-import UserSelect from "../../userSelect";
-import { EditOutlined, FileDoneOutlined } from "@ant-design/icons";
-
+import { EditOutlined, FileDoneOutlined, FaUserAlt } from "/src/icons";
+import { useAssignChapterMutation } from "/src/store/slices/booksSlice";
+import UserSelect from "/src/components/userSelect";
 // ------------------------------------------------------
 
-export default function ChapterAssignButton({ libraryId, chapters, t, type, showDetails = true }) {
+const ChapterAssignButton = ({ libraryId, chapters, t, type, showDetails = true }) => {
     const { message } = App.useApp();
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
@@ -38,12 +36,12 @@ export default function ChapterAssignButton({ libraryId, chapters, t, type, show
     }
 
     const onSubmit = (values) => {
-        const payload = values.id === "none"  ? {
-            unassign : true
+        const payload = values.id === "none" ? {
+            unassign: true
         } :
-        {
-            accountId: values.id === "me" ? null : values.id,
-        };
+            {
+                accountId: values.id === "me" ? null : values.id,
+            };
 
         const promises = chapters
             .map((chapter) => {
@@ -54,23 +52,20 @@ export default function ChapterAssignButton({ libraryId, chapters, t, type, show
             });
 
         Promise.all(promises)
-            .then(() =>
-                message.success(t("chapter.actions.assign.success", { count }))
+            .then(() => message.success(t("chapter.actions.assign.success", { count }))
             )
-            .catch((_) =>
-                message.error(t("chapter.actions.assign.error", { count }))
+            .catch(() => message.error(t("chapter.actions.assign.error", { count }))
             );
     };
 
-    const onOk = () =>
-        form
-            .validateFields()
-            .then((values) => {
-                onSubmit(values);
-            })
-            .catch((info) => {
-                console.error(info);
-            });
+    const onOk = () => form
+        .validateFields()
+        .then((values) => {
+            onSubmit(values);
+        })
+        .catch((info) => {
+            console.error(info);
+        });
 
     const onShow = () => {
         form.resetFields();
@@ -125,11 +120,12 @@ export default function ChapterAssignButton({ libraryId, chapters, t, type, show
                             t={t}
                             placeholder={t("chapter.user.placeholder")}
                             label={data.name}
-                            addMeOption
-                        />
+                            addMeOption />
                     </Form.Item>
                 </Form>
             </Modal>
         </>
     );
-}
+};
+
+export default ChapterAssignButton;

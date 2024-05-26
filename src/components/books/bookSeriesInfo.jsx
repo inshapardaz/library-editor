@@ -1,24 +1,26 @@
-import { ImBooks } from "react-icons/im";
+import React from 'react';
+
+// Third party import
 
 // Local Imports
-import { IconText } from "../common/iconText";
+import { ImBooks } from "/src/icons";
+import IconText from "/src/components/common/iconText";
 // ------------------------------------------------------
-
-export function BookSeriesInfo({ libraryId, book, t, navigate }) {
+const BookSeriesInfo = ({ libraryId, book, t }) => {
     if (book && book.seriesName) {
         if (book.seriesIndex && book.seriesIndex > 0) {
-            return <IconText
-                icon={ImBooks}
+            return <IconText icon={ImBooks}
                 text={t("book.series.seriesAndIndexLabel", { name: book.seriesName, index: book.seriesIndex })}
-                onClick={() => navigate(`/libraries/${libraryId}/books?series=${book.series.id}`)}/>
+                href={`/libraries/${libraryId}/books?series=${book.series?.id}`} />
 
-            } else {
-                return <IconText
-                icon={ImBooks}
+        } else {
+            return <IconText icon={ImBooks}
                 text={t("book.series.indexLabel", { name: book.seriesName })}
-                onClick={() => navigate(`/libraries/${libraryId}/books?series=${book.series.id}`)}/>
+                href={`/libraries/${libraryId}/books?series=${book.seriesId}`} />
         }
     }
 
     return null;
-}
+};
+
+export default BookSeriesInfo;

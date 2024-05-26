@@ -1,18 +1,18 @@
+import React from 'react';
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
 import { Button, List, Switch } from "antd";
-import { FaPlus } from "react-icons/fa";
-import { GiNewspaper } from "react-icons/gi";
 
 // Local Imports
-import helpers from "../../../helpers";
-import DataContainer from "../../layout/dataContainer";
+import { GiNewspaper, FaPlus } from "/src/icons";
+import { useGetIssuesQuery } from "/src/store/slices/issuesSlice";
+import { buildLinkToIssuesPage } from "/src/util";
+import DataContainer from "/src/components/layout/dataContainer";
 import IssueCard from "./issueCard";
 import IssueListItem from "./issueListItem";
-import { useGetIssuesQuery } from "../../../features/api/issuesSlice";
 // ------------------------------------------------------
 
 const grid = {
@@ -27,7 +27,7 @@ const grid = {
 
 // ------------------------------------------------------
 
-function IssuesList({
+const IssuesList = ({
     libraryId,
     periodicalId,
     query,
@@ -38,7 +38,7 @@ function IssuesList({
     status,
     pageNumber,
     pageSize,
-}) {
+}) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [showList, setShowList] = useLocalStorage("issues-list-view", false);
@@ -93,7 +93,7 @@ function IssuesList({
 
     const onPageChanged = (newPage, newPageSize) => {
         navigate(
-            helpers.buildLinkToIssuesPage(
+            buildLinkToIssuesPage(
                 libraryId,
                 periodicalId,
                 newPage,
@@ -160,6 +160,6 @@ function IssuesList({
             />
         </DataContainer>
     );
-}
+};
 
 export default IssuesList;

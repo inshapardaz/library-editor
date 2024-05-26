@@ -1,30 +1,31 @@
+import React from 'react';
 import { Link, useNavigate } from "react-router-dom";
 
 // 3rd Party Libraries
 import { Avatar, Card } from "antd";
-import { FiEdit } from "react-icons/fi";
 
 // Local Imports
-import styles from "../../styles/common.module.scss";
-import AuthorAvatar from "../author/authorAvatar";
-import helpers from "../../helpers/index";
+import "./styles.scss"
+import { FiEdit } from "/src/icons";
+import { articlePlaceholderImage, setDefaultArticleImage } from "/src/util";
+import AuthorAvatar from "/src/components/author/authorAvatar";
 import ArticleDeleteButton from "./articleDeleteButton";
 // --------------------------------------------
 
-function ArticleCard({ libraryId, article, t }) {
+const ArticleCard = ({ libraryId, article, t }) => {
     const navigate = useNavigate();
 
     const cover = article.links.image ? (
         <img
             src={article.links.image}
-            onError={helpers.setDefaultArticleImage}
-            className={styles["article__image"]}
+            onError={setDefaultArticleImage}
+            className="article__image"
             alt={article.title}
         />
     ) : (
         <img
-            src={helpers.defaultArticleImage}
-            className={styles["article__image"]}
+            src={articlePlaceholderImage}
+            className="article__image"
             alt={article.title}
         />
     );
@@ -70,6 +71,6 @@ function ArticleCard({ libraryId, article, t }) {
             </Link>
         </Card>
     );
-}
+};
 
 export default ArticleCard;

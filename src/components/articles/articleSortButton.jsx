@@ -1,7 +1,10 @@
+import React from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 
 // Third party libraries
 import { Button, Dropdown, Space } from "antd";
+
+// Local Imports
 import {
     FaChevronDown,
     FaRegCalendarPlus,
@@ -9,19 +12,19 @@ import {
     FaSortAlphaUp,
     FaSortAmountDown,
     FaSortAmountUp,
-} from "react-icons/fa";
-import helpers from "../../helpers";
-import SortDirection from "../../models/sortDirection";
+} from "/src/icons";
+import { updateLinkToArticlesPage } from "/src/util";
+import { SortDirection } from "/src/models";
 
 // ------------------------------------------------------
 
-export default function ArticleSortButton({ sortBy, sortDirection, t }) {
+const ArticleSortButton = ({ sortBy, sortDirection, t }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
     const setSortDirection = (newSortDirection) => {
         navigate(
-            helpers.updateLinkToArticlesPage(location, {
+            updateLinkToArticlesPage(location, {
                 pageNumber: 1,
                 sortDirection: newSortDirection,
             })
@@ -29,7 +32,7 @@ export default function ArticleSortButton({ sortBy, sortDirection, t }) {
     };
     const setSortBy = (newSortBy) => {
         navigate(
-            helpers.updateLinkToArticlesPage(location, {
+            updateLinkToArticlesPage(location, {
                 pageNumber: 1,
                 sortBy: newSortBy,
             })
@@ -84,4 +87,6 @@ export default function ArticleSortButton({ sortBy, sortDirection, t }) {
             </Button>
         </Dropdown>
     );
-}
+};
+
+export default ArticleSortButton;

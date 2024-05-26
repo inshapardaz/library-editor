@@ -1,15 +1,17 @@
+import React from 'react';
+
 // 3rd party imports
 import { Button, Checkbox } from "antd";
 
 // ----------------------------------------------
 
-export default function CheckboxButton({
+const CheckboxButton = ({
     checked,
     indeterminate,
     onChange,
     type,
     disabled
-}) {
+}) => {
     return (
         <Button type={type} disabled={disabled}>
             <Checkbox
@@ -20,4 +22,6 @@ export default function CheckboxButton({
             />
         </Button>
     );
-}
+};
+
+export default CheckboxButton;

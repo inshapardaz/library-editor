@@ -1,28 +1,28 @@
+import React from 'react';
 import { Link, useNavigate } from "react-router-dom";
 
 // 3rd party
 import { Avatar, Popover, Space, Typography } from "antd";
-import { FaFeatherAlt, FaPenFancy } from "react-icons/fa";
-import { ImBooks } from "react-icons/im";
 
 // Local imports
-import helpers from "../../helpers/index";
-import { IconText } from "../common/iconText";
+import { FaFeatherAlt, FaPenFancy, ImBooks } from "/src/icons";
+import { authorPlaceholderImage } from "/src/util";
+import IconText from "/src/components/common/iconText";
 
 // --------------------------------------------------
-function AuthorAvatar({
+const AuthorAvatar = ({
     author,
     libraryId,
     t,
     showImage = true,
     showName = false,
-}) {
+}) => {
     const navigate = useNavigate();
 
     const avatar = author.links.image ? (
         <Avatar src={author.links.image}></Avatar>
     ) : (
-        <Avatar src={helpers.defaultAuthorImage}></Avatar>
+        <Avatar src={authorPlaceholderImage}></Avatar>
     );
     const popoverTitle = (
         <Space>
@@ -34,16 +34,14 @@ function AuthorAvatar({
     );
     const popoverContent = (
         <Space direction="vertical">
-            <IconText
-                icon={FaFeatherAlt}
-                link={false}
+            <IconText icon={FaFeatherAlt}
                 text={author.type === "writer"
-                ? t("author.writer")
-                : t("author.poet")} />
-            <IconText onClick={() => navigate(`/libraries/${libraryId}/books?author=${author.id}`)}
+                    ? t("author.writer")
+                    : t("author.poet")} />
+            <IconText href={`/libraries/${libraryId}/books?author=${author.id}`}
                 icon={ImBooks}
                 text={t("author.bookCount", { count: author.bookCount })} />
-            <IconText onClick={() => navigate(`/libraries/${libraryId}/articles?author=${author.id}`)}
+            <IconText href={`/libraries/${libraryId}/articles?author=${author.id}`}
                 icon={FaPenFancy}
                 text={t("author.writingCount", { count: author.articleCount })} />
         </Space>
@@ -53,6 +51,6 @@ function AuthorAvatar({
             {showImage && avatar} {showName && author.name}
         </Popover>
     );
-}
+};
 
 export default AuthorAvatar;

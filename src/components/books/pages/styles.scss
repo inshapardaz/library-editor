@@ -1,0 +1,35 @@
+@import "../../../styles/mixins/breakpoints.scss";
+
+.page {
+    &__image {
+        width: 262px;
+        height: 400px;
+
+        &--small {
+            width: 98px;
+            height: 150px;
+        }
+
+        &--thumbnail {
+            max-width: 100%;
+
+            @include when-mobile-device {
+                max-width: 90%;
+            }
+        }
+    }
+}
+
+.imageSplitDivider {
+    width: "100%";
+    position: relative;
+}
+
+.imageSplitDividerLine {
+    position: absolute;
+    display: block;
+    height: 100%;
+    width: 1px;
+    background: magenta;
+    z-index: 1000;
+}

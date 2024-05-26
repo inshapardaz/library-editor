@@ -1,7 +1,10 @@
+import React from 'react';
+
+// Third party libraries
 import { Card, Empty, Result } from "antd";
 
 // Local Import
-import styles from "../../styles/common.module.scss";
+import "./styles.scss";
 
 // ------------------------------------------------
 
@@ -35,9 +38,7 @@ const DataContainer = ({
             icon={errorIcon}
             extra={errorAction}
         />);
-    } else if (busy) {
-        content = busyContent;
-    } else if (!!empty) {
+    } else if (empty) {
         content = (<Empty image={emptyImage} description={emptyDescription}>
             {emptyContent}
         </Empty>);
@@ -51,7 +52,7 @@ const DataContainer = ({
             actions={actions}
             extra={extra}
             bordered={bordered}
-            className={styles["api_container"]}
+            className="api_container"
             loading={busy && !busyContent}
             style={style}
         >

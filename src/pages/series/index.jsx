@@ -1,17 +1,20 @@
+import React from 'react';
 import { useParams, useSearchParams, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // 3rd party libraries
 import { Button } from "antd";
-import { FaPlus } from "react-icons/fa";
-import { ImBooks } from "react-icons/im";
+import { FaPlus } from "/src/icons";
+import { ImBooks } from "/src/icons";
 
 // Local Imports
-import PageHeader from "../../components/layout/pageHeader";
-import SeriesList from "../../components/series/seriesList";
-import ContentsContainer from "../../components/layout/contentContainer";
+import PageHeader from "/src/components/layout/pageHeader";
+import SeriesList from "/src/components/series/seriesList";
+import ContentsContainer from "/src/components/layout/contentContainer";
 
-function SeriesHomePage() {
+// ========================================================
+
+const SeriesHomePage = () => {
     const { t } = useTranslation();
     const { libraryId } = useParams();
     const [searchParams] = useSearchParams();
@@ -44,5 +47,6 @@ function SeriesHomePage() {
             </ContentsContainer>
         </>
     );
-}
+};
+
 export default SeriesHomePage;

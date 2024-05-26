@@ -1,6 +1,6 @@
 import React from 'react';
-import TextEditor from '../components/textEditor';
-import ContentsContainer from '../components/layout/contentContainer';
+import TextEditor from '/src/components/textEditor';
+import ContentsContainer from '/src/components/layout/contentContainer';
 
 const EditorPage = () => {
     return (

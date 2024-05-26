@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 //-----------------------------------------
@@ -8,12 +8,12 @@ import Editor from 'urdu-web-editor'
 import {
     useGetPunctuationQuery,
     useGetAutoCorrectQuery
-} from "../features/api/toolsSlice";
+} from "/src/store/slices/toolsSlice";
 
-import Loading from "../components/common/loader";
+import Loading from "/src/components/common/loader";
 import Error from './common/error';
 
-import { getFonts } from '../i18n';
+import { getFonts } from '/src/lang';
 
 //-----------------------------------------
 
@@ -59,9 +59,9 @@ const TextEditor = ({ value, language, onSave, onChange, showSave = true }) => {
         spellchecker: {
             enabled: true,
             language: language,
-            punctuationCorrections: (lang) => punctuationList,
-            autoCorrections: (lang) => autoCorrectList,
-            wordList: (lang) => []
+            punctuationCorrections: () => punctuationList,
+            autoCorrections: () => autoCorrectList,
+            wordList: () => []
         },
         format: "markdown"
     }

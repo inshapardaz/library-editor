@@ -1,7 +1,10 @@
+import React from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 
 // Third party libraries
 import { Button, Dropdown, Space } from "antd";
+
+// Local Import
 import {
     FaCheck,
     FaChevronDown,
@@ -11,21 +14,19 @@ import {
     FaFilter,
     FaGlasses,
     FaStarOfLife,
-} from "react-icons/fa";
-
-// Local Import
-import helpers from "../../helpers";
-import EditingStatus from "../../models/editingStatus";
+} from "/src/icons";
+import { updateLinkToArticlesPage } from "/src/util";
+import { EditingStatus } from "/src/models";
 
 // ------------------------------------------------------
 
-export default function ArticleStatusFilterButton({ t, status }) {
+const ArticleStatusFilterButton = ({ t, status }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
     const setStatus = (newStatus) => {
         navigate(
-            helpers.updateLinkToArticlesPage(location, {
+            updateLinkToArticlesPage(location, {
                 pageNumber: 1,
                 status: newStatus,
             })
@@ -80,4 +81,6 @@ export default function ArticleStatusFilterButton({ t, status }) {
             </Button>
         </Dropdown>
     );
-}
+};
+
+export default ArticleStatusFilterButton;

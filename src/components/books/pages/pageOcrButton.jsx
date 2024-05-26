@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
 
 // Third party libraries
@@ -13,17 +13,17 @@ import {
     Space,
     Avatar,
 } from "antd";
-import { MdImageSearch } from "react-icons/md";
+
+// Local imports
 import {
+    MdImageSearch,
     FaCircleNotch,
     FaRegCheckCircle,
     FaRegHourglass,
     FaRegTimesCircle,
     FaTrashAlt,
-} from "react-icons/fa";
-
-// Local imports
-import { useOcrBookPageMutation } from "../../../features/api/booksSlice";
+} from "/src/icons";
+import { useOcrBookPageMutation } from "/src/store/slices/booksSlice";
 
 // ------------------------------------------------------
 
@@ -51,7 +51,7 @@ const ProcessingIcon = ({ status }) => {
 
 // ------------------------------------------------------
 
-export default function PageOcrButton({ pages, t, type }) {
+const PageOcrButton = ({ pages, t, type }) => {
     const { message } = App.useApp();
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
@@ -78,8 +78,8 @@ export default function PageOcrButton({ pages, t, type }) {
                 if (page && page.links && page.links.ocr) {
                     page.status = ProcessingStatus.Busy;
                     return ocrBookPage({ page, key: values.key }).unwrap()
-                    .then(_ => page.status = ProcessingStatus.Complete)
-                    .catch(_ => page.status = ProcessingStatus.Failed);
+                        .then(() => page.status = ProcessingStatus.Complete)
+                        .catch(() => page.status = ProcessingStatus.Failed);
                 } else {
                     return Promise.resolve();
                 }
@@ -94,7 +94,7 @@ export default function PageOcrButton({ pages, t, type }) {
             .then(() =>
                 message.success(t("page.actions.setChapter.success", { count }))
             )
-            .catch((_) => {
+            .catch(() => {
                 message.error(t("page.actions.setChapter.error", { count }));
             });
     };
@@ -102,7 +102,7 @@ export default function PageOcrButton({ pages, t, type }) {
     const onOk = () => {
         form.validateFields()
             .then(onSubmit)
-            .catch(_ => setOpen(true));
+            .catch(() => setOpen(true));
     };
 
     const onShow = () => {
@@ -141,8 +141,8 @@ export default function PageOcrButton({ pages, t, type }) {
                         {t("page.actions.ocr.message", {
                             sequenceNumber: pagesStatus
                                 ? pagesStatus
-                                      .map((p) => p && p.sequenceNumber)
-                                      .join(",")
+                                    .map((p) => p && p.sequenceNumber)
+                                    .join(",")
                                 : 0,
                         })}
                     </Space>
@@ -172,8 +172,10 @@ export default function PageOcrButton({ pages, t, type }) {
                             dataSource={pagesStatus}
                             renderItem={(p) => (
                                 <List.Item
+                                    key={p.sequenceNumber} // Add key prop with a unique value
                                     actions={[
                                         <Button
+                                            key="delete-button"
                                             type="text"
                                             disabled={isBusy}
                                             icon={<FaTrashAlt />}
@@ -199,4 +201,6 @@ export default function PageOcrButton({ pages, t, type }) {
             </Modal>
         </>
     );
-}
+};
+
+export default PageOcrButton;

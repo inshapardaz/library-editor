@@ -1,16 +1,15 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // Third party libraries
 import { App, Button, Modal, Form, Tooltip } from "antd";
-import { FaTasks } from "react-icons/fa";
 
 // Local imports
-import { useUpdateChapterMutation } from "../../../features/api/booksSlice";
-import EditingStatusSelect from "../../editingStatusSelect";
-
+import { FaTasks } from "/src/icons";
+import { useUpdateChapterMutation } from "/src/store/slices/booksSlice";
+import EditingStatusSelect from "/src/components/editingStatusSelect";
 // ------------------------------------------------------
 
-export default function ChapterStatusButton({ chapters, t, type }) {
+const ChapterStatusButton = ({ chapters, t, type }) => {
     const { message } = App.useApp();
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
@@ -31,7 +30,7 @@ export default function ChapterStatusButton({ chapters, t, type }) {
             .then(() =>
                 message.success(t("chapter.actions.updateStatus.success"))
             )
-            .catch((_) =>
+            .catch(() =>
                 message.error(t("chapter.actions.updateStatus.error"))
             );
     };
@@ -41,7 +40,7 @@ export default function ChapterStatusButton({ chapters, t, type }) {
             .then((values) => {
                 onSubmit(values);
             })
-            .catch(() => {});
+            .catch(() => { });
 
     const onShow = () => {
         form.resetFields();
@@ -99,4 +98,6 @@ export default function ChapterStatusButton({ chapters, t, type }) {
             </Modal>
         </>
     );
-}
+};
+
+export default ChapterStatusButton;

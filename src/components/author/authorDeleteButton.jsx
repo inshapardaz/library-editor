@@ -1,17 +1,18 @@
+import React from 'react';
+
 // Third party libraries
 import { App, Button, Modal } from "antd";
-import { FaTrash } from 'react-icons/fa';
-import { ExclamationCircleFilled } from '@ant-design/icons';
 
 // Local imports
-import { useDeleteAuthorMutation } from "../../features/api/authorsSlice";
+import { FaTrash, ExclamationCircleFilled } from '/src/icons';
+import { useDeleteAuthorMutation } from "/src/store/slices/authorsSlice";
 
 // ------------------------------------------------------
 
 const { confirm } = Modal;
 
 // ------------------------------------------------------
-export default function AuthorDeleteButton({ children, libraryId, author, t, type, onDeleted = () => { }, danger = false, block = false, size = "middle" }) {
+const AuthorDeleteButton = ({ children, libraryId, author, t, type, onDeleted = () => { }, danger = false, block = false, size = "middle" }) => {
     const { message } = App.useApp();
     const [deleteAuthor, { isLoading: isDeleting }] = useDeleteAuthorMutation();
 
@@ -26,12 +27,14 @@ export default function AuthorDeleteButton({ children, libraryId, author, t, typ
             onOk() {
                 return deleteAuthor({ libraryId, authorId: author.id })
                     .unwrap()
-                    .then(() => message.success(t("author.actions.delete.success")))
                     .then(() => onDeleted())
-                    .catch((_) => message.error(t("author.actions.delete.error")));
+                    .then(() => { message.success(t("author.actions.delete.success")) })
+                    .catch(() => { message.error(t("author.actions.delete.error")) });
             }
         });
     };
 
     return (<Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash />}>{children}</Button>);
-}
+};
+
+export default AuthorDeleteButton;

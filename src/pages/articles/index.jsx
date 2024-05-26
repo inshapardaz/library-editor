@@ -1,22 +1,23 @@
+import React from 'react';
 import { useParams, useSearchParams, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // 3rd party libraries
 import { Layout, theme, Button } from "antd";
-import { FaPenFancy, FaPlus } from "react-icons/fa";
+import { FaPenFancy, FaPlus } from "/src/icons";
 
 // Local Imports
-import PageHeader from "../../components/layout/pageHeader";
-import ContentsContainer from "../../components/layout/contentContainer";
-import SortDirection from "../../models/sortDirection";
-import ArticlesList from "../../components/articles/articlesList";
-import ArticlesSideBar from "../../components/articles/articlesSideBar";
+import SortDirection from "/src/models/sortDirection";
+import PageHeader from "/src/components/layout/pageHeader";
+import ContentsContainer from "/src/components/layout/contentContainer";
+import ArticlesList from "/src/components/articles/articlesList";
+import ArticlesSideBar from "/src/components/articles/articlesSideBar";
 
 //--------------------------------------------------------
 const { Content, Sider } = Layout;
 //--------------------------------------------------------
 
-function ArticleHomePage() {
+const ArticleHomePage = () => {
     const { t } = useTranslation();
     const {
         token: { colorBgContainer },
@@ -90,5 +91,6 @@ function ArticleHomePage() {
             </ContentsContainer>
         </>
     );
-}
+};
+
 export default ArticleHomePage;

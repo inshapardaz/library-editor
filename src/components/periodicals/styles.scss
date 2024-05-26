@@ -1,0 +1,10 @@
+.periodical {
+    &__image {
+        width: 262px;
+        height: 400px;
+
+        &--small {
+            height: 150px;
+        }
+    }
+}

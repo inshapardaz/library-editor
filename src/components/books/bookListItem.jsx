@@ -1,17 +1,17 @@
+import React from 'react';
 import { Link, useNavigate } from "react-router-dom";
 
 // 3rd Party Libraries
 import { Avatar, List, Typography } from "antd";
-import { FiEdit, FiLayers } from "react-icons/fi";
-import { AiOutlineCopy } from "react-icons/ai";
 
 // Local Import
-import styles from "../../styles/common.module.scss";
-import AuthorAvatar from "../author/authorAvatar";
-import { BookCategory } from "./bookCategory";
-import { BookSeriesInfo } from "./bookSeriesInfo";
-import helpers from "../../helpers/index";
-import { IconText } from "../common/iconText";
+import "./styles.scss";
+import { FiEdit, FiLayers, AiOutlineCopy } from "/src/icons";
+import { setDefaultBookImage, bookPlaceholderImage } from "/src/util";
+import AuthorAvatar from "/src/components/author/authorAvatar";
+import IconText from "/src/components/common/iconText";
+import BookCategory from "./bookCategory";
+import BookSeriesInfo from "./bookSeriesInfo";
 import BookDeleteButton from "./bookDeleteButton";
 // ------------------------------------------------------
 
@@ -19,20 +19,20 @@ const { Text, Paragraph } = Typography;
 
 // ------------------------------------------------------
 
-function BookListItem({ libraryId, book, t }) {
+const BookListItem = ({ libraryId, book, t }) => {
     const navigate = useNavigate();
 
     const cover = book.links.image ? (
         <img
             src={book.links.image}
-            onError={helpers.setDefaultBookImage}
-            className={styles["book__image--small"]}
+            onError={setDefaultBookImage}
+            className="book__image--small"
             alt={book.title}
         />
     ) : (
         <img
-            src={helpers.defaultBookImage}
-            className={styles["book__image--small"]}
+            src={bookPlaceholderImage}
+            className="book__image--small"
             alt={book.title}
         />
     );
@@ -62,22 +62,20 @@ function BookListItem({ libraryId, book, t }) {
             <Text type="secondary">{t("book.noDescription")}</Text>
         )}
         {book?.seriesName ? <BookSeriesInfo
-                    key={`${book.id}-action-series`}
-                    book={book}
-                    t={t}
-                />:null}
+            key={`${book.id}-action-series`}
+            book={book}
+            t={t}
+        /> : null}
     </>);
     const chapterCount = (
-        <IconText
-            onClick={() => navigate(`/libraries/${libraryId}/books/${book.id}`)}
+        <IconText href={`/libraries/${libraryId}/books/${book.id}`}
             icon={FiLayers}
             text={t("book.chapterCount", { count: book.chapterCount })}
             key="book-chapter-count"
         />
     );
     const pageCount = (
-        <IconText
-            onClick={() => navigate(`/libraries/${libraryId}/books/${book.id}/?section=pages`)}
+        <IconText href={`/libraries/${libraryId}/books/${book.id}/?section=pages`}
             icon={AiOutlineCopy}
             text={t("book.pageCount", { count: book.pageCount })}
             key="book-page-count"
@@ -85,8 +83,7 @@ function BookListItem({ libraryId, book, t }) {
     );
 
     const fileCount = (
-        <IconText
-            onClick={() => navigate(`/libraries/${libraryId}/books/${book.id}/?section=files`)}
+        <IconText href={`/libraries/${libraryId}/books/${book.id}/?section=files`}
             icon={AiOutlineCopy}
             text={t("book.fileCount", { count: book.contents?.length ?? 0 })}
             key="book-file-count"
@@ -105,12 +102,12 @@ function BookListItem({ libraryId, book, t }) {
                     justList
                     book={book}
                 />,
-                <IconText
-                    onClick={() => navigate(`/libraries/${libraryId}/books/${book.id}/edit`)}
+                <IconText href={`/libraries/${libraryId}/books/${book.id}/edit`}
                     icon={FiEdit}
                     key="book-edit"
                 />,
                 <BookDeleteButton
+                    key="delete-button"
                     libraryId={libraryId}
                     book={book}
                     t={t}

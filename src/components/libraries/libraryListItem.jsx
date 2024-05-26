@@ -1,12 +1,14 @@
+import React from 'react';
 import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
 import { List, Typography } from "antd";
 
 // Local Import
-import styles from "../../styles/common.module.scss";
-import helpers from "../../helpers/index";
-import { FaEdit } from "react-icons/fa";
+import "./styles.scss";
+import { FaEdit } from "/src/icons";
+import { libraryPlaceholderImage, setDefaultLibraryImage } from "/src/util";
+import IconText from "/src/components/common/iconText";
 import LibraryDeleteButton from "./libraryDeleteButton";
 // ------------------------------------------------------
 
@@ -14,8 +16,8 @@ const { Text, Paragraph } = Typography;
 
 // ------------------------------------------------------
 
-function LibraryListItem({ library, t }) {
-    const cover = <img src={library.links.image || helpers.defaultLibraryImage} onError={helpers.setDefaultLibraryImage} className={styles["library__image"]} alt={library.name} />;
+const LibraryListItem = ({ library, t }) => {
+    const cover = <img src={library.links.image || libraryPlaceholderImage} onError={setDefaultLibraryImage} className="library__image" alt={library.name} />;
 
     const title = (
         <Link to={`/libraries/${library.id}/`}>
@@ -35,10 +37,10 @@ function LibraryListItem({ library, t }) {
         <List.Item
             key={library.id}
             actions={[
-                <Link to={`/libraries/${library.id}/edit`}>
-                    <FaEdit />
-                </Link>,
+                <IconText icon={FaEdit} key="library-edit"
+                    href={`/libraries/${library.id}/edit`} />,
                 <LibraryDeleteButton
+                    key={`delete-${library.id}`}
                     library={library}
                     t={t}
                     type="ghost"
@@ -53,6 +55,6 @@ function LibraryListItem({ library, t }) {
             />
         </List.Item>
     );
-}
+};
 
 export default LibraryListItem;

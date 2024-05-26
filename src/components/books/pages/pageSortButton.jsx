@@ -1,18 +1,20 @@
+import React from 'react';
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 // Third party libraries
 import { Button, Dropdown, Space } from "antd";
+
+// Local Imports
 import {
     FaChevronDown,
     FaSort,
     FaSortAmountDown,
     FaSortAmountUp,
-} from "react-icons/fa";
-import helpers from "../../../helpers";
-
+} from "/src/icons";
+import { updateLinkToBooksPagesPage } from "/src/util";
 // ------------------------------------------------------
 
-export default function PageSortButton({ libraryId, bookId, t }) {
+const PageSortButton = ({ t }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -22,10 +24,10 @@ export default function PageSortButton({ libraryId, bookId, t }) {
 
     const setSortDirection = (newSortDirection) => {
         navigate(
-            helpers.updateLinkToBooksPagesPage(
+            updateLinkToBooksPagesPage(
                 location, {
-                    sortDirection: newSortDirection
-                }
+                sortDirection: newSortDirection
+            }
             )
         );
     };
@@ -55,4 +57,6 @@ export default function PageSortButton({ libraryId, bookId, t }) {
             </Button>
         </Dropdown>
     );
-}
+};
+
+export default PageSortButton;

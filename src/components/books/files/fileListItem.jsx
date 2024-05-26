@@ -1,23 +1,24 @@
+import React from 'react';
 import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
 import { Avatar, Button, List, Tooltip, Typography, Upload } from "antd";
-import { FaCogs, FaFileDownload, FaFileUpload } from "react-icons/fa";
 
 // Local Import
-import { useUpdateBookContentMutation } from "../../../features/api/booksSlice";
+import { FaCogs, FaFileDownload, FaFileUpload } from "/src/icons";
+import { useUpdateBookContentMutation } from "/src/store/slices/booksSlice";
 import FileDeleteButton from "./fileDeleteButton";
 import FileTypeIcon from "./fileTypeIcon";
-import { BookImageFromFile } from "./bookImageFromFile";
+import BookImageFromFile from "./bookImageFromFile";
 // ------------------------------------------------------
 
-function FileListItem({
+const FileListItem = ({
     libraryId,
     book,
     content,
     t,
     message
-}) {
+}) => {
     const [updateBookContent, { isLoading: isUpdating }] = useUpdateBookContentMutation();
 
     const title = (<Link
@@ -37,12 +38,12 @@ function FileListItem({
 
         updateBookContent({ content: content, payload: file }).unwrap()
             .then(() => message.success(t("book.actions.addFile.success")))
-            .catch((_) => message.error(t("book.actions.addFile.error")));
+            .catch(() => message.error(t("book.actions.addFile.error")));
     }
 
     return (<List.Item
         actions={[
-            <BookImageFromFile libraryId={libraryId} book={book} t={t} disabled={isUpdating} content={content} />,
+            <BookImageFromFile key="book-image-from-file" libraryId={libraryId} book={book} t={t} disabled={isUpdating} content={content} />,
             content && content.links.update && (
                 <Tooltip title={t('book.actions.addFile.title')}>
                     <Upload beforeUpload={uploadFile} maxCount={1} showUploadList={false} >
@@ -86,6 +87,6 @@ function FileListItem({
         />
     </List.Item>
     );
-}
+};
 
 export default FileListItem;

@@ -1,30 +1,30 @@
-import { Link, useNavigate } from "react-router-dom";
+import React from 'react';
+import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
 import { Avatar, Card } from "antd";
-import { FiEdit } from "react-icons/fi";
 
 // Local Imports
-import styles from "../../styles/common.module.scss";
-import AuthorAvatar from "../author/authorAvatar";
-import helpers from "../../helpers/index";
-import { BookSeriesInfo } from "./bookSeriesInfo";
+import "./styles.scss";
+import { FiEdit } from "/src/icons";
+import { setDefaultBookImage, bookPlaceholderImage } from "/src/util";
+import AuthorAvatar from "/src/components/author/authorAvatar";
+import BookSeriesInfo from "./bookSeriesInfo";
 import BookDeleteButton from "./bookDeleteButton";
 // --------------------------------------------
 
-function BookCard({ libraryId, book, t }) {
-    const navigate = useNavigate();
+const BookCard = ({ libraryId, book, t }) => {
     const cover = book.links.image ? (
         <img
             src={book.links.image}
-            onError={helpers.setDefaultBookImage}
-            className={styles["book__image"]}
+            onError={setDefaultBookImage}
+            className="book__image"
             alt={book.title}
         />
     ) : (
         <img
-            src={helpers.defaultBookImage}
-            className={styles["book__image"]}
+            src={bookPlaceholderImage}
+            className="book__image"
             alt={book.title}
         />
     );
@@ -58,9 +58,7 @@ function BookCard({ libraryId, book, t }) {
         <Card
             key={book.id}
             cover={cover}
-            hoverable
             actions={[edit, deleteAction]}
-            onClick={() => navigate(`/libraries/${libraryId}/books/${book.id}`)}
         >
             <Link to={`/libraries/${libraryId}/books/${book.id}`}>
                 <Card.Meta

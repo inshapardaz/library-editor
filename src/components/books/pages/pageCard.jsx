@@ -1,28 +1,29 @@
+import React from 'react';
 import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
 import { Card, Checkbox, Space, Tag, Typography } from "antd";
-import { FaRegKeyboard, FaGlasses, FaGripLines } from "react-icons/fa";
 import { Draggable } from "react-beautiful-dnd";
 
 // Local Import
+import "./styles.scss";
+import { FaRegKeyboard, FaGlasses, FaGripLines } from "/src/icons";
+import { pagePlaceholderImage } from "/src/util";
 import PageSequenceEditor from "./pageSequenceEditor";
 import PageDeleteButton from "./pageDeleteButton";
 import PageAssignButton from "./pageAssignButton";
 import PageStatusButton from "./pageStatusButton";
-import helpers from "../../../helpers";
-import styles from "../../../styles/common.module.scss";
 
 // ------------------------------------------------------
 
-function PageCard({
+const PageCard = ({
     libraryId,
     book,
     page,
     t,
     selected = false,
-    onSelectChanged = () => {},
-}) {
+    onSelectChanged = () => { },
+}) => {
     let description = page.chapterTitle ? (
         <Typography.Text>{page.chapterTitle}</Typography.Text>
     ) : null;
@@ -60,9 +61,9 @@ function PageCard({
 
     const cover = (
         <img
-            src={page.links.image || helpers.defaultPageImage}
-            onError={helpers.setDefaultPageImage}
-            className={styles["page__image"]}
+            src={page.links.image || pagePlaceholderImage}
+            onError={pagePlaceholderImage}
+            className="page__image"
             alt={page.sequenceNumber}
         />
     );
@@ -124,6 +125,6 @@ function PageCard({
             )}
         </Draggable>
     );
-}
+};
 
 export default PageCard;

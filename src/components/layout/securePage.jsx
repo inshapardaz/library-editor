@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 
 // Local Imports
-import { isLoggedIn } from "../../features/auth/authSlice";
+import { isLoggedIn } from "/src/store/slices/authSlice";
 
 // -----------------------------------
 

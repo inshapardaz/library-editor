@@ -1,3 +1,4 @@
+import React from 'react';
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
@@ -6,14 +7,14 @@ import { useLocalStorage } from "usehooks-ts";
 import { Button, List, Switch } from "antd";
 
 // Internal Imports
-import DataContainer from "../layout/dataContainer";
+import DataContainer from "/src/components/layout/dataContainer";
+import { useGetMyBooksQuery } from "/src/store/slices/booksSlice";
 import BookCard from "./bookCard";
 import BookListItem from "./bookListItem";
-import { useGetMyBooksQuery } from "../../features/api/booksSlice";
 
 // ------------------------------------------------------
 
-function ShowMoreButton({ libraryId, t, status }) {
+const ShowMoreButton = ({ libraryId, t, status }) => {
     const navigate = useNavigate();
     return (
         <div
@@ -46,7 +47,7 @@ const grid = {
     xxl: 5,
 };
 
-function EditingBooks({ status }) {
+const EditingBooks = ({ status }) => {
     const { t } = useTranslation();
     const { libraryId } = useParams();
     const {
@@ -102,6 +103,6 @@ function EditingBooks({ status }) {
             />
         </DataContainer>
     );
-}
+};
 
 export default EditingBooks;

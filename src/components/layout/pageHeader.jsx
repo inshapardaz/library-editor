@@ -1,15 +1,14 @@
-//import { useTranslation } from "react-i18next";
+import React from 'react';
 
 // 3rd party imports
-import { /* Breadcrumb,*/ Col, Row, Space, Typography } from "antd";
-//import { FaHome } from 'react-icons/fa';
-
+import { Col, Row, Space, Typography } from "antd";
+1
 // Local Imports
-import styles from "../../styles/common.module.scss";
+import "./styles.scss";
 
 // ----------------------------------------------------
 
-function PageHeader({ title, subTitle, breadcrumb, icon, actions }) {
+const PageHeader = ({ title, subTitle, breadcrumb, icon, actions }) => {
     //const { t } = useTranslation();
 
     let actionColumns = [];
@@ -24,7 +23,7 @@ function PageHeader({ title, subTitle, breadcrumb, icon, actions }) {
     }
 
     return (
-        <div className={styles.header}>
+        <div className="header">
             <Row align="middle" gutter={8} style={{ flex: "1" }}>
                 <Col>{icon}</Col>
                 <Col flex="1">

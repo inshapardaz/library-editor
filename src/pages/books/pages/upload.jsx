@@ -1,15 +1,15 @@
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // 3rd party libraries
 import { App, Button, Spin, Upload } from "antd";
-import { FaTimesCircle, FaFileUpload } from "react-icons/fa";
+import { FaTimesCircle, FaFileUpload } from "/src/icons";
 
 // Local imports
-import { useGetBookQuery, useCreateBookPageWithImageMutation } from "../../../features/api/booksSlice";
-import PageHeader from "../../../components/layout/pageHeader";
-import DataContainer from "../../../components/layout/dataContainer";
-import { useState } from "react";
+import { useGetBookQuery, useCreateBookPageWithImageMutation } from "/src/store/slices/booksSlice";
+import PageHeader from "/src/components/layout/pageHeader";
+import DataContainer from "/src/components/layout/dataContainer";
 
 //-----------------------------------------
 const { Dragger } = Upload;
@@ -33,17 +33,17 @@ const BookPagesUploadPage = () => {
             book,
             fileList
         })
-        .unwrap()
-        .then(() => setFileList([]))
-        .then(() => message.success(t("pages.actions.upload.success")))
-        .catch((_) => message.error(t("pages.actions.upload.error")));
+            .unwrap()
+            .then(() => setFileList([]))
+            .then(() => message.success(t("pages.actions.upload.success")))
+            .catch(() => message.error(t("pages.actions.upload.error")));
     };
 
     const title = t('pages.actions.upload.title', { book: book?.title });
     console.log(fileList)
     const actions = [
-        <Button.Group>
-            <Button  onClick={handleUpload} icon={<FaFileUpload />} disabled={isUploading  || fileList.length < 1}>
+        <Button.Group key="action-buttons">
+            <Button onClick={handleUpload} icon={<FaFileUpload />} disabled={isUploading || fileList.length < 1}>
                 {t('pages.actions.upload.label')}
             </Button>
             <Button onClick={() => navigate(-1)} icon={<FaTimesCircle />} disabled={isUploading}>

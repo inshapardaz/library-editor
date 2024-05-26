@@ -1,20 +1,21 @@
+import React from 'react';
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 // 3rd party libraries
 import { Space, Tabs } from "antd";
-import { FaBook, FaFeather, FaSearch } from "react-icons/fa";
-import { ImBooks, ImNewspaper } from "react-icons/im";
+import { FaBook, FaFeather, FaSearch } from "/src/icons";
+import { ImBooks, ImNewspaper } from "/src/icons";
 
 // Local Imports
-import PageHeader from "../../components/layout/pageHeader";
-import ContentsContainer from "../../components/layout/contentContainer";
-import BooksList from "../../components/books/booksList";
-import AuthorsList from "../../components/author/authorsList";
-import PeriodicalsList from "../../components/periodicals/periodicalsList";
-import SeriesList from "../../components/series/seriesList";
+import PageHeader from "/src/components/layout/pageHeader";
+import ContentsContainer from "/src/components/layout/contentContainer";
+import BooksList from "/src/components/books/booksList";
+import AuthorsList from "/src/components/author/authorsList";
+import PeriodicalsList from "/src/components/periodicals/periodicalsList";
+import SeriesList from "/src/components/series/seriesList";
 
-export default function SearchPage() {
+const SearchPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
@@ -136,4 +137,6 @@ export default function SearchPage() {
             </ContentsContainer>
         </>
     );
-}
+};
+
+export default SearchPage;

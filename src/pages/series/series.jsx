@@ -1,26 +1,28 @@
+import React from 'react';
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // 3rd party libraries
 import { Button, Col, Row, Space } from "antd";
-import { FaCloudUploadAlt } from "react-icons/fa";
-import { ImBooks } from "react-icons/im";
+import { FaCloudUploadAlt } from "/src/icons";
+import { ImBooks } from "/src/icons";
+import { FiEdit } from "/src/icons";
 
 // Local Imports
-import PageHeader from "../../components/layout/pageHeader";
-import BooksList from "../../components/books/booksList";
-import ContentsContainer from "../../components/layout/contentContainer";
-import { useGetSeriesByIdQuery } from "../../features/api/seriesSlice";
-import Loading from "../../components/common/loader";
-import Error from "../../components/common/error";
-import SeriesDeleteButton from "../../components/series/seriesDeleteButton";
-import { FiEdit } from "react-icons/fi";
-import ButtonGroup from "antd/es/button/button-group";
-import helpers from "../../helpers";
+import { useGetSeriesByIdQuery } from "/src/store/slices/seriesSlice";
+import { setDefaultSeriesImage, seriesPlaceholderImage } from "/src/util";
+import PageHeader from "/src/components/layout/pageHeader";
+import BooksList from "/src/components/books/booksList";
+import ContentsContainer from "/src/components/layout/contentContainer";
+import Loading from "/src/components/common/loader";
+import Error from "/src/components/common/error";
+import SeriesDeleteButton from "/src/components/series/seriesDeleteButton";
 
 //--------------------------------------------------------
+const ButtonGroup = Button.Group;
+//--------------------------------------------------------
 
-function SeriesPage() {
+const SeriesPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { libraryId, seriesId } = useParams();
@@ -36,16 +38,16 @@ function SeriesPage() {
 
     if (isFetching) return <Loading />;
     if (error) return <Error t={t} />;
-    const cover = series.links.image ? <img src={series.links.image} onError={helpers.setDefaultSeriesImage} width="262" height="400" alt={series.name} /> : <img src={helpers.defaultSeriesImage} width="136" height="300" alt={series.name} />;
+    const cover = series.links.image ? <img key="series-image" src={series.links.image} onError={setDefaultSeriesImage} width="262" height="400" alt={series.name} /> : <img key="default-image" src={seriesPlaceholderImage} width="136" height="300" alt={series.name} />;
 
-    const actions = [<ButtonGroup>
-        <Button icon={<FiEdit />} onClick={() => navigate(`/libraries/${libraryId}/series/${series.id}/edit`)}>
+    const actions = [<ButtonGroup key="button-group">
+        <Button key="edit-button" icon={<FiEdit />} onClick={() => navigate(`/libraries/${libraryId}/series/${series.id}/edit`)}>
             {t("actions.edit")}
         </Button>
-        <Button icon={<FaCloudUploadAlt />} onClick={() => navigate(`/libraries/${libraryId}/books/upload`)}>
+        <Button key="upload-button" icon={<FaCloudUploadAlt />} onClick={() => navigate(`/libraries/${libraryId}/books/upload`)}>
             {t("books.actions.upload.label")}
         </Button>
-        <SeriesDeleteButton libraryId={libraryId} series={series} t={t}
+        <SeriesDeleteButton key="delete-button" libraryId={libraryId} series={series} t={t}
             onDeleted={() => navigate(`/libraries/${libraryId}/series`)}>
             {t('actions.delete')}
         </SeriesDeleteButton>
@@ -72,5 +74,6 @@ function SeriesPage() {
             </ContentsContainer>
         </>
     );
-}
+};
+
 export default SeriesPage;

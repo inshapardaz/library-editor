@@ -1,15 +1,19 @@
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 // 3rd party imports
 import { Layout } from 'antd';
-import styles from '../../styles/common.module.scss';
+
+// Local imports
+import './styles.scss';
+import { NODE_ENV } from "env";
 
 // ----------------------------------------------
 
-function Footer() {
+const Footer = () => {
     const { t } = useTranslation();
-    const contents = (<div className={styles.footer}>
-        <div className={styles['footer__copyrights']}>{t('footer.copyrights')}</div>
+    const contents = (<div className="footer">
+        <div className="footer__copyrights">{t('footer.copyrights')}{NODE_ENV != 'production' ? `- (${NODE_ENV})` : null}</div>
     </div>)
     return (<Layout.Footer style={{ textAlign: 'center' }}>{contents}</Layout.Footer>)
 }

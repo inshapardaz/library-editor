@@ -1,4 +1,8 @@
-import { FileOutlined, FilePdfOutlined, FileWordOutlined } from "@ant-design/icons";
+import React from 'react';
+
+// Local imports
+import { FileOutlined, FilePdfOutlined, FileWordOutlined } from "/src/icons";
+//----------------------------------------------------------------
 
 const FileTypeIcon = ({ type }) => {
     switch (type) {

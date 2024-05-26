@@ -1,9 +1,15 @@
 # Logs
-logs
 *.log
+logs
+.env
+*.log
+coverage
 npm-debug.log*
+node_modules
 yarn-debug.log*
+public/build/
 yarn-error.log*
+!public/build/.keep
 lerna-debug.log*
 .pnpm-debug.log*
 
@@ -129,3 +135,9 @@ dist
 .yarn/install-state.gz
 .pnp.*
 build/*
+*.log
+.env
+coverage
+node_modules
+public/build/
+!public/build/.keep

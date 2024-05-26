@@ -1,19 +1,19 @@
+import React from 'react';
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 // 3rd party imports
 import { Menu } from "antd";
-import { FaTags, FaTag, FaRegHeart, FaEye, FaPen, FaPenAlt } from "react-icons/fa";
-import { MdNewReleases } from "react-icons/md";
 
 // Local Imports
-import { useGetCategoriesQuery } from "../../features/api/categoriesSlice";
-import { isLoggedIn } from "../../features/auth/authSlice";
+import { FaTags, FaTag, FaRegHeart, FaEye, FaPen, FaPenAlt, MdNewReleases } from "/src/icons";
+import { useGetCategoriesQuery } from "/src/store/slices/categoriesSlice";
+import { isLoggedIn } from "/src/store/slices/authSlice";
 
 // --------------------------------------
 
-function ArticlesSideBar({ libraryId, selectedCategories, sortBy, sortDirection, favorites, read }) {
+const ArticlesSideBar = ({ libraryId, selectedCategories, sortBy, sortDirection, favorites, read }) => {
     const { t } = useTranslation();
     const isUserLoggedIn = useSelector(isLoggedIn);
     const { data: categories, error, isFetching } = useGetCategoriesQuery({ libraryId });
@@ -86,6 +86,6 @@ function ArticlesSideBar({ libraryId, selectedCategories, sortBy, sortDirection,
     }
 
     return <Menu mode="inline" selectedKeys={selection} defaultOpenKeys={["side-bar-categories"]} style={{ height: "100%" }} items={items} />;
-}
+};
 
 export default ArticlesSideBar;

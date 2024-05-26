@@ -1,15 +1,15 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 // Third party libraries
 import { App, Button, Modal } from "antd";
-import { VscLayersActive } from "react-icons/vsc";
 
 // Local imports
-import { useUpdateBookPageMutation } from "../../../features/api/booksSlice";
+import { VscLayersActive } from "/src/icons";
+import { useUpdateBookPageMutation } from "/src/store/slices/booksSlice";
 
 // ------------------------------------------------------
 
-export default function PageAutoChapterUpdate({ pages, t, type }) {
+const PageAutoChapterUpdate = ({ pages, t, type }) => {
     const { message } = App.useApp();
     const [open, setOpen] = useState(false);
     const [updateBookPage, { isLoading: isAssigning }] = useUpdateBookPageMutation();
@@ -19,8 +19,7 @@ export default function PageAutoChapterUpdate({ pages, t, type }) {
         let chapterId = null;
         const promises = [];
 
-        if (pages.length > 0)
-        {
+        if (pages.length > 0) {
             for (let i = 0; i < pages.length; i++) {
                 const page = pages[i];
                 if (page.chapterId) {
@@ -36,7 +35,7 @@ export default function PageAutoChapterUpdate({ pages, t, type }) {
                     .then(() =>
                         message.success(t("page.actions.setChapter.success", { count }))
                     )
-                    .catch((_) =>
+                    .catch(() =>
                         message.error(t("page.actions.setChapter.error", { count }))
                     );
             }
@@ -72,4 +71,6 @@ export default function PageAutoChapterUpdate({ pages, t, type }) {
             </Modal>
         </>
     );
-}
+};
+
+export default PageAutoChapterUpdate;

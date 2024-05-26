@@ -1,22 +1,21 @@
+import React from 'react';
+
 // Third party libraries
 import { App, Button, Modal } from "antd";
-import { FaTrash } from "react-icons/fa";
-import { ExclamationCircleFilled } from "@ant-design/icons";
 
 // Local imports
-import { useDeleteBookPageMutation } from "../../../features/api/booksSlice";
+import { FaTrash, ExclamationCircleFilled } from "/src/icons";
+import { useDeleteBookPageMutation } from "/src/store/slices/booksSlice";
 
 // ------------------------------------------------------
-
 const { confirm } = Modal;
-
 // ------------------------------------------------------
-export default function PageDeleteButton({
+const PageDeleteButton = ({
     pages = [],
     t,
     type,
     onDeleted = () => { },
-}) {
+}) => {
     const { message } = App.useApp();
     const [deleteBookPage, { isLoading: isDeleting }] =
         useDeleteBookPageMutation();
@@ -42,12 +41,9 @@ export default function PageDeleteButton({
                     });
 
                 return Promise.all(promises)
-                    .then(() =>
-                        message.success(t("page.actions.delete.success"))
-                    )
                     .then(() => onDeleted())
-                    .catch((_) =>
-                        message.error(t("page.actions.delete.error"))
+                    .then(() => { message.success(t("page.actions.delete.success")) })
+                    .catch(() => { message.error(t("page.actions.delete.error")) }
                     );
             },
         });
@@ -61,4 +57,6 @@ export default function PageDeleteButton({
             icon={<FaTrash />}
         ></Button>
     );
-}
+};
+
+export default PageDeleteButton;

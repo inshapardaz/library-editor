@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
@@ -7,7 +7,7 @@ import { Input } from "antd";
 
 // --------------------------------------------
 
-function SearchBox() {
+const SearchBox = () => {
     const { t } = useTranslation();
     const { libraryId } = useParams();
     const [searchParams] = useSearchParams();

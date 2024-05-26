@@ -1,13 +1,12 @@
+import React from 'react';
 import { useNavigate, Link } from "react-router-dom";
 
 // 3rd party libraries
 import { Button, Space, Typography } from "antd";
-import { FaFeatherAlt } from "react-icons/fa";
-import { ImBooks } from "react-icons/im";
-import { FiEdit } from "react-icons/fi";
 
 // Local imports
-import helpers from "../../helpers";
+import { FaFeatherAlt, ImBooks, FiEdit } from "/src/icons";
+import { setDefaultAuthorImage, authorPlaceholderImage } from "/src/util";
 import AuthorDeleteButton from "./authorDeleteButton";
 
 // -----------------------------------------
@@ -16,7 +15,7 @@ const { Title, Paragraph } = Typography;
 
 const AuthorInfo = ({ libraryId, author, t }) => {
     const navigate = useNavigate();
-    const cover = author.links.image ? <img src={author.links.image} onError={helpers.setDefaultAuthorImage} width="262" height="400" alt={author.name} /> : <img src={helpers.defaultAuthorImage} width="136" height="300" alt={author.name} />;
+    const cover = author.links.image ? <img src={author.links.image} onError={setDefaultAuthorImage} width="262" height="400" alt={author.name} /> : <img src={authorPlaceholderImage} width="136" height="300" alt={author.name} />;
 
     return (
         <>
@@ -36,7 +35,7 @@ const AuthorInfo = ({ libraryId, author, t }) => {
                 </Button>
                 <AuthorDeleteButton block danger libraryId={libraryId} author={author} t={t}
                     onDeleted={() => navigate(`/libraries/${libraryId}/authors`)}>
-                        {t('actions.delete')}
+                    {t('actions.delete')}
                 </AuthorDeleteButton>
             </Space>
         </>

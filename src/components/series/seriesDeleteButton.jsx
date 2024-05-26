@@ -1,18 +1,19 @@
+import React from 'react';
+import { useNavigate } from "react-router-dom";
+
 // Third party libraries
 import { App, Button, Modal } from "antd";
-import { FaTrash } from 'react-icons/fa';
-import { ExclamationCircleFilled } from '@ant-design/icons';
 
 // Local imports
-import { useDeleteSeriesMutation } from "../../features/api/seriesSlice";
-
+import { FaTrash, ExclamationCircleFilled } from '/src/icons';
+import { useDeleteSeriesMutation } from "/src/store/slices/seriesSlice";
 // ------------------------------------------------------
-
 const { confirm } = Modal;
-
 // ------------------------------------------------------
-export default function SeriesDeleteButton({ children, libraryId, series, t, type, onDeleted = () => { }, danger = false, block = false, size }) {
+
+const SeriesDeleteButton = ({ children, libraryId, series, t, type, onDeleted = () => { }, danger = false, block = false, size }) => {
     const { message } = App.useApp();
+    const navigate = useNavigate();
     const [deleteSeries, { isLoading: isDeleting }] = useDeleteSeriesMutation();
 
     const showConfirm = () => {
@@ -26,12 +27,15 @@ export default function SeriesDeleteButton({ children, libraryId, series, t, typ
             onOk() {
                 return deleteSeries({ libraryId, seriesId: series.id })
                     .unwrap()
-                    .then(() => message.success(t("series.actions.delete.success")))
                     .then(() => onDeleted())
-                    .catch((_) => message.error(t("series.actions.delete.error")));
+                    .then(() => navigate(`/libraries/${libraryId}/series`))
+                    .then(() => { message.success(t("series.actions.delete.success")) })
+                    .catch(() => { message.error(t("series.actions.delete.error")) });
             }
         });
     };
 
     return (<Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash />}>{children}</Button>);
-}
+};
+
+export default SeriesDeleteButton;

@@ -1,15 +1,15 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 // Third party libraries
 import { App, Button, Modal, Form, InputNumber } from "antd";
-import { FaSort } from "react-icons/fa";
 
 // Local imports
-import { useUpdateBookPageSequenceMutation } from "../../../features/api/booksSlice";
+import { FaSort } from "/src/icons";
+import { useUpdateBookPageSequenceMutation } from "/src/store/slices/booksSlice";
 
 // ------------------------------------------------------
 
-export default function PageSequenceEditor({ page, t, type }) {
+const PageSequenceEditor = ({ page, t, type }) => {
     const { message } = App.useApp();
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
@@ -24,7 +24,7 @@ export default function PageSequenceEditor({ page, t, type }) {
             .unwrap()
             .then(() => setOpen(false))
             .then(() => message.success(t("page.actions.sequence.success")))
-            .catch((_) => message.error(t("page.actions.sequence.error")));
+            .catch(() => message.error(t("page.actions.sequence.error")));
     };
     const onOk = () =>
         form
@@ -32,7 +32,7 @@ export default function PageSequenceEditor({ page, t, type }) {
             .then((values) => {
                 onSubmit(values);
             })
-            .catch((info) => {});
+            .catch(() => { });
 
     const onShow = () => {
         form.resetFields();
@@ -72,4 +72,6 @@ export default function PageSequenceEditor({ page, t, type }) {
             </Modal>
         </>
     );
-}
+};
+
+export default PageSequenceEditor;

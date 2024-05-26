@@ -1,12 +1,16 @@
-import { App, Button, Modal, Progress, Tooltip } from "antd";
-import { FaFileImage } from "react-icons/fa";
-import * as pdfjsLib from "pdfjs-dist";
-import { useUpdateBookImageMutation } from "../../../features/api/booksSlice";
-import { useState } from "react";
-import helpers from "../../../helpers";
+import React, { useState } from "react";
 
+// 3rd Party Imports
+import { App, Button, Modal, Progress, Tooltip } from "antd";
+
+// Local Imports
+import { FaFileImage } from "/src/icons";
+import { useUpdateBookImageMutation } from "/src/store/slices/booksSlice";
+import { downloadFile, loadPdfPage, dataURItoBlob } from "/src/util";
+import { pdfjsLib } from '/src/util/pdf'
 // ------------------------------------------------------
-export const BookImageFromFile = ({ libraryId, book, content, t, disabled }) => {
+
+const BookImageFromFile = ({ libraryId, book, content, t, disabled }) => {
     const { message } = App.useApp();
     const [progress, setProgress] = useState(null);
     const [open, setOpen] = useState(false);
@@ -24,10 +28,10 @@ export const BookImageFromFile = ({ libraryId, book, content, t, disabled }) => 
         setOpen(true);
         setProgress(0);
         try {
-            const file = await helpers.downloadFile(content.links.download, onProgressDownload);
+            const file = await downloadFile(content.links.download, onProgressDownload);
             const pdf = await (pdfjsLib.getDocument({ data: file }).promise);
-            let img = await helpers.loadPdfPage(pdf, 1);
-            await updateBookImage({ libraryId, bookId: book.id, payload: helpers.dataURItoBlob(img) }).unwrap();
+            let img = await loadPdfPage(pdf, 1);
+            await updateBookImage({ libraryId, bookId: book.id, payload: dataURItoBlob(img) }).unwrap();
             message.success(t("book.actions.setFirstPageAsImage.success"));
         }
         catch (e) {
@@ -59,3 +63,5 @@ export const BookImageFromFile = ({ libraryId, book, content, t, disabled }) => 
     </>
     );
 };
+
+export default BookImageFromFile;

@@ -1,18 +1,20 @@
+import React from 'react';
+
 // 3rd party libraries
 import { theme } from "antd";
 
 // Local imports
-import styles from '../../styles/common.module.scss'
+import './styles.scss'
 
 // -----------------------------------------
 
-function ContentsContainer({ children }) {
+const ContentsContainer = ({ children }) => {
     const {
         token: { colorBgContainer, borderRadius },
     } = theme.useToken();
 
     return (<div
-        className={styles.container}
+        className="container"
         style={{
             background: colorBgContainer,
             borderRadius: borderRadius

@@ -1,7 +1,10 @@
+import React from 'react';
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 // Third party libraries
 import { Button, Dropdown, Space } from "antd";
+
+// Local Import
 import {
     FaCheck,
     FaChevronDown,
@@ -11,14 +14,12 @@ import {
     FaFilter,
     FaGlasses,
     FaStarOfLife,
-} from "react-icons/fa";
-
-// Local Import
-import helpers from "../../../helpers";
+} from "/src/icons";
+import { updateLinkToBooksPagesPage } from "/src/util";
 
 // ------------------------------------------------------
 
-export default function PageStatusFilterButton({ t }) {
+const PageStatusFilterButton = ({ t }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const [searchParams] = useSearchParams();
@@ -27,11 +28,11 @@ export default function PageStatusFilterButton({ t }) {
 
     const setStatus = (newStatus) => {
         navigate(
-            helpers.updateLinkToBooksPagesPage(
+            updateLinkToBooksPagesPage(
                 location, {
-                    pageNumber : 1,
-                    statusFilter: newStatus
-                }
+                pageNumber: 1,
+                statusFilter: newStatus
+            }
             )
         );
     };
@@ -83,4 +84,6 @@ export default function PageStatusFilterButton({ t }) {
             </Button>
         </Dropdown>
     );
-}
+};
+
+export default PageStatusFilterButton;

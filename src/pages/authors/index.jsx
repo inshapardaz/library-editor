@@ -1,18 +1,19 @@
+import React from 'react';
 import { useParams, useSearchParams, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // 3rd party libraries
 import { Button } from "antd";
-import { FaFeatherAlt, FaPlus } from "react-icons/fa";
+import { FaFeatherAlt, FaPlus } from "/src/icons";
 
 // Local Imports
-import PageHeader from "../../components/layout/pageHeader";
-import AuthorsList from "../../components/author/authorsList";
-import ContentsContainer from "../../components/layout/contentContainer";
+import PageHeader from "/src/components/layout/pageHeader";
+import AuthorsList from "/src/components/author/authorsList";
+import ContentsContainer from "/src/components/layout/contentContainer";
 
 // ---------------------------------------------------
 
-function AuthorsHomePage() {
+const AuthorsHomePage = () => {
     const { t } = useTranslation();
     const { libraryId } = useParams();
     const [searchParams] = useSearchParams();

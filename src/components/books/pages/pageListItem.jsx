@@ -1,12 +1,13 @@
+import React from 'react';
 import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
 import { Avatar, Checkbox, List, Space, Tag, Typography } from "antd";
-import { FaRegKeyboard, FaGlasses, FaGripLines } from "react-icons/fa";
 import { Draggable } from "react-beautiful-dnd";
 
 // Local Import
-import EditingStatusIcon from "../../editingStatusIcon";
+import { FaRegKeyboard, FaGlasses, FaGripLines } from "/src/icons";
+import EditingStatusIcon from "/src/components/editingStatusIcon";
 import PageSequenceEditor from "./pageSequenceEditor";
 import PageDeleteButton from "./pageDeleteButton";
 import PageAssignButton from "./pageAssignButton";
@@ -14,14 +15,14 @@ import PageStatusButton from "./pageStatusButton";
 
 // ------------------------------------------------------
 
-function PageListItem({
+const PageListItem = ({
     libraryId,
     book,
     page,
     t,
     selected = false,
-    onSelectChanged = () => {},
-}) {
+    onSelectChanged = () => { },
+}) => {
     let description = page.chapterTitle ? (
         <Typography.Text>{page.chapterTitle}</Typography.Text>
     ) : null;
@@ -116,6 +117,6 @@ function PageListItem({
             )}
         </Draggable>
     );
-}
+};
 
 export default PageListItem;

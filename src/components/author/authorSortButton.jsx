@@ -1,25 +1,28 @@
+import React from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 
 // Third party libraries
+
+// Local Imports
 import { Button, Dropdown, Space } from "antd";
 import {
     FaChevronDown,
     FaSort,
     FaSortAmountDown,
     FaSortAmountUp,
-} from "react-icons/fa";
-import helpers from "../../helpers";
-import SortDirection from "../../models/sortDirection";
+} from "/src/icons";
+import { updateLinkToAuthorsPage } from "/src/util";
+import { SortDirection } from "/src/models";
 
 // ------------------------------------------------------
 
-export default function AuthorSortButton({ sortBy, sortDirection, t }) {
+const AuthorSortButton = ({ sortBy, sortDirection, t }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
     const setSortDirection = (newSortDirection) => {
         navigate(
-            helpers.updateLinkToAuthorsPage(location, {
+            updateLinkToAuthorsPage(location, {
                 pageNumber: 1,
                 sortDirection: newSortDirection,
             })
@@ -59,4 +62,6 @@ export default function AuthorSortButton({ sortBy, sortDirection, t }) {
             </Button>
         </Dropdown>
     );
-}
+};
+
+export default AuthorSortButton;

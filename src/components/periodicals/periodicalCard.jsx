@@ -1,15 +1,14 @@
+import React from 'react';
 import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
 import { Card, Typography } from "antd";
-import { FaEdit } from "react-icons/fa";
-import { FiLayers } from "react-icons/fi";
-import { SlCalender } from "react-icons/sl";
 
 // Local Imports
-import styles from "../../styles/common.module.scss";
-import helpers from "../../helpers/index";
-import { IconText } from "../common/iconText";
+import "./styles.scss"
+import { FaEdit, FiLayers, SlCalender } from "/src/icons";
+import { periodicalPlaceholderImage, setDefaultPeriodicalImage } from "/src/util";
+import IconText from "/src/components/common/iconText";
 import PeriodicalDeleteButton from "./periodicalDeleteButton";
 // ------------------------------------------------------
 
@@ -17,8 +16,8 @@ const { Text, Paragraph } = Typography;
 
 // ------------------------------------------------------
 
-function PeriodicalCard({ libraryId, periodical, t }) {
-    const cover = periodical.links.image ? <img src={periodical.links.image} onError={helpers.setDefaultPeriodicalImage} className={styles["periodical__image"]} alt={periodical.title} /> : <img src={helpers.defaultPeriodicalImage} className={styles["periodical__image"]} alt={periodical.title} />;
+const PeriodicalCard = ({ libraryId, periodical, t }) => {
+    const cover = periodical.links.image ? <img src={periodical.links.image} onError={setDefaultPeriodicalImage} className="periodical__image" alt={periodical.title} /> : <img src={periodicalPlaceholderImage} className="periodical__image" alt={periodical.title} />;
 
     const description = periodical.description ? <Paragraph ellipsis>{periodical.description}</Paragraph> : <Text type="secondary">{t("book.noDescription")}</Text>;
     const issueCount = (
@@ -41,6 +40,6 @@ function PeriodicalCard({ libraryId, periodical, t }) {
             </Card>
         </Link>
     );
-}
+};
 
 export default PeriodicalCard;
