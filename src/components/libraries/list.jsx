@@ -93,7 +93,7 @@ const LibrariesList = ({
             emptyContent={
                 libraries && libraries.links && libraries.links.create &&
                 (<Space>
-                    <Button size="small" icon={<FaPlus />}
+                    <Button icon={<FaPlus />}
                         onClick={() => navigate(`/libraries/add`)}>
                         {t("library.actions.add.label")}
                     </Button>
