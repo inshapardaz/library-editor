@@ -1063,6 +1063,9 @@ const en = {
         },
         files: {
             title: "Files",
+            empty: {
+                title: "No file found",
+            },
         },
         actions: {
             add: {
@@ -1082,6 +1085,27 @@ const en = {
                     "Are you sure you want to delete issue '{{name}}'? It will remove all of its contents.",
                 success: "Issue deleted successfully.",
                 error: "Error deleting issue.",
+            },
+            addFile: {
+                title: "Upload file",
+                success: "File uploaded successfully.",
+                error: "Error uploading file.",
+            },
+            deleteFile: {
+                title: "Delete file?",
+                message: "Are you sure you want to delete issue file?",
+                success: "File deleted successfully.",
+                error: "Error deleting file",
+            },
+            downloadFile: {
+                title: "Download file",
+            },
+            setFirstPageAsImage: {
+                title: "Set first page of file as issue image.",
+                message:
+                    "Do you want to make the first page of this file to be the issue image?",
+                success: "Issue image set successfully",
+                error: "Unable to set issue image",
             },
         },
     },

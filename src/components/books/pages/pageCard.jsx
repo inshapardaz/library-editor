@@ -8,7 +8,7 @@ import { Draggable } from "react-beautiful-dnd";
 // Local Import
 import "./styles.scss";
 import { FaRegKeyboard, FaGlasses, FaGripLines } from "/src/icons";
-import { pagePlaceholderImage } from "/src/util";
+import { pagePlaceholderImage, setDefaultPageImage } from "/src/util";
 import PageSequenceEditor from "./pageSequenceEditor";
 import PageDeleteButton from "./pageDeleteButton";
 import PageAssignButton from "./pageAssignButton";
@@ -62,7 +62,7 @@ const PageCard = ({
     const cover = (
         <img
             src={page.links.image || pagePlaceholderImage}
-            onError={pagePlaceholderImage}
+            onError={setDefaultPageImage}
             className="page__image"
             alt={page.sequenceNumber}
         />

@@ -6,7 +6,7 @@ import moment from "moment";
 // 3rd party libraries
 import { Breadcrumb, Button, Layout, Space, Tabs, Typography, theme } from "antd";
 import { FiEdit, FiLayers } from "/src/icons";
-import { FaHome, FaRegClone, FaRegFileAlt, FaRegFileWord } from "/src/icons";
+import { FaHome, FaRegClone, FaRegFileAlt, FaRegFile } from "/src/icons";
 import { ImNewspaper } from "/src/icons";
 
 // Local imports
@@ -17,6 +17,7 @@ import PageHeader from "/src/components/layout/pageHeader";
 import ContentsContainer from "/src/components/layout/contentContainer";
 import IssueInfo from "/src/components/periodicals/issues/issueInfo";
 import IssueDeleteButton from "/src/components/periodicals/issues/issueDeleteButton";
+import FileList from "/src/components/periodicals/issues/files/filesList";
 import Loading from "/src/components/common/loader";
 import Error from "/src/components/common/error";
 
@@ -41,7 +42,7 @@ const IssuePage = () => {
 
     const tabs = [
         {
-            key: "chapters",
+            key: "articles",
             label: (
                 <Space gutter={2}>
                     <FaRegClone />
@@ -80,18 +81,17 @@ const IssuePage = () => {
             key: "files",
             label: (
                 <Space gutter={2}>
-                    <FaRegFileWord />
+                    <FaRegFile />
                     {t("issue.files.title")}
                 </Space>
             ),
             children: (
-                // <FilesList
-                //     libraryId={libraryId}
-                //     book={book}
-                //     t={t}
-                //     size="large"
-                // />
-                "Files"
+                <FileList
+                    libraryId={libraryId}
+                    issue={issue}
+                    t={t}
+                    size="large"
+                />
             ),
         },
     ];

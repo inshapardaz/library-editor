@@ -1,5 +1,5 @@
 import { axiosPrivate, axiosPublic } from "./axios.helpers";
-
+import { API_URL } from "env";
 // --------------------------------------------------------------
 const defaultLibraryImage = "/images/library_placeholder.png";
 const defaultAuthorImage = "/images/author_placeholder.jpg";
@@ -461,7 +461,7 @@ export const getDateFormatFromFrequency = (frequency) => {
 // ------------------  File functions --------------------------------------
 
 export const downloadFile = async (url, onProgress = () => {}) => {
-    const response = url.startsWith(apiUrl)
+    const response = url.startsWith(API_URL)
         ? await axiosPrivate({
               url: url,
               method: "GET",

@@ -134,9 +134,10 @@ const BookPage = () => {
                             block
                             size="large"
                             book={book}
+                            icon={<FiEdit />}
                             t={t}
                         >
-                            {t("actions.delete")}
+                            {t("book.actions.publish.title")}
                         </BookPublishButton>
                         <BookDeleteButton
                             key="delete-button"
