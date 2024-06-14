@@ -29,6 +29,7 @@ const BookPagesUploadPage = () => {
     } = useGetBookQuery({ libraryId, bookId }, { skip: !libraryId || !bookId });
 
     const handleUpload = () => {
+        console.log(fileList.length)
         createBookPageWithImage({
             book,
             fileList
@@ -40,7 +41,6 @@ const BookPagesUploadPage = () => {
     };
 
     const title = t('pages.actions.upload.title', { book: book?.title });
-    console.log(fileList)
     const actions = [
         <Button.Group key="action-buttons">
             <Button onClick={handleUpload} icon={<FaFileUpload />} disabled={isUploading || fileList.length < 1}>
@@ -52,18 +52,19 @@ const BookPagesUploadPage = () => {
         </Button.Group>,
     ];
 
+    console.log(fileList);
     const props = {
         name: 'file',
         disabled: isUploading,
         multiple: true,
         beforeUpload: (file) => {
-            setFileList([...fileList, file]);
+            setFileList(fileList => [...fileList, file]);
             return false;
         },
         listType: "picture",
         onRemove(e) {
             const index = fileList.findIndex((f) => f.uid === e.uid);
-            setFileList(fileList.splice(index, 1));
+            setFileList(fileList => fileList.splice(index, 1));
         }
     };
 
