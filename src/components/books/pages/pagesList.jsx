@@ -185,7 +185,7 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
                     <CheckboxButton
                         onChange={onSelectAll}
                         checked={hasAllSelected}
-                        disabled={pages.data.length < 1}
+                        disabled={pages?.data?.length < 1}
                         indeterminate={hasPartialSelection}
                     />
                     <PageAddButton libraryId={libraryId} book={book} t={t} />

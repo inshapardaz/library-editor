@@ -35,7 +35,7 @@ const AuthorAvatar = ({
     const popoverContent = (
         <Space direction="vertical">
             <IconText icon={FaFeatherAlt}
-                text={author.type === "writer"
+                text={author.authorType === "Writer"
                     ? t("author.writer")
                     : t("author.poet")} />
             <IconText href={`/libraries/${libraryId}/books?author=${author.id}`}

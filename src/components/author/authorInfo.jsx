@@ -28,7 +28,7 @@ const AuthorInfo = ({ libraryId, author, t }) => {
                     <Link to={`/libraries/${libraryId}/books?author=${author.id}`}>{t("author.bookCount", { count: author.bookCount })}</Link>
                 </Space>
                 <Space>
-                    <FaFeatherAlt /> {author.type === "writer" ? t("author.writer") : t("author.poet")}
+                    <FaFeatherAlt /> {author.authorType === "Writer" ? t("author.writer") : t("author.poet")}
                 </Space>
                 <Button block icon={<FiEdit />} onClick={() => navigate(`/libraries/${libraryId}/authors/${author.id}/edit`)}>
                     {t("actions.edit")}
