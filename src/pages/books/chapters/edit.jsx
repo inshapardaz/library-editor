@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 
 // 3rd party imports
 import { Alert, App, Breadcrumb, Button, Spin, Tooltip } from "antd";
-import { FaAngleLeft, FaAngleRight, FaBook, FaCheckCircle } from "/src/icons";
+import { FaAngleLeft, FaAngleRight, FaBook, FaCheckCircle, FaRegClone } from "/src/icons";
 
 // Local imports
 import {
@@ -193,7 +193,7 @@ const EditChapter = () => {
                                 title: <Link to={`/libraries/${libraryId}/books/${bookId}`}><FaBook /> {book?.title}</Link>,
                             },
                             {
-                                title: t('chapters.title')
+                                title: <Link to={`/libraries/${libraryId}/books/${bookId}?section=chapters`}><FaRegClone /> {t('chapters.title')}</Link>
                             },
                             {
                                 title: (<>

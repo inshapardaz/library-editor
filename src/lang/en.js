@@ -528,6 +528,9 @@ const en = {
                 success: "Chapter ordered successfully.",
                 error: "Error ordering chapter.",
             },
+            read: {
+                title: "Read",
+            },
         },
         errors: {
             loading: {

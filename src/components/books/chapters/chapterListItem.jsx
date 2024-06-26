@@ -24,7 +24,7 @@ const ChapterListItem = ({
     t,
 }) => {
     const title = (<Link
-        to={`/libraries/${libraryId}/books/${bookId}/chapters/${chapter.chapterNumber}`}
+        to={`/libraries/${libraryId}/books/${bookId}/chapters/${chapter.chapterNumber}/edit`}
     >
         <Typography.Text>
             {chapter.chapterNumber} - {chapter.title}
@@ -49,10 +49,10 @@ const ChapterListItem = ({
                             />
                         ),
                         chapter && chapter.links.update && (
-                            <Tooltip title={t('chapter.editor.title')}>
+                            <Tooltip title={t('chapter.actions.read.title')}>
                                 <Button type="text">
                                     <Link
-                                        to={`/libraries/${libraryId}/books/${bookId}/chapters/${chapter.chapterNumber}/edit`}
+                                        to={`/libraries/${libraryId}/books/${bookId}/chapters/${chapter.chapterNumber}`}
                                     >
                                         <FaRegFileAlt />
                                     </Link>
