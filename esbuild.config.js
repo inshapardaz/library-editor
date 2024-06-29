@@ -3,7 +3,7 @@ import esbuild from "esbuild";
 import { sassPlugin } from "esbuild-sass-plugin";
 import envFilePlugin from "esbuild-envfile-plugin";
 
-dotenv.config();
+dotenv.config({ debug: true, override: true });
 const args = process.argv;
 
 const config = {
