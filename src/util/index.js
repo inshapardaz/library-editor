@@ -1,5 +1,5 @@
 import { axiosPrivate, axiosPublic } from "./axios.helpers";
-import { API_URL } from "env";
+import { API_URL } from "/src/config";
 // --------------------------------------------------------------
 const defaultLibraryImage = "/images/library_placeholder.png";
 const defaultAuthorImage = "/images/author_placeholder.jpg";

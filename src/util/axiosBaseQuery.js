@@ -1,5 +1,5 @@
 import { axiosPrivate } from "./axios.helpers";
-import { API_URL } from "env";
+import { API_URL } from "/src/config";
 
 const axiosBaseQuery =
     ({ baseUrl } = { baseUrl: API_URL }) =>

@@ -48,9 +48,7 @@
     },
     "devDependencies": {
         "cross-env": "^7.0.3",
-        "dotenv": "^16.4.5",
         "esbuild": "^0.21.3",
-        "esbuild-envfile-plugin": "^1.0.7",
         "esbuild-sass-plugin": "^3.3.0",
         "pre-commit": "^1.2.2",
         "serve": "^14.2.3"

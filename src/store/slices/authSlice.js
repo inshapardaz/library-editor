@@ -2,7 +2,7 @@ import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // local Imports
-import { API_URL } from "env";
+import { API_URL } from "/src/config";
 import { getUser, setUser, clearUser } from "/src/domain/userRepository";
 // ----------------------------------------------------------
 const axiosPublic = axios.create({

@@ -9,13 +9,6 @@ import reportWebVitals from "/src/reportWebVitals";
 import "./styles/index.scss"
 //-------------------------------------------------
 
-// For hot reload
-if (NODE_ENV === "development")
-  new EventSource("/esbuild").addEventListener("change", () =>
-    location.reload()
-  );
-//-------------------------------------------------
-
 const root = createRoot(document.getElementById("root"));
 root.render(<Provider store={store}>
   <TheApp />

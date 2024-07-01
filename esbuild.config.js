@@ -1,9 +1,6 @@
-import dotenv from "dotenv";
 import esbuild from "esbuild";
 import { sassPlugin } from "esbuild-sass-plugin";
-import envFilePlugin from "esbuild-envfile-plugin";
 
-dotenv.config({ debug: true, path: `.env.${process.env.NODE_ENV}` });
 const args = process.argv;
 
 const config = {
@@ -11,7 +8,7 @@ const config = {
   entryPoints: ["src/index.jsx"],
   outfile: "public/build/bundle.js",
   bundle: true,
-  plugins: [sassPlugin({ type: "style" }), envFilePlugin],
+  plugins: [sassPlugin({ type: "style" })],
   loader: {
     ".png": "file",
     ".jpg": "file",
@@ -21,9 +18,6 @@ const config = {
     ".js": "jsx",
   },
   assetNames: "[dir]/[name]",
-  define: {
-    NODE_ENV: JSON.stringify(process.env.NODE_ENV || "production"),
-  },
 };
 
 if (args.includes("--build")) {

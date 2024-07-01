@@ -2,7 +2,7 @@ import axios from "axios";
 import { Mutex } from "async-mutex";
 
 // Local import
-import { API_URL } from "env";
+import { API_URL } from "/src/config";
 import { getUser, setUser, clearUser } from "/src/domain/userRepository";
 //------------------------------------------
 

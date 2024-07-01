@@ -6,7 +6,7 @@ import { Layout } from 'antd';
 
 // Local imports
 import './styles.scss';
-import { NODE_ENV } from "env";
+import { NODE_ENV } from "/src/config";
 
 // ----------------------------------------------
 
