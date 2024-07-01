@@ -13,7 +13,7 @@ import { NODE_ENV } from "/src/config";
 const Footer = () => {
     const { t } = useTranslation();
     const contents = (<div className="footer">
-        <div className="footer__copyrights">{t('footer.copyrights')}{NODE_ENV != 'production' ? `- (${NODE_ENV})` : null}</div>
+        <div className="footer__copyrights">1{t('footer.copyrights')}{NODE_ENV != 'production' ? `- (${NODE_ENV})` : null}</div>
     </div>)
     return (<Layout.Footer style={{ textAlign: 'center' }}>{contents}</Layout.Footer>)
 }

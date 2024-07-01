@@ -1,6 +1,7 @@
 import React from 'react';
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 // 3rd party imports
 import { App, ConfigProvider, theme } from "antd";
@@ -33,9 +34,12 @@ const TheApp = () => {
         algorithm: themeAlgo,
       }}
     >
-      <App>
-        <Router />
-      </App>
+      <HelmetProvider>
+        <Helmet htmlAttributes={{ lang : lang ? lang.locale : 'en'  }}/>
+        <App>
+          <Router />
+        </App>
+      </HelmetProvider>
     </ConfigProvider>
   );
 };
