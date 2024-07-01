@@ -17,7 +17,7 @@
     "type": "module",
     "scripts": {
         "build": "node esbuild.config.js --build",
-        "start": "cross-env NODE_ENV=development node esbuild.config.js --start"
+        "start": "cross-env NODE_ENV=local node esbuild.config.js --start"
     },
     "dependencies": {
         "@ant-design/icons": "^5.3.6",
