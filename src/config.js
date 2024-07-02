@@ -8,8 +8,8 @@ if (window.location.host.toLocaleLowerCase() == 'editor.nawishta.dev') {
     NODE_ENV = 'development';
     API_URL = 'http://api.nawistha.dev';
     console.log('Environment is: development');
-} else if (window.location.host.toLocaleLowerCase() == 'editor.nawishta.co.uk' > 0) {
-    NODE_ENV = 'development';
+} else if (window.location.host.toLocaleLowerCase() == 'editor.nawishta.co.uk') {
+    NODE_ENV = 'production';
     API_URL = 'https://api.nawistha.co.uk';
     console.log('Environment is: production');
 } else{
