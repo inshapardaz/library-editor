@@ -7,7 +7,7 @@ console.log('window.location.host:', window.location.host);
 if (window.location.host.toLocaleLowerCase() === 'nawihta.dev') {
     NODE_ENV = 'development';
     API_URL = 'http://api.nawistha.dev';
-} else if (window.location.host.toLocaleLowerCase() === 'nawihta.co.uk' > 0) {
+} else if (window.location.host.toLocaleLowerCase() === 'editor.nawishta.co.uk' > 0) {
     NODE_ENV = 'development';
     API_URL = 'https://api.nawistha.co.uk';
 }
