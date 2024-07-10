@@ -21,7 +21,7 @@ export const languages = {
         dir: "ltr",
         isRtl: false,
         flag: "gb",
-        antdLocale: enGB,
+        antdLocale: enGB.default,
     },
     ur: {
         key: "ur",
@@ -30,7 +30,7 @@ export const languages = {
         dir: "rtl",
         isRtl: true,
         flag: "pk",
-        antdLocale: urPK,
+        antdLocale: urPK.default,
     },
 };
 
