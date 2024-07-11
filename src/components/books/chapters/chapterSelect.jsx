@@ -4,7 +4,7 @@ import React, { useRef, useState } from 'react';
 import { Button, Divider, Empty, Input, Select, Space, Tooltip } from "antd";
 
 // local imports
-import { FaUser, FaPlusCircle } from "/src/icons";
+import { FaUser, FaPlus } from "/src/icons";
 import { useGetBookChaptersQuery, useAddChapterMutation } from "/src/store/slices/booksSlice";
 
 // -------------------------------------------------
@@ -37,7 +37,7 @@ const ChapterSelect = ({
         pageSize: 10,
     });
 
-    const addItem = (e) => {
+    const addNewChapter = (e) => {
         addChapter({
             libraryId, bookId: book.id, payload: {
                 title: name
@@ -61,9 +61,9 @@ const ChapterSelect = ({
                         margin: '8px 0',
                     }}
                 />
-                <Space
+                <Space.Compact
                     style={{
-                        padding: '0 8px 4px',
+                        width: '100%',
                     }}
                 >
                     <Input
@@ -75,9 +75,9 @@ const ChapterSelect = ({
                         disabled={isAdding}
                     />
                     <Tooltip title={t('chapter.actions.add.label')} >
-                        <Button type="text" icon={<FaPlusCircle />} onClick={addItem} disabled={isAdding || !name} />
+                        <Button type="text" icon={<FaPlus />} onClick={addNewChapter} disabled={isAdding || !name} />
                     </Tooltip>
-                </Space>
+                </Space.Compact>
             </>
         )
     }

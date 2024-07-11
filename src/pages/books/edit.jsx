@@ -142,7 +142,7 @@ const BookEditPage = () => {
                                         },
                                     ]}
                                 >
-                                    <AuthorsSelect placeholder={t("book.authors.placeholder")} t={t} libraryId={libraryId} />
+                                    <AuthorsSelect placeholder={t("book.authors.placeholder")} t={t} libraryId={libraryId} showAdd />
                                 </Form.Item>
                                 <Form.Item name="categories" label={t("book.categories.label")}>
                                     <CategoriesSelect libraryId={libraryId} placeholder={t("book.categories.placeholder")} />
