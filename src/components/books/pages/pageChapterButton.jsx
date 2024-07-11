@@ -96,6 +96,7 @@ const PageChapterButton = ({ libraryId, book, pages, t, type }) => {
                             t={t}
                             placeholder={t("page.chapter.placeholder")}
                             label={data.name}
+                            showAdd={true}
                         />
                     </Form.Item>
                 </Form>

@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 
 // 3rd party libraries
-import { Empty, Select } from "antd";
+import { Button, Divider, Empty, Input, Select, Space, Tooltip } from "antd";
 
 // local imports
-import { FaUser } from "/src/icons";
-import { useGetBookChaptersQuery } from "/src/store/slices/booksSlice";
+import { FaUser, FaPlusCircle } from "/src/icons";
+import { useGetBookChaptersQuery, useAddChapterMutation } from "/src/store/slices/booksSlice";
 
 // -------------------------------------------------
 
@@ -17,7 +17,15 @@ const ChapterSelect = ({
     onChange,
     placeholder,
     t,
+    showAdd
 }) => {
+    const [name, setName] = useState('');
+    const inputRef = useRef(null);
+    const onNameChange = (event) => {
+        setName(event.target.value);
+    };
+
+    const [addChapter, { isLoading: isAdding }] = useAddChapterMutation();
     const {
         data: chapters,
         error,
@@ -29,6 +37,51 @@ const ChapterSelect = ({
         pageSize: 10,
     });
 
+    const addItem = (e) => {
+        addChapter({
+            libraryId, bookId: book.id, payload: {
+                title: name
+            }
+        })
+            .unwrap()
+            .then(() => {
+                setName('');
+            });
+        e.preventDefault();
+    }
+
+    const renderDropDown = (menu) => {
+        if (!showAdd)
+            return menu;
+        return (
+            <>
+                {menu}
+                <Divider
+                    style={{
+                        margin: '8px 0',
+                    }}
+                />
+                <Space
+                    style={{
+                        padding: '0 8px 4px',
+                    }}
+                >
+                    <Input
+                        placeholder={t('chapter.title.label')}
+                        ref={inputRef}
+                        value={name}
+                        onChange={onNameChange}
+                        onKeyDown={(e) => e.stopPropagation()}
+                        disabled={isAdding}
+                    />
+                    <Tooltip title={t('chapter.actions.add.label')} >
+                        <Button type="text" icon={<FaPlusCircle />} onClick={addItem} disabled={isAdding || !name} />
+                    </Tooltip>
+                </Space>
+            </>
+        )
+    }
+
     const onChangeHandler = (v) => onChange(v);
 
     return (
@@ -39,6 +92,7 @@ const ChapterSelect = ({
             defaultActiveFirstOption={false}
             onChange={onChangeHandler}
             placeholder={placeholder}
+            dropdownRender={renderDropDown}
             notFoundContent={
                 <Empty
                     image={<FaUser size="2em" />}
