@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 // Third party libraries
-import { App, Button, Modal, Form, Space } from "antd";
+import { App, Button, Modal, Form, Space, Tooltip } from "antd";
 
 // Local imports
 import { FaLayerGroup } from "/src/icons";
@@ -55,12 +55,14 @@ const PageChapterButton = ({ libraryId, book, pages, t, type }) => {
 
     return (
         <>
-            <Button
-                type={type}
-                onClick={onShow}
-                disabled={count === 0}
-                icon={<FaLayerGroup />}
-            />
+            <Tooltip title={t('page.actions.setChapter.title_one')}>
+                <Button
+                    type={type}
+                    onClick={onShow}
+                    disabled={count === 0}
+                    icon={<FaLayerGroup />}
+                />
+            </Tooltip>
             <Modal
                 open={open}
                 title={t("page.actions.setChapter.title", { count })}

@@ -12,6 +12,7 @@ import PageSequenceEditor from "./pageSequenceEditor";
 import PageDeleteButton from "./pageDeleteButton";
 import PageAssignButton from "./pageAssignButton";
 import PageStatusButton from "./pageStatusButton";
+import PageChapterButton from './pageChapterButton';
 
 // ------------------------------------------------------
 
@@ -76,6 +77,13 @@ const PageListItem = ({
                                 type="text"
                             />
                         ),
+                        page && page.links.update && (<PageChapterButton
+                            libraryId={libraryId}
+                            book={book}
+                            pages={[page]}
+                            t={t}
+                            type="text"
+                        />),
                         page && page.links.assign && (
                             <PageAssignButton
                                 libraryId={libraryId}
