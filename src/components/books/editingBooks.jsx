@@ -4,13 +4,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
-import { Button, List, Switch } from "antd";
+import { Button, List, Segmented } from "antd";
 
 // Internal Imports
 import DataContainer from "/src/components/layout/dataContainer";
 import { useGetMyBooksQuery } from "/src/store/slices/booksSlice";
 import BookCard from "./bookCard";
 import BookListItem from "./bookListItem";
+import { FaRegImage, FaRegListAlt } from '/src/icons';
 
 // ------------------------------------------------------
 
@@ -72,7 +73,14 @@ const EditingBooks = ({ status }) => {
             busy={isFetching}
             error={error}
             empty={books && books.data && books.data.length < 1}
-            extra={<Switch checked={showList} onChange={toggleView} />}
+            extra={<Segmented size="small"
+                onChange={toggleView}
+                value={showList}
+                options={[
+                    { value: true, icon: <FaRegListAlt /> },
+                    { value: false, icon: <FaRegImage /> },
+                ]}
+            />}
         >
             <List
                 grid={showList ? null : grid}

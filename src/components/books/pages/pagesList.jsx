@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
-import { App, Button, Col, List, Radio, Row, Skeleton } from "antd";
+import { App, Button, Col, List, Row, Segmented, Skeleton } from "antd";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 // Internal Imports
@@ -227,17 +227,14 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
                 </Button.Group>
             </Col>
             <Col>
-                <Radio.Group
+                <Segmented size="large"
+                    onChange={(value) => setShowList(value)}
                     value={showList}
-                    onChange={(e) => setShowList(e.target.value)}
-                >
-                    <Radio.Button value={true}>
-                        <FaRegListAlt />
-                    </Radio.Button>
-                    <Radio.Button value={false}>
-                        <FaRegImage />
-                    </Radio.Button>
-                </Radio.Group>
+                    options={[
+                        { value: true, icon: <FaRegListAlt /> },
+                        { value: false, icon: <FaRegImage /> },
+                    ]}
+                />
             </Col>
         </Row>
     );

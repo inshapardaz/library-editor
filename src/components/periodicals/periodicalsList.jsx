@@ -4,10 +4,10 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
-import { Button, Input, List, Space, Switch } from "antd";
+import { Button, Input, List, Segmented, Space } from "antd";
 
 // Local Imports
-import { FaPlus, ImNewspaper } from "/src/icons";
+import { FaPlus, FaRegImage, FaRegListAlt, ImNewspaper } from "/src/icons";
 import { useGetPeriodicalsQuery } from "/src/store/slices/periodicalsSlice";
 import { buildLinkToPeriodicalsPage } from "/src/util";
 import DataContainer from "/src/components/layout/dataContainer";
@@ -148,11 +148,13 @@ const PeriodicalsList = ({
                             placeholder={t("periodicals.search.placeholder")}
                         />
                     )}
-                    <Switch
-                        checkedChildren={t("actions.list")}
-                        unCheckedChildren={t("actions.card")}
-                        checked={showList}
+                    <Segmented size="medium"
                         onChange={toggleView}
+                        value={showList}
+                        options={[
+                            { value: true, icon: <FaRegListAlt /> },
+                            { value: false, icon: <FaRegImage /> },
+                        ]}
                     />
                 </Space>
             }

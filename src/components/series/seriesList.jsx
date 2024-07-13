@@ -4,10 +4,10 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
-import { Button, Input, List, Space, Switch } from "antd";
+import { Button, Input, List, Segmented, Space } from "antd";
 
 // Local Imports
-import { FaPlus, ImBooks } from "/src/icons";
+import { FaPlus, FaRegImage, FaRegListAlt, ImBooks } from "/src/icons";
 import { useGetSeriesQuery } from "/src/store/slices/seriesSlice";
 import { updateLinkToSeriesPage } from "/src/util";
 import DataContainer from "/src/components/layout/dataContainer";
@@ -126,11 +126,13 @@ const SeriesList = ({
                             placeholder={t("authors.search.placeholder")}
                         />
                     )}
-                    <Switch
-                        checkedChildren={t("actions.list")}
-                        unCheckedChildren={t("actions.card")}
-                        checked={showList}
+                    <Segmented size="medium"
                         onChange={toggleView}
+                        value={showList}
+                        options={[
+                            { value: true, icon: <FaRegListAlt /> },
+                            { value: false, icon: <FaRegImage /> },
+                        ]}
                     />
                 </Space>
             }

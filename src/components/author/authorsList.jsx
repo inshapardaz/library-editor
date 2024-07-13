@@ -4,10 +4,10 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
-import { Button, Input, List, Space, Switch } from "antd";
+import { Button, Input, List, Segmented, Space } from "antd";
 
 // Local Imports
-import { FaFeatherAlt, FaPlus } from "/src/icons";
+import { FaFeatherAlt, FaPlus, FaRegImage, FaRegListAlt } from "/src/icons";
 import { buildLinkToAuthorsPage } from "/src/util";
 import { useGetAuthorsQuery } from "/src/store/slices/authorsSlice";
 import DataContainer from "/src/components/layout/dataContainer";
@@ -55,10 +55,6 @@ const AuthorsList = ({
         pageNumber,
         pageSize,
     });
-
-    const toggleView = (checked) => {
-        setShowList(checked);
-    };
 
     const renderItem = (author) => {
         if (showList) {
@@ -142,11 +138,13 @@ const AuthorsList = ({
                         />
                     )}
                     <AuthorSortButton t={t} sortDirection={sortDirection} />
-                    <Switch
-                        checkedChildren={t("actions.list")}
-                        unCheckedChildren={t("actions.card")}
-                        checked={showList}
-                        onChange={toggleView}
+                    <Segmented size="medium"
+                        onChange={(value) => setShowList(value)}
+                        value={showList}
+                        options={[
+                            { value: true, icon: <FaRegListAlt /> },
+                            { value: false, icon: <FaRegImage /> },
+                        ]}
                     />
                 </Space>
             }

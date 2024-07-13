@@ -4,10 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
-import { Button, List, Switch } from "antd";
+import { Button, List, Segmented } from "antd";
 
 // Local Imports
-import { GiNewspaper, FaPlus } from "/src/icons";
+import { GiNewspaper, FaPlus, FaRegListAlt, FaRegImage } from "/src/icons";
 import { useGetIssuesQuery } from "/src/store/slices/issuesSlice";
 import { buildLinkToIssuesPage } from "/src/util";
 import DataContainer from "/src/components/layout/dataContainer";
@@ -130,13 +130,14 @@ const IssuesList = ({
                 </Link>
             }
             bordered={false}
-            extra={
-                <Switch
-                    checkedChildren={t("actions.list")}
-                    unCheckedChildren={t("actions.card")}
-                    checked={showList}
-                    onChange={toggleView}
-                />
+            extra={<Segmented size="medium"
+                onChange={toggleView}
+                value={showList}
+                options={[
+                    { value: true, icon: <FaRegListAlt /> },
+                    { value: false, icon: <FaRegImage /> },
+                ]}
+            />
             }
         >
             <List

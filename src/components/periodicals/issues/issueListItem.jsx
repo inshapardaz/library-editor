@@ -24,12 +24,12 @@ const IssueListItem = ({ libraryId, periodicalId, issue, t }) => {
         <IconText icon={GiStack}
             text={t("issue.volumeNumber.label")}
             secondaryText={issue.volumeNumber}
-            onClick={() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/`)} />
+            href={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/`} />
         <Divider orientation="vertical" />
         <IconText icon={FaNewspaper}
             text={t("issue.issueNumber.label")}
             secondaryText={issue.issueNumber}
-            onClick={() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}`)} />
+            href={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}`} />
     </Space>);
     return (
         <List.Item key={issue.id} actions={[

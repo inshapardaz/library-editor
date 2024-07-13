@@ -4,10 +4,10 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
-import { Button, Input, List, Space, Switch } from "antd";
+import { Button, Input, List, Segmented, Space } from "antd";
 
 // Local Imports
-import { FaBook, FaCloudUploadAlt, FaPlus } from "/src/icons";
+import { FaBook, FaCloudUploadAlt, FaPlus, FaRegImage, FaRegListAlt } from "/src/icons";
 import { updateLinkToBooksPage } from "/src/util";
 import { useGetBooksQuery } from "/src/store/slices/booksSlice";
 import DataContainer from "/src/components/layout/dataContainer";
@@ -161,11 +161,13 @@ function BooksList({
                             t={t}
                         />
                     </Button.Group>
-                    <Switch
-                        checkedChildren={t("actions.list")}
-                        unCheckedChildren={t("actions.card")}
-                        checked={showList}
-                        onChange={(checked) => setShowList(checked)}
+                    <Segmented size="medium"
+                        onChange={(value) => setShowList(value)}
+                        value={showList}
+                        options={[
+                            { value: true, icon: <FaRegListAlt /> },
+                            { value: false, icon: <FaRegImage /> },
+                        ]}
                     />
                 </Space>
             }

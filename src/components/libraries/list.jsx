@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useLocalStorage } from "usehooks-ts";
 
 // 3rd party libraries
-import { Button, Input, List, Space, Switch } from "antd";
+import { Button, Input, List, Segmented, Space } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 
 // Internal Imports
@@ -12,7 +12,7 @@ import { grid, updateLinkToLibrariesPage } from "/src/util";
 import DataContainer from "/src/components/layout/dataContainer";
 import LibraryCard from "./libraryCard";
 import LibraryListItem from "./libraryListItem";
-import { FaPlus } from "/src/icons";
+import { FaPlus, FaRegImage, FaRegListAlt } from "/src/icons";
 
 // ------------------------------------------------------
 const ShowMoreButton = ({ t }) => {
@@ -111,11 +111,13 @@ const LibrariesList = ({
                             placeholder={t("libraries.search.placeholder")}
                         />
                     )}
-                    <Switch
-                        checkedChildren={t("actions.list")}
-                        unCheckedChildren={t("actions.card")}
-                        checked={showList}
-                        onChange={(checked) => setShowList(checked)}
+                    <Segmented size="medium"
+                        onChange={(value) => setShowList(value)}
+                        value={showList}
+                        options={[
+                            { value: true, icon: <FaRegListAlt /> },
+                            { value: false, icon: <FaRegImage /> },
+                        ]}
                     />
                 </Space >
             }
