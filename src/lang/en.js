@@ -26,6 +26,7 @@ const en = {
         edit: "Edit",
         delete: "Delete",
         cancel: "Cancel",
+        ok: "OK",
         resizeImage: "Resize Image",
         zoonIn: "Zoom In",
         zoonOut: "Zoom Out",
@@ -500,10 +501,7 @@ const en = {
             delete: {
                 title: "Delete Chapter?",
                 title_other: "Delete {{count}} chapters",
-                message:
-                    "Are you sure you want to delete chapter '{{titles}}'?",
-                message_other:
-                    "Are you sure you want to delete chapters '{{titles}}'?",
+                message: "Are you sure you want to delete chapters?",
                 success: "Chapter deleted successfully.",
                 success_other: "{{count}} Chapters deleted successfully.",
                 error: "Error deleting chapter.",

@@ -46,6 +46,7 @@ const ChapterListItem = ({
                                 chapters={[chapter]}
                                 t={t}
                                 type="text"
+                                showIcon={false}
                             />
                         ),
                         chapter && chapter.links.update && (
@@ -98,11 +99,7 @@ const ChapterListItem = ({
                                     checked={selected}
                                     onChange={() => onSelectChanged(chapter)}
                                 />
-                                <Avatar>
-                                    <EditingStatusIcon
-                                        status={chapter.status}
-                                    />
-                                </Avatar>
+                                <Avatar size="small" icon={<EditingStatusIcon status={chapter.status} />} />
                             </Space>
                         }
                     />

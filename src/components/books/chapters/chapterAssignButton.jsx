@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 
 // Third party libraries
-import { App, Button, Modal, Form, Space, Tooltip, Tag } from "antd";
+import { Form, Space, Typography } from "antd";
 
 // Local imports
 import { EditOutlined, FileDoneOutlined, FaUserAlt } from "/src/icons";
-import { useAssignChapterMutation } from "/src/store/slices/booksSlice";
+import { useAssignChaptersMutation } from "/src/store/slices/booksSlice";
 import UserSelect from "/src/components/userSelect";
+import BatchActionDrawer from "/src/components/batchActionDrawer";
+
 // ------------------------------------------------------
 
-const ChapterAssignButton = ({ libraryId, chapters, t, type, showDetails = true }) => {
-    const { message } = App.useApp();
+const ChapterAssignButton = ({ libraryId, chapters, t, type, showDetails = true, showIcon = true }) => {
     const [form] = Form.useForm();
-    const [open, setOpen] = useState(false);
-    const [assignChapter, { isLoading: isAdding }] = useAssignChapterMutation();
+    const [assignChapters, { isLoading: isAdding }] = useAssignChaptersMutation();
     const count = chapters ? chapters.length : 0;
 
     let assignment = [];
@@ -21,55 +21,40 @@ const ChapterAssignButton = ({ libraryId, chapters, t, type, showDetails = true 
     if (chapters.length === 1) {
         if (chapters[0].reviewerAccountId) {
             assignment.push(
-                <Tag icon={<FileDoneOutlined />} closable={false}>
-                    {chapters[0].reviewerAccountName}
-                </Tag>
+                <Space.Compact>
+                    <FileDoneOutlined />
+                    <Typography>{chapters[0].reviewerAccountName}</Typography>
+                </Space.Compact>
             );
         }
         if (chapters[0].writerAccountId) {
             assignment.push(
-                <Tag icon={<EditOutlined />} closable={false}>
-                    {chapters[0].writerAccountName}
-                </Tag>
+                <Space.Compact>
+                    <EditOutlined />
+                    <Typography>{chapters[0].writerAccountName}</Typography>
+                </Space.Compact>
             );
         }
     }
 
-    const onSubmit = (values) => {
-        const payload = values.id === "none" ? {
-            unassign: true
-        } :
-            {
-                accountId: values.id === "me" ? null : values.id,
-            };
+    const onOk = async () => {
+        try {
 
-        const promises = chapters
-            .map((chapter) => {
-                if (chapter && chapter.links && chapter.links.assign) {
-                    return assignChapter({ chapter, payload }).unwrap();
-                }
-                return Promise.resolve();
-            });
-
-        Promise.all(promises)
-            .then(() => message.success(t("chapter.actions.assign.success", { count }))
-            )
-            .catch(() => message.error(t("chapter.actions.assign.error", { count }))
-            );
+            let values = await form.validateFields();
+            return values.id === "none" ? {
+                unassign: true
+            } :
+                {
+                    accountId: values.id === "me" ? null : values.id,
+                };
+        }
+        catch {
+            return false;
+        }
     };
-
-    const onOk = () => form
-        .validateFields()
-        .then((values) => {
-            onSubmit(values);
-        })
-        .catch((info) => {
-            console.error(info);
-        });
 
     const onShow = () => {
         form.resetFields();
-        setOpen(true);
     };
 
     let data = {
@@ -79,32 +64,24 @@ const ChapterAssignButton = ({ libraryId, chapters, t, type, showDetails = true 
 
     return (
         <>
-            <Tooltip title={t('chapter.actions.assign.label')}>
-                <Button
-                    type={type}
-                    onClick={onShow}
-                    disabled={count === 0}
-                >
-                    {showDetails && assignment.length > 0 ? assignment : <FaUserAlt />}
-                </Button>
-            </Tooltip>
-            <Modal
-                open={open}
-                title={t("chapter.actions.assign.title", { count })}
+            <BatchActionDrawer t={t}
+                tooltip={t('chapter.actions.assign.label')}
+                buttonType={type}
+                disabled={count === 0}
+                title={showDetails && assignment.length > 0 ? assignment : null}
+                icon={showIcon && <FaUserAlt />}
+                sliderTitle={t("chapter.actions.assign.label")}
                 onOk={onOk}
-                onCancel={() => setOpen(false)}
-                closable={false}
-                okButtonProps={{ disabled: isAdding }}
-                cancelButtonProps={{ disabled: isAdding }}
+                closable={!isAdding}
+                onShow={onShow}
+                listTitle={t("chapters.title")}
+                items={chapters}
+                itemTitle={chapter => chapter.title}
+                mutation={assignChapters}
+                successMessage={t("chapter.actions.assign.success", { count })}
+                errorMessage={t("chapter.actions.assign.error", { count })}
             >
                 <Form form={form} layout="vertical" initialValues={data}>
-                    <Space>
-                        {t("chapter.actions.assign.message", {
-                            chapterNumber: chapters
-                                ? chapters.map((p) => p.title).join(",")
-                                : 0,
-                        })}
-                    </Space>
                     <Form.Item
                         name="id"
                         label={t("chapter.user.label")}
@@ -123,7 +100,7 @@ const ChapterAssignButton = ({ libraryId, chapters, t, type, showDetails = true 
                             addMeOption />
                     </Form.Item>
                 </Form>
-            </Modal>
+            </BatchActionDrawer >
         </>
     );
 };

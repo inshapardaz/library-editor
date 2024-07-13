@@ -1,53 +1,39 @@
 import React, { useEffect, useState } from "react";
 
 // Third party libraries
-import { App, Button, Modal, Form, Tooltip } from "antd";
+import { Form } from "antd";
 
 // Local imports
 import { FaTasks } from "/src/icons";
-import { useUpdateChapterMutation } from "/src/store/slices/booksSlice";
+import { useUpdateChaptersMutation } from "/src/store/slices/booksSlice";
 import EditingStatusSelect from "/src/components/editingStatusSelect";
+import BatchActionDrawer from "/src/components/batchActionDrawer";
 // ------------------------------------------------------
 
-const ChapterStatusButton = ({ chapters, t, type }) => {
-    const { message } = App.useApp();
+const ChapterStatusButton = ({ chapters, t, type, showIcon = true }) => {
     const [form] = Form.useForm();
-    const [open, setOpen] = useState(false);
-    const [updateChapter, { isLoading: isUpdating }] = useUpdateChapterMutation();
+    const [updateChapters, { isLoading: isUpdating }] = useUpdateChaptersMutation();
     const [selectedStatus, setSelectedStatus] = useState(null);
+    const count = chapters ? chapters.length : 0;
 
-    const onSubmit = (values) => {
-        const promises = chapters
-            .map((chapter) => {
+    const onOk = async () => {
+        try {
+            let values = await form.validateFields();
+            return (chapter) => {
                 if (chapter && chapter.links && chapter.links.update) {
-                    const payload = { ...chapter, status: values.status };
-                    return updateChapter({ chapter: payload }).unwrap();
+                    return { ...chapter, status: values.status };
                 }
-                return Promise.resolve();
-            });
-
-        Promise.all(promises)
-            .then(() =>
-                message.success(t("chapter.actions.updateStatus.success"))
-            )
-            .catch(() =>
-                message.error(t("chapter.actions.updateStatus.error"))
-            );
+                return null;
+            }
+        }
+        catch {
+            return false;
+        }
     };
-    const onOk = () =>
-        form
-            .validateFields()
-            .then((values) => {
-                onSubmit(values);
-            })
-            .catch(() => { });
 
     const onShow = () => {
         form.resetFields();
-        setOpen(true);
     };
-
-    const title = t("chapter.actions.updateStatus.title");
 
     useEffect(() => {
         if (chapters && chapters.length === 1) {
@@ -57,22 +43,21 @@ const ChapterStatusButton = ({ chapters, t, type }) => {
 
     return (
         <>
-            <Tooltip title={t('chapter.actions.updateStatus.title')}>
-                <Button
-                    type={type}
-                    onClick={onShow}
-                    disabled={!chapters || chapters.length < 0}
-                    icon={<FaTasks />}
-                />
-            </Tooltip>
-            <Modal
-                open={open}
-                title={title}
-                onCancel={() => setOpen(false)}
+            <BatchActionDrawer t={t}
+                tooltip={t('chapter.actions.updateStatus.title')}
+                buttonType={type}
+                disabled={count === 0}
+                icon={showIcon && <FaTasks />}
+                sliderTitle={t("chapter.actions.updateStatus.title")}
                 onOk={onOk}
-                closable={false}
-                okButtonProps={{ disabled: isUpdating }}
-                cancelButtonProps={{ disabled: isUpdating }}
+                closable={!isUpdating}
+                onShow={onShow}
+                listTitle={t("chapters.title")}
+                items={chapters}
+                itemTitle={chapter => chapter.title}
+                mutation={updateChapters}
+                successMessage={t("chapter.actions.updateStatus.success")}
+                errorMessage={t("chapter.actions.updateStatus.error")}
             >
                 <Form
                     form={form}
@@ -95,7 +80,7 @@ const ChapterStatusButton = ({ chapters, t, type }) => {
                         />
                     </Form.Item>
                 </Form>
-            </Modal>
+            </BatchActionDrawer>
         </>
     );
 };

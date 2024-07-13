@@ -20,19 +20,11 @@ import LanguageSelect from '/src/components/languageSelect';
 import PublishStatusSelect from '/src/components/publishStatusSelect';
 import SeriesSelect from '/src/components/series/seriesSelect';
 import CopyrightSelect from '/src/components/copyrightSelect';
+import { ProcessStatus } from '/src/models';
 
 //--------------------------------------------------------
 const { Dragger } = Upload;
 const trimExtension = (fileName) => fileName.replace(/\.[^/.]+$/, "");
-//--------------------------------------------------------
-const ProcessStatus = {
-    Pending: "pending",
-    InProcess: "inProcess",
-    CreatingBook: "creatingBook",
-    UploadingContents: "uploadingContents",
-    Completed: "completed",
-    Failed: "failed"
-}
 //--------------------------------------------------------
 
 const BookUploadForm = ({ t, libraryId, showTitle = false }) => {

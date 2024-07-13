@@ -38,11 +38,9 @@ const LibraryEditPage = () => {
 
     if (isFetching) return <Loading />;
     if (error) return <Error t={t} />;
-    console.log(library)
 
     const onSubmit = async (library) => {
         if (libraryId) {
-            console.log(library)
             updateLibrary({ libraryId, library })
                 .unwrap()
                 .then((res) => library = res)

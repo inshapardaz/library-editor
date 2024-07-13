@@ -1,63 +1,40 @@
 import React from 'react';
 
 // Third party libraries
-import { App, Button, Modal, Tooltip } from "antd";
 import { FaTrash } from "/src/icons";
-import { ExclamationCircleFilled } from "/src/icons";
 
 // Local imports
-import { useDeleteChapterMutation } from "/src/store/slices/booksSlice";
-// ------------------------------------------------------
-const { confirm } = Modal;
+import { useDeleteChaptersMutation } from "/src/store/slices/booksSlice";
+import BatchActionDrawer from '/src/components/batchActionDrawer';
+
 // ------------------------------------------------------
 
-const ChapterDeleteButton = ({ chapters = [], t, type }) => {
-    const { message } = App.useApp();
-    const [deleteChapter, { isLoading: isDeleting }] =
-        useDeleteChapterMutation();
+const ChapterDeleteButton = ({ chapters = [], t, type, showIcon = true }) => {
+    const [deleteChapters, { isLoading: isDeleting }] =
+        useDeleteChaptersMutation();
     const count = chapters ? chapters.length : 0;
 
-    const showConfirm = () => {
-        confirm({
-            title: t("chapter.actions.delete.title", { count }),
-            icon: <ExclamationCircleFilled />,
-            content: t("chapter.actions.delete.message", {
-                titles: chapters.map((p) => p.title).join(","),
-            }),
-            okButtonProps: { loading: isDeleting },
-            okType: "danger",
-            cancelButtonProps: { disabled: isDeleting },
-            closable: isDeleting,
-            onOk() {
-                const promises = chapters
-                    .map((chapter) => {
-                        if (chapter && chapter.links && chapter.links.delete) {
-                            return deleteChapter({ chapter }).unwrap();
-                        }
-                        return Promise.resolve();
-                    });
+    const onOk = () => (request) => request;
 
-                return Promise.all(promises)
-                    .then(() => { message.success(t("chapter.actions.delete.success", { count })) })
-                    .catch(() =>
-                        message.error(
-                            t("chapter.actions.delete.error", { count })
-                        )
-                    );
-            },
-        });
-    };
+    return (<>
+        <BatchActionDrawer t={t}
+            tooltip={t('chapter.actions.delete.title')}
+            buttonType={type}
+            disabled={count === 0}
+            icon={showIcon && <FaTrash />}
+            sliderTitle={t("chapter.actions.delete.title")}
+            onOk={onOk}
+            closable={!isDeleting}
+            listTitle={t("chapter.actions.delete.message")}
+            items={[...chapters].sort((a, b) => b.chapterNumber > a.chapterNumber)}
+            itemTitle={chapter => chapter.title}
+            mutation={deleteChapters}
+            successMessage={t("chapter.actions.delete.success", { count })}
+            errorMessage={t("chapter.actions.delete.error", { count })}
+        >
 
-    return (
-        <Tooltip title={t('actions.delete')}>
-            <Button
-                type={type}
-                disabled={count < 1}
-                onClick={showConfirm}
-                icon={<FaTrash />}
-            />
-        </Tooltip>
-    );
+        </BatchActionDrawer >
+    </>);
 };
 
 export default ChapterDeleteButton;

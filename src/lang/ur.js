@@ -50,6 +50,7 @@ const ur = {
         edit: "تدوین",
         delete: "حذف کیجئے",
         cancel: "اخراج",
+        ok: "ٹھیک ہے",
         resizeImage: "تصویر کی تدوین",
         zoonIn: "زوم ان",
         zoonOut: "زوم آؤٹ",
@@ -529,9 +530,7 @@ const ur = {
             delete: {
                 title: "باب حذف کریں",
                 title_other: "{{count}} ابواب حذف کریں",
-                message: "کیا آپ باب '{{titles}}' کو حذف کرنا چاہتے ہیں؟",
-                message_other:
-                    "کیا آپ ابواب '{{titles}}' کو حذف کرنا چاہتے ہیں؟",
+                message: "کیا آپ ابواب کو حذف کرنا چاہتے ہیں؟",
                 success: "باب حذف کر دیا گیا ہے۔",
                 success_other: "{{count}} ابواب حذف کر دیا گیا ہے۔",
                 error: "باب حذف نہیں کیا جا سکا۔",

@@ -3,6 +3,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import axiosBaseQuery from "/src/util/axiosBaseQuery";
 
 import { parseResponse, removeLinks } from "/src/util/parseResponse";
+import { ProcessStatus } from "/src/models";
 
 // ----------------------------------------------
 export const booksApi = createApi({
@@ -207,11 +208,68 @@ export const booksApi = createApi({
             transformResponse: (response) => parseResponse(response),
             invalidatesTags: ["Chapters"],
         }),
-        deleteChapter: builder.mutation({
-            query: ({ chapter }) => ({
-                url: chapter.links.delete,
-                method: "DELETE",
-            }),
+        updateChapters: builder.mutation({
+            async queryFn(
+                { requests, payload, onProgress },
+                _queryApi,
+                _extraOptions,
+                baseQuery
+            ) {
+                for (const request of requests) {
+                    try {
+                        request.status = ProcessStatus.InProcess;
+                        onProgress(request);
+                        let body =
+                            typeof payload === "function"
+                                ? payload(request.data)
+                                : payload;
+                        if (body) {
+                            await baseQuery({
+                                url: request.data.links.update,
+                                method: "PUT",
+                                data: removeLinks(body),
+                            });
+
+                            request.status = ProcessStatus.Completed;
+                        } else {
+                            request.status = ProcessStatus.Skipped;
+                        }
+                        onProgress(request);
+                    } catch (e) {
+                        console.error(e);
+                        request.status = ProcessStatus.Failed;
+                        onProgress(request);
+                    }
+                }
+                return { data: requests };
+            },
+            invalidatesTags: ["Chapters"],
+        }),
+        deleteChapters: builder.mutation({
+            async queryFn(
+                { requests, payload, onProgress },
+                _queryApi,
+                _extraOptions,
+                baseQuery
+            ) {
+                for (const request of requests) {
+                    try {
+                        request.status = ProcessStatus.InProcess;
+                        onProgress(request);
+                        await baseQuery({
+                            url: request.data.links.delete,
+                            method: "DELETE",
+                        });
+                        request.status = ProcessStatus.Completed;
+                        onProgress(request);
+                    } catch (e) {
+                        console.error(e);
+                        request.status = ProcessStatus.Failed;
+                        onProgress(request);
+                    }
+                }
+                return { data: requests };
+            },
             invalidatesTags: ["Chapters"],
         }),
         assignChapter: builder.mutation({
@@ -220,6 +278,42 @@ export const booksApi = createApi({
                 method: "POST",
                 data: removeLinks(payload),
             }),
+            invalidatesTags: ["Chapters"],
+        }),
+        assignChapters: builder.mutation({
+            async queryFn(
+                { requests, payload, onProgress },
+                _queryApi,
+                _extraOptions,
+                baseQuery
+            ) {
+                for (const request of requests) {
+                    try {
+                        request.status = ProcessStatus.InProcess;
+                        onProgress(request);
+                        let body =
+                            typeof payload === "function"
+                                ? payload(request.data)
+                                : payload;
+                        if (body) {
+                            await baseQuery({
+                                url: request.data.links.assign,
+                                method: "POST",
+                                data: removeLinks(body),
+                            });
+                            request.status = ProcessStatus.Completed;
+                        } else {
+                            request.status = ProcessStatus.Skipped;
+                        }
+                        onProgress(request);
+                    } catch (e) {
+                        console.error(e);
+                        request.status = ProcessStatus.Failed;
+                        onProgress(request);
+                    }
+                }
+                return { data: requests };
+            },
             invalidatesTags: ["Chapters"],
         }),
         updateChapterSequence: builder.mutation({
@@ -417,8 +511,10 @@ export const {
     useUpdateBookImageMutation,
     useAddChapterMutation,
     useUpdateChapterMutation,
-    useDeleteChapterMutation,
+    useUpdateChaptersMutation,
+    useDeleteChaptersMutation,
     useAssignChapterMutation,
+    useAssignChaptersMutation,
     useUpdateChapterSequenceMutation,
     useGetBookPageQuery,
     useAddBookPageMutation,

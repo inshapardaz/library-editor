@@ -29,7 +29,6 @@ const BookPagesUploadPage = () => {
     } = useGetBookQuery({ libraryId, bookId }, { skip: !libraryId || !bookId });
 
     const handleUpload = () => {
-        console.log(fileList.length)
         createBookPageWithImage({
             book,
             fileList
@@ -52,7 +51,6 @@ const BookPagesUploadPage = () => {
         </Button.Group>,
     ];
 
-    console.log(fileList);
     const props = {
         name: 'file',
         disabled: isUploading,
