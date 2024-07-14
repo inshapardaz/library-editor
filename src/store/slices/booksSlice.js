@@ -224,13 +224,17 @@ export const booksApi = createApi({
                                 ? payload(request.data)
                                 : payload;
                         if (body) {
-                            await baseQuery({
+                            var result = await baseQuery({
                                 url: request.data.links.update,
                                 method: "PUT",
                                 data: removeLinks(body),
                             });
 
-                            request.status = ProcessStatus.Completed;
+                            if (result.error){
+                                request.status = ProcessStatus.Failed;
+                            } else {
+                                request.status = ProcessStatus.Completed;
+                            }
                         } else {
                             request.status = ProcessStatus.Skipped;
                         }
@@ -256,11 +260,15 @@ export const booksApi = createApi({
                     try {
                         request.status = ProcessStatus.InProcess;
                         onProgress(request);
-                        await baseQuery({
+                        var result = await baseQuery({
                             url: request.data.links.delete,
                             method: "DELETE",
                         });
-                        request.status = ProcessStatus.Completed;
+                        if (result.error){
+                            request.status = ProcessStatus.Failed;
+                        } else {
+                            request.status = ProcessStatus.Completed;
+                        }
                         onProgress(request);
                     } catch (e) {
                         console.error(e);
@@ -296,12 +304,17 @@ export const booksApi = createApi({
                                 ? payload(request.data)
                                 : payload;
                         if (body) {
-                            await baseQuery({
+                            var result = await baseQuery({
                                 url: request.data.links.assign,
                                 method: "POST",
                                 data: removeLinks(body),
                             });
-                            request.status = ProcessStatus.Completed;
+
+                            if (result.error){
+                                request.status = ProcessStatus.Failed;
+                            } else {
+                                request.status = ProcessStatus.Completed;
+                            }
                         } else {
                             request.status = ProcessStatus.Skipped;
                         }
@@ -382,11 +395,83 @@ export const booksApi = createApi({
             transformResponse: (response) => parseResponse(response),
             invalidatesTags: ["BookPages"],
         }),
+        updateBookPages: builder.mutation({
+            async queryFn(
+                { requests, payload, onProgress },
+                _queryApi,
+                _extraOptions,
+                baseQuery
+            ) {
+                for (const request of requests) {
+                    try {
+                        request.status = ProcessStatus.InProcess;
+                        onProgress(request);
+                        let body = typeof payload === "function"
+                                ? payload(request.data)
+                                : payload;
+                        if (body) {
+                            var result = await baseQuery({
+                                    url: request.data.links.update,
+                                    method: "PUT",
+                                data: removeLinks(body),
+                            });
+
+                            if (result.error){
+                                request.status = ProcessStatus.Failed;
+                            } else {
+                                request.status = ProcessStatus.Completed;
+                            }
+                        } else {
+                            request.status = ProcessStatus.Skipped;
+                        }
+                        onProgress(request);
+                    } catch (e) {
+                        console.error(e);
+                        request.status = ProcessStatus.Failed;
+                        onProgress(request);
+                    }
+                }
+                return { data: requests };
+            },
+            transformResponse: (response) =>      parseResponse(response),
+            invalidatesTags: ["BookPages"],
+        }),
         deleteBookPage: builder.mutation({
             query: ({ page }) => ({
                 url: page.links.delete,
                 method: "DELETE",
             }),
+            invalidatesTags: ["BookPages"],
+        }),
+        deleteBookPages: builder.mutation({
+            async queryFn(
+                { requests, payload, onProgress },
+                _queryApi,
+                _extraOptions,
+                baseQuery
+            ) {
+                for (const request of requests) {
+                    try {
+                        request.status = ProcessStatus.InProcess;
+                        onProgress(request);
+                        var result = await baseQuery({
+                            url: request.data.links.delete,
+                            method: "DELETE",
+                        });
+                        if (result.error){
+                            request.status = ProcessStatus.Failed;
+                        } else {
+                            request.status = ProcessStatus.Completed;
+                        }
+                        onProgress(request);
+                    } catch (e) {
+                        console.error(e);
+                        request.status = ProcessStatus.Failed;
+                        onProgress(request);
+                    }
+                }
+                return { data: requests };
+            },
             invalidatesTags: ["BookPages"],
         }),
         assignBookPage: builder.mutation({
@@ -400,12 +485,95 @@ export const booksApi = createApi({
             }),
             invalidatesTags: ["BookPages"],
         }),
+        assignBookPages: builder.mutation({
+            async queryFn(
+                { requests, payload, onProgress },
+                _queryApi,
+                _extraOptions,
+                baseQuery
+            ) {
+                for (const request of requests) {
+                    try {
+                        request.status = ProcessStatus.InProcess;
+                        onProgress(request);
+                        let body =
+                            typeof payload === "function"
+                                ? payload(request.data)
+                                : payload;
+                        if (body) {
+                            var result = await baseQuery({
+                                url: payload.accountId === "me"
+                                ? request.data.links.assign_to_me
+                                : request.data.links.assign,
+                                method: "POST",
+                                data: removeLinks(body),
+                            });
+                            if (result.error){
+                                request.status = ProcessStatus.Failed;
+                            } else {
+                                request.status = ProcessStatus.Completed;
+                            }
+                        } else {
+                            request.status = ProcessStatus.Skipped;
+                        }
+                        onProgress(request);
+                    } catch (e) {
+                        console.error(e);
+                        request.status = ProcessStatus.Failed;
+                        onProgress(request);
+                    }
+                }
+                return { data: requests };
+            },
+            invalidatesTags: ["BookPages"],
+        }),
         ocrBookPage: builder.mutation({
             query: ({ page, key }) => ({
                 url: page.links.ocr,
                 method: "POST",
                 data: { key: key },
             }),
+            invalidatesTags: ["BookPages"],
+        }),
+        ocrBookPages: builder.mutation({
+            async queryFn(
+                { requests, payload, onProgress },
+                _queryApi,
+                _extraOptions,
+                baseQuery
+            ) {
+                for (const request of requests) {
+                    try {
+                        request.status = ProcessStatus.InProcess;
+                        onProgress(request);
+                        let body =
+                            typeof payload === "function"
+                                ? payload(request.data)
+                                : payload;
+                        if (body) {
+                            var result = await baseQuery({
+                                url: body.page.links.ocr,
+                                method: "POST",
+                                data: { key: body.key },
+                            });
+
+                            if (result.error){
+                                request.status = ProcessStatus.Failed;
+                            } else {
+                                request.status = ProcessStatus.Completed;
+                            }
+                        } else {
+                            request.status = ProcessStatus.Skipped;
+                        }
+                        onProgress(request);
+                    } catch (e) {
+                        console.error(e);
+                        request.status = ProcessStatus.Failed;
+                        onProgress(request);
+                    }
+                }
+                return { data: requests };
+            },
             invalidatesTags: ["BookPages"],
         }),
         updateBookPageImage: builder.mutation({
@@ -519,9 +687,13 @@ export const {
     useGetBookPageQuery,
     useAddBookPageMutation,
     useUpdateBookPageMutation,
+    useUpdateBookPagesMutation,
     useDeleteBookPageMutation,
+    useDeleteBookPagesMutation,
     useAssignBookPageMutation,
+    useAssignBookPagesMutation,
     useOcrBookPageMutation,
+    useOcrBookPagesMutation,
     useUpdateBookPageImageMutation,
     useUpdateBookPageSequenceMutation,
     useCreateBookPageWithImageMutation,

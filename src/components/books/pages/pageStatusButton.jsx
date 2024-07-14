@@ -1,54 +1,39 @@
 import React, { useEffect, useState } from "react";
 
 // Third party libraries
-import { App, Button, Modal, Form } from "antd";
+import { Form } from "antd";
 
 // Local imports
 import { FaTasks } from "/src/icons";
-import { useUpdateBookPageMutation } from "/src/store/slices/booksSlice";
+import { useUpdateBookPagesMutation } from "/src/store/slices/booksSlice";
 import EditingStatusSelect from "/src/components/editingStatusSelect";
+import BatchActionDrawer from "/src/components/batchActionDrawer";
 
 // ------------------------------------------------------
 
-const PageStatusButton = ({ pages, t, type }) => {
-    const { message } = App.useApp();
+const PageStatusButton = ({ pages, t, type, showIcon = true }) => {
     const [form] = Form.useForm();
-    const [open, setOpen] = useState(false);
-    const [updateBookPage, { isLoading: isUpdating }] = useUpdateBookPageMutation();
+    const [updateBookPages, { isLoading: isUpdating }] = useUpdateBookPagesMutation();
     const count = pages ? pages.length : 0;
     const [selectedStatus, setSelectedStatus] = useState(null);
 
-    const onSubmit = (values) => {
-        const promises = pages
-            .map((page) => {
+    const onOk = async () => {
+        try {
+            let values = await form.validateFields();
+            return (page) => {
                 if (page && page.links && page.links.update) {
-                    const payload = { ...page, status: values.status };
-                    return updateBookPage({ page: payload }).unwrap();
+                    return { ...page, status: values.status };
                 }
-                return Promise.resolve();
-            });
-
-        Promise.all(promises)
-            .then(() => {
-                setOpen(false);
-                message.success(t("page.actions.updateStatus.success"))
-            })
-            .catch(() => {
-                setOpen(false);
-                message.error(t("page.actions.updateStatus.error"))
-            });
+                return null;
+            }
+        }
+        catch {
+            return false;
+        }
     };
-    const onOk = () =>
-        form
-            .validateFields()
-            .then((values) => {
-                onSubmit(values);
-            })
-            .catch(() => { });
-
+  
     const onShow = () => {
         form.resetFields();
-        setOpen(true);
     };
 
     useEffect(() => {
@@ -57,26 +42,25 @@ const PageStatusButton = ({ pages, t, type }) => {
         }
     }, [pages]);
 
-    const title = t("page.actions.updateStatus.title");
-
     return (
         <>
-            <Button
-                type={type}
-                onClick={onShow}
+        <BatchActionDrawer t={t}
+                tooltip={t("page.actions.updateStatus.title")}
+                buttonType={type}
                 disabled={count === 0}
-                icon={<FaTasks />}
-            ></Button>
-            <Modal
-                open={open}
-                title={title}
-                onCancel={() => setOpen(false)}
+                icon={showIcon && <FaTasks />}
+                sliderTitle={t("page.actions.updateStatus.title")}
                 onOk={onOk}
-                closable={false}
-                okButtonProps={{ disabled: isUpdating }}
-                cancelButtonProps={{ disabled: isUpdating }}
+                closable={!isUpdating}
+                onShow={onShow}
+                listTitle={t("page.actions.assign.message")}
+                items={pages}
+                itemTitle={page => page.sequenceNumber}
+                mutation={updateBookPages}
+                successMessage={t("page.actions.updateStatus.success")}
+                errorMessage={t("page.actions.updateStatus.error")}
             >
-                <Form
+             <Form
                     form={form}
                     layout="vertical"
                     initialValues={{ status: selectedStatus }}
@@ -97,7 +81,7 @@ const PageStatusButton = ({ pages, t, type }) => {
                         />
                     </Form.Item>
                 </Form>
-            </Modal>
+            </BatchActionDrawer>
         </>
     );
 };

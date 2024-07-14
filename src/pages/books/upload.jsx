@@ -351,7 +351,6 @@ const BooksUpload = () => {
         </Button>)
     ];
 
-    console.log(saving || hasUploadCompleted());
     const renderContents = () => {
         if (saving || hasUploadCompleted()) {
             return <BookUploadStatus t={t} status={status} requests={requests} libraryId={libraryId} onRetry={onRetry} />

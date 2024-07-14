@@ -617,9 +617,8 @@ const en = {
                 title: "Editing page {{sequenceNumber}}",
             },
             assign: {
-                title_one: "Assign page {{count}}",
-                title_other: "Assign pages {{count}}",
-                message: "Assigning page(s) '{{ sequenceNumber }}'?",
+                title: "Assign pages?",
+                message: "Assign page(s)?",
                 success_one: "Page assigned successfully.",
                 success_other: "{{count}} pages assigned successfully.",
                 error_one: "Error assigning page.",
@@ -652,18 +651,15 @@ const en = {
                 error: "Error saving page statuses.",
             },
             delete: {
-                title_one: "Delete page",
-                title_other: "Delete {{count}} pages",
-                message:
-                    "Are you sure you want to delete page '{{ sequenceNumber }}'?",
+                title: "Delete pages",
+                message: "Are you sure you want to delete pages?",
                 success: "Page deleted successfully.",
                 error: "Error deleting page.",
             },
             setChapter: {
                 title_one: "Setting Chapter",
                 title_other: "Setting Chapter for {{count}} pages",
-                message:
-                    "Are you sure you want to change chapter for page(s) '{{ sequenceNumber }}'?",
+                message: "Are you sure you want to change chapter for page(s)?",
                 success: "Pages updated successfully.",
                 error: "Error updating pages.",
             },
@@ -671,7 +667,7 @@ const en = {
                 title_one: "Extract text for page",
                 title_other: "Extract text for {{count}} pages",
                 message:
-                    "Are you sure you want to extract text for page(s) '{{ sequenceNumber }}'? This will overwrite existing text for pages and cannot be recovered.",
+                    "Are you sure you want to extract text for page(s)? This will overwrite existing text for pages and cannot be recovered.",
                 success: "Text extraction successfully.",
                 error: "Error extracting text.",
                 key: {

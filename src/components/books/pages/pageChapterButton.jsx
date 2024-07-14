@@ -1,76 +1,58 @@
-import React, { useState } from "react";
+import React from "react";
 
 // Third party libraries
-import { App, Button, Modal, Form, Space, Tooltip } from "antd";
+import { Form, Space } from "antd";
 
 // Local imports
 import { FaLayerGroup } from "/src/icons";
-import { useUpdateBookPageMutation } from "/src/store/slices/booksSlice";
+import { useUpdateBookPagesMutation } from "/src/store/slices/booksSlice";
 import ChapterSelect from "/src/components/books/chapters/chapterSelect";
+import BatchActionDrawer from "/src/components/batchActionDrawer";
 
 // ------------------------------------------------------
 
-const PageChapterButton = ({ libraryId, book, pages, t, type }) => {
-    const { message } = App.useApp();
+const PageChapterButton = ({ libraryId, book, pages, t, type, showIcon = true }) => {
     const [form] = Form.useForm();
-    const [open, setOpen] = useState(false);
-    const [updateBookPage, { isLoading: isAssigning }] = useUpdateBookPageMutation();
+    const [updateBookPages, { isLoading: isUpdating }] = useUpdateBookPagesMutation();
     const count = pages ? pages.length : 0;
 
-    const onSubmit = (values) => {
-        const promises = pages
-            .map((page) => {
-                if (page && page.links && page.links.assign) {
-                    const payload = { ...page, chapterId: values.id };
-                    return updateBookPage({ page: payload }).unwrap();
+    const onOk = async () => {
+        try {
+            let values = await form.validateFields();
+            return (page) => {
+                if (page && page.links && page.links.update) {
+                    return { ...page, chapterId: values.id };
                 }
-                return Promise.resolve();
-            });
-
-        Promise.all(promises)
-            .then(() =>
-                message.success(t("page.actions.setChapter.success", { count }))
-            )
-            .catch(() =>
-                message.error(t("page.actions.setChapter.error", { count }))
-            );
+                return null;
+            }
+        }
+        catch {
+            return false;
+        }
     };
-
-    const onOk = () =>
-        form
-            .validateFields()
-            .then((value) => {
-                onSubmit(value);
-            })
-            .catch((info) => {
-                console.log(info);
-            });
-
     const onShow = () => {
         form.resetFields();
-        setOpen(true);
     };
 
     let data = { chapterId: null };
 
     return (
         <>
-            <Tooltip title={t('page.actions.setChapter.title_one')}>
-                <Button
-                    type={type}
-                    onClick={onShow}
-                    disabled={count === 0}
-                    icon={<FaLayerGroup />}
-                />
-            </Tooltip>
-            <Modal
-                open={open}
-                title={t("page.actions.setChapter.title", { count })}
+            <BatchActionDrawer t={t}
+                tooltip={t("page.actions.setChapter.title_one")}
+                buttonType={type}
+                disabled={count === 0}
+                icon={showIcon && <FaLayerGroup />}
+                sliderTitle={t("page.actions.updateStatus.title")}
                 onOk={onOk}
-                onCancel={() => setOpen(false)}
-                closable={false}
-                okButtonProps={{ disabled: isAssigning }}
-                cancelButtonProps={{ disabled: isAssigning }}
+                closable={!isUpdating}
+                onShow={onShow}
+                listTitle={t("page.actions.setChapter.title", { count })}
+                items={pages}
+                itemTitle={page => page.sequenceNumber}
+                mutation={updateBookPages}
+                successMessage={t("page.actions.setChapter.success", { count })}
+                errorMessage={t("page.actions.setChapter.error", { count })}
             >
                 <Form form={form} layout="vertical" initialValues={data}>
                     <Space>
@@ -78,7 +60,7 @@ const PageChapterButton = ({ libraryId, book, pages, t, type }) => {
                             sequenceNumber: pages
                                 ? pages.map((p) => p.sequenceNumber).join(",")
                                 : 0,
-                        })}
+                            })}
                     </Space>
                     <Form.Item
                         name="id"
@@ -89,7 +71,7 @@ const PageChapterButton = ({ libraryId, book, pages, t, type }) => {
                                 message: t("page.chapter.required"),
                             },
                         ]}
-                    >
+                        >
                         <ChapterSelect
                             libraryId={libraryId}
                             book={book}
@@ -97,10 +79,10 @@ const PageChapterButton = ({ libraryId, book, pages, t, type }) => {
                             placeholder={t("page.chapter.placeholder")}
                             label={data.name}
                             showAdd={true}
-                        />
+                            />
                     </Form.Item>
                 </Form>
-            </Modal>
+            </BatchActionDrawer>
         </>
     );
 };

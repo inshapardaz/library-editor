@@ -1,57 +1,37 @@
-import React, { useState } from "react";
+import React from "react";
 
 // Third party libraries
-import { App, Button, Modal, Form, Space } from "antd";
+import { Form, Space } from "antd";
 
 // Local imports
 import { FaUserAlt } from "/src/icons";
-import { useAssignBookPageMutation } from "/src/store/slices/booksSlice";
+import { useAssignBookPagesMutation } from "/src/store/slices/booksSlice";
 import UserSelect from "/src/components/userSelect";
+import BatchActionDrawer from "/src/components/batchActionDrawer";
 
 // ------------------------------------------------------
 
-const PageAssignButton = ({ libraryId, pages, t, type }) => {
-    const { message } = App.useApp();
+const PageAssignButton = ({ libraryId, pages, t, type, showDetails = false, showIcon = true }) => {
     const [form] = Form.useForm();
-    const [open, setOpen] = useState(false);
-    const [assignBookPage, { isLoading: isAssigning }] =
-        useAssignBookPageMutation();
+    const [assignBookPages, { isLoading: isAssigning }] =
+        useAssignBookPagesMutation();
     const count = pages ? pages.length : 0;
-    const onSubmit = (values) => {
-        const payload = {
-            accountId: values.id === "none" ? null : values.id,
-        };
 
-        const promises = pages
-            .map((page) => {
-                if (page && page.links && page.links.assign) {
-                    return assignBookPage({ page, payload }).unwrap();
-                }
-                return Promise.resolve();
-            });
+    const onOk = async () => {
+        try {
 
-        Promise.all(promises)
-            .then(() => {
-                setOpen(false);
-                message.success(t("page.actions.assign.success", { count }));
-            })
-            .catch(() => {
-                setOpen(false);
-                message.error(t("page.actions.assign.error", { count }))
-            });
+            let values = await form.validateFields();
+            return {
+                accountId: values.id === "none" ? null : values.id,
+            };
+        }
+        catch {
+            return false;
+        }
     };
-
-    const onOk = () =>
-        form
-            .validateFields()
-            .then((values) => {
-                onSubmit(values);
-            })
-            .catch(() => { });
 
     const onShow = () => {
         form.resetFields();
-        setOpen(true);
     };
 
     const hasAllPagesGotLink = true;
@@ -64,20 +44,22 @@ const PageAssignButton = ({ libraryId, pages, t, type }) => {
 
     return (
         <>
-            <Button
-                type={type}
-                onClick={onShow}
+            <BatchActionDrawer t={t}
+                tooltip={t('page.actions.assign.title')}
+                buttonType={type}
                 disabled={count === 0}
-                icon={<FaUserAlt />}
-            />
-            <Modal
-                open={open}
-                title={t("page.actions.assign.title", { count })}
+                title={showDetails && t('page.actions.assign.title')}
+                icon={showIcon && <FaUserAlt />}
+                sliderTitle={t("page.actions.assign.title")}
                 onOk={onOk}
-                onCancel={() => setOpen(false)}
-                closable={false}
-                okButtonProps={{ disabled: isAssigning }}
-                cancelButtonProps={{ disabled: isAssigning }}
+                closable={!isAssigning}
+                onShow={onShow}
+                listTitle={t("chapters.title")}
+                items={pages}
+                itemTitle={page => page.sequenceNumber}
+                mutation={assignBookPages}
+                successMessage={t("page.actions.assign.success", { count })}
+                errorMessage={t("page.actions.assign.error", { count })}
             >
                 <Form form={form} layout="vertical" initialValues={data}>
                     <Space>
@@ -106,7 +88,7 @@ const PageAssignButton = ({ libraryId, pages, t, type }) => {
                         />
                     </Form.Item>
                 </Form>
-            </Modal>
+            </BatchActionDrawer>
         </>
     );
 };

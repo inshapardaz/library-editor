@@ -1,74 +1,52 @@
-import React, { useState } from "react";
-
-// Third party libraries
-import { App, Button, Modal } from "antd";
+import React, { useEffect, useState } from "react";
 
 // Local imports
 import { VscLayersActive } from "/src/icons";
-import { useUpdateBookPageMutation } from "/src/store/slices/booksSlice";
+import { useUpdateBookPagesMutation } from "/src/store/slices/booksSlice";
+import BatchActionDrawer from "/src/components/batchActionDrawer";
 
 // ------------------------------------------------------
 
 const PageAutoChapterUpdate = ({ pages, t, type }) => {
-    const { message } = App.useApp();
-    const [open, setOpen] = useState(false);
-    const [updateBookPage, { isLoading: isAssigning }] = useUpdateBookPageMutation();
+    const [updateBookPages, { isLoading: isUpdating }] = useUpdateBookPagesMutation();
     const count = pages ? pages.length : 0;
+    const [updatedPages, setUpdatedPags] = useState([]);
 
-    const onOk = () => {
+    useEffect(() => {
+        let newPages = [];
         let chapterId = null;
-        const promises = [];
-
-        if (pages.length > 0) {
-            for (let i = 0; i < pages.length; i++) {
-                const page = pages[i];
-                if (page.chapterId) {
-                    chapterId = page.chapterId;
-                } else {
-                    const payload = { ...page, chapterId: chapterId };
-                    promises.push(updateBookPage({ page: payload }).unwrap());
-                }
-            }
-
-            if (promises.length > 0) {
-                Promise.all(promises)
-                    .then(() =>
-                        message.success(t("page.actions.setChapter.success", { count }))
-                    )
-                    .catch(() =>
-                        message.error(t("page.actions.setChapter.error", { count }))
-                    );
+        for (let i = 0; i < pages.length; i++) {
+            const page = pages[i];
+            if (page.chapterId) {
+                chapterId = page.chapterId;
+            } else if (chapterId) {
+                const newPage = { ...page, chapterId: chapterId };
+                newPages.push(newPage);
             }
         }
 
-        setOpen(false);
-    }
+        setUpdatedPags(newPages);
+    }, [pages]);
 
-    const onShow = () => {
-        setOpen(true);
-    };
+    const onOk = async () => (page) => page;
 
     return (
         <>
-            <Button
-                type={type}
-                onClick={onShow}
-                disabled={count === 0}
+        <BatchActionDrawer t={t}
+                tooltip={t("pages.actions.autoFillChapter.title", { count })}
+                buttonType={type}
+                disabled={updatedPages.length < 1}
                 icon={<VscLayersActive />}
-            />
-            <Modal
-                open={open}
-                title={t("pages.actions.autoFillChapter.title", { count })}
+                sliderTitle={t("pages.actions.autoFillChapter.title", { count })}
                 onOk={onOk}
-                onCancel={() => setOpen(false)}
-                closable={false}
-                okButtonProps={{ disabled: isAssigning }}
-                cancelButtonProps={{ disabled: isAssigning }}
-            >
-                <p>
-                    {t("pages.actions.autoFillChapter.message")}
-                </p>
-            </Modal>
+                closable={!isUpdating}
+                listTitle={t("pages.actions.autoFillChapter.message")}
+                items={updatedPages}
+                itemTitle={page => page.sequenceNumber}
+                mutation={updateBookPages}
+                successMessage={t("page.actions.setChapter.success", { count })}
+                errorMessage={t("page.actions.setChapter.error", { count })}
+            />
         </>
     );
 };

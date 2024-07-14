@@ -1,204 +1,106 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useLocalStorage } from "usehooks-ts";
+
 
 // Third party libraries
 import {
-    App,
-    Button,
-    Modal,
     Form,
     Switch,
-    List,
     Input,
     Space,
-    Avatar,
+    Collapse,
 } from "antd";
 
 // Local imports
 import {
     MdImageSearch,
-    FaCircleNotch,
-    FaRegCheckCircle,
-    FaRegHourglass,
-    FaRegTimesCircle,
-    FaTrashAlt,
 } from "/src/icons";
-import { useOcrBookPageMutation } from "/src/store/slices/booksSlice";
-
-// ------------------------------------------------------
-
-const ProcessingStatus = {
-    Pending: "pending",
-    Busy: "busy",
-    Complete: "complete",
-    Failed: "failed",
-};
-
-const ProcessingIcon = ({ status }) => {
-    switch (status) {
-        case ProcessingStatus.Pending:
-            return <FaRegHourglass />;
-        case ProcessingStatus.Busy:
-            return <FaCircleNotch />;
-        case ProcessingStatus.Complete:
-            return <FaRegCheckCircle />;
-        case ProcessingStatus.Failed:
-            return <FaRegTimesCircle />;
-        default:
-            return null;
-    }
-};
+import { useOcrBookPagesMutation } from "/src/store/slices/booksSlice";
+import BatchActionDrawer from "/src/components/batchActionDrawer";
 
 // ------------------------------------------------------
 
 const PageOcrButton = ({ pages, t, type }) => {
-    const { message } = App.useApp();
     const [form] = Form.useForm();
-    const [open, setOpen] = useState(false);
     const [key, setKey] = useLocalStorage("ocr.key");
-    const [pagesStatus, setPagesStatus] = useState([]);
+
     const data = { key, storeApiKey: false };
-    const [ocrBookPage, { isLoading: isBusy }] = useOcrBookPageMutation();
+    const [ocrBookPages, { isLoading: isBusy }] = useOcrBookPagesMutation();
     const count = pages ? pages.length : 0;
 
-    useEffect(() => {
-        if (pages) {
-            setPagesStatus(
-                pages.map((p) => ({
-                    ...p,
-                    status: ProcessingStatus.Pending,
-                }))
-            );
-        }
-    }, [pages]);
 
-    const onSubmit = (values) => {
-        const promises = pagesStatus
-            .map((page) => {
+    const onOk = async () => {
+        try {
+            let values = await form.validateFields();
+            setKey(values.key);
+            return (page) => {
                 if (page && page.links && page.links.ocr) {
-                    page.status = ProcessingStatus.Busy;
-                    return ocrBookPage({ page, key: values.key }).unwrap()
-                        .then(() => page.status = ProcessingStatus.Complete)
-                        .catch(() => page.status = ProcessingStatus.Failed);
-                } else {
-                    return Promise.resolve();
+                    return { page, key: values.key };
                 }
-            });
-
-        return Promise.all(promises)
-            .then(() => {
-                if (values.storeApiKey) {
-                    setKey(values.key);
-                }
-            })
-            .then(() =>
-                message.success(t("page.actions.setChapter.success", { count }))
-            )
-            .catch(() => {
-                message.error(t("page.actions.setChapter.error", { count }));
-            });
+                return null;
+            }
+        }
+        catch {
+            return false;
+        }
     };
 
-    const onOk = () => {
-        form.validateFields()
-            .then(onSubmit)
-            .catch(() => setOpen(true));
-    };
-
-    const onShow = () => {
-        form.resetFields();
-        setOpen(true);
-    };
-
-    const onDelete = (page) => {
-        const newList = pagesStatus.filter(
-            (p) => page.sequenceNumber !== p.sequenceNumber
-        );
-
-        setPagesStatus(newList);
-    };
+    const onShow = () => form.resetFields();
+    
     return (
         <>
-            <Button
-                type={type}
-                onClick={onShow}
+        <BatchActionDrawer t={t}
+                tooltip={t("page.actions.updateStatus.title")}
+                buttonType={type}
+                size='large'
                 disabled={count === 0}
                 icon={<MdImageSearch />}
-            />
-            <Modal
-                title={t("page.actions.ocr.title", { count })}
-                open={open}
+                sliderTitle={t("page.actions.updateStatus.title")}
                 onOk={onOk}
-                confirmLoading={isBusy}
-                onCancel={() => setOpen(false)}
                 closable={!isBusy}
-                maskClosable={!isBusy}
-                cancelButtonProps={{ disabled: isBusy }}
-                width={1000}
+                onShow={onShow}
+                items={pages}
+                itemTitle={page => page.sequenceNumber}
+                mutation={ocrBookPages}
+                successMessage={t("page.actions.setChapter.success", { count })}
+                errorMessage={t("page.actions.setChapter.error", { count })}
             >
                 <Form form={form} layout="vertical" initialValues={data}>
                     <Space>
-                        {t("page.actions.ocr.message", {
-                            sequenceNumber: pagesStatus
-                                ? pagesStatus
-                                    .map((p) => p && p.sequenceNumber)
-                                    .join(",")
-                                : 0,
-                        })}
+                         {t("page.actions.ocr.message")}
                     </Space>
-                    <Form.Item
-                        label={t("page.actions.ocr.key.label")}
-                        name="key"
-                        help={t("page.actions.ocr.key.description")}
-                        rules={[
-                            {
-                                required: true,
-                                message: t("page.actions.ocr.key.required"),
-                            },
-                        ]}
-                    >
-                        <Input.TextArea rows={2} />
-                    </Form.Item>
-                    <Form.Item
-                        label={t("page.actions.ocr.saveKey.label")}
-                        name="storeApiKey"
-                        help={t("page.actions.ocr.saveKey.description")}
-                    >
-                        <Switch />
-                    </Form.Item>
-                    <Form.Item>
-                        <List
-                            bordered
-                            dataSource={pagesStatus}
-                            renderItem={(p) => (
-                                <List.Item
-                                    key={p.sequenceNumber} // Add key prop with a unique value
-                                    actions={[
-                                        <Button
-                                            key="delete-button"
-                                            type="text"
-                                            disabled={isBusy}
-                                            icon={<FaTrashAlt />}
-                                            onClick={() => onDelete(p)}
-                                        />,
+                    <Collapse
+                    items={[
+                        {
+                            key: '1',
+                            label: t("page.actions.ocr.key.label"),
+                            children: (<>
+                                <Form.Item
+                                    label={t("page.actions.ocr.key.label")}
+                                    name="key"
+                                    help={t("page.actions.ocr.key.description")}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: t("page.actions.ocr.key.required"),
+                                        },
                                     ]}
                                 >
-                                    <List.Item.Meta
-                                        avatar={
-                                            <Avatar>
-                                                <ProcessingIcon
-                                                    status={p.status}
-                                                />
-                                            </Avatar>
-                                        }
-                                        title={p.sequenceNumber}
-                                    />
-                                </List.Item>
-                            )}
-                        ></List>
-                    </Form.Item>
+                                    <Input.TextArea rows={2} />
+                                </Form.Item>
+                                <Form.Item
+                                    label={t("page.actions.ocr.saveKey.label")}
+                                    name="storeApiKey"
+                                    help={t("page.actions.ocr.saveKey.description")}
+                                >
+                                    <Switch />
+                                </Form.Item>
+                            </>)
+                        },
+                    ]}
+                    />
                 </Form>
-            </Modal>
+            </BatchActionDrawer>
         </>
     );
 };

@@ -51,6 +51,7 @@ const BatchActionDrawer = ({
     disabled,
     sliderTitle,
     placement = 'left',
+    size = 'default',
     // Called when ok button pressed. If returns false or null, it will do nothing.
     // Return payload for requests and it will call mutation with it
     // if payload is a function, this function will be called for each call to api and response from this function
@@ -58,7 +59,7 @@ const BatchActionDrawer = ({
     // Do any validation on this callback if needed
     onOk = () => { },
     onShow = () => { },
-    onClose = () => { },
+    onClose = () => { }, 
     errorMessage,
     successMessage,
     closable,
@@ -101,7 +102,7 @@ const BatchActionDrawer = ({
         setRequests(newRequests);
     }, [requests]);
 
-    const onSubmit = async () => {
+    const onSubmit = useCallback(async (e) => {
         var payload = await onOk();
 
         if (!payload) return;
@@ -111,8 +112,10 @@ const BatchActionDrawer = ({
         }
 
         const hasFailure = requests.find(x => x.status == ProcessStatus.Failed);
+        
         if (hasFailure) {
-            if (errorMessage) {
+            if (errorMessage)
+            {
                 message.error(errorMessage);
             }
         } else {
@@ -122,7 +125,8 @@ const BatchActionDrawer = ({
 
             onCloseDrawer();
         }
-    };
+        
+    });
 
     useEffect(() => {
         if (open) return;
@@ -155,6 +159,7 @@ const BatchActionDrawer = ({
                 placement={placement}
                 onClose={onCloseDrawer}
                 open={open}
+                size={size}
                 closable={closable}
                 maskClosable={closable}
                 extra={<Space>

@@ -1,62 +1,36 @@
 import React from 'react';
 
-// Third party libraries
-import { App, Button, Modal } from "antd";
-
 // Local imports
-import { FaTrash, ExclamationCircleFilled } from "/src/icons";
-import { useDeleteBookPageMutation } from "/src/store/slices/booksSlice";
+import { FaTrash } from "/src/icons";
+import { useDeleteBookPagesMutation } from "/src/store/slices/booksSlice";
+import BatchActionDrawer from '/src/components/batchActionDrawer';
 
-// ------------------------------------------------------
-const { confirm } = Modal;
 // ------------------------------------------------------
 const PageDeleteButton = ({
     pages = [],
     t,
-    type,
-    onDeleted = () => { },
+    type
 }) => {
-    const { message } = App.useApp();
-    const [deleteBookPage, { isLoading: isDeleting }] =
-        useDeleteBookPageMutation();
+    const [deleteBookPages, { isLoading: isDeleting, showIcon = true }] =
+        useDeleteBookPagesMutation();
     const count = pages ? pages.length : 0;
+    const onOk = () => (request) => request;
 
-    const showConfirm = () => {
-        confirm({
-            title: t("page.actions.delete.title", { count }),
-            icon: <ExclamationCircleFilled />,
-            content: t("page.actions.delete.message", {
-                sequenceNumber: pages.map((p) => p.sequenceNumber).join(","),
-            }),
-            okButtonProps: { disabled: isDeleting },
-            cancelButtonProps: { disabled: isDeleting },
-            closable: !isDeleting,
-            onOk: () => {
-                const promises = pages
-                    .map((page) => {
-                        if (page && page.links && page.links.delete) {
-                            return deleteBookPage({ page }).unwrap();
-                        }
-                        return Promise.resolve();
-                    });
-
-                return Promise.all(promises)
-                    .then(() => onDeleted())
-                    .then(() => { message.success(t("page.actions.delete.success")) })
-                    .catch(() => { message.error(t("page.actions.delete.error")) }
-                    );
-            },
-        });
-    };
-
-    return (
-        <Button
-            type={type}
-            disabled={count < 1}
-            onClick={showConfirm}
-            icon={<FaTrash />}
-        ></Button>
-    );
+    return (<BatchActionDrawer t={t}
+        tooltip={t('page.actions.delete.title')}
+        buttonType={type}
+        disabled={count === 0}
+        icon={showIcon && <FaTrash />}
+        sliderTitle={t("page.actions.delete.title")}
+        onOk={onOk}
+        closable={!isDeleting}
+        listTitle={t("page.actions.delete.message")}
+        items={[...pages].sort((a, b) => b.sequenceNumber > a.sequenceNumber)}
+        itemTitle={page => page.sequenceNumber}
+        mutation={deleteBookPages}
+        successMessage={t("page.actions.delete.success")}
+        errorMessage={t("page.actions.delete.error")}
+    />);
 };
 
 export default PageDeleteButton;
