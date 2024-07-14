@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 // Third party libraries
@@ -22,48 +22,79 @@ const PageAssignmentFilterButton = ({ book, t }) => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const location = useLocation();
+    const [assignment, setAssignment] = useState(AssignmentStatus.All);
 
-    const assignment =
-        (book.status === BookStatus.BeingTyped && searchParams.get("assignment")) ||
-            (book.status === BookStatus.ProofRead && searchParams.get("reviewerAssignment"))
-            ? AssignmentStatus.AssignedToMe
-            : AssignmentStatus.All;
 
-    const setAssignment = (newAvailabilityStatus) => {
-        navigate(
-            updateLinkToBooksPagesPage(
-                location, {
-                pageNumber: 1,
-                assignmentFilter: BookStatus.BeingTyped === book.status ? newAvailabilityStatus : null,
-                reviewerAssignmentFilter: BookStatus.ProofRead === book.status ? newAvailabilityStatus : null,
+    useEffect(() => {
+        const writerAssignment = searchParams.get("assignment");
+        const readerAssignment = searchParams.get("reviewerAssignment");
+
+        if (writerAssignment === AssignmentStatus.All && readerAssignment ===  AssignmentStatus.All){
+                setAssignment(AssignmentStatus.All);
+        } if (!writerAssignment && !readerAssignment){
+            setAssignment(AssignmentStatus.All);
+        } else {
+            if (writerAssignment === readerAssignment) {
+                setAssignment(writerAssignment);
+            } else {
+                if (book.status === BookStatus.BeingTyped && writerAssignment) {
+                    setAssignment(writerAssignment);
+                } else if (book.status === BookStatus.ProofRead && readerAssignment) {
+                    setAssignment(readerAssignment);
+                } else {
+                    setAssignment(AssignmentStatus.AssignedToMe);
+                }
             }
-            )
-        );
+        }
+    }, [book, searchParams]);
+
+    const setNewAssignment = (newAvailabilityStatus) => {
+        if (newAvailabilityStatus == AssignmentStatus.All) {
+            navigate(
+                updateLinkToBooksPagesPage(
+                    location, {
+                    pageNumber: 1,
+                    assignmentFilter: AssignmentStatus.All,
+                    reviewerAssignmentFilter: AssignmentStatus.All,
+                }
+                )
+            );
+        } else {
+            navigate(
+                updateLinkToBooksPagesPage(
+                    location, {
+                    pageNumber: 1,
+                    assignmentFilter: BookStatus.BeingTyped === book.status ? newAvailabilityStatus : null,
+                    reviewerAssignmentFilter: BookStatus.ProofRead === book.status ? newAvailabilityStatus : null,
+                }
+                )
+            );
+        }
     };
 
     const items = [
         {
             icon: <FaUsers />,
             label: t("pages.assignment.all"),
-            onClick: () => setAssignment(AssignmentStatus.All),
+            onClick: () => setNewAssignment(AssignmentStatus.All),
             key: AssignmentStatus.All,
         },
         {
             icon: <FaUserAlt />,
             label: t("pages.assignment.mine"),
-            onClick: () => setAssignment(AssignmentStatus.AssignedToMe),
+            onClick: () => setNewAssignment(AssignmentStatus.AssignedToMe),
             key: AssignmentStatus.AssignedToMe,
         },
         {
             icon: <FaUserFriends />,
             label: t("pages.assignment.assigned"),
-            onClick: () => setAssignment(AssignmentStatus.Assigned),
+            onClick: () => setNewAssignment(AssignmentStatus.Assigned),
             key: AssignmentStatus.Assigned,
         },
         {
             icon: <FaUserSlash />,
             label: t("pages.assignment.unassigned"),
-            onClick: () => setAssignment(AssignmentStatus.Unassigned),
+            onClick: () => setNewAssignment(AssignmentStatus.Unassigned),
             key: AssignmentStatus.Unassigned,
         },
     ];

@@ -52,7 +52,8 @@ const BookInfo = ({ libraryId, book, t }) => {
                         <IconText
                             icon={EditingStatusIcon({ status: s.status, render: false })}
                             text={t(`editingStatus.${s.status}`)}
-                            secondaryText={s.count} />
+                            secondaryText={s.count} 
+                            href={`/libraries/${libraryId}/books/${book?.id}?section=pages&status=${s.status}`}/>
                         <Progress percent={s.percentage} size="small" />
                     </Space>
                 ))}

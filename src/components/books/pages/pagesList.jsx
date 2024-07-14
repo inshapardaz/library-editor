@@ -72,12 +72,8 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
     const [selection, setSelection] = useState([]);
     const [selectedPages, setSelectedPages] = useState([]);
     const status = searchParams.get("status") ?? getFilterFromBookStatus(book);
-    const assignment =
-        searchParams.get("assignment") ??
-        getAssignmentFilterFromBookStatus(book);
-    const reviewerAssignmentFilter =
-        searchParams.get("reviewerAssignment") ??
-        getAssignmentFilterFromBookStatus(book);
+    const assignment = searchParams.get("assignment");
+    const reviewerAssignmentFilter = searchParams.get("reviewerAssignment");
     const pageNumber = searchParams.get("pageNumber") ?? 1;
     const pageSize = searchParams.get("pageSize") ?? 12;
     const sortDirection = searchParams.get("sortDirection") ?? 12;
@@ -92,8 +88,8 @@ const PagesList = ({ libraryId, book, t, size = "default" }) => {
             libraryId,
             bookId: book.id,
             status,
-            assignment: BookStatus.BeingTyped === book.status ? assignment : null,
-            reviewerAssignmentFilter: BookStatus.ProofRead === book.status ? reviewerAssignmentFilter : null,
+            assignment: assignment ? assignment : AssignmentStatus.All,
+            reviewerAssignmentFilter: reviewerAssignmentFilter ? reviewerAssignmentFilter : AssignmentStatus.All,
             sortDirection,
             pageNumber,
             pageSize,
