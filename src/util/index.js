@@ -492,6 +492,7 @@ export const downloadFile = async (url, onProgress = () => {}) => {
 export const loadPdfPage = async (pdf, index) => {
     const canvas = document.createElement("canvas");
     canvas.setAttribute("className", "canv");
+    canvas.setAttribute("willReadFrequently", true);
     var page = await pdf.getPage(index);
     var viewport = page.getViewport({ scale: 1.5 });
     canvas.height = viewport.height;
@@ -501,7 +502,9 @@ export const loadPdfPage = async (pdf, index) => {
         viewport: viewport,
     };
     await page.render(render_context).promise;
-    return canvas.toDataURL("image/png");
+    const data = canvas.toDataURL("image/png");
+    canvas.remove();
+    return data;
 };
 
 export const dataURItoBlob = (dataURI) => {
@@ -582,6 +585,18 @@ export const readBinaryFile = (file) => {
     return new Promise((resolve, reject) => {
         var reader = new FileReader();
         reader.onload = () => resolve(new Uint8Array(reader.result));
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(file);
+    });
+};
+
+export const readBlob = (file) => {
+    return new Promise((resolve, reject) => {
+        var reader = new FileReader();
+        reader.onload = () =>
+            resolve(
+                new Blob(new Uint8Array(reader.result), { type: file.type })
+            );
         reader.onerror = reject;
         reader.readAsArrayBuffer(file);
     });

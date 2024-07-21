@@ -5,7 +5,6 @@ import { Card, Empty, Result } from "antd";
 
 // Local Import
 import "./styles.scss";
-
 // ------------------------------------------------
 
 const DataContainer = ({
@@ -38,6 +37,8 @@ const DataContainer = ({
             icon={errorIcon}
             extra={errorAction}
         />);
+    } else if (busy && busyContent) {
+        return busyContent;
     } else if (empty) {
         content = (<Empty image={emptyImage} description={emptyDescription}>
             {emptyContent}
@@ -53,7 +54,7 @@ const DataContainer = ({
             extra={extra}
             bordered={bordered}
             className="api_container"
-            loading={busy && !busyContent}
+            loading={busy && busyContent}
             style={style}
         >
             {content}
