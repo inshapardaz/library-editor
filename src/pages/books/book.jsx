@@ -159,7 +159,7 @@ const BookPage = () => {
                     </Col>
                     <Col l={20} md={18} xs={24}>
                         <Tabs
-                            defaultActiveKey={section}
+                            activeKey={section}
                             items={tabs}
                             onChange={onChange}
                         />
