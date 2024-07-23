@@ -509,6 +509,7 @@ const ur = {
             label: "کیفیت",
             placeholder: "باب کی کیفیت چنیں",
             required: "باب کی کیفیت ضروری ہے",
+            unsavedChanges: "غیر محفوظ تبدیلیاں",
         },
         user: {
             label: "صارف",
@@ -562,6 +563,8 @@ const ur = {
         editor: {
             title: "مندرجات کی تدوین",
             newContents: "باب کے نئے مندرجات تخلیق کی جا رہی ہیں۔",
+            unsavedContents:
+                "غیر محفوظ شدہ مندرجات موجود ہیں۔ وہیں سے تدوین جاری رکھیں؟",
         },
     },
     pages: {

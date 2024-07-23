@@ -480,6 +480,7 @@ const en = {
             label: "Status",
             placeholder: "Select Chapter Status",
             required: "Chapter status is required",
+            unsavedChanges: "Unsaved Changes",
         },
         user: {
             label: "User",
@@ -539,6 +540,8 @@ const en = {
         editor: {
             title: "Edit chapter contents",
             newContents: "New chapter contents being created.",
+            unsavedContents:
+                "Unsaved changed found for this chapter. Would you like to continue editing it?",
         },
     },
     pages: {

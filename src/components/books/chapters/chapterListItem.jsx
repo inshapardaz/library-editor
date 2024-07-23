@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
-import { Avatar, Button, Checkbox, List, Space, Tooltip, Typography } from "antd";
+import { Avatar, Badge, Button, Checkbox, List, Space, Tooltip, Typography } from "antd";
 import { Draggable } from "react-beautiful-dnd";
 
 // Local Import
@@ -23,13 +23,21 @@ const ChapterListItem = ({
     onSelectChanged = () => { },
     t,
 }) => {
+    const unsavedStatus = () => {
+        if (localStorage.getItem(`chapter-${libraryId}-${bookId}-${chapter.chapterNumber}`) != null)
+            return (<Badge status="processing" title={t('chapter.status.unsavedChanges')} />);
+
+        return null;
+    }
+
     const title = (<Link
         to={`/libraries/${libraryId}/books/${bookId}/chapters/${chapter.chapterNumber}/edit`}
     >
         <Typography.Text>
-            {chapter.chapterNumber} - {chapter.title}
+            {unsavedStatus()} {chapter.chapterNumber} - {chapter.title}
         </Typography.Text>
     </Link>);
+
 
     return (
         <Draggable
