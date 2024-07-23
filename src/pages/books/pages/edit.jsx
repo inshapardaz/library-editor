@@ -218,18 +218,18 @@ const PageEditPage = () => {
         actions.push(
             <Button.Group>
                 <Tooltip title={t("actions.previous")}>
-                    <Button disabled={!page || !page.links.previous}>
-                        <Link to={`/libraries/${libraryId}/books/${bookId}/pages/${parseInt(pageNumber) - 1}/edit`}>
+                    <Link to={`/libraries/${libraryId}/books/${bookId}/pages/${parseInt(pageNumber) - 1}/edit`}>
+                        <Button disabled={!page || !page.links.previous}>
                             {lang.isRtl ? <FaAngleRight /> : <FaAngleLeft />}
-                        </Link>
-                    </Button>
+                        </Button>
+                    </Link>
                 </Tooltip>
                 <Tooltip title={t("actions.next")}>
-                    <Button disabled={!page || !page.links.next}>
-                        <Link to={`/libraries/${libraryId}/books/${bookId}/pages/${parseInt(pageNumber) + 1}/edit`}>
+                    <Link to={`/libraries/${libraryId}/books/${bookId}/pages/${parseInt(pageNumber) + 1}/edit`}>
+                        <Button disabled={!page || !page.links.next}>
                             {lang.isRtl ? <FaAngleLeft /> : <FaAngleRight />}
-                        </Link>
-                    </Button>
+                        </Button>
+                    </Link>
                 </Tooltip>
             </Button.Group>
         );

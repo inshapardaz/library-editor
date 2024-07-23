@@ -156,18 +156,18 @@ const EditChapter = () => {
                 />
             )}
             <Tooltip title={t("actions.previous")}>
-                <Button disabled={!chapter || !chapter.links.previous}>
-                    <Link to={`/libraries/${libraryId}/books/${bookId}/chapters/${chapter.chapterNumber - 1}/edit`}>
+                <Link to={`/libraries/${libraryId}/books/${bookId}/chapters/${chapter.chapterNumber - 1}/edit`}>
+                    <Button disabled={!chapter || !chapter.links.previous}>
                         {lang.isRtl ? <FaAngleRight /> : <FaAngleLeft />}
-                    </Link>
-                </Button>
+                    </Button>
+                </Link>
             </Tooltip>
             <Tooltip title={t("actions.next")}>
-                <Button disabled={!chapter || !chapter.links.next}>
-                    <Link to={`/libraries/${libraryId}/books/${bookId}/chapters/${chapter.chapterNumber + 1}/edit`}>
+                <Link to={`/libraries/${libraryId}/books/${bookId}/chapters/${chapter.chapterNumber + 1}/edit`}>
+                    <Button disabled={!chapter || !chapter.links.next}>
                         {lang.isRtl ? <FaAngleLeft /> : <FaAngleRight />}
-                    </Link>
-                </Button>
+                    </Button>
+                </Link>
             </Tooltip>
         </Button.Group>,
     ] : [];
