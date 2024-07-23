@@ -27,7 +27,7 @@ const BookPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const section = searchParams.get("section");
+    const section = searchParams.get("section") ?? "chapters";
     const { libraryId, bookId } = useParams();
     const {
         data: book,
