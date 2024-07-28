@@ -1109,6 +1109,116 @@ const en = {
             },
         },
     },
+    issueArticles: {
+        title: "Writings",
+        errors: {
+            loading: {
+                title: "Error",
+                subTitle: "Unable to load writings.",
+            },
+        },
+        empty: {
+            title: "No writing found",
+        },
+        search: {
+            placeholder: "Search writings...",
+        },
+        sort: {
+            title: "Title",
+            lastModified: "Last Modified",
+        },
+        favorites: {
+            title: "Favorites",
+        },
+        read: {
+            title: "Read books",
+        },
+        latest: {
+            title: "Latest books",
+        },
+        actions: {
+            reorder: {
+                success: "Sequence of articles has been updated.",
+                error: "Error updating sequence of articles.",
+            },
+        },
+    },
+    issueArticle: {
+        title: {
+            label: "Title",
+            placeholder: "Title of writing",
+            required: "Title is required for writing",
+        },
+        type: {
+            label: "Type",
+            placeholder: "Type of writing",
+            required: "Type is required for writing",
+            writing: "Prose",
+            poetry: "Poetry",
+        },
+        public: {
+            label: "Public",
+        },
+        authors: {
+            label: "Authors",
+            placeholder: "Select authors of the writing",
+            required: "Author is required",
+        },
+        layout: {
+            label: "Layout",
+            placeholder: "Select layout",
+        },
+        status: {
+            label: "Status",
+            placeholder: "Select writing status",
+        },
+        categories: {
+            label: "Categories",
+            placeholder: "Select categories",
+        },
+        information: {
+            label: "Information",
+        },
+        contents: {
+            label: "Contents",
+        },
+        messages: {
+            newContent:
+                "There are no contents available in chosen language. You are creating new content for this article۔",
+        },
+        actions: {
+            add: {
+                label: "Add new writing",
+                title: "New writing",
+                success: "Writing created successfully.",
+                error: "Error creating writing.",
+            },
+            edit: {
+                title: "Editing '{{title}}'",
+                success: "Writing saved successfully.",
+                error: "Error saving writing",
+            },
+            delete: {
+                title: "Delete writing?",
+                message: "Are you sure you want to delete writing '{{name}}'?",
+                success: "Writing deleted successfully.",
+                error: "Error deleting writing.",
+            },
+            updateStatus: {
+                title: "Article Status",
+                success: "Article status updated successfully.",
+                error: "Error saving article statuses.",
+            },
+        },
+        errors: {
+            contentNotFound: {
+                title: "Content Not Available in `{{language}}`.",
+                titleMissing: "Content Not Available.",
+                subTitle: "Please try a different language below.",
+                subTitleMissing: "Please visit us later.",
+            },
+        },
+    },
     users: {
         empty: {
             title: "No Series",

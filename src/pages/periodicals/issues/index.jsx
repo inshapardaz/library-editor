@@ -20,6 +20,7 @@ import IssueDeleteButton from "/src/components/periodicals/issues/issueDeleteBut
 import FileList from "/src/components/periodicals/issues/files/filesList";
 import Loading from "/src/components/common/loader";
 import Error from "/src/components/common/error";
+import IssueArticlesList from '/src/components/periodicals/issues/article/issueArticlesList';
 
 //--------------------------------------------------------
 const { Content, Sider } = Layout;
@@ -50,13 +51,14 @@ const IssuePage = () => {
                 </Space>
             ),
             children: (
-                // <ChaptersList
-                //     libraryId={libraryId}
-                //     bookId={bookId}
-                //     t={t}
-                //     size="large"
-                // />
-                "articles"
+                <IssueArticlesList
+                    libraryId={libraryId}
+                    periodicalId={periodicalId}
+                    volumeNumber={volumeNumber}
+                    issueNumber={issueNumber}
+                    t={t}
+                    size="large"
+                />
             ),
         },
         {
