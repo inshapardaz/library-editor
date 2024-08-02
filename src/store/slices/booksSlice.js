@@ -3,7 +3,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import axiosBaseQuery from "/src/util/axiosBaseQuery";
 
 import { parseResponse, removeLinks } from "/src/util/parseResponse";
-import { ProcessStatus } from "/src/models";
+import { processMultipleRequests } from "/src/util";
 
 // ----------------------------------------------
 export const booksApi = createApi({
@@ -215,70 +215,34 @@ export const booksApi = createApi({
                 _extraOptions,
                 baseQuery
             ) {
-                for (const request of requests) {
-                    try {
-                        request.status = ProcessStatus.InProcess;
-                        onProgress(request);
-                        let body =
-                            typeof payload === "function"
-                                ? payload(request.data)
-                                : payload;
-                        if (body) {
-                            var result = await baseQuery({
-                                url: request.data.links.update,
-                                method: "PUT",
-                                data: removeLinks(body),
-                            });
-
-                            if (result.error){
-                                request.status = ProcessStatus.Failed;
-                            } else {
-                                request.status = ProcessStatus.Completed;
-                            }
-                        } else {
-                            request.status = ProcessStatus.Skipped;
-                        }
-                        onProgress(request);
-                    } catch (e) {
-                        console.error(e);
-                        request.status = ProcessStatus.Failed;
-                        onProgress(request);
-                    }
-                }
-                return { data: requests };
+                return processMultipleRequests({
+                    baseQuery,
+                    method: "PUT",
+                    url: (request) => request.data.links.update,
+                    requests,
+                    payload,
+                    onProgress,
+                });
             },
-            invalidatesTags: ["Chapters"],
+            invalidatesTags: (result, error) => (error ? [] : ["Chapters"]),
         }),
         deleteChapters: builder.mutation({
             async queryFn(
-                { requests, payload, onProgress },
+                { requests, onProgress },
                 _queryApi,
                 _extraOptions,
                 baseQuery
             ) {
-                for (const request of requests) {
-                    try {
-                        request.status = ProcessStatus.InProcess;
-                        onProgress(request);
-                        var result = await baseQuery({
-                            url: request.data.links.delete,
-                            method: "DELETE",
-                        });
-                        if (result.error){
-                            request.status = ProcessStatus.Failed;
-                        } else {
-                            request.status = ProcessStatus.Completed;
-                        }
-                        onProgress(request);
-                    } catch (e) {
-                        console.error(e);
-                        request.status = ProcessStatus.Failed;
-                        onProgress(request);
-                    }
-                }
-                return { data: requests };
+                return processMultipleRequests({
+                    baseQuery,
+                    method: "DELETE",
+                    url: (request) => request.data.links.delete,
+                    requests,
+                    payload: null,
+                    onProgress,
+                });
             },
-            invalidatesTags: ["Chapters"],
+            invalidatesTags: (result, error) => (error ? [] : ["Chapters"]),
         }),
         assignChapter: builder.mutation({
             query: ({ chapter, payload }) => ({
@@ -286,7 +250,7 @@ export const booksApi = createApi({
                 method: "POST",
                 data: removeLinks(payload),
             }),
-            invalidatesTags: ["Chapters"],
+            invalidatesTags: (result, error) => (error ? [] : ["Chapters"]),
         }),
         assignChapters: builder.mutation({
             async queryFn(
@@ -295,39 +259,16 @@ export const booksApi = createApi({
                 _extraOptions,
                 baseQuery
             ) {
-                for (const request of requests) {
-                    try {
-                        request.status = ProcessStatus.InProcess;
-                        onProgress(request);
-                        let body =
-                            typeof payload === "function"
-                                ? payload(request.data)
-                                : payload;
-                        if (body) {
-                            var result = await baseQuery({
-                                url: request.data.links.assign,
-                                method: "POST",
-                                data: removeLinks(body),
-                            });
-
-                            if (result.error){
-                                request.status = ProcessStatus.Failed;
-                            } else {
-                                request.status = ProcessStatus.Completed;
-                            }
-                        } else {
-                            request.status = ProcessStatus.Skipped;
-                        }
-                        onProgress(request);
-                    } catch (e) {
-                        console.error(e);
-                        request.status = ProcessStatus.Failed;
-                        onProgress(request);
-                    }
-                }
-                return { data: requests };
+                return processMultipleRequests({
+                    baseQuery,
+                    method: "POST",
+                    url: (request) => request.data.links.assign,
+                    requests,
+                    payload,
+                    onProgress,
+                });
             },
-            invalidatesTags: ["Chapters"],
+            invalidatesTags: (result, error) => (error ? [] : ["Chapters"]),
         }),
         updateChapterSequence: builder.mutation({
             query: ({ libraryId, bookId, payload }) => ({
@@ -402,39 +343,17 @@ export const booksApi = createApi({
                 _extraOptions,
                 baseQuery
             ) {
-                for (const request of requests) {
-                    try {
-                        request.status = ProcessStatus.InProcess;
-                        onProgress(request);
-                        let body = typeof payload === "function"
-                                ? payload(request.data)
-                                : payload;
-                        if (body) {
-                            var result = await baseQuery({
-                                    url: request.data.links.update,
-                                    method: "PUT",
-                                data: removeLinks(body),
-                            });
-
-                            if (result.error){
-                                request.status = ProcessStatus.Failed;
-                            } else {
-                                request.status = ProcessStatus.Completed;
-                            }
-                        } else {
-                            request.status = ProcessStatus.Skipped;
-                        }
-                        onProgress(request);
-                    } catch (e) {
-                        console.error(e);
-                        request.status = ProcessStatus.Failed;
-                        onProgress(request);
-                    }
-                }
-                return { data: requests };
+                return processMultipleRequests({
+                    baseQuery,
+                    method: "PUT",
+                    url: (request) => request.data.links.update,
+                    requests,
+                    payload,
+                    onProgress,
+                });
             },
-            transformResponse: (response) =>      parseResponse(response),
-            invalidatesTags: ["BookPages"],
+            transformResponse: (response) => parseResponse(response),
+            invalidatesTags: (result, error) => (error ? [] : ["BookPages"]),
         }),
         deleteBookPage: builder.mutation({
             query: ({ page }) => ({
@@ -450,29 +369,16 @@ export const booksApi = createApi({
                 _extraOptions,
                 baseQuery
             ) {
-                for (const request of requests) {
-                    try {
-                        request.status = ProcessStatus.InProcess;
-                        onProgress(request);
-                        var result = await baseQuery({
-                            url: request.data.links.delete,
-                            method: "DELETE",
-                        });
-                        if (result.error){
-                            request.status = ProcessStatus.Failed;
-                        } else {
-                            request.status = ProcessStatus.Completed;
-                        }
-                        onProgress(request);
-                    } catch (e) {
-                        console.error(e);
-                        request.status = ProcessStatus.Failed;
-                        onProgress(request);
-                    }
-                }
-                return { data: requests };
+                return processMultipleRequests({
+                    baseQuery,
+                    method: "DELETE",
+                    url: (request) => request.data.links.delete,
+                    requests,
+                    payload,
+                    onProgress,
+                });
             },
-            invalidatesTags: ["BookPages"],
+            invalidatesTags: (result, error) => (error ? [] : ["BookPages"]),
         }),
         assignBookPage: builder.mutation({
             query: ({ page, payload }) => ({
@@ -492,40 +398,19 @@ export const booksApi = createApi({
                 _extraOptions,
                 baseQuery
             ) {
-                for (const request of requests) {
-                    try {
-                        request.status = ProcessStatus.InProcess;
-                        onProgress(request);
-                        let body =
-                            typeof payload === "function"
-                                ? payload(request.data)
-                                : payload;
-                        if (body) {
-                            var result = await baseQuery({
-                                url: payload.accountId === "me"
-                                ? request.data.links.assign_to_me
-                                : request.data.links.assign,
-                                method: "POST",
-                                data: removeLinks(body),
-                            });
-                            if (result.error){
-                                request.status = ProcessStatus.Failed;
-                            } else {
-                                request.status = ProcessStatus.Completed;
-                            }
-                        } else {
-                            request.status = ProcessStatus.Skipped;
-                        }
-                        onProgress(request);
-                    } catch (e) {
-                        console.error(e);
-                        request.status = ProcessStatus.Failed;
-                        onProgress(request);
-                    }
-                }
-                return { data: requests };
+                return processMultipleRequests({
+                    baseQuery,
+                    method: "POST",
+                    url: (request, payload) =>
+                        payload.accountId === "me"
+                            ? request.data.links.assign_to_me
+                            : request.data.links.assign,
+                    requests,
+                    payload,
+                    onProgress,
+                });
             },
-            invalidatesTags: ["BookPages"],
+            invalidatesTags: (result, error) => (error ? [] : ["BookPages"]),
         }),
         ocrBookPage: builder.mutation({
             query: ({ page, key }) => ({
@@ -542,39 +427,18 @@ export const booksApi = createApi({
                 _extraOptions,
                 baseQuery
             ) {
-                for (const request of requests) {
-                    try {
-                        request.status = ProcessStatus.InProcess;
-                        onProgress(request);
-                        let body =
-                            typeof payload === "function"
-                                ? payload(request.data)
-                                : payload;
-                        if (body) {
-                            var result = await baseQuery({
-                                url: body.page.links.ocr,
-                                method: "POST",
-                                data: { key: body.key },
-                            });
-
-                            if (result.error){
-                                request.status = ProcessStatus.Failed;
-                            } else {
-                                request.status = ProcessStatus.Completed;
-                            }
-                        } else {
-                            request.status = ProcessStatus.Skipped;
-                        }
-                        onProgress(request);
-                    } catch (e) {
-                        console.error(e);
-                        request.status = ProcessStatus.Failed;
-                        onProgress(request);
-                    }
-                }
-                return { data: requests };
+                return processMultipleRequests({
+                    baseQuery,
+                    method: "PUT",
+                    url: (request) => {
+                        return request.data.links.ocr;
+                    },
+                    requests,
+                    payload,
+                    onProgress,
+                });
             },
-            invalidatesTags: ["BookPages"],
+            invalidatesTags: (result, error) => (error ? [] : ["BookPages"]),
         }),
         updateBookPageImage: builder.mutation({
             query: ({ page, payload }) => {

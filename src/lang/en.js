@@ -1186,6 +1186,10 @@ const en = {
             newContent:
                 "There are no contents available in chosen language. You are creating new content for this article۔",
         },
+        user: {
+            label: "User",
+            required: "User is required.",
+        },
         actions: {
             add: {
                 label: "Add new writing",
@@ -1208,6 +1212,11 @@ const en = {
                 title: "Article Status",
                 success: "Article status updated successfully.",
                 error: "Error saving article statuses.",
+            },
+            assign: {
+                label: "Assign Article",
+                success: "Article assigned successfully.",
+                error: "Error assigning article statuses.",
             },
         },
         errors: {

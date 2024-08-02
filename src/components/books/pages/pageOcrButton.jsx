@@ -24,7 +24,7 @@ const PageOcrButton = ({ pages, t, type }) => {
     const [form] = Form.useForm();
     const [key, setKey] = useLocalStorage("ocr.key");
 
-    const data = { key, storeApiKey: false };
+    const data = { key, storeApiKey: key != null };
     const [ocrBookPages, { isLoading: isBusy }] = useOcrBookPagesMutation();
     const count = pages ? pages.length : 0;
 
@@ -35,7 +35,7 @@ const PageOcrButton = ({ pages, t, type }) => {
             setKey(values.key);
             return (page) => {
                 if (page && page.links && page.links.ocr) {
-                    return { page, key: values.key };
+                    return { key: values.key };
                 }
                 return null;
             }
@@ -46,10 +46,10 @@ const PageOcrButton = ({ pages, t, type }) => {
     };
 
     const onShow = () => form.resetFields();
-    
+
     return (
         <>
-        <BatchActionDrawer t={t}
+            <BatchActionDrawer t={t}
                 tooltip={t("page.actions.updateStatus.title")}
                 buttonType={type}
                 size='large'
@@ -67,37 +67,37 @@ const PageOcrButton = ({ pages, t, type }) => {
             >
                 <Form form={form} layout="vertical" initialValues={data}>
                     <Space>
-                         {t("page.actions.ocr.message")}
+                        {t("page.actions.ocr.message")}
                     </Space>
                     <Collapse
-                    items={[
-                        {
-                            key: '1',
-                            label: t("page.actions.ocr.key.label"),
-                            children: (<>
-                                <Form.Item
-                                    label={t("page.actions.ocr.key.label")}
-                                    name="key"
-                                    help={t("page.actions.ocr.key.description")}
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: t("page.actions.ocr.key.required"),
-                                        },
-                                    ]}
-                                >
-                                    <Input.TextArea rows={2} />
-                                </Form.Item>
-                                <Form.Item
-                                    label={t("page.actions.ocr.saveKey.label")}
-                                    name="storeApiKey"
-                                    help={t("page.actions.ocr.saveKey.description")}
-                                >
-                                    <Switch />
-                                </Form.Item>
-                            </>)
-                        },
-                    ]}
+                        items={[
+                            {
+                                key: '1',
+                                label: t("page.actions.ocr.key.label"),
+                                children: (<>
+                                    <Form.Item
+                                        label={t("page.actions.ocr.key.label")}
+                                        name="key"
+                                        help={t("page.actions.ocr.key.description")}
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: t("page.actions.ocr.key.required"),
+                                            },
+                                        ]}
+                                    >
+                                        <Input.TextArea rows={2} />
+                                    </Form.Item>
+                                    <Form.Item
+                                        label={t("page.actions.ocr.saveKey.label")}
+                                        name="storeApiKey"
+                                        help={t("page.actions.ocr.saveKey.description")}
+                                    >
+                                        <Switch />
+                                    </Form.Item>
+                                </>)
+                            },
+                        ]}
                     />
                 </Form>
             </BatchActionDrawer>

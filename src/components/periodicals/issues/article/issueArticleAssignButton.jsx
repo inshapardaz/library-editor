@@ -74,7 +74,6 @@ const IssueArticleAssignButton = ({ libraryId, articles, t, type, showDetails = 
                 onOk={onOk}
                 closable={!isAdding}
                 onShow={onShow}
-                listTitle={t("issueArticle.title")}
                 items={articles}
                 itemTitle={article => article.title}
                 mutation={assignIssueArticle}

@@ -304,7 +304,7 @@ const BookProcessPage = () => {
                     {t('pages.actions.upload.label')}
                 </Button>
             </Upload>
-            {book && book.contents.length > 0 &&
+            {book && book.contents && book.contents.length > 0 &&
                 <Dropdown
                     disabled={busy}
                     menu={{

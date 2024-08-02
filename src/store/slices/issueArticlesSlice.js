@@ -3,7 +3,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import axiosBaseQuery from "/src/util/axiosBaseQuery";
 
 import { parseResponse, removeLinks } from "/src/util/parseResponse";
-import { ProcessStatus } from "/src/models";
+import { processMultipleRequests } from "/src/util";
 // ----------------------------------------------
 export const issueArticlesApi = createApi({
     reducerPath: "issueArticles",
@@ -90,29 +90,17 @@ export const issueArticlesApi = createApi({
                 _extraOptions,
                 baseQuery
             ) {
-                for (const request of requests) {
-                    try {
-                        request.status = ProcessStatus.InProcess;
-                        onProgress(request);
-                        var result = await baseQuery({
-                            url: request.data.links.delete,
-                            method: "DELETE",
-                        });
-                        if (result.error) {
-                            request.status = ProcessStatus.Failed;
-                        } else {
-                            request.status = ProcessStatus.Completed;
-                        }
-                        onProgress(request);
-                    } catch (e) {
-                        console.error(e);
-                        request.status = ProcessStatus.Failed;
-                        onProgress(request);
-                    }
-                }
-                return { data: requests };
+                return processMultipleRequests({
+                    baseQuery,
+                    method: "DELETE",
+                    url: (request) => request.data.links.delete,
+                    requests,
+                    payload,
+                    onProgress,
+                });
             },
-            invalidatesTags: ["IssueArticles"],
+            invalidatesTags: (result, error) =>
+                error ? [] : ["IssueArticles"],
         }),
         updateIssueArticles: builder.mutation({
             async queryFn(
@@ -121,39 +109,17 @@ export const issueArticlesApi = createApi({
                 _extraOptions,
                 baseQuery
             ) {
-                for (const request of requests) {
-                    try {
-                        request.status = ProcessStatus.InProcess;
-                        onProgress(request);
-                        let body =
-                            typeof payload === "function"
-                                ? payload(request.data)
-                                : payload;
-                        if (body) {
-                            var result = await baseQuery({
-                                url: request.data.links.update,
-                                method: "PUT",
-                                data: removeLinks(body),
-                            });
-
-                            if (result.error) {
-                                request.status = ProcessStatus.Failed;
-                            } else {
-                                request.status = ProcessStatus.Completed;
-                            }
-                        } else {
-                            request.status = ProcessStatus.Skipped;
-                        }
-                        onProgress(request);
-                    } catch (e) {
-                        console.error(e);
-                        request.status = ProcessStatus.Failed;
-                        onProgress(request);
-                    }
-                }
-                return { data: requests };
+                return processMultipleRequests({
+                    baseQuery,
+                    method: "PUT",
+                    url: (request) => request.data.links.update,
+                    requests,
+                    payload,
+                    onProgress,
+                });
             },
-            invalidatesTags: ["IssueArticles"],
+            invalidatesTags: (result, error) =>
+                error ? [] : ["IssueArticles"],
         }),
         assignIssueArticle: builder.mutation({
             async queryFn(
@@ -162,39 +128,17 @@ export const issueArticlesApi = createApi({
                 _extraOptions,
                 baseQuery
             ) {
-                for (const request of requests) {
-                    try {
-                        request.status = ProcessStatus.InProcess;
-                        onProgress(request);
-                        let body =
-                            typeof payload === "function"
-                                ? payload(request.data)
-                                : payload;
-                        if (body) {
-                            var result = await baseQuery({
-                                url: request.data.links.assign,
-                                method: "POST",
-                                data: removeLinks(body),
-                            });
-
-                            if (result.error) {
-                                request.status = ProcessStatus.Failed;
-                            } else {
-                                request.status = ProcessStatus.Completed;
-                            }
-                        } else {
-                            request.status = ProcessStatus.Skipped;
-                        }
-                        onProgress(request);
-                    } catch (e) {
-                        console.error(e);
-                        request.status = ProcessStatus.Failed;
-                        onProgress(request);
-                    }
-                }
-                return { data: requests };
+                return processMultipleRequests({
+                    baseQuery,
+                    method: "POST",
+                    url: (request) => request.data.links.assign,
+                    requests,
+                    payload,
+                    onProgress,
+                });
             },
-            invalidatesTags: ["IssueArticles"],
+            invalidatesTags: (result, error) =>
+                error ? [] : ["IssueArticles"],
         }),
         updateIssueArticleSequence: builder.mutation({
             query: ({

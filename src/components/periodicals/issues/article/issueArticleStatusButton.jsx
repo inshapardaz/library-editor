@@ -52,7 +52,6 @@ const IssueArticleStatusButton = ({ articles, t, type, showIcon = true }) => {
                 onOk={onOk}
                 closable={!isUpdating}
                 onShow={onShow}
-                listTitle={t("issueArticle.title")}
                 items={articles}
                 itemTitle={article => article.title}
                 mutation={updateIssueArticles}

@@ -59,7 +59,7 @@ const BatchActionDrawer = ({
     // Do any validation on this callback if needed
     onOk = () => { },
     onShow = () => { },
-    onClose = () => { }, 
+    onClose = () => { },
     errorMessage,
     successMessage,
     closable,
@@ -88,7 +88,9 @@ const BatchActionDrawer = ({
     }
     const onCloseDrawer = () => {
         setOpen(false);
-        onClose();
+        if (onClose) {
+            onClose();
+        }
     }
 
     const onProgress = useCallback((request) => {
@@ -103,29 +105,35 @@ const BatchActionDrawer = ({
     }, [requests]);
 
     const onSubmit = useCallback(async (e) => {
-        var payload = await onOk();
+        try {
+            var payload = await onOk();
 
-        if (!payload) return;
+            if (!payload) return;
 
-        if (mutation) {
-            await mutation({ requests, payload, onProgress })
+            if (mutation) {
+                await mutation({ requests, payload, onProgress })
+            }
+
+            const hasFailure = requests.find(x => x.status == ProcessStatus.Failed);
+
+            if (hasFailure) {
+                if (errorMessage) {
+                    message.error(errorMessage);
+                }
+            } else {
+                if (successMessage) {
+                    message.success(successMessage);
+                }
+
+                onCloseDrawer();
+            }
         }
-
-        const hasFailure = requests.find(x => x.status == ProcessStatus.Failed);
-        
-        if (hasFailure) {
-            if (errorMessage)
-            {
+        catch (e) {
+            console.error(e);
+            if (errorMessage) {
                 message.error(errorMessage);
             }
-        } else {
-            if (successMessage) {
-                message.success(successMessage);
-            }
-
-            onCloseDrawer();
         }
-        
     });
 
     useEffect(() => {
