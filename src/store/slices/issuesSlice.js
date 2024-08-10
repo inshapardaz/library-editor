@@ -3,6 +3,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import axiosBaseQuery from "/src/util/axiosBaseQuery";
 
 import { parseResponse, removeLinks } from "/src/util/parseResponse";
+import { processMultipleRequests } from "/src/util";
 // ----------------------------------------------
 export const issuesApi = createApi({
     reducerPath: "issues",
@@ -209,6 +210,234 @@ export const issuesApi = createApi({
             }),
             invalidatesTags: ["Issue"],
         }),
+
+        // Issue Page Api
+        getIssuePages: builder.query({
+            query: ({
+                url,
+                status = "Typing",
+                assignment = null,
+                reviewerAssignmentFilter = null,
+                pageNumber = 1,
+                pageSize = 12,
+                sortDirection = "ascending",
+            }) => {
+                let queryVal = `?pageNumber=${pageNumber}&pageSize=${pageSize}${
+                    status ? `&status=${status}` : ""
+                }${assignment ? `&assignmentFilter=${assignment}` : ""}${
+                    reviewerAssignmentFilter
+                        ? `&reviewerAssignmentFilter=${reviewerAssignmentFilter}`
+                        : ""
+                }${
+                    sortDirection != "ascending"
+                        ? `&sortDirection=${sortDirection}`
+                        : ""
+                }`;
+                return {
+                    url: `${url}${queryVal}`,
+                };
+            },
+            transformResponse: (response) => parseResponse(response),
+            providesTags: ["IssuePages"],
+        }),
+        getIssuePage: builder.query({
+            query: ({
+                libraryId,
+                periodicalId,
+                volumeNumber,
+                issueNumber,
+                pageNumber,
+            }) => ({
+                url: `/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/pages/${pageNumber}`,
+                method: "GET",
+            }),
+            transformResponse: (response) => parseResponse(response),
+            providesTags: ["IssuePages"],
+        }),
+        getIssuePageContents: builder.query({
+            query: ({
+                libraryId,
+                periodicalId,
+                volumeNumber,
+                issueNumber,
+                pageNumber,
+            }) => ({
+                url: `/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/pages/${pageNumber}`,
+                method: "GET",
+            }),
+            transformResponse: (response) => parseResponse(response),
+            providesTags: ["IssuePages"],
+        }),
+        addIssuePage: builder.mutation({
+            query: ({
+                libraryId,
+                periodicalId,
+                volumeNumber,
+                issueNumber,
+                payload,
+            }) => ({
+                url: `/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/pages`,
+                method: "POST",
+                data: removeLinks(payload),
+            }),
+            transformResponse: (response) => parseResponse(response),
+            invalidatesTags: ["IssuePages"],
+        }),
+        updateIssuePage: builder.mutation({
+            query: ({ page }) => ({
+                url: page.links.update,
+                method: "PUT",
+                data: removeLinks(page),
+            }),
+            transformResponse: (response) => parseResponse(response),
+            invalidatesTags: ["IssuePages"],
+        }),
+        updateIssuePages: builder.mutation({
+            async queryFn(
+                { requests, payload, onProgress },
+                _queryApi,
+                _extraOptions,
+                baseQuery
+            ) {
+                return processMultipleRequests({
+                    baseQuery,
+                    method: "PUT",
+                    url: (request) => request.data.links.update,
+                    requests,
+                    payload,
+                    onProgress,
+                });
+            },
+            transformResponse: (response) => parseResponse(response),
+            invalidatesTags: (result, error) => (error ? [] : ["IssuePages"]),
+        }),
+        deleteIssuePage: builder.mutation({
+            query: ({ page }) => ({
+                url: page.links.delete,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["IssuePages"],
+        }),
+        deleteIssuePages: builder.mutation({
+            async queryFn(
+                { requests, payload, onProgress },
+                _queryApi,
+                _extraOptions,
+                baseQuery
+            ) {
+                return processMultipleRequests({
+                    baseQuery,
+                    method: "DELETE",
+                    url: (request) => request.data.links.delete,
+                    requests,
+                    payload,
+                    onProgress,
+                });
+            },
+            invalidatesTags: (result, error) => (error ? [] : ["IssuePages"]),
+        }),
+        assignIssuePage: builder.mutation({
+            query: ({ page, payload }) => ({
+                url:
+                    payload.accountId === "me"
+                        ? page.links.assign_to_me
+                        : page.links.assign,
+                method: "POST",
+                data: removeLinks(payload),
+            }),
+            invalidatesTags: ["IssuePages"],
+        }),
+        assignIssuePages: builder.mutation({
+            async queryFn(
+                { requests, payload, onProgress },
+                _queryApi,
+                _extraOptions,
+                baseQuery
+            ) {
+                return processMultipleRequests({
+                    baseQuery,
+                    method: "POST",
+                    url: (request, payload) =>
+                        payload.accountId === "me"
+                            ? request.data.links.assign_to_me
+                            : request.data.links.assign,
+                    requests,
+                    payload,
+                    onProgress,
+                });
+            },
+            invalidatesTags: (result, error) => (error ? [] : ["IssuePages"]),
+        }),
+        ocrIssuePage: builder.mutation({
+            query: ({ page, key }) => ({
+                url: page.links.ocr,
+                method: "POST",
+                data: { key: key },
+            }),
+            invalidatesTags: ["IssuePages"],
+        }),
+        ocrIssuePages: builder.mutation({
+            async queryFn(
+                { requests, payload, onProgress },
+                _queryApi,
+                _extraOptions,
+                baseQuery
+            ) {
+                return processMultipleRequests({
+                    baseQuery,
+                    method: "PUT",
+                    url: (request) => {
+                        return request.data.links.ocr;
+                    },
+                    requests,
+                    payload,
+                    onProgress,
+                });
+            },
+            invalidatesTags: (result, error) => (error ? [] : ["IssuePages"]),
+        }),
+        updateIssuePageImage: builder.mutation({
+            query: ({ page, payload }) => {
+                const formData = new FormData();
+                formData.append("file", payload, payload.fileName);
+                return {
+                    url: page.links.image_upload,
+                    method: "PUT",
+                    data: formData,
+                    formData: true,
+                    headers: {
+                        "content-type": "multipart/form-data",
+                    },
+                };
+            },
+            invalidatesTags: ["IssuePages"],
+        }),
+        updateIssuePageSequence: builder.mutation({
+            query: ({ page, payload }) => ({
+                url: page.links.page_sequence,
+                method: "POST",
+                data: removeLinks(payload),
+            }),
+            invalidatesTags: ["IssuePages"],
+        }),
+        createIssuePageWithImage: builder.mutation({
+            query: ({ issue, fileList }) => {
+                const formData = new FormData();
+                fileList.forEach((file, index) => {
+                    formData.append(index, file, `${index}.jpg`);
+                });
+                return {
+                    url: issue.links.create_multiple,
+                    method: "POST",
+                    data: formData,
+                    formData: true,
+                    headers: {
+                        "content-type": "multipart/form-data",
+                    },
+                };
+            },
+            invalidatesTags: ["Issue", "IssuePages"],
+        }),
     }),
 });
 
@@ -226,4 +455,18 @@ export const {
     useAddIssueContentMutation,
     useUpdateIssueContentMutation,
     useDeleteIssueContentMutation,
+    useGetIssuePagesQuery,
+    useGetIssuePageQuery,
+    useAddIssuePageMutation,
+    useUpdateIssuePageMutation,
+    useUpdateIssuePagesMutation,
+    useDeleteIssuePageMutation,
+    useDeleteIssuePagesMutation,
+    useAssignIssuePageMutation,
+    useAssignIssuePagesMutation,
+    useOcrIssuePageMutation,
+    useOcrIssuePagesMutation,
+    useUpdateIssuePageImageMutation,
+    useUpdateIssuePageSequenceMutation,
+    useCreateIssuePageWithImageMutation,
 } = issuesApi;

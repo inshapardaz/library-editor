@@ -776,31 +776,37 @@ const helpers = {
 
         return location.pathname;
     },
-    buildLinkToIssuePagesPage: (
+    buildLinkToIssuePagesPage: ({
         location,
-        page,
+        pageNumber,
         pageSize,
         statusFilter,
-        assignmentFilter
-    ) => {
-        let querystring = "";
-        querystring += page ? `pageNumber=${page}&` : "";
-        querystring +=
-            pageSize && pageSize !== 12 ? `pageSize=${pageSize}&` : "";
-        querystring += statusFilter ? `filter=${statusFilter}&` : "";
-        querystring += assignmentFilter
-            ? `assignmentFilter=${assignmentFilter}&`
-            : "";
-
-        if (querystring !== "") {
-            if (querystring.substr(querystring.length - 1) === "&") {
-                querystring = querystring.slice(0, -1);
-            }
-
-            return `${location.pathname}?${querystring}`;
+        assignmentFilter,
+        reviewerAssignmentFilter,
+        sortDirection,
+    }) => {
+        var searchParams = new URLSearchParams(location.search);
+        if (pageNumber) {
+            searchParams.set("pageNumber", pageNumber);
+        }
+        if (pageSize) {
+            searchParams.set("pageSize", pageSize);
+        }
+        if (sortDirection) {
+            searchParams.set("sortDirection", sortDirection);
+        }
+        if (statusFilter) {
+            searchParams.set("status", statusFilter);
         }
 
-        return location.pathname;
+        if (assignmentFilter) {
+            searchParams.set("assignment", assignmentFilter);
+        }
+        if (reviewerAssignmentFilter) {
+            searchParams.set("reviewerAssignment", reviewerAssignmentFilter);
+        }
+
+        return `${location.pathname}?${searchParams.toString()}`;
     },
 
     splitImageUrl: (URI, splitPercentage) => {

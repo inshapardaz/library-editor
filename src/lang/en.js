@@ -1049,6 +1049,10 @@ const en = {
             label: "Issue Date",
             required: "Issue date is required for issue",
         },
+        status: {
+            label: "Status",
+            placeholder: "Select Book Status",
+        },
         articles: {
             title: "Articles",
             errors: {
@@ -1065,6 +1069,41 @@ const en = {
             title: "Files",
             empty: {
                 title: "No file found",
+            },
+        },
+        pages: {
+            title: "Pages",
+            editor: {
+                unsavedContents:
+                    "Unsaved changed found for this page. Would you like to continue editing it?",
+            },
+            empty: {
+                title: "No Pages found",
+            },
+            actions: {
+                add: {
+                    label: "Add new page",
+                    success: "Page created successfully.",
+                    error: "Error creating page.",
+                },
+                edit: {
+                    title: "Editing page {{sequenceNumber}}",
+                    success: "Page saved successfully.",
+                    error: "Error saving page.",
+                },
+                uploadPage: {
+                    label: "Upload new page",
+                },
+                uploadPdf: {
+                    label: "Upload PDF",
+                },
+                uploadZip: {
+                    label: "Upload Zip",
+                },
+                reorder: {
+                    success: "Pages order saved successfully",
+                    error: "Error saving page order.",
+                },
             },
         },
         actions: {

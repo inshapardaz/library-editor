@@ -1073,6 +1073,10 @@ const ur = {
             label: "تریخ اشاعت",
             required: "تریخ اشاعت ضروری ہے",
         },
+        status: {
+            label: "کیفیت",
+            placeholder: "کتاب کی کیفیت چنیں",
+        },
         articles: {
             title: "مضامین",
             errors: {
@@ -1089,6 +1093,41 @@ const ur = {
             title: "دستاویزات",
             empty: {
                 title: "دستاویز دستیاب نہیں",
+            },
+        },
+        pages: {
+            title: "صفحات",
+            editor: {
+                unsavedContents:
+                    "غیر محفوظ شدہ مندرجات موجود ہیں۔ وہیں سے تدوین جاری رکھیں؟",
+            },
+            empty: {
+                title: "صفحات موجود نہیں",
+            },
+            actions: {
+                add: {
+                    label: "نیا صفحہ بنائیں",
+                    success: "صفحہ محفوظ کر دیا گیا ہے۔",
+                    error: "صفحہ محفوظ نہیں کیا جا سکا۔",
+                },
+                edit: {
+                    title: "صفحہ {{sequenceNumber}} کی تدوین",
+                    success: "صفحہ محفوظ کر دیا گیا ہے۔",
+                    error: "صفحہ محفوظ نہیں کیا جا سکا۔",
+                },
+                uploadPage: {
+                    label: "صفحہ اپ لوڈ",
+                },
+                uploadPdf: {
+                    label: "پی ڈی اید اپ لوڈ",
+                },
+                uploadZip: {
+                    label: "زِپ فایل اپ لوڈ",
+                },
+                reorder: {
+                    success: "صفحات کی ترتیب محفوظ ہو گئی ہے۔",
+                    error: "صفحات کی ترتیب محفوظ کرنے میں ناکامی ہوئی۔",
+                },
             },
         },
         actions: {

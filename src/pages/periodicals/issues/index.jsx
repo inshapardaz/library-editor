@@ -21,6 +21,7 @@ import FileList from "/src/components/periodicals/issues/files/filesList";
 import Loading from "/src/components/common/loader";
 import Error from "/src/components/common/error";
 import IssueArticlesList from '/src/components/periodicals/issues/article/issueArticlesList';
+import IssuePagesList from '/src/components/periodicals/issues/pages/issuePagesList';
 
 //--------------------------------------------------------
 const { Content, Sider } = Layout;
@@ -70,13 +71,15 @@ const IssuePage = () => {
                 </Space>
             ),
             children: (
-                //<PagesList
-                //     libraryId={libraryId}
-                //     book={book}
-                //     t={t}
-                //     size="large"
-                // />
-                "pages"
+                <IssuePagesList
+                    libraryId={libraryId}
+                    periodicalId={periodicalId}
+                    volumeNumber={volumeNumber}
+                    issueNumber={issueNumber}
+                    issue={issue}
+                    t={t}
+                    size="large"
+                />
             ),
         },
         {

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 // 3rd party libraries
 import moment from "moment/moment";
-import { Button, Col, Form, InputNumber, Row, App, Space, Spin, Upload } from "antd";
-import { FiLayers } from "/src/icons";
+import { Button, Col, Form, InputNumber, Row, App, Space, Spin, Upload, Breadcrumb } from "antd";
+import { FaHome, FiLayers, ImNewspaper, FaEdit, FaFileImage } from "/src/icons";
 import ImgCrop from "antd-img-crop";
 
 // Local imports
@@ -22,6 +22,7 @@ import PageHeader from "/src/components/layout/pageHeader";
 import Error from "/src/components/common/error";
 import Loading from "/src/components/common/loader";
 import DateInput from "/src/components/dateInput";
+import PublishStatusSelect from "/src/components/publishStatusSelect";
 
 // ----------------------------------------------
 const { Dragger } = Upload;
@@ -100,7 +101,26 @@ const IssueEditPage = () => {
 
     return (
         <>
-            <PageHeader title={title} icon={<FiLayers style={{ width: 36, height: 36 }} />} />
+            <PageHeader title={title} icon={<FiLayers style={{ width: 36, height: 36 }} />}
+                breadcrumb={<Breadcrumb
+                    items={[
+                        {
+                            title: <Link to={`/libraries/${libraryId}`}><FaHome /></Link>,
+                        },
+                        {
+                            title: <Link to={`/libraries/${libraryId}/periodicals`}><Space><ImNewspaper />{t("header.periodicals")}</Space></Link>,
+                        },
+                        {
+                            title: <Link to={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}`}><Space><ImNewspaper />{t("issue.volumeNumber.label")} {volumeNumber}</Space></Link>,
+                        },
+                        {
+                            title: <Link to={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}`}><Space><ImNewspaper />{t("issue.issueNumber.label")} {issueNumber}</Space></Link>,
+                        }
+                        ,
+                        {
+                            title: issue ? <Space><FaEdit />{t("actions.edit")}</Space> : <Space><FaFileImage />{t("actions.")}</Space>,
+                        }
+                    ]} />} />
             <ContentsContainer>
                 <Row gutter={16}>
                     <Col l={4} md={6} xs={24}>
@@ -149,6 +169,10 @@ const IssueEditPage = () => {
                                 >
                                     <DateInput frequency={volumeNumber & issueNumber ? issue?.frequency : periodical?.frequency} allowFutureValues={false} />
                                 </Form.Item>
+                                <Form.Item name="status" label={t("issue.status.label")} placeholder={t("issue.status.placeholder")}>
+                                    <PublishStatusSelect t={t} />
+                                </Form.Item>
+
                                 <Form.Item {...buttonItemLayout}>
                                     <Space direction="horizontal" size="middle" style={{ width: "100%" }}>
                                         <Button type="primary" htmlType="submit" size="large" block>
