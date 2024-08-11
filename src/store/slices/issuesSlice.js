@@ -96,7 +96,7 @@ export const issuesApi = createApi({
                 issueNumber,
                 articleNumber,
             }) => ({
-                url: `/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/article/${articleNumber}`,
+                url: `/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/articles/${articleNumber}`,
                 method: "get",
             }),
             transformResponse: (response) => parseResponse(response),
@@ -110,7 +110,7 @@ export const issuesApi = createApi({
                 issueNumber,
                 articleNumber,
             }) => ({
-                url: `/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/article/${articleNumber}/contents`,
+                url: `/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/articles/${articleNumber}/contents`,
                 method: "get",
             }),
             transformResponse: (response) => parseResponse(response),

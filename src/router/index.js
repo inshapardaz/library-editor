@@ -42,6 +42,7 @@ import {
     IssuePage,
     IssuePageEditPage,
     IssueProcessPage,
+    EditIssueArticle,
 } from "/src/pages";
 
 import LayoutWithHeader from "/src/components/layout/layoutWithHeader";
@@ -211,6 +212,10 @@ const Router = () => {
                         <Route
                             path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber/issues/:issueNumber/edit"
                             element={<IssueEditPage />}
+                        />
+                        <Route
+                            path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber/issues/:issueNumber/articles/:articleNumber/edit"
+                            element={<EditIssueArticle />}
                         />
                         <Route
                             path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber/issues/:issueNumber"

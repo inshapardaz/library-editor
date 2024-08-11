@@ -38,6 +38,7 @@ import IssueEditPage from "./periodicals/issues/edit";
 import IssuePage from "./periodicals/issues/index";
 import IssuePageEditPage from "./periodicals/issues/pages/edit";
 import IssueProcessPage from "./periodicals/issues/process";
+import EditIssueArticle from "./periodicals/issues/article/edit";
 
 export {
     Home,
@@ -80,4 +81,5 @@ export {
     IssuePage,
     IssuePageEditPage,
     IssueProcessPage,
+    EditIssueArticle,
 };

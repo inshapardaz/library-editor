@@ -15,7 +15,7 @@ import IssueArticleAssignButton from "./issueArticleAssignButton";
 import ArticleStatusButton from "./issueArticleStatusButton";
 
 // ------------------------------------------------------
-const AuthorsList = ({ libraryId, authors, t }) => {
+const AuthorsList = ({ libraryId, authors, t, showName = true }) => {
     if (!authors) return null;
     return (
         <Avatar.Group maxCount="2" size="large">
@@ -24,7 +24,7 @@ const AuthorsList = ({ libraryId, authors, t }) => {
                     key={author.id}
                     libraryId={libraryId}
                     author={author}
-                    showName={true}
+                    showName={showName}
                     t={t} />
             ))}
         </Avatar.Group>
@@ -122,6 +122,7 @@ const IssueArticleListItem = ({
                         description={<AuthorsList
                             libraryId={libraryId}
                             authors={article?.authors}
+                            showName={false}
                             t={t}
                         />}
                         avatar={
