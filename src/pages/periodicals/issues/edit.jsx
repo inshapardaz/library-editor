@@ -48,28 +48,35 @@ const IssueEditPage = () => {
     if (error || periodicalError) return <Error t={t} />;
 
     const onSubmit = async (issue) => {
+        let response = null;
         if (issue) {
             updateIssue({ libraryId, periodicalId, volumeNumber: issue.volumeNumber, issueNumber: issue.issueNumber, payload: issue })
                 .unwrap()
-                .then(() => uploadImage(periodicalId, issue.volumeNumber, issue.issueNumber))
+                .then((r) => (response = r))
+                .then(() => uploadImage(response))
                 .then(() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}`))
                 .then(() => message.success(t("issue.actions.edit.success")))
-                .catch(() => message.error(t("issue.actions.edit.error")));
+                .catch((e) => {
+                    console.log(e);
+                    message.error(t("issue.actions.edit.error"))
+                });
         } else {
-            let response = null;
             addIssue({ libraryId, periodicalId, volumeNumber: issue.volumeNumber, issueNumber: issue.issueNumber, payload: issue })
                 .unwrap()
                 .then((r) => (response = r))
-                .then(() => uploadImage(periodicalId, response.volumeNumber, response.issueNumber))
+                .then(() => uploadImage(response))
                 .then(() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}/issues/${response.id}`))
                 .then(() => message.success(t("issue.actions.add.success")))
-                .catch(() => message.error(t("issue.actions.add.error")));
+                .catch((e) => {
+                    console.log(e);
+                    message.error(t("issue.actions.add.error"))
+                });
         }
     };
 
-    const uploadImage = async (periodicalId, newVolumeNumber, newIssueNumber) => {
+    const uploadImage = async (savedIssue) => {
         if (fileList && fileList.length > 0) {
-            await updateIssueImage({ libraryId, periodicalId: periodicalId, volumeNumber: newVolumeNumber, issueNumber: newIssueNumber, payload: fileList[0] }).unwrap();
+            await updateIssueImage({ issue: savedIssue, payload: fileList[0] }).unwrap();
         }
     };
 

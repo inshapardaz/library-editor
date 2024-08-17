@@ -128,6 +128,7 @@ export const issuesApi = createApi({
                 method: "POST",
                 data: removeLinks(payload),
             }),
+            transformResponse: (response) => parseResponse(response),
             invalidatesTags: ["Issues"],
         }),
         updateIssue: builder.mutation({
@@ -142,6 +143,7 @@ export const issuesApi = createApi({
                 method: "PUT",
                 data: removeLinks(payload),
             }),
+            transformResponse: (response) => parseResponse(response),
             invalidatesTags: ["Issue"],
         }),
         updateIssueImage: builder.mutation({
