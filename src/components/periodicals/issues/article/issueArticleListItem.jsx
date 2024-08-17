@@ -8,6 +8,7 @@ import { Draggable } from "react-beautiful-dnd";
 // Local Import
 import { FaGripLines, FaRegFileAlt } from "/src/icons";
 import EditingStatusIcon from "/src/components/editingStatusIcon";
+import useUnsavedChanges from '/src/hooks/useUnsavedChanges';
 import AuthorAvatar from '/src/components/author/authorAvatar';
 import IssueArticleEditor from "./issueArticleEditor";
 import ArticleDeleteButton from "./issueArticleDeleteButton";
@@ -42,8 +43,10 @@ const IssueArticleListItem = ({
     onSelectChanged = () => { },
     t,
 }) => {
+    const { hasUnsavedChanges } = useUnsavedChanges(`issue-article-${libraryId}-${periodicalId}-${volumeNumber}-${issueNumber}-${article.sequenceNumber}`);
+
     const unsavedStatus = () => {
-        if (localStorage.getItem(`article-${libraryId}-${periodicalId}-${volumeNumber}-${issueNumber}-${article}`) != null)
+        if (hasUnsavedChanges())
             return (<Badge status="processing" title={t('issueArticle.status.unsavedChanges')} />);
 
         return null;

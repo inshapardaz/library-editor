@@ -8,6 +8,7 @@ import { Draggable } from "react-beautiful-dnd";
 // Local Import
 import { FaRegKeyboard, FaGlasses, FaGripLines } from "/src/icons";
 import EditingStatusIcon from "/src/components/editingStatusIcon";
+import useUnsavedChanges from '/src/hooks/useUnsavedChanges';
 import PageSequenceEditor from "./pageSequenceEditor";
 import PageDeleteButton from "./pageDeleteButton";
 import PageAssignButton from "./pageAssignButton";
@@ -28,9 +29,11 @@ const PageListItem = ({
         <Typography.Text>{page.chapterTitle}</Typography.Text>
     ) : null;
 
+    const { hasUnsavedChanges } = useUnsavedChanges(`page-${libraryId}-${book.id}-${page.sequenceNumber}`);
+
 
     const unsavedStatus = () => {
-        if (localStorage.getItem(`page-${libraryId}-${book.id}-${page.sequenceNumber}`) != null)
+        if (hasUnsavedChanges())
             return (<Badge status="processing" title={t('chapter.status.unsavedChanges')} />);
 
         return null;

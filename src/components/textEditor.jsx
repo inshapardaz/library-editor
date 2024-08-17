@@ -25,8 +25,9 @@ import '@mdxeditor/editor/style.css'
 // Local import
 
 import { FaSave } from '/src/icons';
-import { Space } from 'antd';
+import { Alert, Space, Button } from 'antd';
 import i18n from '../lang';
+import useUnsavedChanges from '/src/hooks/useUnsavedChanges';
 // import {
 //     useGetPunctuationQuery,
 //     useGetAutoCorrectQuery
@@ -44,9 +45,9 @@ import i18n from '../lang';
 // const ZOOM_STEP = 10;
 //-----------------------------------------
 
-const TextEditor = ({ value, /*language,*/ onSave, onChange, showSave = true }) => {
+const TextEditor = ({ value, /*language,*/ onSave, onChange, showSave = true, contentKey = null }) => {
     const { t } = useTranslation();
-
+    const { getUnsavedChanges, saveUnsavedChanges, hasUnsavedChanges, clearUnsavedChanges } = useUnsavedChanges(contentKey);
     const ref = React.useRef(null)
 
     //const [fonts, setFonts] = useState([]);
@@ -99,9 +100,7 @@ const TextEditor = ({ value, /*language,*/ onSave, onChange, showSave = true }) 
 
 
     useEffect(() => {
-        if (value) {
-            ref.current?.setMarkdown(value ?? '')
-        }
+        ref.current?.setMarkdown(value ?? '')
     }, [value]);
 
 
@@ -132,39 +131,71 @@ const TextEditor = ({ value, /*language,*/ onSave, onChange, showSave = true }) 
     //     return (<Error />)
     // }
 
+    const onChangeInternal = (markdown) => {
+        saveUnsavedChanges(markdown);
+        if (onChange) {
+            onChange(markdown);
+        }
+    }
+
+    const onApplyUnsavedChanges = () => {
+        if (hasUnsavedChanges()) {
+            ref.current?.setMarkdown(getUnsavedChanges());
+        }
+
+        clearUnsavedChanges();
+    }
+
+    const onClearUnsavedChanges = () => {
+        clearUnsavedChanges()
+    }
+
     return (
-        <MDXEditor ref={ref}
-            onChange={onChange} markdown=''
-            onError={e => console.log(e)}
-            translation={(key, defaultValue, interpolations) => { return t(`editor.${key}`, defaultValue, interpolations) }}
-            plugins={[
-                headingsPlugin(),
-                listsPlugin(),
-                quotePlugin(),
-                thematicBreakPlugin(),
-                imagePlugin({ imageUploadHandler }),
-                toolbarPlugin({
-                    toolbarContents: () => (
-                        <Space direction='vertical'>
-                            {showSave && <Space>
-                                <ButtonWithTooltip
-                                    aria-label={t('toolbar.save', 'Save')}
-                                    title={t('actions.save')}
-                                    onClick={(_) => {
-                                        onSave(ref.current?.getMarkdown());
-                                    }} >
-                                    <FaSave size={20} />
-                                </ButtonWithTooltip>
-                                {' '}
-                                <UndoRedo />
-                                <BoldItalicUnderlineToggles />
-                                {' '}
-                                <BlockTypeSelect />
-                                <InsertImage />
-                                <InsertThematicBreak />
-                                <ListsToggle />
-                            </Space>}
-                            {/* <Space>
+        <Space direction='vertical'>
+            {hasUnsavedChanges() && <Alert message={t("chapter.editor.unsavedContents")} type="info" closable action={
+                <Space>
+                    <Button size="small" type="ghost" onClick={onApplyUnsavedChanges}>
+                        {t('actions.yes')}
+                    </Button>
+                    <Button size="small" type="ghost" onClick={onClearUnsavedChanges}>
+                        {t('actions.no')}
+                    </Button>
+
+                </Space>
+            } />}
+            <MDXEditor ref={ref}
+                onChange={onChangeInternal} markdown=''
+                onError={e => console.log(e)}
+                translation={(key, defaultValue, interpolations) => { return t(`editor.${key}`, defaultValue, interpolations) }}
+                plugins={[
+                    headingsPlugin(),
+                    listsPlugin(),
+                    quotePlugin(),
+                    thematicBreakPlugin(),
+                    imagePlugin({ imageUploadHandler }),
+                    toolbarPlugin({
+                        toolbarContents: () => (
+                            <Space direction='vertical'>
+                                {showSave && <Space>
+                                    <ButtonWithTooltip
+                                        aria-label={t('toolbar.save', 'Save')}
+                                        title={t('actions.save')}
+                                        onClick={(_) => {
+                                            onSave(ref.current?.getMarkdown())
+                                                .then(() => clearUnsavedChanges());
+                                        }} >
+                                        <FaSave size={20} />
+                                    </ButtonWithTooltip>
+                                    {' '}
+                                    <UndoRedo />
+                                    <BoldItalicUnderlineToggles />
+                                    {' '}
+                                    <BlockTypeSelect />
+                                    <InsertImage />
+                                    <InsertThematicBreak />
+                                    <ListsToggle />
+                                </Space>}
+                                {/* <Space>
                                 <ButtonWithTooltip
                                     aria-label={t('toolbar.zoomin', 'Zoon In')}
                                     title={t('actions.zoonIn')}
@@ -187,11 +218,12 @@ const TextEditor = ({ value, /*language,*/ onSave, onChange, showSave = true }) 
                                     items={fonts}
                                 />
                             </Space> */}
-                        </Space>
-                    )
-                })
-            ]}
-        />
+                            </Space>
+                        )
+                    })
+                ]}
+            />
+        </Space>
     );
 }
 

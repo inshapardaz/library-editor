@@ -52,11 +52,7 @@ const PageEditPage = () => {
     const [showImage, setShowImage] = useLocalStorage("page-editor-show-image", true);
     const [fileList, setFileList] = useState();
     const [text, setText] = useState(null);
-    const [contents, setContents] = useState('')
     const { libraryId, bookId, pageNumber } = useParams();
-    const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-    const [unsavedContent, setUnsavedContents] = useLocalStorage(`page-${libraryId}-${bookId}-${pageNumber}`);
-
     const { data: book, error: bookError, isFetching: loadingBook, } = useGetBookQuery(
         { libraryId, bookId },
         { skip: !libraryId || !bookId }
@@ -82,10 +78,6 @@ const PageEditPage = () => {
         return Promise.resolve();
     }, [fileList, updateBookPageImage]);
 
-    useEffect(() => {
-        setHasUnsavedChanges(localStorage.getItem(`page-${libraryId}-${bookId}-${pageNumber}`) != null);
-    }, [pageNumber]);
-
     const onSave = useCallback((contents) => {
         if (page) {
             const payload = {
@@ -103,7 +95,6 @@ const PageEditPage = () => {
             })
                 .unwrap()
                 .then(uploadImage)
-                .then(() => setUnsavedContents(null))
                 .then(() => message.success(t("book.actions.edit.success")))
                 .catch((e) => {
                     console.error(e);
@@ -128,7 +119,6 @@ const PageEditPage = () => {
                 .then(() => navigate(
                     `/libraries/${libraryId}/books/${bookId}/pages/${newPage.sequenceNumber}/edit`
                 ))
-                .then(() => setUnsavedContents(null))
                 .then(() => message.success(t("book.actions.add.success")))
                 .catch((e) => {
                     console.error(e);
@@ -140,7 +130,6 @@ const PageEditPage = () => {
     useEffect(() => {
         setText(page?.text || null);
     }, [page]);
-
 
     const showCompleteButton =
         page &&
@@ -166,23 +155,6 @@ const PageEditPage = () => {
                 message.error(t("book.actions.edit.error"))
             });
     };
-
-    const onChange = (markdown) => {
-        setUnsavedContents(markdown)
-    }
-
-    const onApplyUnsavedChanges = () => {
-        if (unsavedContent) {
-            setText(unsavedContent);
-        }
-
-        onClearUnsavedChanges();
-    }
-
-    const onClearUnsavedChanges = () => {
-        setUnsavedContents(null);
-        setHasUnsavedChanges(false);
-    }
 
     const actions = [
         <Button.Group key="complete-button">
@@ -278,23 +250,13 @@ const PageEditPage = () => {
                 actions={actions}
             />
             <DataContainer error={error || bookError} busy={isFetching | isAdding | isUpdating | isUpdatingImage | loadingBook} >
-                {hasUnsavedChanges && <Alert message={t("chapter.editor.unsavedContents")} type="info" closable action={
-                    <Space>
-                        <Button size="small" type="ghost" onClick={onApplyUnsavedChanges}>
-                            {t('actions.yes')}
-                        </Button>
-                        <Button size="small" type="ghost" onClick={onClearUnsavedChanges}>
-                            {t('actions.no')}
-                        </Button>
-
-                    </Space>
-                } />}
                 <Row gutter={16}>
                     <Col span={showImage ? 12 : 24} style={{ display: 'flex' }}>
                         <TextEditor value={text}
                             language={language}
-                            onChange={onChange}
-                            onSave={(c) => onSave(c)} />
+                            onSave={(c) => onSave(c)}
+                            contentKey={`page-${libraryId}-${bookId}-${pageNumber}`}
+                        />
                     </Col>
                     {showImage && (
                         <Col span={12}>

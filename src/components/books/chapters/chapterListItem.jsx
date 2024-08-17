@@ -7,6 +7,7 @@ import { Draggable } from "react-beautiful-dnd";
 
 // Local Import
 import { FaGripLines, FaRegFileAlt } from "/src/icons";
+import useUnsavedChanges from '/src/hooks/useUnsavedChanges';
 import EditingStatusIcon from "/src/components/editingStatusIcon";
 import ChapterEditor from "./chapterEditor";
 import ChapterDeleteButton from "./chapterDeleteButton";
@@ -23,8 +24,10 @@ const ChapterListItem = ({
     onSelectChanged = () => { },
     t,
 }) => {
+    const { hasUnsavedChanges } = useUnsavedChanges(`chapter-${libraryId}-${bookId}-${chapter.chapterNumber}`);
+
     const unsavedStatus = () => {
-        if (localStorage.getItem(`chapter-${libraryId}-${bookId}-${chapter.chapterNumber}`) != null)
+        if (hasUnsavedChanges())
             return (<Badge status="processing" title={t('chapter.status.unsavedChanges')} />);
 
         return null;

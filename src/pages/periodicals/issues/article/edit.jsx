@@ -4,7 +4,6 @@ import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // 3rd party imports
-import { useLocalStorage } from "usehooks-ts";
 import { Alert, App, Breadcrumb, Button, Space, Spin, Tooltip } from "antd";
 import { FaAngleLeft, FaAngleRight, FaBook, FaCheckCircle, FaHome, FaRegClone, ImNewspaper } from "/src/icons";
 
@@ -39,11 +38,8 @@ const EditIssueArticle = () => {
     const { t } = useTranslation();
     const lang = useSelector(selectedLanguage)
     const { libraryId, periodicalId, volumeNumber, issueNumber, articleNumber } = useParams();
-    const localStorageItem = `issue-article-${libraryId}-${periodicalId}-${volumeNumber}-${issueNumber}-${articleNumber}`;
     const [isBusy, setIsBusy] = useState(false)
     const [contents, setContents] = useState('')
-    const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-    const [unsavedContent, setUnsavedContents] = useLocalStorage(localStorageItem);
     const [updateArticle, { isLoading: isUpdatingArticle }] = useUpdateArticleMutation();
 
     const {
@@ -89,10 +85,6 @@ const EditIssueArticle = () => {
     }
 
     useEffect(() => {
-        setHasUnsavedChanges(localStorage.getItem(localStorageItem) != null);
-    }, [articleNumber]);
-
-    useEffect(() => {
         if (articleContent) {
             if (articleContent.text) {
                 setContents(articleContent.text);
@@ -105,14 +97,12 @@ const EditIssueArticle = () => {
             setIsBusy(true);
             return addIssueArticleContent({ article, language, payload: content })
                 .then(() => message.success(t("book.actions.edit.success")))
-                .then(() => setUnsavedContents(null))
                 .catch(() => message.error(t("book.actions.edit.error")))
                 .finally(() => setIsBusy(false));
         } else if (articleContent) {
             setIsBusy(true);
             return updateIssueArticleContent({ articleContent, language, payload: content })
                 .then(() => message.success(t("book.actions.add.success")))
-                .then(() => setUnsavedContents(null))
                 .catch(() => message.error(t("book.actions.add.error")))
                 .finally(() => setIsBusy(false));
         }
@@ -201,24 +191,6 @@ const EditIssueArticle = () => {
         return null;
     };
 
-    const onChange = (markdown) => {
-        setUnsavedContents(markdown)
-    }
-
-    const onApplyUnsavedChanges = () => {
-        if (unsavedContent) {
-            setContents(unsavedContent);
-            localStorage.removeItem(localStorageItem);
-        }
-
-        onClearUnsavedChanges();
-    }
-
-    const onClearUnsavedChanges = () => {
-        localStorage.removeItem(localStorageItem);
-        setHasUnsavedChanges(false);
-    }
-
     return (
         <>
             <Spin
@@ -254,21 +226,9 @@ const EditIssueArticle = () => {
                 />
                 <DataContainer error={articleError | articleContentError | issueError | articlesError}>
                     {isNewContent() && <Alert message={t("chapter.editor.newContents")} type="success" closable />}
-                    {hasUnsavedChanges && <Alert message={t("chapter.editor.unsavedContents")} type="info" closable action={
-                        <Space>
-                            <Button size="small" type="ghost" onClick={onApplyUnsavedChanges}>
-                                {t('actions.yes')}
-                            </Button>
-                            <Button size="small" type="ghost" onClick={onClearUnsavedChanges}>
-                                {t('actions.no')}
-                            </Button>
-
-                        </Space>
-                    } />}
-
                     <TextEditor value={contents}
                         language={language}
-                        onChange={onChange}
+                        contentKey={`issue-article-${libraryId}-${periodicalId}-${volumeNumber}-${issueNumber}-${articleNumber}`}
                         onSave={onEditorSave} />
                 </DataContainer>
             </Spin>

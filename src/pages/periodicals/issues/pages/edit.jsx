@@ -9,10 +9,7 @@ import { App, Button, Col, Row, Tooltip, Breadcrumb, Alert, Space } from "antd";
 import {
     FaAngleLeft,
     FaAngleRight,
-    FaBook,
-    FaCheckCircle,
     FaHome,
-    FaRegFileAlt,
     FaTimesCircle,
     ImNewspaper,
 } from "/src/icons";
@@ -54,10 +51,7 @@ const IssuePageEditPage = () => {
     const [showImage, setShowImage] = useLocalStorage("issue-page-editor-show-image", true);
     const [fileList, setFileList] = useState();
     const [text, setText] = useState(null);
-    const [contents, setContents] = useState('')
     const { libraryId, periodicalId, volumeNumber, issueNumber, pageNumber } = useParams();
-    const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-    const [unsavedContent, setUnsavedContents] = useLocalStorage(`issue-page-${libraryId}-${periodicalId}-${volumeNumber}-${issueNumber}-${pageNumber}`);
 
     const { data: issue, error: issueError, isFetching: loadingIssue, } = useGetIssueQuery(
         { libraryId, periodicalId, volumeNumber, issueNumber },
@@ -84,10 +78,6 @@ const IssuePageEditPage = () => {
         return Promise.resolve();
     }, [fileList, updateIssuePageImage]);
 
-    useEffect(() => {
-        setHasUnsavedChanges(localStorage.getItem(`issue-page-${libraryId}-${periodicalId}-${volumeNumber}-${issueNumber}-${pageNumber}`) != null);
-    }, [pageNumber]);
-
     const onSave = useCallback((contents) => {
         if (page) {
             const payload = {
@@ -106,7 +96,6 @@ const IssuePageEditPage = () => {
             })
                 .unwrap()
                 .then(uploadImage)
-                .then(() => setUnsavedContents(null))
                 .then(() => message.success(t("issue.pages.actions.edit.success")))
                 .catch((e) => {
                     console.error(e);
@@ -136,7 +125,6 @@ const IssuePageEditPage = () => {
                 .then(() => navigate(
                     `/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/pages/${newPage.sequenceNumber}/edit`
                 ))
-                .then(() => setUnsavedContents(null))
                 .then(() => message.success(t("issue.pages.actions.add.success")))
                 .catch((e) => {
                     console.error(e);
@@ -174,23 +162,6 @@ const IssuePageEditPage = () => {
                 message.error(t("issue.pages.actions.edit.error"))
             });
     };
-
-    const onChange = (markdown) => {
-        setUnsavedContents(markdown)
-    }
-
-    const onApplyUnsavedChanges = () => {
-        if (unsavedContent) {
-            setText(unsavedContent);
-        }
-
-        onClearUnsavedChanges();
-    }
-
-    const onClearUnsavedChanges = () => {
-        setUnsavedContents(null);
-        setHasUnsavedChanges(false);
-    }
 
     const actions = [
         // <Button.Group key="complete-button">
@@ -295,22 +266,11 @@ const IssuePageEditPage = () => {
                 actions={actions}
             />
             <DataContainer error={error || issueError} busy={isFetching | isAdding | isUpdating | isUpdatingImage | loadingIssue} >
-                {hasUnsavedChanges && <Alert message={t("issue.pages.editor.unsavedContents")} type="info" closable action={
-                    <Space>
-                        <Button size="small" type="ghost" onClick={onApplyUnsavedChanges}>
-                            {t('actions.yes')}
-                        </Button>
-                        <Button size="small" type="ghost" onClick={onClearUnsavedChanges}>
-                            {t('actions.no')}
-                        </Button>
-
-                    </Space>
-                } />}
                 <Row gutter={16}>
                     <Col span={showImage ? 12 : 24} style={{ display: 'flex' }}>
                         <TextEditor value={text}
                             language={language}
-                            onChange={onChange}
+                            contentKey={`issue-page-${libraryId}-${periodicalId}-${volumeNumber}-${issueNumber}-${pageNumber}`}
                             onSave={(c) => onSave(c)} />
                     </Col>
                     {showImage && (

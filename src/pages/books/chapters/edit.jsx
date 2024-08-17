@@ -4,7 +4,6 @@ import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // 3rd party imports
-import { useLocalStorage } from "usehooks-ts";
 import { Alert, App, Breadcrumb, Button, Space, Spin, Tooltip } from "antd";
 import { FaAngleLeft, FaAngleRight, FaBook, FaCheckCircle, FaRegClone } from "/src/icons";
 
@@ -38,8 +37,7 @@ const EditChapter = () => {
     const { libraryId, bookId, chapterNumber } = useParams();
     const [isBusy, setIsBusy] = useState(false)
     const [contents, setContents] = useState('')
-    const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-    const [unsavedContent, setUnsavedContents] = useLocalStorage(`chapter-${libraryId}-${bookId}-${chapterNumber}`);
+
     const [updateChapter, { isLoading: isUpdatingChapter }] = useUpdateChapterMutation();
 
     const {
@@ -85,10 +83,6 @@ const EditChapter = () => {
     }
 
     useEffect(() => {
-        setHasUnsavedChanges(localStorage.getItem(`chapter-${libraryId}-${bookId}-${chapterNumber}`) != null);
-    }, [chapterNumber]);
-
-    useEffect(() => {
         if (chapterContent) {
             setContents(chapterContent.text);
         }
@@ -99,14 +93,12 @@ const EditChapter = () => {
             setIsBusy(true);
             return addChapterContent({ chapter, language, payload: content })
                 .then(() => message.success(t("book.actions.edit.success")))
-                .then(() => setUnsavedContents(null))
                 .catch(() => message.error(t("book.actions.edit.error")))
                 .finally(() => setIsBusy(false));
         } else if (chapterContent) {
             setIsBusy(true);
             return updateChapterContent({ chapterContent, language, payload: content })
                 .then(() => message.success(t("book.actions.add.success")))
-                .then(() => setUnsavedContents(null))
                 .catch(() => message.error(t("book.actions.add.error")))
                 .finally(() => setIsBusy(false));
         }
@@ -195,22 +187,6 @@ const EditChapter = () => {
         return null;
     };
 
-    const onChange = (markdown) => {
-        setUnsavedContents(markdown)
-    }
-
-    const onApplyUnsavedChanges = () => {
-        if (unsavedContent) {
-            setContents(unsavedContent);
-        }
-
-        onClearUnsavedChanges();
-    }
-
-    const onClearUnsavedChanges = () => {
-        setUnsavedContents(null);
-        setHasUnsavedChanges(false);
-    }
 
     return (
         <>
@@ -241,21 +217,9 @@ const EditChapter = () => {
                 />
                 <DataContainer error={chapterError | chapterContentError | bookError | chaptersError}>
                     {isNewContent() && <Alert message={t("chapter.editor.newContents")} type="success" closable />}
-                    {hasUnsavedChanges && <Alert message={t("chapter.editor.unsavedContents")} type="info" closable action={
-                        <Space>
-                            <Button size="small" type="ghost" onClick={onApplyUnsavedChanges}>
-                                {t('actions.yes')}
-                            </Button>
-                            <Button size="small" type="ghost" onClick={onClearUnsavedChanges}>
-                                {t('actions.no')}
-                            </Button>
-
-                        </Space>
-                    } />}
-
                     <TextEditor value={contents}
                         language={language}
-                        onChange={onChange}
+                        contentKey={`chapter-${libraryId}-${bookId}-${chapterNumber}`}
                         onSave={onEditorSave} />
                 </DataContainer>
             </Spin>

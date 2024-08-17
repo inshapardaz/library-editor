@@ -8,11 +8,11 @@ import { Draggable } from "react-beautiful-dnd";
 // Local Import
 import { FaRegKeyboard, FaGlasses, FaGripLines } from "/src/icons";
 import EditingStatusIcon from "/src/components/editingStatusIcon";
+import useUnsavedChanges from '/src/hooks/useUnsavedChanges';
 import IssuePageSequenceEditor from "./issuePageSequenceEditor";
 import IssuePageDeleteButton from "./issuePageDeleteButton";
 import IssuePageAssignButton from "./issuePageAssignButton";
 import IssuePageStatusButton from "./issuePageStatusButton";
-import IssuePageChapterButton from './issuePageArticleButton';
 import IssuePageArticleButton from './issuePageArticleButton';
 
 // ------------------------------------------------------
@@ -29,9 +29,10 @@ const IssuePageListItem = ({
         <Typography.Text>{page.chapterTitle}</Typography.Text>
     ) : null;
 
+    const { hasUnsavedChanges } = useUnsavedChanges(`issue-page-${libraryId}-${issue.periodicalId}-${issue.volumeNumber}-${issue.issueNumber}-${page.sequenceNumber}`);
 
     const unsavedStatus = () => {
-        if (localStorage.getItem(`issue-page-${libraryId}-${issue.periodicalId}-${issue.volumeNumber}-${issue.issueNumber}-${page.sequenceNumber}`) != null)
+        if (hasUnsavedChanges())
             return (<Badge status="processing" title={t('chapter.status.unsavedChanges')} />);
 
         return null;
