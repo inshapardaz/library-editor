@@ -429,7 +429,7 @@ export const booksApi = createApi({
             ) {
                 return processMultipleRequests({
                     baseQuery,
-                    method: "PUT",
+                    method: "POST",
                     url: (request) => {
                         return request.data.links.ocr;
                     },
