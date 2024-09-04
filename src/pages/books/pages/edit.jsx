@@ -79,27 +79,33 @@ const PageEditPage = () => {
     }, [fileList, updateBookPageImage]);
 
     const onSave = useCallback((contents) => {
+        console.log('Initiated Save')
         if (page) {
-            const payload = {
-                bookId: page.bookId,
-                chapterId: page.chapterId,
-                reviewerAccountId: page.reviewerAccountId,
-                reviewerAssignTimeStamp: page.reviewerAssignTimeStamp,
-                sequenceNumber: page.sequenceNumber,
-                status: page.status,
-                text: contents,
-                links: page.links,
-            };
-            return updateBookPage({
-                page: payload,
-            })
-                .unwrap()
-                .then(uploadImage)
-                .then(() => message.success(t("book.actions.edit.success")))
-                .catch((e) => {
-                    console.error(e);
-                    message.error(t("book.actions.edit.error"))
-                });
+            try {
+                const payload = {
+                    bookId: page.bookId,
+                    chapterId: page.chapterId,
+                    reviewerAccountId: page.reviewerAccountId,
+                    reviewerAssignTimeStamp: page.reviewerAssignTimeStamp,
+                    sequenceNumber: page.sequenceNumber,
+                    status: page.status,
+                    text: contents,
+                    links: page.links,
+                };
+                return updateBookPage({
+                    page: payload,
+                })
+                    .unwrap()
+                    .then(uploadImage)
+                    .then(() => message.success(t("page.actions.edit.success")))
+                    .catch((e) => {
+                        console.error(e);
+                        message.error(t("page.actions.edit.error"))
+                    });
+            }
+            catch (error) {
+                console.log(error)
+            }
         } else {
             var newPage = null;
             return addBookPage({
@@ -119,10 +125,10 @@ const PageEditPage = () => {
                 .then(() => navigate(
                     `/libraries/${libraryId}/books/${bookId}/pages/${newPage.sequenceNumber}/edit`
                 ))
-                .then(() => message.success(t("book.actions.add.success")))
+                .then(() => message.success(t("page.actions.add.success")))
                 .catch((e) => {
                     console.error(e);
-                    message.error(t("book.actions.add.error"))
+                    message.error(t("page.actions.add.error"))
                 });
         }
     }, [addBookPage, bookId, libraryId, message, navigate, page, t, updateBookPage, uploadImage]);

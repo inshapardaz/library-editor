@@ -1,7 +1,11 @@
 @import "../../styles/mixins/breakpoints.scss";
 
 .book {
+    &__title {
+        cursor: pointer;
+    }
     &__image {
+        cursor: pointer;
         width: 262px;
         height: 400px;
 

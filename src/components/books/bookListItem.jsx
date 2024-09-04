@@ -26,16 +26,19 @@ const BookListItem = ({ libraryId, book, t }) => {
         <img
             src={book.links.image}
             onError={setDefaultBookImage}
-            className="book__image--small"
+            className="book__image book__image--small"
             alt={book.title}
+            onClick={() => navigate(`/libraries/${libraryId}/books/${book.id}`)}
         />
     ) : (
         <img
             src={bookPlaceholderImage}
-            className="book__image--small"
+            className="book__image book__image--small"
             alt={book.title}
+            onClick={() => navigate(`/libraries/${libraryId}/books/${book.id}`)}
         />
     );
+    const title = (<div className="book__title" onClick={() => navigate(`/libraries/${libraryId}/books/${book.id}`)}>{book.title}</div>)
     const avatar = (
         <Avatar.Group maxCount="2" size="large">
             {book.authors.map((author) => (
@@ -47,11 +50,6 @@ const BookListItem = ({ libraryId, book, t }) => {
                 />
             ))}
         </Avatar.Group>
-    );
-    const title = (
-        <Link to={`/libraries/${libraryId}/books/${book.id}`}>
-            {book.title}
-        </Link>
     );
     const description = (<>
         {book.description ? (
@@ -67,54 +65,60 @@ const BookListItem = ({ libraryId, book, t }) => {
             t={t}
         /> : null}
     </>);
-    const chapterCount = (
+
+    const actions = [(
         <IconText href={`/libraries/${libraryId}/books/${book.id}`}
             icon={FiLayers}
             text={t("book.chapterCount", { count: book.chapterCount })}
             key="book-chapter-count"
         />
-    );
-    const pageCount = (
+    ), (
         <IconText href={`/libraries/${libraryId}/books/${book.id}/?section=pages`}
             icon={AiOutlineCopy}
             text={t("book.pageCount", { count: book.pageCount })}
             key="book-page-count"
         />
-    );
-
-    const fileCount = (
+    ), (
         <IconText href={`/libraries/${libraryId}/books/${book.id}/?section=files`}
             icon={AiOutlineCopy}
             text={t("book.fileCount", { count: book.contents?.length ?? 0 })}
             key="book-file-count"
         />
-    );
+    ), (
+        <BookCategory
+            key={`${book.id}-action-categories`}
+            justList
+            book={book}
+        />
+    )];
+
+    if (book?.link?.update) {
+        actions.push(
+            <Tooltip title={t("actions.edit")}>
+                <Button onClick={() => navigate(`/libraries/${libraryId}/books/${book.id}/edit`)}
+                    icon={<FiEdit />}
+                    type="ghost"
+                    size="small" />
+            </Tooltip>
+        );
+    }
+
+    if (book?.links?.delete) {
+        actions.push(
+            <BookDeleteButton
+                libraryId={libraryId}
+                book={book}
+                t={t}
+                type="ghost"
+                size="small"
+            />
+        );
+    }
 
     return (
         <List.Item
             key={book.id}
-            actions={[
-                chapterCount,
-                pageCount,
-                fileCount,
-                <BookCategory
-                    key={`${book.id}-action-categories`}
-                    justList
-                    book={book}
-                />,
-                <IconText href={`/libraries/${libraryId}/books/${book.id}/edit`}
-                    icon={FiEdit}
-                    key="book-edit"
-                />,
-                <BookDeleteButton
-                    key="delete-button"
-                    libraryId={libraryId}
-                    book={book}
-                    t={t}
-                    type="ghost"
-                    size="small"
-                />,
-            ]}
+            actions={actions}
             extra={cover}
         >
             <List.Item.Meta

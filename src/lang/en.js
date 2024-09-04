@@ -618,6 +618,8 @@ const en = {
             },
             edit: {
                 title: "Editing page {{sequenceNumber}}",
+                success: "Page saved successfully.",
+                error: "Error saving page.",
             },
             assign: {
                 title: "Assign pages?",

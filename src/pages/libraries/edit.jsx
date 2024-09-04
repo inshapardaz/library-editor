@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -36,8 +36,11 @@ const LibraryEditPage = () => {
     const [previewImage, setPreviewImage] = useState(null);
     const [fileList, setFileList] = useState([]);
 
-    if (isFetching) return <Loading />;
-    if (error) return <Error t={t} />;
+    useEffect(() => {
+        if (library && !library.links.update) {
+            navigate('/403');
+        }
+    }, [library]);
 
     const onSubmit = async (library) => {
         if (libraryId) {
@@ -90,6 +93,9 @@ const LibraryEditPage = () => {
         return libraryPlaceholderImage;
     };
     const title = library ? library.name : t("library.actions.add.label");
+
+    if (isFetching) return <Loading />;
+    if (error) return <Error t={t} />;
 
     return (
         <>

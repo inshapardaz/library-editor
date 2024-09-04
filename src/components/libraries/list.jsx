@@ -99,6 +99,15 @@ const LibrariesList = ({
                     </Button>
                 </Space>)
             }
+            actions={
+                libraries && libraries.links && libraries.links.create &&
+                (<Space>
+                    <Button icon={<FaPlus />}
+                        onClick={() => navigate(`/libraries/add`)}>
+                        {t("library.actions.add.label")}
+                    </Button>
+                </Space>)
+            }
             extra={
                 < Space >
                     {showSearch && (

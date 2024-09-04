@@ -25,7 +25,7 @@ const LibraryHome = () => {
         return <Spin />
     }
 
-    const editButton = (
+    const editButton = library && library.links.update && (
         <Link to={`/libraries/${libraryId}/edit`}>
             <Button type="dashed" icon={<FaPencilAlt />}>
                 {t("actions.edit")}
@@ -35,7 +35,7 @@ const LibraryHome = () => {
 
     return (<>
         <div style={{ marginTop: 50 }} />
-        <PageHeader title={library?.name} icon={<ImLibrary />} actions={editButton} />
+        <PageHeader title={library?.name} icon={<ImLibrary size={48} />} actions={editButton} />
         <ContentsContainer>
             <EditingBooks status="BeingTyped" />
             <EditingBooks status="ProofRead" />

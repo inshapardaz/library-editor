@@ -1,11 +1,9 @@
 import React from 'react';
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // 3rd party libraries
 import { ImLibrary } from "/src/icons";
-import { Button } from "antd";
-import { FaPlus } from "/src/icons";
 
 // Local Imports
 import { SortDirection } from "/src/models";
@@ -24,17 +22,9 @@ const LibrariesHome = () => {
     const pageNumber = searchParams.get("pageNumber") ?? 1;
     const pageSize = searchParams.get("pageSize") ?? 12;
 
-    const addButton = (
-        <Link to={`/libraries/add`}>
-            <Button type="dashed" icon={<FaPlus />}>
-                {t("book.actions.add.label")}
-            </Button>
-        </Link>
-    );
-
     return (
         <>
-            <PageHeader title={t("libraries.title")} icon={<ImLibrary />} actions={addButton} />
+            <PageHeader title={t("libraries.title")} icon={<ImLibrary size={48} />} />
             <ContentsContainer>
                 <LibrariesList
                     query={query}

@@ -82,14 +82,12 @@ function BooksList({
             );
         } else {
             return (
-                <List.Item>
-                    <BookCard
-                        key={book.id}
-                        libraryId={libraryId}
-                        book={book}
-                        t={t}
-                    />
-                </List.Item>
+                <BookCard
+                    key={book.id}
+                    libraryId={libraryId}
+                    book={book}
+                    t={t}
+                />
             );
         }
     };

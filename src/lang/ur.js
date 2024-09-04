@@ -639,6 +639,8 @@ const ur = {
             },
             edit: {
                 title: "صفحہ {{sequenceNumber}} کی تدوین",
+                success: "صفحہ میں تبدیلیاں محفوظ کر دی گئی ہیں۔",
+                error: "صفحے میں تبدیلیاں محفوظ کرنے میں مسائل کا سامنا ہے۔ برائے مہربانی دوبارہ کوشش کریں۔",
             },
             assign: {
                 title: "صفحات تفویض کریں",
@@ -1541,6 +1543,8 @@ const ur = {
             deleteSandpack: "کوڈ بلاک ہٹائیں",
             undo: "کالعدم {{shortcut}}",
             redo: "دوبارہ کریں {{shortcut}}",
+            punctuation: "Punctuation",
+            autoCorrect: "Auto Correct",
         },
         admonitions: {
             note: "نوٹ",

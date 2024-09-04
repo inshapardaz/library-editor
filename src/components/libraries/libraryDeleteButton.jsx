@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Third party libraries
-import { App, Button, Modal } from "antd";
+import { App, Button, Modal, Tooltip } from "antd";
 
 // Local imports
 import { FaTrash, ExclamationCircleFilled } from '/src/icons';
@@ -43,7 +43,13 @@ const LibraryDeleteButton = ({
         });
     };
 
-    return (<Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash />}>{children}</Button>);
+    if (library?.links?.delete) {
+        return (<Tooltip title={t('actions.delete')}>
+            <Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash />}>{children}</Button>
+        </Tooltip>);
+    } else {
+        return null;
+    }
 };
 
 export default LibraryDeleteButton;

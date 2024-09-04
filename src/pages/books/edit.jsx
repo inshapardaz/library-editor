@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -42,8 +42,11 @@ const BookEditPage = () => {
     const [previewImage, setPreviewImage] = useState(null);
     const [fileList, setFileList] = useState([]);
 
-    if (isFetching) return <Loading />;
-    if (error) return <Error t={t} />;
+    useEffect(() => {
+        if (book && !book?.links?.update) {
+            navigate('/403')
+        }
+    }, [book]);
 
     const onSubmit = async (book) => {
         if (bookId) {
@@ -97,6 +100,8 @@ const BookEditPage = () => {
     };
 
     const title = book ? book.title : t("book.actions.add.title");
+    if (isFetching) return <Loading />;
+    if (error) return <Error t={t} />;
     return (
         <>
             <PageHeader title={title} icon={<ImBooks style={{ width: 36, height: 36 }} />} />

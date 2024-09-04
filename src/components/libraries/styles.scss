@@ -1,4 +1,17 @@
 .library {
+    &__icon {
+        margin: 20px 0;
+        cursor: pointer;
+        &--small {
+            margin: 10px 0;
+            cursor: pointer;
+        }
+    }
+
+    &__link {
+        cursor: pointer;
+    }
+
     &__image {
         width: 262px;
 

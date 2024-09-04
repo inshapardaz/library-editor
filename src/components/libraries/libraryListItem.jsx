@@ -1,53 +1,66 @@
 import React from 'react';
-import { Link } from "react-router-dom";
 
 // 3rd Party Libraries
-import { List, Typography } from "antd";
+import { Button, List, Tooltip, Typography } from "antd";
 
 // Local Import
 import "./styles.scss";
-import { FaEdit } from "/src/icons";
-import { libraryPlaceholderImage, setDefaultLibraryImage } from "/src/util";
-import IconText from "/src/components/common/iconText";
+import { FaEdit, ImLibrary } from "/src/icons";
+import { setDefaultLibraryImage } from "/src/util";
 import LibraryDeleteButton from "./libraryDeleteButton";
+import { useNavigate } from 'react-router-dom';
 // ------------------------------------------------------
 
-const { Text, Paragraph } = Typography;
+const { Paragraph } = Typography;
 
 // ------------------------------------------------------
 
 const LibraryListItem = ({ library, t }) => {
-    const cover = <img src={library.links.image || libraryPlaceholderImage} onError={setDefaultLibraryImage} className="library__image" alt={library.name} />;
+    const navigate = useNavigate();
+    const cover = library?.links?.image ? (<img src={library.links.image}
+        onError={setDefaultLibraryImage}
+        className="library__image"
+        onClick={() => navigate(`/libraries/${library.id}`)}
+        alt={library.name} />) :
+        <ImLibrary size={64} className='library__icon--small'
+            onClick={() => navigate(`/libraries/${library.id}`)} />;
 
-    const title = (
-        <Link to={`/libraries/${library.id}/`}>
-            {library.name}
-        </Link>
-    );
+    const title = (<div className='library__link' onClick={() => navigate(`/libraries/${library.id}`)}>{library.name}</div>);
 
     const description = library.description ? (
         <Paragraph type="secondary" ellipsis>
             {library.description}
         </Paragraph>
-    ) : (
-        <Text type="secondary">{t("library.description.noDescription")}</Text>
-    );
+    ) : null;
+
+    let actions = [];
+
+    if (library?.links?.update) {
+        actions.push(<Tooltip title={t('actions.edit')}>
+            <Button icon={<FaEdit />}
+                key="library-edit"
+                type="ghost"
+                size="small"
+                onClick={() => navigate(`/libraries/${library.id}/edit`)} />
+        </Tooltip>)
+    }
+
+    if (library?.links?.delete) {
+        actions.push(<LibraryDeleteButton
+            key="deleteButton"
+            library={library}
+            t={t}
+            type="ghost"
+            size="small"
+        />)
+    }
 
     return (
         <List.Item
             key={library.id}
-            actions={[
-                <IconText icon={FaEdit} key="library-edit"
-                    href={`/libraries/${library.id}/edit`} />,
-                <LibraryDeleteButton
-                    key={`delete-${library.id}`}
-                    library={library}
-                    t={t}
-                    type="ghost"
-                    size="small"
-                />,
-            ]}
+            actions={actions}
             extra={cover}
+
         >
             <List.Item.Meta
                 title={title}
