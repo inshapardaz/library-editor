@@ -1359,6 +1359,12 @@ const en = {
             "Only image files are expected. Please select an image file.",
         pdfRequired: "Only PDF files are expected. Please select a PDF file.",
     },
+    editor: {
+        toolbar: {
+            punctuation: "Punctuation",
+            autoCorrect: "Auto Correct",
+        },
+    },
 };
 
 export default en;

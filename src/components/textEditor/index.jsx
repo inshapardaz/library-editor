@@ -27,7 +27,7 @@ import '@mdxeditor/editor/style.css'
 
 // Local import
 
-import { FaSave, MdOutlineZoomIn, MdOutlineZoomOut } from '/src/icons';
+import { FaSave, MdOutlineZoomIn, MdOutlineZoomOut, FaSpellCheck, MdOutlineFlashAuto } from '/src/icons';
 import { Alert, Space, Button } from 'antd';
 import useUnsavedChanges from '/src/hooks/useUnsavedChanges';
 import {
@@ -77,34 +77,6 @@ const autoCorrectText = (autoCorrections, text) => {
     return text.replaceAll(correctionRegex, (matched) => autoCorrections.find((o) => o.incorrectText === matched)?.correctText.trim());
 };
 
-const autoCorrectNode = (node, corrections) => {
-    if (node.getChildren) {
-        node.getChildren().map((child) => {
-            autoCorrectNode(child, corrections);
-        });
-    }
-
-    if (node.getType() === 'text') {
-        node.setTextContent(autoCorrectText(corrections, node.getTextContent()));
-    }
-
-    return node
-}
-
-const punctuationCorrectionNode = (node, corrections) => {
-    if (node.getChildren) {
-        node.getChildren().map((child) => {
-            punctuationCorrectionNode(child, corrections);
-        });
-    }
-
-    if (node.getType() === 'text') {
-        node.setTextContent(correctPunctuations(corrections, node.getTextContent()));
-    }
-
-    return node
-}
-
 //-----------------------------------------
 
 const TextEditor = ({ value, language, onSave, onChange, showSave = true, contentKey = null }) => {
@@ -138,28 +110,6 @@ const TextEditor = ({ value, language, onSave, onChange, showSave = true, conten
         { language }
     );
 
-
-    const autoCorrect = () => {
-        var corrections = autoCorrectList;
-        editor.update(() => {
-            var root = $getRoot(editor);
-            var children = root.getChildren();
-            children.forEach((child) => {
-                autoCorrectNode(child, corrections);
-            });
-        });
-    }
-
-    const punctuationCorrection = () => {
-        var corrections = punctuationList;
-        editor.update(() => {
-            var root = $getRoot(editor);
-            var children = root.getChildren();
-            children.forEach((child) => {
-                punctuationCorrectionNode(child, corrections);
-            });
-        });
-    }
     useEffect(() => {
         ref.current?.setMarkdown(value ?? '')
     }, [value]);
@@ -205,6 +155,16 @@ const TextEditor = ({ value, language, onSave, onChange, showSave = true, conten
         }
 
         clearUnsavedChanges();
+    }
+
+    const onAutoCorrect = () => {
+        const correctedText = autoCorrectText(autoCorrectList, ref.current?.getMarkdown());
+        ref.current?.setMarkdown(correctedText ?? '')
+    }
+
+    const onPunctuationCorrection = () => {
+        const correctedText = correctPunctuations(punctuationList, ref.current?.getMarkdown());
+        ref.current?.setMarkdown(correctedText ?? '')
     }
 
     const onClearUnsavedChanges = () => {
@@ -259,6 +219,19 @@ const TextEditor = ({ value, language, onSave, onChange, showSave = true, conten
                                     <ListsToggle />
                                 </Space>}
                                 <Space align={toolbarAlign}>
+                                    <ButtonWithTooltip
+                                        aria-label={t('editor.toolbar.autoCorrect', 'Auto correct')}
+                                        title={t('editor.toolbar.autoCorrect')}
+                                        onClick={onAutoCorrect} >
+                                        <MdOutlineFlashAuto size={20} />
+                                    </ButtonWithTooltip>
+                                    <ButtonWithTooltip
+                                        aria-label={t('editor.toolbar.punctuation', 'Punctuation correction')}
+                                        title={t('editor.toolbar.punctuation')}
+                                        onClick={onPunctuationCorrection} >
+                                        <FaSpellCheck size={20} />
+                                    </ButtonWithTooltip>
+                                    <Separator />
                                     <ButtonWithTooltip
                                         aria-label={t('toolbar.zoomin', 'Zoon In')}
                                         title={t('actions.zoonIn')}

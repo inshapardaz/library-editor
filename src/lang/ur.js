@@ -1543,8 +1543,8 @@ const ur = {
             deleteSandpack: "کوڈ بلاک ہٹائیں",
             undo: "کالعدم {{shortcut}}",
             redo: "دوبارہ کریں {{shortcut}}",
-            punctuation: "Punctuation",
-            autoCorrect: "Auto Correct",
+            punctuation: "املا",
+            autoCorrect: "خودکار تصحیح",
         },
         admonitions: {
             note: "نوٹ",

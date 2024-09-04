@@ -27,6 +27,7 @@ import {
     MdOutlineZoomOut,
     MdOutlineZoomIn,
     MdImageSearch,
+    MdOutlineFlashAuto,
 } from "react-icons/md";
 
 import {
@@ -103,6 +104,7 @@ import {
     FaRegFileWord,
     FaRegHourglass,
     FaUsers,
+    FaSpellCheck,
 } from "react-icons/fa";
 
 import { FaFileArrowUp, FaFileCirclePlus, FaFileZipper } from "react-icons/fa6";
@@ -205,6 +207,7 @@ export {
     FaSortAlphaUp,
     FaSortAmountDown,
     FaSortAmountUp,
+    FaSpellCheck,
     FaStarOfLife,
     FaTag,
     FaTags,
@@ -238,6 +241,7 @@ export {
     ImProfile,
     IoIosCloseCircle,
     LockOutlined,
+    MdOutlineFlashAuto,
     MdContentCopy,
     MdFullscreen,
     MdFullscreenExit,
