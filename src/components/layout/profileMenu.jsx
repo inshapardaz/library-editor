@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -8,16 +8,28 @@ import { App, Dropdown, Button, Space } from 'antd';
 
 // local imports
 import { FaSignOutAlt, FaUser, FaUserCircle, FiLogIn, FiLogOut, ImProfile, MdPassword } from '/src/icons';
-import { logout, loggedInUser, isLoggedIn } from '/src/store/slices/authSlice'
+import { logout, getLogoutStatus, loggedInUser, isLoggedIn } from '/src/store/slices/authSlice'
+
 
 // --------------------------------------------
 const ProfileMenu = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { modal } = App.useApp();
+    const { message, modal } = App.useApp();
+
     const dispatch = useDispatch();
+    const status = useSelector(getLogoutStatus)
     const user = useSelector(loggedInUser)
     const isUserLoggedIn = useSelector(isLoggedIn)
+
+    useEffect(() => {
+        if (status == "succeeded") {
+            navigate('/')
+        } else if (status == "failed") {
+            message.error(t("logout.error"))
+        }
+
+    }, [status])
 
     const logoutClicked = () => {
         modal.confirm({
@@ -28,7 +40,6 @@ const ProfileMenu = () => {
             cancelText: t('actions.no'),
             onOk: () => {
                 dispatch(logout())
-                navigate('/')
             }
         });
     }

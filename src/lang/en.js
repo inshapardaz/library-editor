@@ -50,6 +50,7 @@ const en = {
     logout: {
         title: "Logout",
         confirmation: "Are you sure you want to log out?",
+        error: "Unable to logout."
     },
     forgotPassword: {
         title: "Forgot Password",

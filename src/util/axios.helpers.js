@@ -6,6 +6,8 @@ import { API_URL } from "/src/config";
 import { getUser, setUser, clearUser } from "/src/domain/userRepository";
 //------------------------------------------
 
+axios.defaults.withCredentials = true
+
 export const axiosPublic = axios.create({
     baseURL: API_URL,
 });
@@ -29,7 +31,7 @@ axiosPrivate.interceptors.request.use(
                         const response = await axiosPublic.post(
                             "/accounts/refresh-token",
                             {
-                                refreshToken: getUser().refreshToken,
+                                refreshToken: user.refreshToken,
                             }
                         );
                         setUser(response.data);
@@ -38,12 +40,6 @@ axiosPrivate.interceptors.request.use(
                         window.location.href = "/account/login";
                     }
                 }
-
-                if (config?.headers) {
-                    config.headers["authorization"] = `Bearer ${
-                        getUser()?.accessToken
-                    }`;
-                }
             }
         } finally {
             release();
@@ -51,6 +47,32 @@ axiosPrivate.interceptors.request.use(
         return config;
     },
     (error) => {
+        return Promise.reject(error);
+    }
+);
+
+
+axiosPrivate.interceptors.response.use(
+    response => response, // Directly return successful responses.
+    async error => {
+        const originalRequest = error.config;
+        if (error.response.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
+            try {
+                const response = await axiosPublic.post(
+                    "/accounts/refresh-token",
+                    {
+                        refreshToken: getUser().refreshToken,
+                    }
+                );
+                setUser(response.data);
+                return axiosInstance(originalRequest); // Retry the original request with the new access token.
+            } catch (refreshError) {
+                clearUser();
+                window.location.href = "/account/login";
+                return Promise.reject(refreshError);
+            }
+        }
         return Promise.reject(error);
     }
 );

@@ -75,6 +75,7 @@ const ur = {
     logout: {
         title: "اخراج",
         confirmation: "کیا آپ لاگ آؤٹ کرنا چاہیں گے؟",
+        error: "لاگ آؤٹ میں خرابی ہوئی۔"
     },
     forgotPassword: {
         title: "پاسورڈ بھول گئے ہیں",
