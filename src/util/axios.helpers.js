@@ -66,7 +66,7 @@ axiosPrivate.interceptors.response.use(
                     }
                 );
                 setUser(response.data);
-                return axiosInstance(originalRequest); // Retry the original request with the new access token.
+                return axiosPrivate(originalRequest); // Retry the original request with the new access token.
             } catch (refreshError) {
                 clearUser();
                 window.location.href = "/account/login";
