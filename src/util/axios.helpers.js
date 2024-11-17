@@ -6,8 +6,6 @@ import { API_URL } from "/src/config";
 import { getUser, setUser, clearUser } from "/src/domain/userRepository";
 //------------------------------------------
 
-axios.defaults.withCredentials = true
-
 export const axiosPublic = axios.create({
     baseURL: API_URL,
 });
@@ -38,6 +36,11 @@ axiosPrivate.interceptors.request.use(
                     } catch (e) {
                         clearUser();
                         window.location.href = "/account/login";
+                    }
+
+                    if (config?.headers) {
+                        config.headers["authorization"] = `Bearer ${getUser()?.accessToken
+                            }`;
                     }
                 }
             }
