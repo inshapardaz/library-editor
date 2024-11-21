@@ -3,22 +3,22 @@ import { useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 
 // Local Imports
-import { isLoggedIn } from "/src/store/slices/authSlice";
+import { MAIN_SITE } from '/src/config';
 
 // -----------------------------------
 
 const SecurePage = () => {
     const navigate = useNavigate();
-    const isUserLoggedIn = useSelector(isLoggedIn)
+    const userLoadStatus = useSelector((state) => state?.auth?.loadUserStatus)
+    const user = useSelector(state => state.auth.user)
 
     useEffect(() => {
-        if (!isUserLoggedIn) {
-            navigate('/account/login')
+        if (userLoadStatus === 'succeeded' && !user && !window.location.href.includes(MAIN_SITE)) {
+            window.location.href = `${MAIN_SITE}/account/login?returnUrl=${window.location.href}`
         }
-    }, [isUserLoggedIn, navigate])
+    }, [user, navigate, userLoadStatus])
 
     return <Outlet />;
-
 }
 
 export default SecurePage;

@@ -2,15 +2,17 @@ import axios from "axios";
 import { Mutex } from "async-mutex";
 
 // Local import
-import { API_URL } from "/src/config";
-import { getUser, setUser, clearUser } from "/src/domain/userRepository";
+import { API_URL, MAIN_SITE } from '/src/config';
+
 //------------------------------------------
 
 export const axiosPublic = axios.create({
     baseURL: API_URL,
+    withCredentials: true
 });
 export const axiosPrivate = axios.create({
     baseURL: API_URL,
+    withCredentials: true
 });
 
 const mutex = new Mutex();
@@ -18,35 +20,6 @@ const mutex = new Mutex();
 axiosPrivate.interceptors.request.use(
     async (config) => {
         await mutex.waitForUnlock();
-        const release = await mutex.acquire();
-
-        try {
-            const user = getUser();
-            let currentDate = new Date();
-            if (user?.accessToken) {
-                if (new Date(user.accessTokenExpiry) < currentDate.getTime()) {
-                    try {
-                        const response = await axiosPublic.post(
-                            "/accounts/refresh-token",
-                            {
-                                refreshToken: user.refreshToken,
-                            }
-                        );
-                        setUser(response.data);
-                    } catch (e) {
-                        clearUser();
-                        window.location.href = "/account/login";
-                    }
-
-                    if (config?.headers) {
-                        config.headers["authorization"] = `Bearer ${getUser()?.accessToken
-                            }`;
-                    }
-                }
-            }
-        } finally {
-            release();
-        }
         return config;
     },
     (error) => {
@@ -60,21 +33,23 @@ axiosPrivate.interceptors.response.use(
     async error => {
         const originalRequest = error.config;
         if (error.response.status === 401 && !originalRequest._retry) {
-            originalRequest._retry = true;
+            await mutex.waitForUnlock();
+            const release = await mutex.acquire();
             try {
-                const response = await axiosPublic.post(
+                originalRequest._retry = true;
+                await axiosPublic.post(
                     "/accounts/refresh-token",
-                    {
-                        refreshToken: getUser().refreshToken,
-                    }
+                    {}
                 );
-                setUser(response.data);
-                return axiosPrivate(originalRequest); // Retry the original request with the new access token.
             } catch (refreshError) {
-                clearUser();
-                window.location.href = "/account/login";
+                console.error(refreshError)
+                window.location.href = `${MAIN_SITE}/account/login?returnUrl=${window.location.href}`;
                 return Promise.reject(refreshError);
+            } finally {
+                release();
             }
+
+            return axiosPrivate(originalRequest); // Retry the original request with the new access token.
         }
         return Promise.reject(error);
     }

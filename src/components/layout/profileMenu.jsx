@@ -8,28 +8,13 @@ import { App, Dropdown, Button, Space } from 'antd';
 
 // local imports
 import { FaSignOutAlt, FaUser, FaUserCircle, FiLogIn, FiLogOut, ImProfile, MdPassword } from '/src/icons';
-import { logout, getLogoutStatus, loggedInUser, isLoggedIn } from '/src/store/slices/authSlice'
-
+import { MAIN_SITE } from '/src/config';
 
 // --------------------------------------------
 const ProfileMenu = () => {
     const { t } = useTranslation();
-    const navigate = useNavigate();
-    const { message, modal } = App.useApp();
-
-    const dispatch = useDispatch();
-    const status = useSelector(getLogoutStatus)
-    const user = useSelector(loggedInUser)
-    const isUserLoggedIn = useSelector(isLoggedIn)
-
-    useEffect(() => {
-        if (status == "succeeded") {
-            navigate('/')
-        } else if (status == "failed") {
-            message.error(t("logout.error"))
-        }
-
-    }, [status])
+    const { modal } = App.useApp();
+    const user = useSelector(state => state.auth.user)
 
     const logoutClicked = () => {
         modal.confirm({
@@ -39,12 +24,12 @@ const ProfileMenu = () => {
             okText: t('actions.yes'),
             cancelText: t('actions.no'),
             onOk: () => {
-                dispatch(logout())
+                window.location.href = `${MAIN_SITE}/account/logout?returnUrl=${window.location.href}`
             }
         });
     }
 
-    const profileItems = (isUserLoggedIn) ?
+    const profileItems = (user) ?
         [{
             label: user ? user.name : '',
             key: 'username',
@@ -57,7 +42,7 @@ const ProfileMenu = () => {
             icon: <ImProfile />
         }, {
             label: (
-                <Link to='/change-password'>
+                <Link to={`${MAIN_SITE}/account/change-password?returnUrl=${window.location.href}`}>
                     {t('changePassword.title')}
                 </Link>),
             key: 'change-password',
@@ -72,7 +57,7 @@ const ProfileMenu = () => {
         }]
         : [{
             label: (
-                <Link to='/account/login'>
+                <Link to={`${MAIN_SITE}/account/login?returnUrl=${window.location.href}`}>
                     {t('login.title')}
                 </Link>),
             key: 'login',
@@ -81,7 +66,7 @@ const ProfileMenu = () => {
             type: 'divider'
         }, {
             label: (
-                <Link to='/account/register'>
+                <Link to={`${MAIN_SITE}/account/register`}>
                     {t('register.title')}
                 </Link>),
             key: 'register',
