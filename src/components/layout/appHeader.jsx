@@ -1,162 +1,179 @@
-import React, { useState } from "react";
+import { Link, NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useMediaQuery } from "usehooks-ts";
-import { NavLink, useParams } from "react-router-dom";
 
-// 3rd party imports
-import { Menu, Button, theme, Drawer, Row, Col, Space } from 'antd';
+// Ui Library Imports
+import {
+  Group,
+  Divider,
+  Box,
+  Burger,
+  Drawer,
+  ScrollArea,
+  rem,
+  Space,
+  Text,
+} from '@mantine/core';
+
+import { useDisclosure } from '@mantine/hooks';
 
 // Local Imports
-import './styles.scss';
-import { FaBook, FaPenFancy, FaFeatherAlt, FaTags, FaHome, FaBars, ImBooks, ImNewspaper } from '/src/icons';
-import { useGetLibraryQuery } from '/src/store/slices/librariesSlice'
-import LibrariesDropdown from "/src/components/libraries/librariesDropDown";
-import Logo from "./logo";
-import ProfileMenu from "./profileMenu";
-import LanguageSwitcher from "../languageSwitcher";
-import DarkModeToggle from "../darkModeToggle";
-import SearchBox from '../searchBox'
+import classes from './appHeader.module.css';
 
-//---------------------------------------------
+import Logo from '../logo';
+import LanguageSwitch from './languageSwitch';
+import DarkModeToggle from './darkModeToggle';
+import Profile from './profile';
+import LibrarySwitcher from './librarySwitcher';
+import SearchBox from './searchBox';
+import { IconHome, IconLibrary, IconLibraryEditor, IconDictionary, IconFont, IconTools, IconChevronDown } from '@/components/icon';
+//----------------------------------------------
 
 const AppHeader = () => {
-    const { t } = useTranslation();
-    const { token } = theme.useToken();
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const isMobile = useMediaQuery(["(max-width: 600px)"], [true], false);
-    const { libraryId } = useParams()
-    const { data: library } = useGetLibraryQuery({ libraryId }, { skip: !libraryId })
+  const { t } = useTranslation();
+  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
 
-    let items = [];
-
-    const onMenuClick = () => {
-        setMobileMenuOpen(false);
-    }
-
-    if (library) {
-        items = [{
-            label: (
-                <NavLink to={`/libraries/${libraryId}`}>
-                    {library.name}
-                </NavLink>
-            ),
-            key: 'home',
-            icon: <FaHome />,
-        }, {
-            label: (
-                <NavLink to={`/libraries/${libraryId}/books`}>
-                    {t("header.books")}
-                </NavLink>
-            ),
-            key: 'books',
-            icon: <FaBook />,
-        }, {
-            label: (
-                <NavLink to={`/libraries/${libraryId}/articles`}>
-                    {t("header.writings")}
-                </NavLink>
-            ),
-            key: 'writings',
-            icon: <FaPenFancy />,
-        }, {
-            label: (
-                <NavLink to={`/libraries/${libraryId}/authors`}>
-                    {t("header.authors")}
-                </NavLink>
-            ),
-            key: 'authors',
-            icon: <FaFeatherAlt />,
-        }, {
-            label: (<NavLink to={`/libraries/${libraryId}/categories`}>
-                {t("header.categories")}
-            </NavLink>),
-            key: 'categories',
-            icon: <FaTags />
-        }, {
-            label: (
-                <NavLink to={`/libraries/${libraryId}/series`}>
-                    {t("header.series")}
-                </NavLink>
-            ),
-            key: 'series',
-            icon: <ImBooks />,
-        }];
-
-        if (library.supportsPeriodicals) {
-            items.push({
-                label: (
-                    <NavLink to={`/libraries/${libraryId}/periodicals`}>
-                        {t("header.periodicals")}
-                    </NavLink>
-                ),
-                key: 'periodicals',
-                icon: <ImNewspaper />,
-            });
-        }
-    }
-    else {
-        items = [];
-    }
-
-    const menu = (<Menu
-        className={isMobile ? 'header__menu' : null}
-        style={{ backgroundColor: 'transparent', border: 'none' }}
-        mode={isMobile ? "inline" : "horizontal"}
-        selectable={false}
-        expandIcon={true}
-        items={items}
-        onClick={onMenuClick}
-    />);
-
-    if (isMobile) {
-        return (
-            <Row className="header" style={{ backgroundColor: token.colorBgContainer }}>
-                <Col>
-                    <Space size={8} className={'header__logo'}>
-                        <Logo />
-                    </Space>
-                </Col>
-                <Col flex="auto"></Col>
-                <Col>
-                    <LibrariesDropdown t={t} library={library} />
-                    <DarkModeToggle />
-                    <LanguageSwitcher arrow round />
-                    <ProfileMenu />
-                    <Button onClick={() => setMobileMenuOpen(true)} icon={<FaBars color={token.colorText} />} ghost />
-                </Col>
-                <Drawer
-                    title={<Logo t={t} showLibrarySwitcher={false} />}
-                    closable={true}
-                    width="100%"
-                    onClose={() => setMobileMenuOpen(false)}
-                    open={mobileMenuOpen}
-                >
-                    <Menu>{menu}</Menu>
-                </Drawer>
-            </Row>);
-    }
-
-    return (<Row className="header" gutter={{ m: 8, s: 4 }} style={{ backgroundColor: token.colorBgContainer }}>
-        <Col>
-            <Space size={8} className={'header__logo'}>
-                <Logo />
-            </Space>
-        </Col>
-        <Col flex="auto">{menu}</Col>
-        <Col>
+  return (
+    <Box>
+      <header className={classes.header}>
+        <Group justify="space-between" h="100%" wrap="nowrap">
+          <Group h="100%" gap={0}>
+            <NavLink to={`/`} className={classes.link}>
+              <Logo />
+              <Space w="md" />
+              {t('app')}
+            </NavLink >
+          </Group>
+          <Group hiddenFrom="sm" >
             <SearchBox />
-        </Col>
-        <Col><LibrariesDropdown t={t} library={library} /></Col>
-        <Col>
+          </Group>
+          <Group h="100%" gap={0} visibleFrom="sm" wrap="nowrap">
+            <Link to="/" className={classes.link}>
+              <IconHome height="24px" />
+              <Space w="md" />
+              <Text visibleFrom="lg">
+                {t('header.home')}
+              </Text>
+            </Link>
+            <LibrarySwitcher className={classes.link}>
+              <IconLibrary height="24px" />
+              <Space w="md" />
+              <Text visibleFrom="lg">
+                {t('header.libraries')}
+              </Text>
+              <IconChevronDown
+                width={rem(16)}
+                height={rem(16)}
+              />
+            </LibrarySwitcher>
+            <Link to="https://editor.nawishta.co.uk" className={classes.link}>
+              <IconLibraryEditor height="24px" />
+              <Space w="md" />
+              <Text visibleFrom="lg">
+                {t('header.libraryEditor')}
+              </Text>
+            </Link>
+            <Link to="https://dictionaries.nawishta.co.uk" className={classes.link}>
+              <IconDictionary height="24px" />
+              <Space w="md" />
+              <Text visibleFrom="lg">
+                {t('header.dictionaries')}
+              </Text>
+            </Link>
+            <Link to="https://fonts.nawishta.co.uk" className={classes.link}>
+              <IconFont height="24px" />
+              <Space w="md" />
+              <Text visibleFrom="lg">
+                {t('header.fonts')}
+              </Text>
+            </Link>
+            <Link to="https://tools.nawishta.co.uk" className={classes.link}>
+              <IconTools height="24px" />
+              <Space w="md" />
+              <Text visibleFrom="lg">
+                {t('header.tools')}
+              </Text>
+            </Link>
+          </Group>
+          <Group visibleFrom="sm">
+            <SearchBox />
+          </Group>
+          <Group visibleFrom="sm" wrap="nowrap">
+            <LanguageSwitch />
             <DarkModeToggle />
-        </Col>
-        <Col>
-            <LanguageSwitcher arrow round />
-        </Col>
-        <Col>
-            <ProfileMenu />
-        </Col>
-    </Row>);
+            <Profile />
+          </Group>
+
+          <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
+        </Group>
+      </header>
+
+      <Drawer
+        opened={drawerOpened}
+        onClose={closeDrawer}
+        size="100%"
+        padding="md"
+        title={<Group>
+          <Logo />
+          <Space w="md" />
+          {t('app')}
+        </Group>}
+        hiddenFrom="sm"
+        zIndex={1000000}
+      >
+        <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
+          <Divider my="sm" />
+
+          <Link to="/" className={classes.link}>
+            <IconHome height="24px" />
+            <Space w="md" />
+            {t('header.home')}
+          </Link>
+          <LibrarySwitcher >
+            <Group className={classes.link}>
+              <IconLibrary height="24px" />
+              {t('header.libraries')}
+            </Group>
+          </LibrarySwitcher>
+          <Link to="https://editor.nawishta.co.uk" className={classes.link}>
+            <IconLibraryEditor height="24px" />
+            <Space w="md" />
+            {t('header.libraryEditor')}
+          </Link>
+          <Link to="https://dictionaries.nawishta.co.uk" className={classes.link}>
+            <IconDictionary height="24px" />
+            <Space w="md" />
+            {t('header.dictionaries')}
+          </Link>
+          <Link to="https://fonts.nawishta.co.uk" className={classes.link}>
+            <IconFont height="24px" />
+            <Space w="md" />
+            {t('header.fonts')}
+          </Link>
+          <Link to="https://tools.nawishta.co.uk" className={classes.link}>
+            <IconTools height="24px" />
+            <Space w="md" />
+            {t('header.tools')}
+          </Link>
+
+          <Divider my="sm" />
+
+
+          <Divider my="sm" />
+
+          <Group my="sm" >
+            <LanguageSwitch />
+            <DarkModeToggle />
+          </Group>
+
+          <Divider my="sm" />
+
+          <Group justify="center" grow pb="xl" px="md">
+            <Profile />
+          </Group>
+        </ScrollArea>
+      </Drawer>
+    </Box >
+  );
 }
 
 export default AppHeader;

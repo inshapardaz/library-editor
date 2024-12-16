@@ -1,133 +1,76 @@
-import React from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-// 3rd Party Libraries
-import { Avatar, List, Typography } from "antd";
+// Ui Library Imports
+import { Divider, Group, Image, Stack, Text, Tooltip, useMantineTheme } from '@mantine/core';
 
-// Local Import
-import "./styles.scss";
-import { FiEdit, FiLayers, AiOutlineCopy } from "/src/icons";
-import { setDefaultBookImage, bookPlaceholderImage } from "/src/util";
-import AuthorAvatar from "/src/components/author/authorAvatar";
-import IconText from "/src/components/common/iconText";
-import BookCategory from "./bookCategory";
-import BookSeriesInfo from "./bookSeriesInfo";
-import BookDeleteButton from "./bookDeleteButton";
-// ------------------------------------------------------
+// Local Imports
+import AuthorsAvatar from '@/components/authors/authorsAvatar';
+import { IconBook, IconPages, IconChapters } from '@/components/icon';
+import IconText from '@/components/iconText';
+import FavoriteButton from './favoriteButton';
+import If from '@/components/if';
+//-------------------------------------
 
-const { Text, Paragraph } = Typography;
+const BookListItem = ({ libraryId, book }) => {
+    const { t } = useTranslation();
+    const theme = useMantineTheme();
+    const [imgError, setImgError] = useState(false);
 
-// ------------------------------------------------------
+    const icon = <IconBook width={150} style={{ color: theme.colors.dark[1] }} />;
 
-const BookListItem = ({ libraryId, book, t }) => {
-    const navigate = useNavigate();
+    return (<>
+        <Group gap="sm" wrap="nowrap">
+            <If condition={book.links?.image && !imgError} elseChildren={icon}>
+                <Image w={150} radius="sm" src={book?.links?.image} onError={() => setImgError(true)} />
+            </If>
+            <Stack>
+                <Group justify="space-between">
+                    <Text component={Link} to={`/libraries/${libraryId}/books/${book.id}`} truncate="end" fw={500}>{book.title}</Text>
+                    <FavoriteButton book={book} readonly />
+                </Group>
+                {book?.description ?
+                    (<Tooltip label={book.description} withArrow>
+                        <Text size="sm" c="dimmed" lineClamp={1}>
+                            {book.description}
+                        </Text>
+                    </Tooltip>) :
+                    (<Text size="sm" fs="italic" c="dimmed" lineClamp={1}>
+                        {t('book.noDescription')}
+                    </Text>)}
+                <AuthorsAvatar libraryId={libraryId} authors={book?.authors} />
+                <Group mt="md">
+                    <If condition={book.pageCount != null}>
+                        <IconText size="sm" icon={<IconPages height={16} style={{ color: theme.colors.dark[2] }} />} text={t('book.pageCount', { count: book.pageCount })} />
+                    </If>
+                    <If condition={book.chapterCount != null}>
+                        <>
+                            <Divider orientation="vertical" />
+                            <IconText size="sm" icon={<IconChapters height={16} style={{ color: theme.colors.dark[2] }} />} text={t('book.chapterCount', { count: book.chapterCount })} />
+                        </>
+                    </If>
+                </Group>
+            </Stack>
+        </Group>
+        <Divider />
+    </>)
+}
 
-    const cover = book.links.image ? (
-        <img
-            src={book.links.image}
-            onError={setDefaultBookImage}
-            className="book__image book__image--small"
-            alt={book.title}
-            onClick={() => navigate(`/libraries/${libraryId}/books/${book.id}`)}
-        />
-    ) : (
-        <img
-            src={bookPlaceholderImage}
-            className="book__image book__image--small"
-            alt={book.title}
-            onClick={() => navigate(`/libraries/${libraryId}/books/${book.id}`)}
-        />
-    );
-    const title = (<div className="book__title" onClick={() => navigate(`/libraries/${libraryId}/books/${book.id}`)}>{book.title}</div>)
-    const avatar = (
-        <Avatar.Group maxCount="2" size="large">
-            {book.authors.map((author) => (
-                <AuthorAvatar
-                    key={author.id}
-                    libraryId={libraryId}
-                    author={author}
-                    t={t}
-                />
-            ))}
-        </Avatar.Group>
-    );
-    const description = (<>
-        {book.description ? (
-            <Paragraph type="secondary" ellipsis>
-                {book.description}
-            </Paragraph>
-        ) : (
-            <Text type="secondary">{t("book.noDescription")}</Text>
-        )}
-        {book?.seriesName ? <BookSeriesInfo
-            key={`${book.id}-action-series`}
-            book={book}
-            t={t}
-        /> : null}
-    </>);
-
-    const actions = [(
-        <IconText href={`/libraries/${libraryId}/books/${book.id}`}
-            icon={FiLayers}
-            text={t("book.chapterCount", { count: book.chapterCount })}
-            key="book-chapter-count"
-        />
-    ), (
-        <IconText href={`/libraries/${libraryId}/books/${book.id}/?section=pages`}
-            icon={AiOutlineCopy}
-            text={t("book.pageCount", { count: book.pageCount })}
-            key="book-page-count"
-        />
-    ), (
-        <IconText href={`/libraries/${libraryId}/books/${book.id}/?section=files`}
-            icon={AiOutlineCopy}
-            text={t("book.fileCount", { count: book.contents?.length ?? 0 })}
-            key="book-file-count"
-        />
-    ), (
-        <BookCategory
-            key={`${book.id}-action-categories`}
-            justList
-            book={book}
-        />
-    )];
-
-    if (book?.link?.update) {
-        actions.push(
-            <Tooltip title={t("actions.edit")}>
-                <Button onClick={() => navigate(`/libraries/${libraryId}/books/${book.id}/edit`)}
-                    icon={<FiEdit />}
-                    type="ghost"
-                    size="small" />
-            </Tooltip>
-        );
-    }
-
-    if (book?.links?.delete) {
-        actions.push(
-            <BookDeleteButton
-                libraryId={libraryId}
-                book={book}
-                t={t}
-                type="ghost"
-                size="small"
-            />
-        );
-    }
-
-    return (
-        <List.Item
-            key={book.id}
-            actions={actions}
-            extra={cover}
-        >
-            <List.Item.Meta
-                avatar={avatar}
-                title={title}
-                description={description}
-            />
-        </List.Item>
-    );
+BookListItem.propTypes = {
+    libraryId: PropTypes.string,
+    book: PropTypes.shape({
+        id: PropTypes.number,
+        title: PropTypes.string,
+        description: PropTypes.string,
+        authors: PropTypes.array,
+        pageCount: PropTypes.number,
+        chapterCount: PropTypes.number,
+        links: PropTypes.shape({
+            image: PropTypes.string
+        })
+    })
 }
 
 export default BookListItem;

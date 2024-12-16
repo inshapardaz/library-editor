@@ -1,184 +1,85 @@
-import React, { useState } from "react";
+import PropTypes from 'prop-types';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useLocalStorage } from "usehooks-ts";
 
-// 3rd party libraries
-import { Button, Input, List, Segmented, Space } from "antd";
-
-// Local Imports
-import { FaPlus, FaRegImage, FaRegListAlt, ImNewspaper } from "/src/icons";
-import { useGetPeriodicalsQuery } from "/src/store/slices/periodicalsSlice";
-import { buildLinkToPeriodicalsPage } from "/src/util";
-import DataContainer from "/src/components/layout/dataContainer";
-import PeriodicalCard from "./periodicalCard";
-import PeriodicalListItem from "./periodicalListItem";
-// ------------------------------------------------------
-
-const grid = {
-    gutter: 4,
-    xs: 1,
-    sm: 2,
-    md: 3,
-    lg: 3,
-    xl: 4,
-    xxl: 5,
-};
-
-// ------------------------------------------------------
+// Local imports
+import { useGetPeriodicalsQuery } from "@/store/slices/periodicals.api";
+import PeriodicalCard from './periodicalCard';
+import PeriodicalListItem from './periodicalListItem';
+import DataView from '@/components/dataView';
+import { updateLinkToPeriodicalsPage } from '@/utils';
+//------------------------------
 
 const PeriodicalsList = ({
     libraryId,
-    query,
-    sortBy,
-    sortDirection,
+    query = null,
+    category = null,
+    sortBy = null,
+    sortDirection = null,
+    frequency = null,
     pageNumber,
     pageSize,
     showSearch = true,
+    showTitle = true
 }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
-    const [showList, setShowList] = useLocalStorage(
-        "periodicals-list-view",
-        false
-    );
-    const [search, setSearch] = useState(query);
 
     const {
         refetch,
         data: periodicals,
-        error,
+        isError,
         isFetching,
     } = useGetPeriodicalsQuery({
         libraryId,
         query,
+        category,
+        frequency,
         sortBy,
         sortDirection,
         pageNumber,
         pageSize,
     });
 
-    const toggleView = (checked) => {
-        setShowList(checked);
-    };
+    return <DataView
+        title={showTitle ? t('periodicals.title') : null}
+        emptyText={t('periodicals.empty.title')}
+        dataSource={periodicals}
+        isFetching={isFetching}
+        isError={isError}
+        errorTitle={t('periodicals.error.loading.title')}
+        errorDetail={t('periodicals.error.loading.detail')}
+        showViewToggle={true}
+        viewToggleKey='periodicals-list-view'
+        cardRender={periodical => (<PeriodicalCard libraryId={libraryId} key={periodical.id} periodical={periodical} />)}
+        listItemRender={periodical => (<PeriodicalListItem libraryId={libraryId} key={periodical.id} periodical={periodical} />)}
+        onReload={refetch}
+        onPageChanged={(index) => navigate(updateLinkToPeriodicalsPage(location, {
+            pageNumber: index,
+            pageSize: pageSize,
+        }))}
+        showSearch={showSearch}
+        searchValue={query}
+        onSearchChanged={search => navigate(updateLinkToPeriodicalsPage(location, {
+            pageNumber: 1,
+            query: search,
+        }))}
+        cols={{ base: 1, xs: 2, sm: 3, md: 4, lg: 4, xl: 6 }}
+    />;
+}
 
-    const renderItem = (periodical) => {
-        if (showList) {
-            return (
-                <PeriodicalListItem
-                    key={periodical.id}
-                    libraryId={libraryId}
-                    periodical={periodical}
-                    t={t}
-                />
-            );
-        } else {
-            return (
-                <List.Item>
-                    <PeriodicalCard
-                        key={periodical.id}
-                        libraryId={libraryId}
-                        periodical={periodical}
-                        t={t}
-                    />
-                </List.Item>
-            );
-        }
-    };
-
-    const onPageChanged = (newPage, newPageSize) => {
-        navigate(
-            buildLinkToPeriodicalsPage(
-                location.pathname,
-                newPage,
-                newPageSize,
-                query,
-                sortBy,
-                sortDirection
-            )
-        );
-    };
-
-    const onSearch = () => {
-        navigate(
-            buildLinkToPeriodicalsPage(
-                location.pathname,
-                1,
-                pageSize,
-                search,
-                sortBy,
-                sortDirection
-            )
-        );
-    };
-
-    return (
-        <DataContainer
-            busy={isFetching}
-            error={error}
-            errorTitle={t("periodicals.errors.loading.title")}
-            errorSubTitle={t("periodicals.errors.loading.subTitle")}
-            errorAction={
-                <Button type="default" onClick={refetch}>
-                    {t("actions.retry")}
-                </Button>
-            }
-            emptyImage={<ImNewspaper size="5em" />}
-            emptyDescription={t("periodicals.empty.title")}
-            emptyContent={
-                <Link to={`/libraries/${libraryId}/periodicals/add`}>
-                    <Button type="dashed" icon={<FaPlus />}>
-                        {t("periodical.actions.add.label")}
-                    </Button>
-                </Link>
-            }
-            empty={
-                periodicals && periodicals.data && periodicals.data.length < 1
-            }
-            extra={
-                <Space>
-                    {showSearch && (
-                        <Input.Search
-                            size="medium"
-                            value={search}
-                            allowClear
-                            onChange={(e) => setSearch(e.target.value)}
-                            onSearch={onSearch}
-                            placeholder={t("periodicals.search.placeholder")}
-                        />
-                    )}
-                    <Segmented size="medium"
-                        onChange={toggleView}
-                        value={showList}
-                        options={[
-                            { value: true, icon: <FaRegListAlt /> },
-                            { value: false, icon: <FaRegImage /> },
-                        ]}
-                    />
-                </Space>
-            }
-        >
-            <List
-                grid={showList ? null : grid}
-                loading={isFetching}
-                size="large"
-                itemLayout={showList ? "vertical" : "horizontal"}
-                dataSource={periodicals ? periodicals.data : []}
-                pagination={{
-                    onChange: onPageChanged,
-                    pageSize: periodicals ? periodicals.pageSize : 0,
-                    current: periodicals ? periodicals.currentPageIndex : 0,
-                    total: periodicals ? periodicals.totalCount : 0,
-                    showSizeChanger: true,
-                    responsive: true,
-                    showQuickJumper: true,
-                    pageSizeOptions: [12, 24, 48, 96],
-                }}
-                renderItem={renderItem}
-            />
-        </DataContainer>
-    );
-};
+PeriodicalsList.propTypes = {
+    libraryId: PropTypes.string,
+    query: PropTypes.string,
+    category: PropTypes.string,
+    sortBy: PropTypes.string,
+    sortDirection: PropTypes.string,
+    frequency: PropTypes.string,
+    pageNumber: PropTypes.number,
+    pageSize: PropTypes.number,
+    showSearch: PropTypes.bool,
+    showTitle: PropTypes.bool,
+}
 
 export default PeriodicalsList;

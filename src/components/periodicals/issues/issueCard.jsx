@@ -1,43 +1,77 @@
-import React from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-// 3rd Party Libraries
-import { Card, Space } from "antd";
+// Ui Library import
+import { Card, Text, Group, useMantineTheme, Center, Image, Divider } from '@mantine/core';
 import moment from "moment";
 
-// Local Imports
-import "./styles.scss";
-import { GiStack, FiEdit, FiTrash, FaNewspaper } from "/src/icons";
-import { bookPlaceholderImage, setDefaultIssueImage, getDateFormatFromFrequency } from "/src/util";
-import IconText from "/src/components/common/iconText";
-// ------------------------------------------------------
+// Local imports
+import { getDateFormatFromFrequency } from '@/utils';
+import { IconIssue, IconPages, IconIssueArticle } from '@/components/icon';
+import IconText from '@/components/iconText';
+import If from '@/components/if';
+//---------------------------------------
+const IMAGE_HEIGHT = 400;
+const IMAGE_WIDTH = 200;
 
-const IssueCard = ({ libraryId, periodicalId, issue }) => {
-    var navigate = useNavigate();
-    const cover = issue.links.image ? <img src={issue.links.image} onError={setDefaultIssueImage} className="issue__image" alt={issue.id} /> : <img src={bookPlaceholderImage} className="issue__image" alt={`${issue.volume}-${issue.issueNumber}`} />;
+const IssueCard = ({ libraryId, issue, frequency }) => {
+    const { t } = useTranslation();
+    const theme = useMantineTheme();
+    const [imgError, setImgError] = useState(false);
 
-    const edit = (
-        <Link to={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}/edit`}>
-            <FiEdit />
-        </Link>
-    );
-    const description = (<Space>
-        <IconText icon={GiStack}
-            text={issue.volumeNumber}
-            onClick={() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/`)} />
-        <IconText icon={FaNewspaper}
-            text={issue.issueNumber}
-            onClick={() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}`)} />
-    </Space>);
-    const title = moment(issue.issueDate).format(getDateFormatFromFrequency(issue.frequency));
-    const deleteAction = <FiTrash />;
+    const icon = <Center h={IMAGE_HEIGHT}><IconIssue width={IMAGE_WIDTH} style={{ color: theme.colors.dark[1] }} /></Center>;
+    const title = moment(issue.issueDate).format(getDateFormatFromFrequency(frequency));
+
     return (
-        <Link to={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}`}>
-            <Card key={issue.id} cover={cover} hoverable actions={[edit, deleteAction]}>
-                <Card.Meta title={title} description={description} />
-            </Card>
-        </Link>
-    );
+        <Card shadow="sm" padding="lg" radius="md" withBorder>
+            <Card.Section>
+                <If condition={issue.links?.image && !imgError} elseChildren={icon}>
+                    <Image h={IMAGE_HEIGHT} radius="sm" src={issue?.links?.image} onError={() => setImgError(true)} />
+                </If>
+            </Card.Section>
+
+            <Group justify="space-between" mt="md" mb="xs">
+                <Text component={Link} to={`/libraries/${libraryId}/periodicals/${issue.periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}`} truncate="end" fw={500}>{title}</Text>
+            </Group>
+
+
+            <Group>
+                <IconText size="sm" text={t('issue.volumeNumber.title', { volumeNumber: issue.volumeNumber })}
+                    link={`/libraries/${libraryId}/periodicals/${issue.periodicalId}/volumes/${issue.volumeNumber}`} />
+                <Divider orientation="vertical" />
+                <IconText size="sm" text={t('issue.issueNumber.title', { issueNumber: issue.issueNumber })} />
+            </Group>
+            <Group mt="md">
+                <If condition={issue.pageCount != null}>
+                    <IconText icon={<IconPages style={{ color: theme.colors.dark[2] }} />} text={issue.pageCount} />
+                </If>
+                <If condition={issue.articleCount != null}>
+                    <Divider orientation="vertical" />
+                    <IconText icon={<IconIssueArticle style={{ color: theme.colors.dark[2] }} />} text={issue.articleCount} />
+                </If>
+            </Group>
+        </Card>
+    )
+}
+
+IssueCard.propTypes = {
+    libraryId: PropTypes.string,
+    frequency: PropTypes.string,
+    issue: PropTypes.shape({
+        id: PropTypes.number,
+        issueNumber: PropTypes.number,
+        volumeNumber: PropTypes.number,
+        issueDate: PropTypes.string,
+        periodicalId: PropTypes.number,
+        periodicalName: PropTypes.string,
+        pageCount: PropTypes.number,
+        articleCount: PropTypes.number,
+        links: PropTypes.shape({
+            image: PropTypes.string
+        })
+    })
 };
 
-export default IssueCard;
+export default IssueCard

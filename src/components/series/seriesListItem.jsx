@@ -1,54 +1,60 @@
-import React from 'react';
-import { Link } from "react-router-dom";
+import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-// 3rd Party Libraries
-import { List, Typography } from "antd";
+// Ui Library Imports
+import { Divider, Group, Image, Stack, Text, Tooltip, useMantineTheme } from '@mantine/core';
 
 // Local Imports
-import "./styles.scss";
-import { FaEdit, ImBooks } from "/src/icons";
-import { seriesPlaceholderImage, setDefaultSeriesImage } from "/src/util";
-import IconText from "/src/components/common/iconText";
-import SeriesDeleteButton from "./seriesDeleteButton";
+import { IconSeries, IconBooks } from '@/components/icon';
+import If from '@/components/if';
+import IconText from '@/components/iconText';
+//-------------------------------------
+const IMAGE_HEIGHT = 150;
 
-// ------------------------------------------------------
+const SeriesListItem = ({ libraryId, series }) => {
+    const { t } = useTranslation();
+    const theme = useMantineTheme();
+    const [imgError, setImgError] = useState(false);
 
-const { Text, Paragraph } = Typography;
+    const icon = <IconSeries width={IMAGE_HEIGHT} style={{ color: theme.colors.dark[1] }} />;
 
-// ------------------------------------------------------
+    return (<>
+        <Group gap="sm" wrap="nowrap">
+            <If condition={series.links?.image && !imgError} elseChildren={icon}>
+                <Image w={IMAGE_HEIGHT} radius="sm" src={series.links.image} onError={() => setImgError(true)} />
+            </If>
+            <Stack>
+                <Text component={Link} to={`/libraries/${libraryId}/series/${series.id}`} truncate="end" fw={500}>{series.name}</Text>
+                <If condition={series?.description}
+                    elseChildren={(<Text size="sm" fs="italic" c="dimmed" lineClamp={1}>
+                        {t('series.noDescription')}
+                    </Text>)}>
+                    <Tooltip label={series.description} withArrow>
+                        <Text size="sm" c="dimmed" lineClamp={1}>
+                            {series.description}
+                        </Text>
+                    </Tooltip>
+                </If>
+                <IconText icon={<IconBooks height={16} style={{ color: theme.colors.dark[2] }} />} text={t('author.bookCount', { count: series?.bookCount })} />
+            </Stack>
+        </Group>
+        <Divider />
+    </>)
+}
 
-const SeriesListItem = ({ libraryId, series, t }) => {
-    const avatar = <img src={series.links.image || seriesPlaceholderImage}
-        onError={setDefaultSeriesImage}
-        className="series__image--small"
-        alt={series.name} />;
-    const title = <Link to={`/libraries/${libraryId}/series/${series.id}`}>{series.name}</Link>;
-    const description = series.description ? (
-        <Paragraph ellipsis type="secondary">
-            {series.description}
-        </Paragraph>
-    ) : (
-        <Text type="secondary">{t("series.noDescription")}</Text>
-    );
-    const bookCount = (
-        <Link to={`/libraries/${libraryId}/series/${series.id}`}>
-            <IconText icon={ImBooks} text={t("series.bookCount", { count: series.bookCount })} key="series-book-count" />
-        </Link>
-    );
-
-    const editButton = (
-        <Link to={`/libraries/${libraryId}/series/${series.id}/edit`}>
-            <IconText icon={FaEdit} text={t("actions.edit")} key="series-edit" />
-        </Link>
-    );
-
-    const deleteSeries = <SeriesDeleteButton libraryId={libraryId} series={series} t={t} type="ghost" size="small" />;
-
-    return (
-        <List.Item key={series.id} actions={[bookCount, editButton, deleteSeries]}>
-            <List.Item.Meta title={title} avatar={avatar} description={description} />
-        </List.Item>
-    );
-};
+SeriesListItem.propTypes = {
+    libraryId: PropTypes.string,
+    series: PropTypes.shape({
+        id: PropTypes.number,
+        name: PropTypes.string,
+        description: PropTypes.string,
+        bookCount: PropTypes.number,
+        links: PropTypes.shape({
+            image: PropTypes.string
+        })
+    })
+}
 
 export default SeriesListItem;

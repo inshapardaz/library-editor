@@ -1,0 +1,68 @@
+.imageReader {
+    display: grid;
+    grid-template-columns: 50px 1fr 50px;
+    overflow: hidden;
+    padding: 10px;
+    position: relative;
+    margin: 0 auto;
+    padding: var(--mantine-spacing-md);
+    height: calc(-120px + 100vh);
+    overflow: scroll;
+    @media only screen and (max-width: 1000px) {
+        grid-template-columns: 1fr;
+        padding: 4px;
+    }
+}
+
+.imageReaderHeader {
+    grid-area: head;
+}
+
+.imageReaderNavPrevButton {
+    align-self: center; 
+    margin: 4px;
+    @media only screen and (max-width: 1000px) {
+        display: none;
+    } 
+}
+
+.imageReaderNavNextButton {
+    align-self: center; 
+    margin: 4px;
+    @media only screen and (max-width: 1000px) {
+        display: none;
+    } 
+}
+
+.imageReaderPagesContainer {
+    justify-self: stretch;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 10px;
+}
+.imageReaderPagesContainerSingle {
+    grid-template-columns: 1fr;
+}
+
+.imageReaderPagesContainerDouble {
+    grid-template-columns: 1fr 1fr;
+}
+
+.imageReaderPageImage {
+    justify-self: right;
+    align-self: top;
+    height: calc(-154px + 100vh);
+
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+.imageReaderPageImage {
+    object-fit: contain;
+}
+
+.imageReaderPageImage:first-of-type {
+    justify-self: left;
+}
+
+.imageReaderPageImage:only-child {
+    justify-self: center;
+}

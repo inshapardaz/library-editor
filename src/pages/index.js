@@ -1,73 +1,51 @@
-import Home from "./home";
-import Error403 from "./403";
-import Error404 from "./404";
-import Error500 from "./500";
-import EditorPage from "./editor";
-import LibrariesHome from "./libraries/index";
-import LibraryEditPage from "./libraries/edit";
-import LibraryHome from "./libraries/library";
-import CategoriesHomePage from "./categories/index";
-import CategoriesEditPage from "./categories/edit";
-import BooksHomePage from "./books/index";
-import BookEditPage from "./books/edit";
-import BooksUpload from "./books/upload";
-import BookPage from "./books/book";
-import BookPageEditPage from "./books/pages/edit";
-import BookProcessPage from "./books/process";
-import ChapterEditor from "./books/chapters/edit";
-import SeriesHomePage from "./series/index";
-import SeriesEditPage from "./series/edit";
-import SeriesPage from "./series/series";
-import AuthorsHomePage from "./authors/index";
-import AuthorEditPage from "./authors/edit";
-import AuthorPage from "./authors/author";
-import ArticlesHomePage from "./articles/index";
-import ArticleEditPage from "./articles/edit";
-import ArticlePage from "./articles/article";
-import ArticleContentEditPage from "./articles/contentEdit";
-import PeriodicalsHomePage from "./periodicals/index";
-import PeriodicalEditPage from "./periodicals/edit";
-import PeriodicalPage from "./periodicals/periodical";
-import IssueEditPage from "./periodicals/issues/edit";
-import IssuePage from "./periodicals/issues/index";
-import IssuePageEditPage from "./periodicals/issues/pages/edit";
-import IssueProcessPage from "./periodicals/issues/process";
-import EditIssueArticle from "./periodicals/issues/article/edit";
+import HomePage from "./homePage";
 
-export {
-    Home,
-    Error403,
-    Error404,
-    Error500,
-    EditorPage,
-    LibrariesHome,
-    LibraryEditPage,
-    LibraryHome,
-    CategoriesHomePage,
-    CategoriesEditPage,
-    BooksHomePage,
-    BookEditPage,
-    BooksUpload,
+import Error403Page from "./error403";
+import Error404Page from "./error404";
+import Error500Page from "./error500";
+
+import LibrariesPage from "./libraries";
+import LibraryPage from "./libraries/library";
+import BooksPage from "./books";
+import BookPage from "./books/book";
+import BookReaderPage from "./books/reader";
+import EBookReaderPage from "./books/ebookReader";
+import AuthorsPage from "./authors";
+import AuthorPage from "./authors/authorPage";
+import SeriesListPage from "./series";
+import SeriesPage from "./series/seriesPage";
+import WritingsPage from "./writings";
+import WritingPage from "./writings/writing";
+import PoetriesPage from "./poetry";
+import PoetryPage from "./poetry/poetryPage";
+import PeriodicalsPage from "./periodicals";
+import PeriodicalPage from "./periodicals/periodical";
+import IssuePage from "./periodicals/issue";
+import IssueArticlePage from "./periodicals/issue/article";
+
+const Pages = {
+    HomePage,
+    Error403Page,
+    Error404Page,
+    Error500Page,
+    LibrariesPage,
+    LibraryPage,
+    BooksPage,
     BookPage,
-    BookPageEditPage,
-    BookProcessPage,
-    ChapterEditor,
-    SeriesHomePage,
-    SeriesEditPage,
-    SeriesPage,
-    AuthorsHomePage,
-    AuthorEditPage,
+    BookReaderPage,
+    EBookReaderPage,
+    AuthorsPage,
     AuthorPage,
-    ArticlesHomePage,
-    ArticleEditPage,
-    ArticlePage,
-    ArticleContentEditPage,
-    PeriodicalsHomePage,
-    PeriodicalEditPage,
+    SeriesPage,
+    SeriesListPage,
+    WritingsPage,
+    WritingPage,
+    PoetriesPage,
+    PoetryPage,
+    PeriodicalsPage,
     PeriodicalPage,
-    IssueEditPage,
     IssuePage,
-    IssuePageEditPage,
-    IssueProcessPage,
-    EditIssueArticle,
+    IssueArticlePage
 };
+
+export default Pages;

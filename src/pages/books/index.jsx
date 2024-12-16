@@ -1,104 +1,64 @@
-import React from 'react';
-import { useParams, useSearchParams, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useParams, useSearchParams } from "react-router-dom";
 
-// 3rd party libraries
-import { Layout, theme, Button } from "antd";
-import { FaBook, FaCloudUploadAlt, FaPlus } from "/src/icons";
+// Ui library imports
+import { Card, Grid, rem } from "@mantine/core";
 
-// Local Imports
-import PageHeader from "/src/components/layout/pageHeader";
-import BooksList from "/src/components/books/booksList";
-import ContentsContainer from "/src/components/layout/contentContainer";
-import BooksSideBar from "/src/components/books/booksSideBar";
-import { SortDirection } from "/src/models";
-
-//--------------------------------------------------------
-const { Content, Sider } = Layout;
-//--------------------------------------------------------
-
-const BooksHomePage = () => {
+// Local Import
+import { SortDirection } from "@/models";
+import BooksSideBar from "@/components/books/booksSidebar";
+import BooksList from "@/components/books/booksList";
+import PageHeader from "@/components/pageHeader";
+import { IconNames } from '@/components/icon'
+// -----------------------------------------
+const BooksPage = () => {
     const { t } = useTranslation();
-    const {
-        token: { colorBgContainer },
-    } = theme.useToken();
     const { libraryId } = useParams();
     const [searchParams] = useSearchParams();
     const query = searchParams.get("query");
-    const author = searchParams.get("author");
-    const categories = searchParams.get("categories");
     const series = searchParams.get("series");
+    const author = searchParams.get("author");
+    const category = searchParams.get("category");
     const favorite = searchParams.get("favorite");
     const read = searchParams.get("read");
-    const status = searchParams.get("status");
-    const sortBy = searchParams.get("sortBy") ?? "title";
-    const sortDirection =
-        searchParams.get("sortDirection") ?? SortDirection.Descending;
-    const pageNumber = searchParams.get("pageNumber") ?? 1;
-    const pageSize = searchParams.get("pageSize") ?? 12;
+    const sortBy = searchParams.get("sortBy") ?? "name";
+    const sortDirection = searchParams.get("sortDirection") ?? SortDirection.Ascending;
+    const pageNumber = parseInt(searchParams.get("pageNumber") ?? "1");
+    const pageSize = parseInt(searchParams.get("pageSize") ?? "12");
 
-    const addButton = (
-        <Link to={`/libraries/${libraryId}/books/add`}>
-            <Button type="dashed" icon={<FaPlus />}>
-                {t("book.actions.add.label")}
-            </Button>
-        </Link>
-    );
-    const uploadButton = (
-        <Link to={`/libraries/${libraryId}/books/upload`}>
-            <Button type="dashed" icon={<FaCloudUploadAlt />}>
-                {t("books.actions.upload.label")}
-            </Button>
-        </Link>
-    );
-
-    return (
-        <>
-            <PageHeader
-                title={t("books.title")}
-                icon={<FaBook style={{ width: 36, height: 36 }} />}
-                actions={[addButton, uploadButton]}
-            />
-            <ContentsContainer>
-                <Layout
-                    style={{ padding: "24px 0", background: colorBgContainer }}
-                >
-                    <Sider
-                        style={{ background: colorBgContainer }}
-                        width={200}
-                        breakpoint="lg"
-                        collapsedWidth={0}
-                    >
-                        <BooksSideBar
-                            libraryId={libraryId}
-                            selectedCategories={categories}
-                            sortBy={sortBy}
-                            sortDirection={sortDirection}
-                            favorite={favorite}
-                            read={read}
-                        />
-                    </Sider>
-                    <Content style={{
-                        margin: '0 16px',
-                    }}>
-                        <BooksList
-                            libraryId={libraryId}
-                            query={query}
-                            author={author}
-                            categories={categories}
-                            series={series}
-                            sortBy={sortBy}
-                            sortDirection={sortDirection}
-                            favorite={favorite}
-                            read={read}
-                            status={status}
-                            pageNumber={pageNumber}
-                            pageSize={pageSize}
-                        />
-                    </Content>
-                </Layout>
-            </ContentsContainer>
-        </>
-    );
+    return (<>
+        <PageHeader
+            title={t('header.books')}
+            defaultIcon={IconNames.Books}
+            breadcrumbs={[
+                { title: t('header.home'), href: `/libraries/${libraryId}`, icon: IconNames.Home }
+            ]} />
+        <Grid type="container" breakpoints={{ xs: '100px', sm: '200px', md: '300px', lg: '400px', xl: '500px' }} mx="md">
+            <Grid.Col span={{ md: 12, lg: 3, xl: 2 }} style={{ minWidth: rem(200) }}>
+                <BooksSideBar
+                    selectedCategory={category}
+                    favorite={favorite}
+                    read={read} />
+            </Grid.Col>
+            <Grid.Col span="auto">
+                <Card withBorder>
+                    <BooksList
+                        libraryId={libraryId}
+                        query={query}
+                        author={author}
+                        category={category}
+                        series={series}
+                        sortBy={sortBy}
+                        favorite={favorite}
+                        read={read}
+                        sortDirection={sortDirection}
+                        pageNumber={pageNumber}
+                        pageSize={pageSize}
+                        showSearch
+                        showTitle={false} />
+                </Card>
+            </Grid.Col>
+        </Grid></>)
 }
-export default BooksHomePage;
+
+export default BooksPage;

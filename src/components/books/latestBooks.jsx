@@ -1,115 +1,78 @@
-import React from 'react';
-import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
-import { useLocalStorage } from "usehooks-ts";
 
-// 3rd party libraries
-import { Button, List, Segmented } from "antd";
+import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
-// Internal Imports
-import DataContainer from "/src/components/layout/dataContainer";
-import { useGetBooksQuery } from "/src/store/slices/booksSlice";
-import BookCard from "./bookCard";
-import BookListItem from "./bookListItem";
-import { FaRegImage, FaRegListAlt } from '/src/icons';
+// Ui Library imports
+import { Anchor, Box, Button, Center, Divider, Group, Loader, LoadingOverlay, Stack, Text, Title } from "@mantine/core";
+import { Carousel } from '@mantine/carousel';
 
-// ------------------------------------------------------
+// Local imports
+import { useGetBooksQuery } from '@/store/slices/books.api';
+import { IconRefreshAlert } from '@/components/icon';
+import BookCard from './bookCard';
+import { SortDirection } from "@/models";
 
-const ShowMoreButton = ({ libraryId, t }) => {
-    const navigate = useNavigate();
-    return (
-        <div
-            style={{
-                textAlign: "center",
-                marginTop: 12,
-                height: 32,
-                lineHeight: "32px",
-            }}
-        >
-            <Button
-                size="small"
-                onClick={() =>
-                    navigate(`/libraries/${libraryId}/books?sortBy=latest`)
-                }
-            >
-                {t("actions.seeMore")}
-            </Button>
-        </div>
-    );
-}
-
-const grid = {
-    gutter: 4,
-    xs: 1,
-    sm: 2,
-    md: 2,
-    lg: 3,
-    xl: 4,
-    xxl: 5,
-};
-
-function LatestBooks() {
+//------------------------------
+const LatestBooks = ({ libraryId }) => {
     const { t } = useTranslation();
-    const { libraryId } = useParams();
     const {
+        refetch,
         data: books,
         error,
         isFetching,
     } = useGetBooksQuery({
         libraryId,
-        sortBy: "DateCreated",
-        sortDirection: "descending",
+        sortBy: "dateCreated",
+        sortDirection: SortDirection.Descending,
     });
-    const [showList, setShowList] = useLocalStorage("books-list-view", false);
 
-    const toggleView = (checked) => {
-        setShowList(checked);
-    };
+    let content = null;
+    if (isFetching) {
+        content = (
+            <Center h={100}>
+                <LoadingOverlay visible={true} loaderProps={{ children: <Loader size={30} /> }} />
+            </Center>)
+    } else if (error) {
+        content = (
+            <Center h={100}>
+                <Button rightSection={<IconRefreshAlert />} onClick={refetch}>{t('actions.retry')}</Button>
+            </Center>)
+    } else if (books?.data && books.data.length > 0) {
+        content = (<Carousel
+            slideSize={{
+                base: '100%',
+                sm: '50%',
+                md: '33.333333%',
+                lg: '20%',
 
-    return (
-        <DataContainer
-            title={t("books.latest.title")}
-            busy={isFetching}
-            error={error}
-            empty={books && books.data && books.data.length < 1}
-            extra={<Segmented size="small"
-                onChange={toggleView}
-                value={showList}
-                options={[
-                    { value: true, icon: <FaRegListAlt /> },
-                    { value: false, icon: <FaRegImage /> },
-                ]}
-            />}
+            }}
+            slideGap="md"
+            loop
+            align="start"
         >
-            <List
-                grid={showList ? null : grid}
-                loading={isFetching}
-                size="large"
-                itemLayout={showList ? "vertical" : "horizontal"}
-                dataSource={books ? books.data : []}
-                loadMore={<ShowMoreButton t={t} libraryId={libraryId} />}
-                renderItem={(book) => (
-                    <List.Item>
-                        {showList ? (
-                            <BookListItem
-                                key={book.id}
-                                libraryId={libraryId}
-                                book={book}
-                                t={t}
-                            />
-                        ) : (
-                            <BookCard
-                                key={book.id}
-                                libraryId={libraryId}
-                                book={book}
-                                t={t}
-                            />
-                        )}
-                    </List.Item>
-                )}
-            />
-        </DataContainer>
-    );
+            {books.data.map((book) => (
+                <Carousel.Slide key={book.id}><BookCard libraryId={libraryId} book={book} /></Carousel.Slide>
+            ))}
+        </Carousel>);
+    } else {
+        content = (<Center h={100}><Text>{t('books.empty')}</Text></Center>)
+    }
+    return (<Box>
+        <Stack>
+            <Group justify="space-between">
+                <Title order={3}>{t('book.latestBooks')}</Title>
+                <Anchor component={Link} underline="hover" to={`/libraries/${libraryId}/books?sortBy=dateCreated&dortDirection=descending`}>{t('actions.viewAll')}</Anchor>
+            </Group>
+            {content}
+            <Divider my="md" />
+        </Stack>
+    </Box>);
+}
+
+
+LatestBooks.propTypes = {
+    libraryId: PropTypes.string
 };
 
 export default LatestBooks;

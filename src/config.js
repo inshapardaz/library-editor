@@ -5,12 +5,12 @@ let MAIN_SITE = "http://localhost:4200";
 console.log('--------------------------------------------------')
 console.log('window.location.host:', window.location.host);
 
-if (window.location.host.toLocaleLowerCase() == 'editor.nawishta.dev') {
+if (window.location.host.toLocaleLowerCase() == 'libraries.nawishta.dev') {
     NODE_ENV = 'development';
     API_URL = 'http://api.nawishta.dev';
     MAIN_SITE = "http://www.nawishta.dev";
     console.log('Environment is: development');
-} else if (window.location.host.toLocaleLowerCase() == 'editor.nawishta.co.uk') {
+} else if (window.location.host.toLocaleLowerCase() == 'libraries.nawishta.co.uk') {
     NODE_ENV = 'production';
     API_URL = 'https://api.nawishta.co.uk';
     MAIN_SITE = "https://www.nawishta.co.uk";

@@ -1,99 +1,104 @@
-import React from 'react';
-import { useParams, useSearchParams, Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
 
-// 3rd party libraries
-import { Breadcrumb, Button, Layout, Space, theme } from "antd";
-import { FaEdit, FaHome, FaPlus } from "/src/icons";
-import { ImNewspaper } from "/src/icons";
+// UI Library Imports
+import { Card, Container, Divider, Grid, Group, rem, Skeleton, useMantineTheme } from "@mantine/core";
 
 // Local Imports
-import { useGetPeriodicalByIdQuery } from "/src/store/slices/periodicalsSlice";
-import PageHeader from "/src/components/layout/pageHeader";
-import IssuesList from "/src/components/periodicals/issues/issuesList";
-import ContentsContainer from "/src/components/layout/contentContainer";
-import Loading from "/src/components/common/loader";
-import Error from "/src/components/common/error";
-import PeriodicalInfo from "/src/components/periodicals/periodicalInfo";
-import PeriodicalDeleteButton from "/src/components/periodicals/periodicalDeleteButton";
-//--------------------------------------------------------
-const { Content, Sider } = Layout;
-//--------------------------------------------------------
-
+import { useGetPeriodicalByIdQuery } from '@/store/slices/periodicals.api';
+import { IconNames, IconIssues } from '@/components/icon'
+import IssuesList from "@/components/periodicals/issues/issuessList";
+import FrequencyIcon from "@/components/periodicals/frequencyIcon";
+import PeriodicalSideBar from "@/components/periodicals/periodicalSideBar";
+import PageHeader from "@/components/pageHeader";
+import IconText from "@/components/iconText";
+import Error from '@/components/error';
+import If from '@/components/if'
+//-----------------------------------------
+const PRIMARY_COL_HEIGHT = rem(300);
+//-----------------------------------------
 const PeriodicalPage = () => {
     const { t } = useTranslation();
-    const navigate = useNavigate();
+    const { libraryId, periodicalId, volumeNumber } = useParams();
+    const theme = useMantineTheme();
     const {
-        token: { colorBgContainer },
-    } = theme.useToken();
-    const { libraryId, periodicalId } = useParams();
-    const [searchParams] = useSearchParams();
-    const query = searchParams.get("query");
-    const status = searchParams.get("status");
-    const sortBy = searchParams.get("sortBy") ?? "DateCreated";
-    const year = searchParams.get("year");
-    const sortDirection = searchParams.get("sortDirection") ?? "descending";
-    const pageNumber = searchParams.get("pageNumber") ?? 1;
-    const pageSize = searchParams.get("pageSize") ?? 12;
+        data: periodical,
+        error: errorLoadingPeriodical,
+        isFetching: loadingPeriodical,
+        refetch
+    } = useGetPeriodicalByIdQuery({
+        libraryId,
+        periodicalId
+    });
 
-    const { data: periodical, error, isFetching } = useGetPeriodicalByIdQuery({ libraryId, periodicalId });
+    const SECONDARY_COL_HEIGHT = `calc(${PRIMARY_COL_HEIGHT} / 2 - var(--mantine-spacing-md) / 2)`;
 
-    if (isFetching) return <Loading />;
-    if (error) return <Error t={t} />;
 
-    const editButton = (
-        <Link to={`/libraries/${libraryId}/periodicals/${periodicalId}/edit`}>
-            <Button type="dashed" icon={<FaEdit />}>
-                {t("actions.edit")}
-            </Button>
-        </Link>
-    );
+    if (loadingPeriodical) {
+        return (<Container fluid mt="sm">
+            <Grid
+                mih={50}
+            >
+                <Grid.Col span={{ base: 12, md: 4, lg: 3 }}>
+                    <Skeleton height={SECONDARY_COL_HEIGHT} radius="md" />
+                </Grid.Col>
+                <Grid.Col span={{ base: 12, md: 8, lg: 9 }}>
+                    <Skeleton height={SECONDARY_COL_HEIGHT} radius="md" />
+                </Grid.Col>
+                <Grid.Col span={{ base: 12, md: 4, lg: 3 }}>
+                    <Skeleton height={SECONDARY_COL_HEIGHT} radius="md" />
+                </Grid.Col>
+                <Grid.Col span={{ base: 12, md: 8, lg: 9 }}>
+                    <Skeleton height={SECONDARY_COL_HEIGHT} radius="md" />
+                </Grid.Col>
+            </Grid>
+        </Container>);
+    }
 
-    const addIssueButton = (
-        <Link to={`/libraries/${libraryId}/periodicals/${periodicalId}/issues/add`}>
-            <Button type="dashed" icon={<FaPlus />}>
-                {t("issue.actions.add.label")}
-            </Button>
-        </Link>
-    );
+    if (errorLoadingPeriodical) {
+        return (<Container fluid mt="sm">
+            <Error title={t('book.error.loading.title')}
+                detail={t('book.error.loading.detail')}
+                onRetry={refetch} />
+        </Container>)
+    }
 
-    const deletePeriodicalButton = (<PeriodicalDeleteButton type="dashed" danger libraryId={libraryId} periodical={periodical} t={t}
-        onDeleted={() => navigate(`/libraries/${libraryId}/periodicals`)}>
-        {t('actions.delete')}
-    </PeriodicalDeleteButton>)
-
-    return (
-        <>
-            <PageHeader title={periodical.title} icon={<ImNewspaper style={{ width: 36, height: 36 }} />} actions={[addIssueButton, editButton, deletePeriodicalButton]}
-                breadcrumb={< Breadcrumb
-                    items={[
-                        {
-                            title: <Link to={`/libraries/${libraryId}`}><FaHome /></Link>,
-                        },
-                        {
-                            title: <Link to={`/libraries/${libraryId}/periodicals`}><Space><ImNewspaper />{t("header.periodicals")}</Space></Link>,
-                        },
-                        {
-                            title: periodical?.title,
-                        }]}
-                />} />
-            <ContentsContainer>
-                <Layout
-                    style={{ padding: "24px 0", background: colorBgContainer }}
-                >
-                    <Sider style={{ background: colorBgContainer }}
-                        width={200}
-                        breakpoint="lg"
-                        collapsedWidth={0}>
-                        <PeriodicalInfo libraryId={libraryId} periodical={periodical} t={t} selectedYear={year} />
-                    </Sider>
-                    <Content>
-                        <IssuesList libraryId={libraryId} query={query} periodicalId={periodicalId} year={year} sortBy={sortBy} sortDirection={sortDirection} status={status} pageNumber={pageNumber} pageSize={pageSize} />
-                    </Content>
-                </Layout>
-            </ContentsContainer>
-        </>
-    );
+    return (<Container fluid mt="sm">
+        <PageHeader title={periodical.title}
+            imageLink={periodical.links?.image}
+            defaultIcon={IconNames.Periodical}
+            subTitle={
+                <Group>
+                    <FrequencyIcon frequency={periodical.frequency} showLabel c="dimmed" size="sm" height={16} style={{ color: theme.colors.gray[6] }} />
+                    <If condition={periodical.issueCount > 0}>
+                        <>
+                            <Divider orientation="vertical" />
+                            <IconText icon={<IconIssues height={16} style={{ color: theme.colors.dark[2] }} />} text={t('periodical.issueCount', { count: periodical.issueCount })} />
+                        </>
+                    </If>
+                </Group>
+            }
+            details={periodical.description}
+            breadcrumbs={[
+                { title: t('header.home'), href: `/libraries/${libraryId}`, icon: IconNames.Home },
+                { title: t('header.periodicals'), href: `/libraries/${libraryId}/periodicals`, icon: IconNames.Periodicals },
+            ]} />
+        <Grid type="container" breakpoints={{ xs: '100px', sm: '200px', md: '300px', lg: '400px', xl: '500px' }}>
+            <Grid.Col span={{ md: 12, lg: 3, xl: 2 }} style={{ minWidth: rem(200) }}>
+                <PeriodicalSideBar libraryId={libraryId}
+                    periodicalId={periodicalId} />
+            </Grid.Col>
+            <Grid.Col span="auto">
+                <Card withBorder>
+                    <IssuesList libraryId={libraryId}
+                        periodicalId={periodicalId}
+                        volumeNumber={volumeNumber}
+                        frequency={periodical.frequency}
+                        showTitle={true} />
+                </Card>
+            </Grid.Col>
+        </Grid>
+    </Container>);
 };
 
 export default PeriodicalPage;

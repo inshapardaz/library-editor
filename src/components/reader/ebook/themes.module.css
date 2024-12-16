@@ -1,0 +1,36 @@
+:root {
+    --reader-theme-white-background: white;
+    --reader-theme-white-foreground: #15141a;
+    --reader-theme-dark-background: #343434;
+    --reader-theme-dark-foreground: white;
+    --reader-theme-sepia-background: #f4ecd8;
+    --reader-theme-sepia-foreground: #5b4636;
+    --reader-theme-grey-background: #d7d7db;
+    --reader-theme-grey-foreground: #15141a;
+}
+
+.markdownReader {
+    display: flex;
+    flex-direction: column;
+    align-content: stretch;
+    justify-content: stretch;
+}
+.markdownReaderThemeWhite {
+    background-color: var(--reader-theme-white-background);
+    color: var(--reader-theme-white-foreground);
+}
+
+.markdownReaderThemeDark {
+    background-color: var(--reader-theme-dark-background);
+    color: var(--reader-theme-dark-foreground);
+}
+
+.markdownReaderThemeSepia {
+    background-color: var(--reader-theme-sepia-background);
+    color: var(--reader-theme-sepia-foreground);
+}
+
+.markdownReaderThemeGrey {
+    background-color: var(--reader-theme-grey-background);
+    color: var(--reader-theme-grey-foreground);
+}

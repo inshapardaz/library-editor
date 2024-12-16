@@ -1,49 +1,60 @@
-import React from 'react';
-import { Link } from "react-router-dom";
+import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-// 3rd Party Libraries
-import { Card, Typography } from "antd";
+// Ui Library import
+import { Card, Text, Group, useMantineTheme, Center, Image } from '@mantine/core';
 
-// Local Imports
-import "./styles.scss";
-import { FaEdit, ImBooks } from "/src/icons";
-import { seriesPlaceholderImage, setDefaultSeriesImage } from "/src/util";
-import IconText from "/src/components/common/iconText";
-import SeriesDeleteButton from "./seriesDeleteButton";
+// Local imports
+import { IconSeries, IconBooks } from '@/components/icon';
+import IconText from '../iconText';
+import If from '@/components/if';
+//---------------------------------------
 
-// ------------------------------------------------------
+const IMAGE_HEIGHT = 225;
+const IMAGE_WIDTH = 150;
 
-const { Text, Paragraph } = Typography;
+const SeriesCard = ({ libraryId, series }) => {
+    const { t } = useTranslation();
+    const theme = useMantineTheme();
+    const [imgError, setImgError] = useState(false);
 
-// ------------------------------------------------------
+    const icon = <Center h={IMAGE_HEIGHT}><IconSeries width={IMAGE_WIDTH} style={{ color: theme.colors.dark[1] }} /></Center>;
 
-const SeriesCard = ({ libraryId, series, t }) => {
-    const cover = <img src={series.links.image || seriesPlaceholderImage} onError={setDefaultSeriesImage} className="series__image" alt={series.name} />;
-    const description = series.description ? (
-        <Paragraph ellipsis type="secondary">
-            {series.description}
-        </Paragraph>
-    ) : (
-        <Text type="secondary">{t("series.noDescription")}</Text>
-    );
-    const seriesCount = (
-        <IconText icon={ImBooks} href={`/libraries/${libraryId}/series/${series.id}`}
-            text={series.bookCount} key="series-book-count" />
-    );
-
-    const editButton = (
-        <IconText icon={FaEdit} key="series-edit"
-            href={`/libraries/${libraryId}/series/${series.id}/edit`} />
-    );
-
-    const deleteSeries = (<SeriesDeleteButton libraryId={libraryId} series={series} t={t} type="ghost" size="small" />);
     return (
-        <Card key={series.id} cover={cover} hoverable actions={[editButton, deleteSeries, seriesCount]}>
-            <Link to={`/libraries/${libraryId}/series/${series.id}`}>
-                <Card.Meta title={series.name} description={description} />
-            </Link>
+        <Card shadow="sm" padding="lg" radius="md" withBorder>
+            <Card.Section>
+                <If condition={series.links?.image && !imgError} elseChildren={icon}>
+                    <Image h={IMAGE_HEIGHT} radius="sm" src={series?.links?.image} onError={() => setImgError(true)} />
+                </If>
+            </Card.Section>
+
+            <Group justify="space-between" mt="md" mb="xs">
+                <Text component={Link} to={`/libraries/${libraryId}/series/${series.id}`} truncate="end" fw={500}>{series.name}</Text>
+            </Group>
+
+            <Group mt="md">
+                <If condition={series.bookCount != null}>
+                    <IconText
+                        icon={<IconBooks height={16} style={{ color: theme.colors.dark[2] }} />}
+                        text={t('series.bookCount', { count: series.bookCount })} />
+                </If>
+            </Group>
         </Card>
-    );
+    )
 }
 
-export default SeriesCard;
+SeriesCard.propTypes = {
+    libraryId: PropTypes.string,
+    series: PropTypes.shape({
+        id: PropTypes.number,
+        name: PropTypes.string,
+        bookCount: PropTypes.number,
+        links: PropTypes.shape({
+            image: PropTypes.string
+        })
+    })
+};
+
+export default SeriesCard

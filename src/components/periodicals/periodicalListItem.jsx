@@ -1,61 +1,75 @@
-import React from 'react';
-import { Link } from "react-router-dom";
+import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-// 3rd Party Libraries
-import { List, Typography } from "antd";
+// Ui Library Imports
+import { Divider, Group, Image, Stack, Text, Tooltip, useMantineTheme } from '@mantine/core';
 
-// Local Import
-import "./styles.scss";
-import { SlCalender, FiLayers } from "/src/icons";
-import IconText from "/src/components/common/iconText";
-import { periodicalPlaceholderImage, setDefaultPeriodicalImage } from "/src/util";
-import PeriodicalCategory from "./periodicalCategory";
-import PeriodicalDeleteButton from "./periodicalDeleteButton";
-// ------------------------------------------------------
+// Local Imports
+import { IconPages } from '@/components/icon';
+import IconText from '@/components/iconText';
+import FrequencyIcon from './frequencyIcon';
+import { IconPeriodical } from '@/components/icon';
+import If from '@/components/if';
+//-------------------------------------
+const IMAGE_WIDTH = 150;
 
-const { Text, Paragraph } = Typography;
+const PeriodicalListItem = ({ libraryId, periodical }) => {
+    const { t } = useTranslation();
+    const theme = useMantineTheme();
+    const [imgError, setImgError] = useState(false);
 
-// ------------------------------------------------------
 
-const PeriodicalListItem = ({ libraryId, periodical, t }) => {
-    const cover = periodical.links.image ? <img src={periodical.links.image} onError={setDefaultPeriodicalImage} className="periodical__image--small" alt={periodical.title} /> : <img src={periodicalPlaceholderImage} className={styles["periodical__image--small"]} alt={periodical.title} />;
+    const icon = <IconPeriodical width={IMAGE_WIDTH} style={{ color: theme.colors.dark[1] }} />;
 
-    const title = <Link to={`/libraries/${libraryId}/periodicals/${periodical.id}`}>{periodical.title}</Link>;
-    const description = periodical.description ? (
-        <Paragraph type="secondary" ellipsis>
-            {periodical.description}
-        </Paragraph>
-    ) : (
-        <Text type="secondary">{t("periodical.noDescription")}</Text>
-    );
-    const issueCount = (
-        <IconText icon={FiLayers}
-            href={`/libraries/${libraryId}/periodicals/${periodical.id}`}
-            text={t("periodical.issueCount", { count: periodical.issueCount })}
-            key="book-chapter-count" />
-    );
-    const frequency = <IconText icon={SlCalender} text={t(`periodical.frequency.${periodical.frequency.toLowerCase()}`, { count: periodical.frequency })} key="book-page-count" />;
+    return (<>
+        <Group gap="sm" wrap="nowrap">
+            <If condition={periodical.links?.image && !imgError} elseChildren={icon}>
+                <Image w={IMAGE_WIDTH} radius="sm" src={periodical?.links?.image} onError={() => setImgError(true)} />
+            </If>
+            <Stack>
+                <Group justify="space-between">
+                    <Text component={Link} to={`/libraries/${libraryId}/periodicals/${periodical.id}`} truncate="end" fw={500}>{periodical.title}</Text>
+                </Group>
+                <If condition={periodical?.description}
+                    elseChildren={<Text size="sm" fs="italic" c="dimmed" lineClamp={1}>
+                        {t('periodical.noDescription')}
+                    </Text>}>
+                    <Tooltip label={periodical.description} withArrow>
+                        <Text size="sm" c="dimmed" lineClamp={1}>
+                            {periodical.language}
+                        </Text>
+                    </Tooltip>
+                </If>
+                <Group mt="md">
+                    <FrequencyIcon frequency={periodical.frequency} showLabel c="dimmed" size="sm" height={16} style={{ color: theme.colors.gray[6] }} />
+                    <If condition={periodical.issueCount != null} >
+                        <>
+                            <Divider orientation="vertical" />
+                            <IconText icon={<IconPages height={16} style={{ color: theme.colors.dark[2] }} />} text={t('periodical.issueCount', { count: periodical.issueCount })} />
+                        </>
+                    </If>
+                </Group>
+            </Stack >
+        </Group>
+        <Divider />
+    </>)
+}
 
-    const editLink = (
-        <IconText icon={FiLayers}
-            text={t("actions.edit")}
-            href={`/libraries/${libraryId}/periodicals/${periodical.id}/edit`}
-            key="periodical-edit" />
-    );
-    const deletePeriodical = (<PeriodicalDeleteButton libraryId={libraryId} periodical={periodical} t={t} type="ghost" size="small" />);
-
-    const categories = (<PeriodicalCategory key={`${periodical.id}-action-categories`} justList periodical={periodical} />);
-    return (
-        <List.Item key={periodical.id} extra={cover} actions={[
-            editLink,
-            issueCount,
-            frequency,
-            deletePeriodical,
-            categories,
-        ]}>
-            <List.Item.Meta title={title} description={description} />
-        </List.Item>
-    );
-};
+PeriodicalListItem.propTypes = {
+    libraryId: PropTypes.string,
+    periodical: PropTypes.shape({
+        id: PropTypes.number,
+        title: PropTypes.string,
+        description: PropTypes.string,
+        language: PropTypes.string,
+        issueCount: PropTypes.number,
+        frequency: PropTypes.number,
+        links: PropTypes.shape({
+            image: PropTypes.string
+        })
+    })
+}
 
 export default PeriodicalListItem;

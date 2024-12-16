@@ -1,85 +1,41 @@
-import React from 'react';
-import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router-dom";
+import PropTypes from 'prop-types';
+import { Link, useParams } from 'react-router-dom';
 
-// 3rd party libraries
-import { Button, List } from "antd";
+// Ui Library Import
+import { Anchor, Group, Pill, useMantineTheme } from "@mantine/core";
 
-// Local Imports
-import { FaPlus, FaTags } from "/src/icons";
-import { useGetCategoriesQuery } from "/src/store/slices/categoriesSlice";
-import { buildLinkToCategoriesList } from "/src/util";
-import DataContainer from "/src/components/layout/dataContainer";
-import CategoryListItem from "./categoryListItem";
-// ------------------------------------------------------
+// Local imports
+import { IconCategory } from '@/components/icon';
+import If from '@/components/if';
+//-----------------------------------------
 
-const SeriesList = ({ libraryId, query, pageNumber, pageSize }) => {
-    const { t } = useTranslation();
-    const navigate = useNavigate();
+const CategoriesList = ({ categories, size, filter = i => i, showIcon = true }) => {
+    const { libraryId } = useParams();
+    const theme = useMantineTheme();
 
-    const {
-        refetch,
-        data: categories,
-        error,
-        isFetching,
-    } = useGetCategoriesQuery({ libraryId, query, pageNumber, pageSize });
-
-    const renderItem = (c) => (
-        <CategoryListItem key={c.id} libraryId={libraryId} category={c} t={t} />
-    );
-
-    const onPageChanged = (newPage, newPageSize) => {
-        navigate(
-            buildLinkToCategoriesList(
-                libraryId,
-                newPage,
-                newPageSize,
-                query
-            )
-        );
-    };
-
+    if (categories == null || categories.length < 1) return null;
     return (
-        <DataContainer
-            busy={isFetching}
-            error={error}
-            errorTitle={t("categories.errors.loading.title")}
-            errorSubTitle={t("categories.errors.loading.subTitle")}
-            errorAction={
-                <Button type="default" onClick={refetch}>
-                    {t("actions.retry")}
-                </Button>
-            }
-            emptyImage={<FaTags size="5em" />}
-            emptyDescription={t("categories.empty.title")}
-            emptyContent={
-                <Link to={`/libraries/${libraryId}/categories/add`}>
-                    <Button type="dashed" icon={<FaPlus />}>
-                        {t("category.actions.add.label")}
-                    </Button>
-                </Link>
-            }
-            empty={categories && categories.data && categories.data.length < 1}
-        >
-            <List
-                loading={isFetching}
-                size="large"
-                itemLayout="horizontal"
-                dataSource={categories ? categories.data : []}
-                pagination={{
-                    onChange: onPageChanged,
-                    pageSize: categories ? categories.pageSize : 0,
-                    current: categories ? categories.currentPageIndex : 0,
-                    total: categories ? categories.totalCount : 0,
-                    showSizeChanger: true,
-                    responsive: true,
-                    showQuickJumper: true,
-                    pageSizeOptions: [12, 24, 48, 96],
-                }}
-                renderItem={renderItem}
-            />
-        </DataContainer>
-    );
+        <Group>
+            <If condition={showIcon}>
+                <IconCategory height={size} style={{ color: theme.colors.dark[2] }} />
+            </If>
+            {categories.filter(filter).map((category) => (
+                <Anchor key={category.id} component={Link} to={`/libraries/${libraryId}/books?category=${category.id}`}>
+                    <Pill>{category.name}</Pill >
+                </Anchor>
+            ))}
+        </Group>)
 }
 
-export default SeriesList;
+
+CategoriesList.propTypes = {
+    categories: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number,
+        name: PropTypes.string
+    })),
+    filter: PropTypes.func,
+    showIcon: PropTypes.bool,
+    size: PropTypes.any,
+};
+
+export default CategoriesList;
