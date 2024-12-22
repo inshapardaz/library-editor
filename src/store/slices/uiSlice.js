@@ -9,14 +9,14 @@ const detectedLanguage = window.localStorage.i18nextLng ?? "ur";
 
 export const languages = {
     en: {
-        key: "en",
+        key: `en`,
         locale: "en_GB",
         name: "English",
         dir: "ltr",
         isRtl: false,
     },
     ur: {
-        key: "ur",
+        key: `ur`,
         locale: "ur_PK",
         name: "اردو",
         dir: "rtl",

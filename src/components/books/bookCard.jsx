@@ -7,9 +7,10 @@ import { useTranslation } from 'react-i18next';
 import { Card, Text, Group, Tooltip, useMantineTheme, Center, Image, Divider } from '@mantine/core';
 
 // Local imports
-import { IconBook, IconPages, IconChapters } from '@/components/icon';
+import { IconBook, IconPages, IconChapters, IconEditBook } from '@/components/icon';
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
 import FavoriteButton from '@/components/books/favoriteButton';
+import BookDeleteButton from '@/components/books/bookDeleteButton';
 import IconText from '@/components/iconText';
 import If from '@/components/if';
 //---------------------------------------
@@ -51,12 +52,30 @@ const BookCard = ({ libraryId, book }) => {
             </If>
             <Group mt="md">
                 <If condition={book.pageCount != null}>
-                    <IconText icon={<IconPages height={16} style={{ color: theme.colors.dark[2] }} />} text={book.pageCount} />
+                    <IconText
+                        icon={<IconPages height={16} style={{ color: theme.colors.dark[2] }} />}
+                        text={book.pageCount} />
                 </If>
                 <If condition={book.chapterCount != null}>
                     <>
                         <Divider orientation="vertical" />
-                        <IconText icon={<IconChapters height={16} style={{ color: theme.colors.dark[2] }} />} text={book.chapterCount} />
+                        <IconText
+                            icon={<IconChapters height={16} style={{ color: theme.colors.dark[2] }} />}
+                            text={book.chapterCount} />
+                    </>
+                </If>
+            </Group>
+            <Group mt="md">
+                <If condition={book.links.update}>
+                    <IconText
+                        tooltip={t('actions.edit')}
+                        link={`/libraries/${libraryId}/books/${book.id}/edit`}
+                        icon={<IconEditBook height={16} style={{ color: theme.colors.dark[2] }} />} />
+                </If>
+                <If condition={book.links.delete != null}>
+                    <>
+                        <Divider orientation="vertical" />
+                        <BookDeleteButton book={book} t={t} />
                     </>
                 </If>
             </Group>
@@ -74,7 +93,9 @@ BookCard.propTypes = {
         pageCount: PropTypes.number,
         chapterCount: PropTypes.number,
         links: PropTypes.shape({
-            image: PropTypes.string
+            image: PropTypes.string,
+            update: PropTypes.string,
+            delete: PropTypes.string,
         })
     })
 };

@@ -12,7 +12,8 @@ import {
 // Local imports
 import { SortDirection } from "@/models";
 import { useGetSeriesByIdQuery } from '@/store/slices/series.api';
-import { IconNames, IconBooks } from '@/components/icon';
+import { IconBooks } from '@/components/icon';
+import IconNames from '@/components/iconNames';
 import BooksList from "@/components/books/booksList";
 import IconText from "@/components/iconText";
 import PageHeader, { PageHeaderSkeleton } from "@/components/pageHeader";

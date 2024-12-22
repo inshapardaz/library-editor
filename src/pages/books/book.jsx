@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // UI library imports
 import {
+    Button,
     Card,
     Center,
     Container,
@@ -30,7 +31,8 @@ import BookInfo from '@/components/books/bookInfo';
 import PageHeader from "@/components/pageHeader";
 import Error from '@/components/error';
 import If from '@/components/if';
-import { IconNames, IconBook } from '@/components/icon';
+import { IconBook, IconEditBook } from '@/components/icon';
+import IconNames from '@/components/iconNames'
 //------------------------------------------------------
 
 const PRIMARY_COL_HEIGHT = rem(300);
@@ -103,7 +105,9 @@ const BookPage = () => {
             ]}
             actions={[
                 (<FavoriteButton key="book-fav-button" book={book} size={24} />),
-                (<CategoriesList key="book-categories-info" categories={book?.categories} size={24} showIcon={false} />)
+                (<CategoriesList key="book-categories-info" categories={book?.categories} size={24} showIcon={false} />),
+                (<span key="book-spacer" style={{ flex: 1 }} />),
+                (<Button key="book-edit" component={Link} to={`/libraries/${libraryId}/books/${book.id}/edit`} variant='default' leftSection={<IconEditBook />} >{t('actions.edit')}</Button>)
             ]} />
         <Container size="responsive">
             <Grid

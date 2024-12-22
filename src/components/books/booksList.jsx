@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
+
+// Ui Library
+import { Button } from '@mantine/core';
 
 // Local imports
 import { useGetBooksQuery } from "@/store/slices/books.api";
@@ -10,7 +13,8 @@ import DataView from '@/components/dataView';
 import { updateLinkToBooksPage } from '@/utils';
 import SortMenu from '@/components/sortMenu';
 import SortDirectionToggle from '@/components/sortDirectionToggle';
-import { IconTitle, IconDateCreated, IconSeriesIndex } from '@/components/icon';
+import { IconTitle, IconDateCreated, IconSeriesIndex, IconAdd } from '@/components/icon';
+import BookFilterMenu from './bookFilterMenu';
 //------------------------------
 
 const BooksList = ({
@@ -54,7 +58,7 @@ const BooksList = ({
     });
 
     let bookSortOptions = [{
-        label: t('book.title'),
+        label: t('book.title.label'),
         value: 'title',
         icon: <IconTitle />
     }, {
@@ -64,7 +68,7 @@ const BooksList = ({
     }];
     if (series) {
         bookSortOptions.push({
-            label: t('book.seriesIndex'),
+            label: t('book.seriesIndex.label'),
             value: 'seriesIndex',
             icon: <IconSeriesIndex />
         })
@@ -95,6 +99,10 @@ const BooksList = ({
         }))}
         extraFilters={
             <>
+                <Button variant='default' leftSection={<IconAdd />} component={Link} to={`/libraries/${libraryId}/books/add`}>{t('book.actions.add.label')}</Button>
+                <BookFilterMenu value={status} onChange={value => navigate(updateLinkToBooksPage(location, {
+                    status: value
+                }))} />
                 <SortMenu options={bookSortOptions} value={sortBy} onChange={value => navigate(updateLinkToBooksPage(location, {
                     pageNumber: 1,
                     sortBy: value,

@@ -1,14 +1,10 @@
 import { useParams } from "react-router-dom";
 
 // UI library import
-import { Container, Stack } from "@mantine/core";
+import { Stack } from "@mantine/core";
 
 // Local imports
-import LibraryHeader from "@/components/library/header";
-import LatestBooks from "@/components/books/latestBooks";
-import FavioriteBooks from "@/components/books/favoriteBooks";
-// import SuggestedBooks from "@/components/books/suggestedBooks";
-import LastReadBooks from "@/components/books/lastReadBooks";
+import BooksCarousel from "@/components/books/booksCarousel";
 //---------------------------------------------
 
 const LibraryPage = () => {
@@ -17,18 +13,14 @@ const LibraryPage = () => {
         return (
                 <Stack align="stretch"
                         justify="center"
-                        gap="md">
-                        <LibraryHeader />
-                        <Container fluid >
-                                <Stack align="stretch"
-                                        justify="center"
-                                        gap="md">
-                                        <LastReadBooks libraryId={libraryId} />
-                                        <LatestBooks libraryId={libraryId} />
-                                        <FavioriteBooks libraryId={libraryId} />
-                                        {/* <SuggestedBooks libraryId={libraryId} /> */}
-                                </Stack>
-                        </Container>
+                        m="md"
+                        gap="md" >
+                        <Stack align="stretch"
+                                justify="center"
+                                gap="md">
+                                <BooksCarousel libraryId={libraryId} status="ProofRead" />
+                                <BooksCarousel libraryId={libraryId} status="BeingTyped" />
+                        </Stack>
                 </Stack>);
 
 }

@@ -9,7 +9,7 @@ import { SortDirection } from "@/models";
 import WritingsList from "@/components/writings/writingsList";
 import WritingsSideBar from "@/components/writings/writingsSidebar";
 import PageHeader from "@/components/pageHeader";
-import { IconNames } from '@/components/icon'
+import IconNames from '@/components/iconNames';
 
 // -----------------------------------------
 const WritingsPage = () => {

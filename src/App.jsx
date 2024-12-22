@@ -13,6 +13,7 @@ import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import '@mantine/spotlight/styles.css';
 import '@mantine/carousel/styles.css';
+import '@mantine/dropzone/styles.css';
 
 import Router from "./router";
 import { selectedLanguage } from "@/store/slices/uiSlice";
@@ -39,7 +40,7 @@ function App() {
         <DirectionProvider >
           <MantineProvider>
             <Notifications limit={5} position="bottom-right" />
-            <ModalsProvider>
+            <ModalsProvider labels={{ confirm: t('actions.yes'), cancel: t('actions.no') }}>
               {userLoadStatus === 'loading' ? <Loader /> : <Router />}
             </ModalsProvider>
           </MantineProvider>

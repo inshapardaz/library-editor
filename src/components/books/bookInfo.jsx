@@ -70,7 +70,7 @@ const BookInfo = ({ libraryId, book }) => {
 };
 
 BookInfo.propTypes = {
-    libraryId: PropTypes.number,
+    libraryId: PropTypes.string,
     book: PropTypes.shape({
         id: PropTypes.number,
         publisher: PropTypes.string,

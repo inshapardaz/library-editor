@@ -354,6 +354,55 @@ export const getDateFormatFromFrequency = (frequency) => {
     }
 };
 
+// ------------------  batch work --------------------------------------
+export const processMultipleRequests = async ({
+    baseQuery,
+    method,
+    url,
+    requests,
+    payload,
+    onProgress,
+}) => {
+    let hasErrors = false;
+    for (const request of requests) {
+        try {
+            request.status = ProcessStatus.InProcess;
+            onProgress(request);
+            let body =
+                typeof payload === "function" ? payload(request.data) : payload;
+            if (body) {
+                const resolvedUrl =
+                    typeof url === "function" ? url(request, payload) : url;
+                var result = await baseQuery({
+                    url: resolvedUrl,
+                    method: method,
+                    data: removeLinks(body),
+                });
+
+                if (result.error) {
+                    request.status = ProcessStatus.Failed;
+                    hasErrors = true;
+                } else {
+                    request.status = ProcessStatus.Completed;
+                }
+            } else {
+                request.status = ProcessStatus.Skipped;
+            }
+            onProgress(request);
+        } catch (e) {
+            console.error(e);
+            request.status = ProcessStatus.Failed;
+            onProgress(request);
+            hasErrors = true;
+        }
+    }
+    if (hasErrors) {
+        throw new Error("Some of the operations failed.");
+    }
+
+    return { data: requests };
+};
+
 // --------------------------------------------------------------
 // FUNCTION USED IN THIS APP ABOVE THIS LINE
 // --------------------------------------------------------------
@@ -754,55 +803,6 @@ export const readBlob = (file) => {
         reader.readAsArrayBuffer(file);
     });
 };
-// ------------------  batch work --------------------------------------
-export const processMultipleRequests = async ({
-    baseQuery,
-    method,
-    url,
-    requests,
-    payload,
-    onProgress,
-}) => {
-    let hasErrors = false;
-    for (const request of requests) {
-        try {
-            request.status = ProcessStatus.InProcess;
-            onProgress(request);
-            let body =
-                typeof payload === "function" ? payload(request.data) : payload;
-            if (body) {
-                const resolvedUrl =
-                    typeof url === "function" ? url(request, payload) : url;
-                var result = await baseQuery({
-                    url: resolvedUrl,
-                    method: method,
-                    data: removeLinks(body),
-                });
-
-                if (result.error) {
-                    request.status = ProcessStatus.Failed;
-                    hasErrors = true;
-                } else {
-                    request.status = ProcessStatus.Completed;
-                }
-            } else {
-                request.status = ProcessStatus.Skipped;
-            }
-            onProgress(request);
-        } catch (e) {
-            console.error(e);
-            request.status = ProcessStatus.Failed;
-            onProgress(request);
-            hasErrors = true;
-        }
-    }
-    if (hasErrors) {
-        throw new Error("Some of the operations failed.");
-    }
-
-    return { data: requests };
-};
-
 // ------------------  REMOVE FOLLOWING --------------------------------------
 
 const helpers = {

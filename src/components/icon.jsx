@@ -1,82 +1,7 @@
 import PropTypes from 'prop-types';
 import { Icon as IconifyIcon } from '@iconify-icon/react';
+import IconNames from './IconNames';
 
-//-------------------------------------
-export const IconNames = {
-    Home: "home",
-    Library: "library",
-    LibraryEdit: "libraryEdit",
-    Dictionary: "dictionary",
-    Font: "font",
-    Tools: "tools",
-    Moon: "moon",
-    Sun: "sun",
-    Settings: "settings",
-    ChangePassword: "changePassword",
-    Logout: "logout",
-    Search: "search",
-    Book: "book",
-    Books: "books",
-    Author: "author",
-    Authors: "authors",
-    Writing: "writing",
-    Writings: "writings",
-    Poetry: "poetry",
-    Poetries: "poetries",
-    Category: "category",
-    Categories: "categories",
-    Series: "series",
-    Periodical: "periodical",
-    Periodicals: "periodicals",
-    LayoutList: "layoutList",
-    LayoutGrid: "layoutGrid",
-    InfoCircle: "infoCircle",
-    ChevronUp: "chevronUp",
-    ChevronDown: "chevronDown",
-    ChevronLeft: "chevronLeft",
-    ChevronRight: "chevronRight",
-    World: "world",
-    Language: "language",
-    Copyright: "copyright",
-    Pages: "pages",
-    Publisher: "publisher",
-    Chapters: "chapters",
-    ArrowLeft: "arrowLeft",
-    Calendar: "calendar",
-    ReloadAlert: "reloadAlert",
-    X: "x",
-    Heart: "heart",
-    HeartFill: "heartFill",
-    Alert: "alert",
-    ImageReader: "imageReader",
-    TextReader: "textReader",
-    ReaderScrollView: "readerScrollView",
-    ReaderSinglePage: "readerSinglePage",
-    ReaderDoublePage: "readerDoublePage",
-    FullScreen: "fullScreen",
-    ExitFullScreen: "exitFullScreen",
-    ZoomIn: "zoomIn",
-    ZoomOut: "zoomOut",
-    Annually: "annually",
-    Quarterly: "quarterly",
-    Monthly: "monthly",
-    Fornightly: "fornightly",
-    Weekly: "weekly",
-    Daily: "daily",
-    Issues: "issues",
-    Issue: "issue",
-    IssueArticle: "issueArticle",
-    VolumeNumber: "volumeNumber",
-    IssueNumber: "issueNumber",
-    Sort: "sort",
-    SortAscending: "sortAscending",
-    SortDescending: "sortDescending",
-    Name: "name",
-    Type: "type",
-    Title: "title",
-    DateCreated: "dateCreated",
-    SeriesIndex: "seriesIndex",
-};
 //-------------------------------------
 
 const iconTheme = {
@@ -154,6 +79,17 @@ const iconTheme = {
         title: "list-letters",
         dateCreated: "list-letters",
         seriesIndex: "list-letters",
+        filter: "filter",
+        availableForTyping: "file",
+        beingTyping: "keyboard",
+        readyForProofRead: "circle-dashed-check",
+        proofRead: "eyeglass-2",
+        published: "circle-check",
+        all: "filter-off",
+        add: "circle-plus",
+        editBook: "edit",
+        deleteBook: "trash",
+        tick: "check"
     }
 };
 //-------------------------------------
@@ -237,7 +173,17 @@ export const IconType = (props) => getIcon(IconNames.Type, props)
 export const IconTitle = (props) => getIcon(IconNames.Title, props)
 export const IconDateCreated = (props) => getIcon(IconNames.DateCreated, props)
 export const IconSeriesIndex = (props) => getIcon(IconNames.SeriesIndex, props)
-
+export const IconFilter = (props) => getIcon(IconNames.Filter, props)
+export const IconPublished = (props) => getIcon(IconNames.Published, props)
+export const IconAvailableForTyping = (props) => getIcon(IconNames.AvailableForTyping, props)
+export const IconBeingTyped = (props) => getIcon(IconNames.BeingTyped, props)
+export const IconReadyForProofRead = (props) => getIcon(IconNames.ReadyForProofRead, props)
+export const IconProofRead = (props) => getIcon(IconNames.ProofRead, props)
+export const IconAll = (props) => getIcon(IconNames.All, props)
+export const IconEditBook = (props) => getIcon(IconNames.EditBook, props)
+export const IconDeleteBook = (props) => getIcon(IconNames.DeleteBook, props)
+export const IconAdd = (props) => getIcon(IconNames.Add, props)
+export const IconTick = (props) => getIcon(IconNames.Tick, props)
 
 export const Icon = ({ name, ...rest }) => <IconifyIcon icon={getIconName(name)} {...rest} />
 

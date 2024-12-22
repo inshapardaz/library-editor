@@ -44,6 +44,11 @@ const en = {
         sortAscending: "Ascending",
         sortDescending: "Descending",
     },
+    errors: {
+        imageRequired:
+            "Only image files are expected. Please select an image file.",
+        pdfRequired: "Only PDF files are expected. Please select a PDF file.",
+    },
     login: {
         title: "Login",
         message: 'Welcome back!',
@@ -189,6 +194,21 @@ const en = {
         CreativeCommons: "Creative Commons",
         Unknown: "Unknown Copyrights",
     },
+    bookStatus: {
+        Published: "Published",
+        AvailableForTyping: "Ready for typing",
+        BeingTyped: "Being Typed",
+        ReadyForProofRead: "Ready for proof reading",
+        ProofRead: "Proof Read",
+    },
+    editingStatus: {
+        Available: "Available",
+        Typing: "Being Typed",
+        Typed: "Typed",
+        InReview: "In Review",
+        Completed: "Completed",
+        All: "All",
+    },
     profile: {
         title: "Profile",
     },
@@ -237,6 +257,10 @@ const en = {
         title: "Books",
         description: "Explore exquisite collection of books",
         allBooks: "All Books",
+        withStatus: {
+            ProofRead: "Books being Proof Read",
+            BeingTyped: "Books being Typed",
+        },
         error: {
             loading: {
                 title: "Error loading books",
@@ -245,19 +269,65 @@ const en = {
         }
     },
     book: {
-        title: "Title",
-        dateCreated: "Date Created",
-        seriesIndex: "Series Index",
-        latestBooks: "Latest Additions",
-        lastRead: "Recent Reads",
-        favorites: "Favorites",
-        noDescription: "No details...",
+        title: {
+            label: "Title",
+            placeholder: "Title of book",
+            required: "Book title is required",
+        },
+        description: {
+            label: "Description",
+            placeholder: "Some description of book",
+        },
+        public: {
+            label: "Public",
+        },
+        copyrights: {
+            label: "Copyrights",
+        },
+        authors: {
+            label: "Authors",
+            placeholder: "Select authors of the book",
+            required: "Author is required",
+        },
+        status: {
+            label: "Status",
+            placeholder: "Select Book Status",
+        },
+        categories: {
+            label: "Categories",
+            placeholder: "Select categories",
+        },
         series: {
             label: "Series",
             placeholder: "Select series",
             indexLabel: "Book of {{name}} series",
             seriesAndIndexLabel: "Book {{index}} of {{name}} series",
         },
+        seriesIndex: {
+            label: "Sequence in series",
+        },
+        publisher: {
+            label: "Publisher",
+            placeholder: "Publisher of the book",
+        },
+        source: {
+            label: "Source",
+            placeholder: "Source of the book",
+        },
+        language: {
+            label: "Language",
+            placeholder: "Select language for book",
+            required: "Language is required",
+        },
+        yearPublished: {
+            label: "Publish Year",
+            placeholder: "Book publication year",
+        },
+        dateCreated: "Date Created",
+        latestBooks: "Latest Additions",
+        lastRead: "Recent Reads",
+        favorites: "Favorites",
+        noDescription: "No details...",
         chapters: "Chapters",
         chapterCount_zero: "No chapter",
         chapterCount_one: "1 chapter",
@@ -283,7 +353,84 @@ const en = {
             },
             download: {
                 title: "Download book"
-            }
+            },
+            add: {
+                label: "Add new book",
+                title: "New Book",
+                success: "Book created successfully.",
+                error: "Error creating book.",
+            },
+            edit: {
+                title: "Editing '{{title}}'",
+                success: "Book saved successfully.",
+                error: "Error saving book",
+            },
+            delete: {
+                title: "Delete book?",
+                message:
+                    "Are you sure you want to delete book '{{title}}'? It will remove all of its contents including chapters, pages and files.",
+                success: "Book deleted successfully.",
+                error: "Error deleting book.",
+            },
+            addFile: {
+                title: "Upload file",
+                success: "File uploadedsuccessfully.",
+                error: "Error uploading file.",
+            },
+            deleteFile: {
+                title: "Delete file?",
+                message: "Are you sure you want to delete book '{{title}}'?.",
+            },
+            downloadFile: {
+                title: "Download file",
+            },
+            loadFileImages: {
+                title: "Load File Images",
+                progress: "Loading pages {{completed}} of {{total}}",
+                selectOtherFile: "Select other file",
+                page: "Page {{current}} of {{total}}",
+                loadSavedSetting: "Load previously saved settings",
+                messages: {
+                    downloadingFile: "Downloading file...",
+                    loadingPages:
+                        "Parsing pages from pdf. It might take some time. Please keep this window open and in focus.",
+                    savingPages:
+                        "Saving pages. It might take some time. Please keep this window open and in focus.",
+                    loaded: "All pages loaded successfully.",
+                    failedLoading: "Failed to load all pages.",
+                    selectImage: "Please select an image",
+                    errorFileType:
+                        "Only PDF cannot be processed. Other file types are not supported",
+                    errorLoadingSavedSettings:
+                        "Error loading saved settings. Saved settings are removed.",
+                },
+            },
+            split: {
+                title: "Split",
+            },
+            applySplitToAll: {
+                title: "Apply split to all pages.",
+            },
+            applySplitToAllBelow: {
+                title: "Apply split to all pages after the current one.",
+            },
+            processAndSave: {
+                title: "Process split and save pages",
+            },
+            setFirstPageAsImage: {
+                title: "Set first page of file as book image.",
+                message:
+                    "Do you want to make the first page of this file to be the book image?",
+                success: "Book image set successfully",
+                error: "Unable to set book image",
+            },
+            publish: {
+                title: "Publish Book",
+                message:
+                    "Are you sure you want to publish book '{{title}}'? It will merge text in all pages and save into chapters. It will overwrite all chapter contents.",
+                success: "Book published successfully.",
+                error: "Error publishing book.",
+            },
         },
         error: {
             loading: {
@@ -302,7 +449,15 @@ const en = {
                 title: "Error loading page",
                 detail: "Unexpected error occured loading page. Please retry again."
             },
-        }
+        },
+        statuses: {
+            Published: "Published",
+            AvailableForTyping: "Ready for typing",
+            BeingTyped: "Being Typed",
+            ReadyForProofRead: "Ready for proof reading",
+            ProofRead: "Proof Read",
+            All: "All",
+        },
     },
     author: {
         name: "Name",
@@ -324,7 +479,28 @@ const en = {
                 title: "Error loading author",
                 detail: "Unexpected error occured loading auhtor. Please retry again."
             }
-        }
+        },
+        actions: {
+            add: {
+                label: "Add new author",
+                labelWithName: "Add '{{name}}'",
+                title: "New Author",
+                success: "Author created successfully.",
+                error: "Error creating author.",
+            },
+            edit: {
+                title: "Editing '{{name}}'",
+                success: "Author saved successfully.",
+                error: "Error saving author",
+            },
+            delete: {
+                title: "Delete author?",
+                message:
+                    "Are you sure you want to delete author '{{name}}'? It will remove all of its contents including books, writing and files.",
+                success: "Author deleted successfully.",
+                error: "Error deleting author.",
+            },
+        },
     },
     authors: {
         empty: "No author",
@@ -334,7 +510,7 @@ const en = {
                 title: "Error loading authors",
                 detail: "Unexpected error occured loading authors. Please retry again."
             }
-        }
+        },
     },
     writings: {
         empty: "No writings found.",
@@ -423,7 +599,27 @@ const en = {
                 title: "Error loading series",
                 detail: "Unexpected error occured loading series. Please retry again."
             }
-        }
+        },
+        actions: {
+            add: {
+                label: "Add new series",
+                labelWithName: "Add '{{name}}'",
+                title: "New Series",
+                success: "Series created successfully.",
+                error: "Error creating series",
+            },
+            edit: {
+                title: "Editing '{{name}}'",
+                success: "Series saved successfully.",
+                error: "Error saving series.",
+            },
+            delete: {
+                title: "Delete Series?",
+                message: "Are you sure you want to delete series '{{name}}'?",
+                success: "Series deleted successfully.",
+                error: "Error deleting series.",
+            },
+        },
     },
     reader: {
         themes: {

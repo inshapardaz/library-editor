@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 // Ui Library imports
-import { Anchor, Box, Button, Center, Divider, Group, Loader, LoadingOverlay, Stack, Text, Title } from "@mantine/core";
+import { Anchor, Button, Card, Center, Divider, Group, Loader, LoadingOverlay, Stack, Text, Title } from "@mantine/core";
 import { Carousel } from '@mantine/carousel';
 
 // Local imports
@@ -13,7 +13,7 @@ import { SortDirection } from "@/models";
 import { IconRefreshAlert } from '@/components/icon';
 import BookCard from './bookCard';
 //------------------------------
-const LastReadBooks = ({ libraryId }) => {
+const BooksCarousel = ({ libraryId, status }) => {
     const { t } = useTranslation();
     const {
         refetch,
@@ -22,8 +22,9 @@ const LastReadBooks = ({ libraryId }) => {
         isFetching,
     } = useGetBooksQuery({
         libraryId,
-        read: true,
-        sortDirection: SortDirection.Descending
+        sortBy: "DateCreated",
+        sortDirection: SortDirection.Descending,
+        status: status,
     });
 
     let content = null;
@@ -57,20 +58,21 @@ const LastReadBooks = ({ libraryId }) => {
     } else {
         content = (<Center h={100}><Text>{t('books.empty')}</Text></Center>)
     }
-    return (<Box>
+    return (<Card>
         <Stack>
             <Group justify="space-between">
-                <Title order={3}>{t('book.lastRead')}</Title>
+                <Title order={3}>{t(`books.withStatus.${status}`)}</Title>
                 <Anchor component={Link} underline="hover" to={`/libraries/${libraryId}/books?read=true`}>{t('actions.viewAll')}</Anchor>
             </Group>
             {content}
             <Divider my="md" />
         </Stack>
-    </Box>)
+    </Card>)
 }
 
-LastReadBooks.propTypes = {
-    libraryId: PropTypes.string
+BooksCarousel.propTypes = {
+    libraryId: PropTypes.string,
+    status: PropTypes.string
 };
 
-export default LastReadBooks;
+export default BooksCarousel;

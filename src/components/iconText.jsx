@@ -2,12 +2,13 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 // Ui Library Import
-import { Group, Text, Tooltip } from "@mantine/core";
+import { Button, Group, Text, Tooltip } from "@mantine/core";
 
 // Local imports
 //-----------------------------------------
 
-const IconText = ({ text, icon, link, tooltip, size = 'md', type = 'dimmed', ...props }) => {
+const IconText = ({ text, icon, link, onClick, tooltip, size = 'md', type = 'dimmed', ...props }) => {
+
     if (link) {
         if (tooltip) {
             return (<Tooltip label={tooltip} {...props}>
@@ -22,6 +23,20 @@ const IconText = ({ text, icon, link, tooltip, size = 'md', type = 'dimmed', ...
             {icon}
             <Text truncate="end" c={type} size={size}>{text}</Text>
         </Group>);
+    }
+
+    if (onClick) {
+        if (tooltip) {
+            return (<Tooltip label={tooltip} {...props}>
+                <Button leftSection={icon} variant='transparent' onClick={onClick}>
+                    <Text truncate="end" c={type} size={size}>{text}</Text>
+                </Button>
+            </Tooltip>);
+        }
+
+        return (<Button leftSection={icon} variant='transparent' onClick={onClick}>
+            <Text truncate="end" c={type} size={size}>{text}</Text>
+        </Button>);
     }
 
     if (tooltip) {
@@ -45,7 +60,8 @@ IconText.propTypes = {
     text: PropTypes.any,
     tooltip: PropTypes.string,
     type: PropTypes.string,
-    size: PropTypes.string
+    size: PropTypes.string,
+    onClick: PropTypes.func
 };
 
 export default IconText;

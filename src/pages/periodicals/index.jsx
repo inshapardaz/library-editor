@@ -9,7 +9,7 @@ import { SortDirection } from "@/models";
 import PeriodicalsSideBar from "@/components/periodicals/periodicalsSideBar";
 import PeriodicalsList from "@/components/periodicals/periodicalsList";
 import PageHeader from "@/components/pageHeader";
-import { IconNames } from '@/components/icon'
+import IconNames from '@/components/iconNames'
 // -----------------------------------------
 const PeriodicalsPage = () => {
     const { t } = useTranslation();

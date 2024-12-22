@@ -6,7 +6,8 @@ import { Card, Container, Divider, Grid, Group, rem, Skeleton, useMantineTheme }
 
 // Local Imports
 import { useGetPeriodicalByIdQuery } from '@/store/slices/periodicals.api';
-import { IconNames, IconIssues } from '@/components/icon'
+import { IconIssues } from '@/components/icon';
+import IconNames from '@/components/iconNames';
 import IssuesList from "@/components/periodicals/issues/issuessList";
 import FrequencyIcon from "@/components/periodicals/frequencyIcon";
 import PeriodicalSideBar from "@/components/periodicals/periodicalSideBar";

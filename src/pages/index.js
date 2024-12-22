@@ -8,6 +8,7 @@ import LibrariesPage from "./libraries";
 import LibraryPage from "./libraries/library";
 import BooksPage from "./books";
 import BookPage from "./books/book";
+import EditBookPage from "./books/edit";
 import BookReaderPage from "./books/reader";
 import EBookReaderPage from "./books/ebookReader";
 import AuthorsPage from "./authors";
@@ -32,6 +33,7 @@ const Pages = {
     LibraryPage,
     BooksPage,
     BookPage,
+    EditBookPage,
     BookReaderPage,
     EBookReaderPage,
     AuthorsPage,

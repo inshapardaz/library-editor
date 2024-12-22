@@ -8,9 +8,10 @@ import { Divider, Group, Image, Stack, Text, Tooltip, useMantineTheme } from '@m
 
 // Local Imports
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
-import { IconBook, IconPages, IconChapters } from '@/components/icon';
+import { IconBook, IconPages, IconChapters, IconEditBook } from '@/components/icon';
 import IconText from '@/components/iconText';
-import FavoriteButton from './favoriteButton';
+import FavoriteButton from '@/components/books/favoriteButton';
+import BookDeleteButton from '@/components/books/bookDeleteButton';
 import If from '@/components/if';
 //-------------------------------------
 
@@ -51,6 +52,21 @@ const BookListItem = ({ libraryId, book }) => {
                             <IconText size="sm" icon={<IconChapters height={16} style={{ color: theme.colors.dark[2] }} />} text={t('book.chapterCount', { count: book.chapterCount })} />
                         </>
                     </If>
+                    <If condition={book.links.update}>
+                        <>
+                            <Divider orientation="vertical" />
+                            <IconText
+                                tooltip={t('actions.edit')}
+                                link={`/libraries/${libraryId}/books/${book.id}/edit`}
+                                icon={<IconEditBook height={16} style={{ color: theme.colors.dark[2] }} />} />
+                        </>
+                    </If>
+                    <If condition={book.links.delete != null}>
+                        <>
+                            <Divider orientation="vertical" />
+                            <BookDeleteButton book={book} t={t} />
+                        </>
+                    </If>
                 </Group>
             </Stack>
         </Group>
@@ -68,7 +84,9 @@ BookListItem.propTypes = {
         pageCount: PropTypes.number,
         chapterCount: PropTypes.number,
         links: PropTypes.shape({
-            image: PropTypes.string
+            image: PropTypes.string,
+            update: PropTypes.string,
+            delete: PropTypes.string,
         })
     })
 }

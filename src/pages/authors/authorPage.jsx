@@ -17,7 +17,8 @@ import {
 // Local imports
 import { SortDirection } from "@/models";
 import { useGetAuthorQuery } from '@/store/slices/authors.api';
-import { IconNames, IconBooks, IconWritings, IconPoetries } from '@/components/icon';
+import { IconBooks, IconWritings, IconPoetries } from '@/components/icon';
+import IconNames from '@/components/iconNames'
 import { updateLinkToAuthorPage } from '@/utils';
 import BooksList from "@/components/books/booksList";
 import WritingsList from "@/components/writings/writingsList";
