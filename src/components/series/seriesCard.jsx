@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // Ui Library import
-import { Card, Text, Group, useMantineTheme, Center, Image } from '@mantine/core';
+import { Card, Text, Group, useMantineTheme, Center, Image, Divider } from '@mantine/core';
 
 // Local imports
-import { IconSeries, IconBooks } from '@/components/icon';
+import { IconSeries, IconBooks, IconEdit, IconDelete } from '@/components/icon';
 import IconText from '../iconText';
 import If from '@/components/if';
 //---------------------------------------
@@ -40,6 +40,22 @@ const SeriesCard = ({ libraryId, series }) => {
                         icon={<IconBooks height={16} style={{ color: theme.colors.dark[2] }} />}
                         text={t('series.bookCount', { count: series.bookCount })} />
                 </If>
+                <If condition={series.links.update} >
+                    <Divider />
+                    <IconText
+                        icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />}
+                        tooltip={t('actions.edit')}
+                        link={`/libraries/${libraryId}/series/${series.id}/edit`}
+                    />
+                </If>
+                <If condition={series.links.delete} >
+                    <Divider orientation='vertical' />
+                    <IconText
+                        icon={<IconDelete height={16} style={{ color: theme.colors.dark[2] }} />}
+                        tooltip={t('actions.delete')}
+                        link={`/libraries/${libraryId}/series/${series.id}/edit`}
+                    />
+                </If>
             </Group>
         </Card>
     )
@@ -52,7 +68,9 @@ SeriesCard.propTypes = {
         name: PropTypes.string,
         bookCount: PropTypes.number,
         links: PropTypes.shape({
-            image: PropTypes.string
+            image: PropTypes.string,
+            update: PropTypes.string,
+            delete: PropTypes.string
         })
     })
 };

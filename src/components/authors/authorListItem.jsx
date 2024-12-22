@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Divider, Group, Image, Stack, Text, useMantineTheme } from '@mantine/core';
 
 // local imports
-import { IconBooks, IconWritings, IconAuthor, IconPoetries } from '@/components/icon';
+import { IconBooks, IconWritings, IconAuthor, IconPoetries, IconEdit, IconDelete } from '@/components/icon';
 import IconText from '@/components/iconText';
 import If from '@/components/if';
 //-------------------------------------
@@ -48,6 +48,22 @@ const AuthorListItem = ({ libraryId, author }) => {
                             icon={<IconPoetries height={16} style={{ color: theme.colors.dark[2] }} />}
                             text={t('author.poetryCount', { count: author.poetryCount })} />
                     </If>
+                    <If condition={author.links.update} >
+                        <Divider />
+                        <IconText
+                            icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />}
+                            tooltip={t('actions.edit')}
+                            link={`/libraries/${libraryId}/authors/${author.id}/edit`}
+                        />
+                    </If>
+                    <If condition={author.links.delete} >
+                        <Divider orientation='vertical' />
+                        <IconText
+                            icon={<IconDelete height={16} style={{ color: theme.colors.dark[2] }} />}
+                            tooltip={t('actions.delete')}
+                            link={`/libraries/${libraryId}/series/${author.id}/edit`}
+                        />
+                    </If>
                 </Group>
             </Stack>
         </Group>
@@ -66,7 +82,9 @@ AuthorListItem.propTypes = {
         articleCount: PropTypes.number,
         poetryCount: PropTypes.number,
         links: PropTypes.shape({
-            image: PropTypes.string
+            image: PropTypes.string,
+            update: PropTypes.string,
+            delete: PropTypes.string
         })
     })
 }

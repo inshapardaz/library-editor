@@ -44,7 +44,7 @@ const PageLoading = () => {
     </Container>);
 }
 
-const BookForm = ({ libraryId, book = null, onSubmit }) => {
+const BookForm = ({ libraryId, book = null, onSubmit, onCancel }) => {
     const { t } = useTranslation();
     const [loaded, setLoaded] = useState(false);
     const form = useForm({
@@ -155,6 +155,7 @@ const BookForm = ({ libraryId, book = null, onSubmit }) => {
 
             <Group justify="flex-end" mt="md">
                 <Button type="submit">{t('actions.save')}</Button>
+                <Button variant='light' onClick={onCancel}>{t('actions.cancel')}</Button>
             </Group>
         </form>
     );
@@ -162,6 +163,7 @@ const BookForm = ({ libraryId, book = null, onSubmit }) => {
 
 BookForm.propTypes = {
     onSubmit: PropTypes.func,
+    onCancel: PropTypes.func,
     libraryId: PropTypes.any,
     book: PropTypes.shape({
         id: PropTypes.number,
@@ -265,7 +267,7 @@ const EditBookPage = () => {
                     </Grid.Col>
                     <Grid.Col span="auto" >
                         <Card withBorder maw={600}>
-                            <BookForm libraryId={libraryId} book={book} onSubmit={onSubmit} />
+                            <BookForm libraryId={libraryId} book={book} onSubmit={onSubmit} onCancel={() => navigate(-1)} />
                         </Card>
                     </Grid.Col>
                 </Grid>

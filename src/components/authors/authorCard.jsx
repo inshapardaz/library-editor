@@ -1,18 +1,21 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 // Ui Library import
 import { Card, Text, Group, Divider, useMantineTheme, Image, Center } from '@mantine/core';
 
 // Local imports
-import { IconBooks, IconWritings, IconAuthor, IconPoetries } from '@/components/icon';
+import { IconBooks, IconWritings, IconAuthor, IconPoetries, IconEdit, IconDelete } from '@/components/icon';
 import IconText from '../iconText';
 import If from '@/components/if';
 //---------------------------------------
 
 const AuthorCard = ({ libraryId, author }) => {
     const theme = useMantineTheme();
+    const { t } = useTranslation();
+
     const [imgError, setImgError] = useState(false);
 
     const icon = <Center h={225}><IconAuthor width={125} style={{ color: theme.colors.dark[1] }} /></Center>;
@@ -43,6 +46,24 @@ const AuthorCard = ({ libraryId, author }) => {
                     icon={<IconPoetries height={16} style={{ color: theme.colors.dark[2] }} />}
                     text={author.poetryCount} />
             </Group>
+            <Group justify="space-between" mt="md" mb="xs">
+                <If condition={author.links.update} >
+                    <Divider />
+                    <IconText
+                        icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />}
+                        tooltip={t('actions.edit')}
+                        link={`/libraries/${libraryId}/authors/${author.id}/edit`}
+                    />
+                </If>
+                <If condition={author.links.delete} >
+                    <Divider orientation='vertical' />
+                    <IconText
+                        icon={<IconDelete height={16} style={{ color: theme.colors.dark[2] }} />}
+                        tooltip={t('actions.delete')}
+                        link={`/libraries/${libraryId}/series/${author.id}/edit`}
+                    />
+                </If>
+            </Group>
         </Card>
     )
 }
@@ -56,7 +77,9 @@ AuthorCard.propTypes = {
         articleCount: PropTypes.number,
         poetryCount: PropTypes.number,
         links: PropTypes.shape({
-            image: PropTypes.string
+            image: PropTypes.string,
+            update: PropTypes.string,
+            delete: PropTypes.string
         })
     })
 };

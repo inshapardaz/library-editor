@@ -43,7 +43,7 @@ const SeriesList = ({
     });
 
     let seriesSortOptions = [{
-        label: t('series.title'),
+        label: t('series.name.label'),
         value: 'title',
         icon: <IconTitle />
     }, {

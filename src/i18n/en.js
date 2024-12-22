@@ -599,8 +599,6 @@ const en = {
     },
     series: {
         label: "Series",
-        title: "Title",
-        description: "Collection of series of books",
         empty: "No series",
         noDescription: "No details...",
         noOfBooks: "No. of books",
@@ -612,6 +610,14 @@ const en = {
                 title: "Error loading series",
                 detail: "Unexpected error occured loading series. Please retry again."
             }
+        },
+        name: {
+            label: "Name",
+            placeholder: "Name of the series",
+            required: "Name is required for series",
+        },
+        description: {
+            label: "Description",
         },
         actions: {
             add: {
@@ -625,6 +631,10 @@ const en = {
                 title: "Editing '{{name}}'",
                 success: "Series saved successfully.",
                 error: "Error saving series.",
+            },
+            save: {
+                success: "Series saved successfully.",
+                error: "Unable to save series.",
             },
             delete: {
                 title: "Delete Series?",

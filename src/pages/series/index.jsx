@@ -1,12 +1,15 @@
 import { useTranslation } from "react-i18next";
-import { useParams, useSearchParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
+
+// UI Library Imports
+import { Button, Card } from "@mantine/core";
 
 // Local Import
 import { SortDirection } from "@/models";
 import SeriesList from "@/components/series/seriesList";
 import PageHeader from "@/components/pageHeader";
 import IconNames from '@/components/iconNames';
-import { Card } from "@mantine/core";
+import { IconAdd } from '@/components/icon';
 
 // -----------------------------------------
 const SeriesListPage = () => {
@@ -25,6 +28,8 @@ const SeriesListPage = () => {
             defaultIcon={IconNames.Series}
             breadcrumbs={[
                 { title: t('header.home'), href: `/libraries/${libraryId}`, icon: IconNames.Home }
+            ]} actions={[
+                (<Button key="book-edit" component={Link} to={`/libraries/${libraryId}/series/add`} variant='default' leftSection={<IconAdd />} >{t('series.actions.add.label')}</Button>)
             ]} />
         <Card withBorder mx="md">
             <SeriesList

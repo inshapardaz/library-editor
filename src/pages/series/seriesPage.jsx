@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // UI library imports
 import {
+    Button,
     Card,
     Container,
     useMantineTheme
@@ -12,7 +13,7 @@ import {
 // Local imports
 import { SortDirection } from "@/models";
 import { useGetSeriesByIdQuery } from '@/store/slices/series.api';
-import { IconBooks } from '@/components/icon';
+import { IconBooks, IconEdit } from '@/components/icon';
 import IconNames from '@/components/iconNames';
 import BooksList from "@/components/books/booksList";
 import IconText from "@/components/iconText";
@@ -62,6 +63,9 @@ const SeriesPage = () => {
             breadcrumbs={[
                 { title: t('header.home'), href: `/libraries/${libraryId}`, icon: IconNames.Home },
                 { title: t('header.series'), href: `/libraries/${libraryId}/series`, icon: IconNames.Series },
+            ]}
+            actions={[
+                (<Button key="series-edit" component={Link} to={`/libraries/${libraryId}/series/${series.id}/edit`} variant='default' leftSection={<IconEdit />} >{t('actions.edit')}</Button>)
             ]} />
 
         <Card withBorder>

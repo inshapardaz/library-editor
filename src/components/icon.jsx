@@ -91,6 +91,7 @@ const iconTheme = {
         deleteBook: "trash",
         tick: "check",
         edit: "edit",
+        delete: "trash",
     }
 };
 //-------------------------------------
@@ -186,6 +187,7 @@ export const IconDeleteBook = (props) => getIcon(IconNames.DeleteBook, props)
 export const IconAdd = (props) => getIcon(IconNames.Add, props)
 export const IconTick = (props) => getIcon(IconNames.Tick, props)
 export const IconEdit = (props) => getIcon(IconNames.Edit, props)
+export const IconDelete = (props) => getIcon(IconNames.Delete, props)
 
 export const Icon = ({ name, ...rest }) => <IconifyIcon icon={getIconName(name)} {...rest} />
 

@@ -16,6 +16,7 @@ import AuthorPage from "./authors/authorPage";
 import EditAuthorPage from "./authors/edit";
 import SeriesListPage from "./series";
 import SeriesPage from "./series/seriesPage";
+import EditSeriesPage from "./series/edit";
 import WritingsPage from "./writings";
 import WritingPage from "./writings/writing";
 import PoetriesPage from "./poetry";
@@ -42,6 +43,7 @@ const Pages = {
     EditAuthorPage,
     SeriesPage,
     SeriesListPage,
+    EditSeriesPage,
     WritingsPage,
     WritingPage,
     PoetriesPage,

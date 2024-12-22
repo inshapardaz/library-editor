@@ -630,13 +630,20 @@ const ur = {
     series: {
         label: "سلسلہ جات",
         title: "عنوان",
-        description: "کتابوں کے سلسلے",
         empty: "سلسلہ جات دستیاب نہیں۔",
         noOfBooks: "کتب کی تعداد",
         noDescription: "تفصیل دستیاب نہیں۔۔۔",
         bookCount_zero: "کوئی کتاب موجود نہیں",
         bookCount_one: "1 کتاب",
         bookCount_other: "{{count}} کتب",
+        name: {
+            label: "نام",
+            placeholder: "سلسلے کا نام",
+            required: "سلسلے کے لیے نام ضروری ہے",
+        },
+        description: {
+            label: "تفصیل",
+        },
         error: {
             loading: {
                 title: "سلسلہ حاصل نہیں ہو سکیں",
@@ -655,6 +662,10 @@ const ur = {
                 title: "'{{name}}' کی تدوین",
                 success: "سلسلے میں تبدیلیاں محفوظ ہو گئی ہیں۔",
                 error: "سلسلے میں تبدیلیاں محفوظ نہیں کی جا سکیں۔",
+            },
+            save: {
+                success: "سلسلے میں تبدیلیاں محفوظ ہو گئی ہیں۔",
+                error: "سلسلے میں تبدیلیاں محفوظ نہیں ہوئں۔",
             },
             delete: {
                 title: "سلسلہ حذف کریں؟",

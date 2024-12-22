@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Divider, Group, Image, Stack, Text, Tooltip, useMantineTheme } from '@mantine/core';
 
 // Local Imports
-import { IconSeries, IconBooks } from '@/components/icon';
+import { IconSeries, IconBooks, IconEdit, IconDelete } from '@/components/icon';
 import If from '@/components/if';
 import IconText from '@/components/iconText';
 //-------------------------------------
@@ -37,7 +37,26 @@ const SeriesListItem = ({ libraryId, series }) => {
                         </Text>
                     </Tooltip>
                 </If>
-                <IconText icon={<IconBooks height={16} style={{ color: theme.colors.dark[2] }} />} text={t('author.bookCount', { count: series?.bookCount })} />
+                <Group>
+
+                    <IconText icon={<IconBooks height={16} style={{ color: theme.colors.dark[2] }} />} text={t('author.bookCount', { count: series?.bookCount })} />
+                    <If condition={series.links.update} >
+                        <Divider orientation='vertical' />
+                        <IconText
+                            icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />}
+                            tooltip={t('actions.edit')}
+                            link={`/libraries/${libraryId}/series/${series.id}/edit`}
+                        />
+                    </If>
+                    <If condition={series.links.delete} >
+                        <Divider orientation='vertical' />
+                        <IconText
+                            icon={<IconDelete height={16} style={{ color: theme.colors.dark[2] }} />}
+                            tooltip={t('actions.delete')}
+                            link={`/libraries/${libraryId}/series/${series.id}/edit`}
+                        />
+                    </If>
+                </Group>
             </Stack>
         </Group>
         <Divider />
@@ -52,7 +71,9 @@ SeriesListItem.propTypes = {
         description: PropTypes.string,
         bookCount: PropTypes.number,
         links: PropTypes.shape({
-            image: PropTypes.string
+            image: PropTypes.string,
+            update: PropTypes.string,
+            delete: PropTypes.string
         })
     })
 }
