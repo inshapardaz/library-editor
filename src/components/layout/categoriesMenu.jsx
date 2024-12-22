@@ -17,7 +17,6 @@ import {
     NavLink,
     Badge,
     Space,
-    rem,
     Stack,
 } from '@mantine/core';
 
@@ -74,7 +73,7 @@ const CategoriesMenu = ({ library, title, icon, className, target, allLabel, ext
 
     return (
         <>
-            <HoverCard width={600} position="bottom" radius="md" shadow="md" disabled={isFetching} withinPortal visibleFrom="sm" className={className}>
+            <HoverCard openDelay={200} closeDelay={400} width={600} position="bottom" radius="md" shadow="md" disabled={isFetching} withinPortal visibleFrom="sm" className={className}>
                 <HoverCard.Target>
                     <UnstyledButton className={classes.link}>
                         {icon}
@@ -82,10 +81,7 @@ const CategoriesMenu = ({ library, title, icon, className, target, allLabel, ext
                         <Text visibleFrom="lg" size="sm">
                             {title}
                         </Text>
-                        <IconChevronDown
-                            width={rem(16)}
-                            height={rem(16)}
-                        />
+                        <IconChevronDown />
                     </UnstyledButton >
                 </HoverCard.Target>
 

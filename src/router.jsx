@@ -15,6 +15,8 @@ const Router = () => {
                 <Route element={<LayoutWithHeaderAndFooter />}>
                     <Route element={<SecurePage />}>
                         <Route path="/" element={<Pages.HomePage />} />
+                        <Route path="/libraries/:libraryId/authors/add" element={<Pages.EditAuthorPage />} />
+                        <Route path="/libraries/:libraryId/authors/:authorId/edit" element={<Pages.EditAuthorPage />} />
                         <Route path="/libraries/:libraryId/authors/:authorId" element={<Pages.AuthorPage />} />
                         <Route path="/libraries/:libraryId/authors" element={<Pages.AuthorsPage />} />
                         <Route path="/libraries/:libraryId/series/:seriesId" element={<Pages.SeriesPage />} />

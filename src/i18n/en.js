@@ -460,8 +460,21 @@ const en = {
         },
     },
     author: {
-        name: "Name",
-        type: "Author Type",
+        name: {
+            label: "Name",
+            placeholder: "Name of the author",
+            required: "Name is required for author",
+        },
+        description: {
+            label: "Description",
+        },
+        type: {
+            label: "Type",
+            placeholder: "Type of the author",
+            required: "Type is required for author",
+            writer: "Writer",
+            poet: "Poet",
+        },
         bookCount_zero: "No books",
         bookCount_one: "1 book",
         bookCount_other: "{{count}} books",

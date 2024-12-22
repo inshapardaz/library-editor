@@ -561,8 +561,21 @@ const ur = {
         }
     },
     author: {
-        name: "نام",
-        type: "قسم",
+        name: {
+            label: "نام",
+            placeholder: "مصنّف کا نام",
+            required: "مصنف کے لیے نام ضروری ہے",
+        },
+        description: {
+            label: "تفصیل",
+        },
+        type: {
+            label: "قسم",
+            placeholder: "مصنف کی قسم",
+            required: "مصنّف کی قسم ضروری ہے",
+            writer: "لکھاری",
+            poet: "شاعر",
+        },
         bookCount_zero: "کوئی کتاب موجود نہیں",
         bookCount_one: "1 کتاب",
         bookCount_other: "{{count}} کتب",

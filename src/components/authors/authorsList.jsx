@@ -46,11 +46,11 @@ const AuthorsList = ({
     });
 
     const authorSortOptions = [{
-        label: t('author.name'),
+        label: t('author.name.label'),
         value: 'name',
         icon: <IconName />
     }, {
-        label: t('author.type'),
+        label: t('author.type.label'),
         value: 'type',
         icon: <IconType />
     }]

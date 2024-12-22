@@ -46,6 +46,7 @@ const PageLoading = () => {
 
 const BookForm = ({ libraryId, book = null, onSubmit }) => {
     const { t } = useTranslation();
+    const [loaded, setLoaded] = useState(false);
     const form = useForm({
         mode: 'uncontrolled',
         initialValues: {
@@ -73,10 +74,11 @@ const BookForm = ({ libraryId, book = null, onSubmit }) => {
     });
 
     useEffect(() => {
-        if (book != null) {
+        if (!loaded && book != null) {
             form.initialize(book);
+            setLoaded(true);
         }
-    }, [book, form]);
+    }, [book, form, loaded]);
 
     return (
         <form onSubmit={form.onSubmit((values) => onSubmit(values))}>

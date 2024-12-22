@@ -85,7 +85,7 @@ const IconNames = {
     Add: "add",
     EditBook: "editBook",
     DeleteBook: "deleteBook",
-    Tick: "tick"
+    Tick: "tick",
 };
 
 export default IconNames;

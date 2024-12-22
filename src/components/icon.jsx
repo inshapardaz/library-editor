@@ -89,7 +89,8 @@ const iconTheme = {
         add: "circle-plus",
         editBook: "edit",
         deleteBook: "trash",
-        tick: "check"
+        tick: "check",
+        edit: "edit",
     }
 };
 //-------------------------------------
@@ -184,6 +185,7 @@ export const IconEditBook = (props) => getIcon(IconNames.EditBook, props)
 export const IconDeleteBook = (props) => getIcon(IconNames.DeleteBook, props)
 export const IconAdd = (props) => getIcon(IconNames.Add, props)
 export const IconTick = (props) => getIcon(IconNames.Tick, props)
+export const IconEdit = (props) => getIcon(IconNames.Edit, props)
 
 export const Icon = ({ name, ...rest }) => <IconifyIcon icon={getIconName(name)} {...rest} />
 

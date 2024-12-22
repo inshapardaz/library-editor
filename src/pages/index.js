@@ -13,6 +13,7 @@ import BookReaderPage from "./books/reader";
 import EBookReaderPage from "./books/ebookReader";
 import AuthorsPage from "./authors";
 import AuthorPage from "./authors/authorPage";
+import EditAuthorPage from "./authors/edit";
 import SeriesListPage from "./series";
 import SeriesPage from "./series/seriesPage";
 import WritingsPage from "./writings";
@@ -38,6 +39,7 @@ const Pages = {
     EBookReaderPage,
     AuthorsPage,
     AuthorPage,
+    EditAuthorPage,
     SeriesPage,
     SeriesListPage,
     WritingsPage,

@@ -1,12 +1,13 @@
 import { useTranslation } from "react-i18next";
-import { useParams, useSearchParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 
 // Local Import
 import { SortDirection } from "@/models";
 import AuthorsList from "@/components/authors/authorsList";
 import PageHeader from "@/components/pageHeader";
-import IconNames from '@/components/iconNames'
-import { Card } from "@mantine/core";
+import { IconAdd } from '@/components/icon';
+import IconNames from '@/components/iconNames';
+import { Button, Card } from "@mantine/core";
 
 // -----------------------------------------
 const AuthorsPage = () => {
@@ -26,6 +27,9 @@ const AuthorsPage = () => {
             defaultIcon={IconNames.Authors}
             breadcrumbs={[
                 { title: t('header.home'), href: `/libraries/${libraryId}`, icon: IconNames.Home }
+            ]}
+            actions={[
+                (<Button key="book-edit" component={Link} to={`/libraries/${libraryId}/authors/add`} variant='default' leftSection={<IconAdd />} >{t('author.actions.add.label')}</Button>)
             ]} />
         <Card withBorder mx="md">
             <AuthorsList

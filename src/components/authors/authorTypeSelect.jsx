@@ -4,14 +4,16 @@ import PropTypes from 'prop-types';
 import { Combobox, Group, Input, InputBase, useCombobox } from '@mantine/core';
 
 // Local Imports
-import { languages } from '@/store/slices/uiSlice';
+import { AuthorTypes } from '@/models';
 import { IconTick } from '@/components/icon';
 // -------------------------------------------------
 
-const languageOptions = Object.values(languages)
-    .map(l => ({ value: l.key, label: l.name }));
+const AuthorTypeSelect = ({ t, defaultValue, placeholder, onChange, ...props }) => {
 
-const LanguageSelect = ({ defaultValue, placeholder, onChange, ...props }) => {
+    const authorTypeOptions = [
+        { value: AuthorTypes.Writer, label: t('author.type.writer') },
+        { value: AuthorTypes.Poet, label: t('author.type.poet') }
+    ];
 
     const combobox = useCombobox({
         onDropdownClose: () => combobox.resetSelectedOption(),
@@ -24,7 +26,7 @@ const LanguageSelect = ({ defaultValue, placeholder, onChange, ...props }) => {
         },
     });
 
-    const options = languageOptions.map((item) => (
+    const options = authorTypeOptions.map((item) => (
         <Combobox.Option value={item.value} key={item.value} active={item.value === defaultValue}>
             <Group gap="xs">
                 {item.value === defaultValue && <IconTick size={12} />}
@@ -52,7 +54,7 @@ const LanguageSelect = ({ defaultValue, placeholder, onChange, ...props }) => {
                     rightSectionPointerEvents="none"
                     onClick={() => combobox.toggleDropdown()}
                 >
-                    {defaultValue && languageOptions.find(x => x.value == defaultValue)?.label || <Input.Placeholder>{placeholder}</Input.Placeholder>}
+                    {defaultValue && authorTypeOptions.find(x => x.value == defaultValue)?.label || <Input.Placeholder>{placeholder}</Input.Placeholder>}
                 </InputBase>
             </Combobox.Target>
 
@@ -63,11 +65,12 @@ const LanguageSelect = ({ defaultValue, placeholder, onChange, ...props }) => {
     );
 };
 
-LanguageSelect.propTypes = {
+AuthorTypeSelect.propTypes = {
+    t: PropTypes.any,
     defaultValue: PropTypes.string,
     placeholder: PropTypes.string,
     onChange: PropTypes.func
 };
 
 
-export default LanguageSelect;
+export default AuthorTypeSelect;

@@ -1,9 +1,10 @@
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // UI library imports
 import {
     Box,
+    Button,
     Card,
     Container,
     Grid,
@@ -17,7 +18,7 @@ import {
 // Local imports
 import { SortDirection } from "@/models";
 import { useGetAuthorQuery } from '@/store/slices/authors.api';
-import { IconBooks, IconWritings, IconPoetries } from '@/components/icon';
+import { IconBooks, IconWritings, IconPoetries, IconEdit } from '@/components/icon';
 import IconNames from '@/components/iconNames'
 import { updateLinkToAuthorPage } from '@/utils';
 import BooksList from "@/components/books/booksList";
@@ -98,7 +99,10 @@ const AuthorPage = () => {
                 { title: t('header.home'), href: `/libraries/${libraryId}`, icon: IconNames.Home },
                 { title: t('header.authors'), href: `/libraries/${libraryId}/authors`, icon: IconNames.Author },
             ]}
-            details={author.description} />
+            details={author.description}
+            actions={[
+                (<Button key="book-edit" component={Link} to={`/libraries/${libraryId}/authors/${author.id}/edit`} variant='default' leftSection={<IconEdit />} >{t('actions.edit')}</Button>)
+            ]} />
 
         <Card withBorder>
             <Tabs keepMounted={false} value={selectedTab} onChange={onTabChanged}>

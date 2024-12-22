@@ -60,10 +60,7 @@ const AppHeader = () => {
               <Text visibleFrom="lg">
                 {t('header.libraries')}
               </Text>
-              <IconChevronDown
-                width={rem(16)}
-                height={rem(16)}
-              />
+              <IconChevronDown />
             </LibrarySwitcher>
             <Link to="https://editor.nawishta.co.uk" className={classes.link}>
               <IconLibraryEditor height="24px" />
