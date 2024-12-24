@@ -8,7 +8,6 @@ import { Carousel } from '@mantine/carousel';
 
 // Local Imports
 import { isLoggedIn } from "@/store/slices/authSlice";
-// Local imports
 import { useGetBooksQuery } from '@/store/slices/books.api';
 import BookCard from './bookCard';
 import { IconRefreshAlert } from '@/components/icon';

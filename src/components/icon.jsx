@@ -92,6 +92,7 @@ const iconTheme = {
         tick: "check",
         edit: "edit",
         delete: "trash",
+        gripVertical: "grip-vertical"
     }
 };
 //-------------------------------------
@@ -188,6 +189,7 @@ export const IconAdd = (props) => getIcon(IconNames.Add, props)
 export const IconTick = (props) => getIcon(IconNames.Tick, props)
 export const IconEdit = (props) => getIcon(IconNames.Edit, props)
 export const IconDelete = (props) => getIcon(IconNames.Delete, props)
+export const IconGripVertical = (props) => getIcon(IconNames.GripVertical, props)
 
 export const Icon = ({ name, ...rest }) => <IconifyIcon icon={getIconName(name)} {...rest} />
 

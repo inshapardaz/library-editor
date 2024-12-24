@@ -948,6 +948,9 @@ const en = {
                 success: "Article deleted successfully.",
                 error: "Error deleting article.",
             },
+            read: {
+                title: "Read article",
+            },
             updateStatus: {
                 title: "Article Status",
                 success: "Article status updated successfully.",

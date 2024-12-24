@@ -87,6 +87,7 @@ const IconNames = {
     DeleteBook: "deleteBook",
     Tick: "tick",
     Delete: "delete",
+    GripVertical: "gripVertical",
 };
 
 export default IconNames;
