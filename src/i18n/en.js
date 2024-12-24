@@ -459,6 +459,92 @@ const en = {
             All: "All",
         },
     },
+    chapters: {
+        title: "Chapters",
+        errors: {
+            loading: {
+                title: "Error",
+                subTitle: "Unable to load chapters.",
+            },
+        },
+        empty: {
+            title: "No chapter found",
+        },
+    },
+    chapter: {
+        title: {
+            label: "Title",
+            placeholder: "Title of chapter",
+            required: "Chapter title is required",
+        },
+        status: {
+            label: "Status",
+            placeholder: "Select Chapter Status",
+            required: "Chapter status is required",
+            unsavedChanges: "Unsaved Changes",
+        },
+        user: {
+            label: "User",
+            placeholder: "Select user",
+            required: "User is required",
+        },
+        actions: {
+            add: {
+                label: "Add new chapter",
+                title: "New Chapter",
+                success: "Chapter created successfully.",
+                error: "Error creating chapter",
+            },
+            edit: {
+                title: "Editing '{{title}}'",
+                success: "Chapter saved successfully.",
+                error: "Error saving chapter.",
+            },
+            delete: {
+                title: "Delete Chapter?",
+                title_other: "Delete {{count}} chapters",
+                message: "Are you sure you want to delete chapters?",
+                success: "Chapter deleted successfully.",
+                success_other: "{{count}} Chapters deleted successfully.",
+                error: "Error deleting chapter.",
+                error_other: "Error deleting {{ count }}} chapters.",
+            },
+            updateStatus: {
+                title: "Updating Status",
+                success: "Chapter status updated successfully.",
+                error: "Error saving chapter statuses.",
+            },
+            assign: {
+                label: "Assign Chapter",
+                title_one: "Assign Chapter {{count}}",
+                title_other: "Assign Chapters {{count}}",
+                message: "Assigning Chapter(s) '{{ chapterNumber }}'?",
+                success_one: "Chapter assigned successfully.",
+                success_other: "{{count}} chapters assigned successfully.",
+                error_one: "Error assigning chapter.",
+                error_other: "Error assigning {{count}} chapters.",
+            },
+            reorder: {
+                success: "Chapter ordered successfully.",
+                error: "Error ordering chapter.",
+            },
+            read: {
+                title: "Read",
+            },
+        },
+        errors: {
+            loading: {
+                title: "Error",
+                subTitle: "Unable to load books.",
+            },
+        },
+        editor: {
+            title: "Edit chapter contents",
+            newContents: "New chapter contents being created.",
+            unsavedContents:
+                "Unsaved changed found for this chapter. Would you like to continue editing it?",
+        },
+    },
     author: {
         name: {
             label: "Name",
