@@ -35,6 +35,7 @@ const PublishStatusSelect = ({ t, defaultValue, onChange, ...props }) => {
     );
 
     return (<Select {...props}
+        allowDeselect={false}
         defaultValue={defaultValue}
         data={statuses}
         onChange={val => onChange && onChange(val)}

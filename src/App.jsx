@@ -7,13 +7,14 @@ import { useTranslation } from 'react-i18next';
 import { DirectionProvider, Loader, MantineProvider } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
-
+import { DatesProvider } from '@mantine/dates';
 // Local imports
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import '@mantine/spotlight/styles.css';
 import '@mantine/carousel/styles.css';
 import '@mantine/dropzone/styles.css';
+import '@mantine/dates/styles.css';
 
 import Router from "./router";
 import { selectedLanguage } from "@/store/slices/uiSlice";
@@ -31,18 +32,21 @@ function App() {
       dispatch(init());
   }, [dispatch, userLoadStatus]);
 
+  const currentLocal = lang ? lang.locale : 'en';
   return (
     <>
       <HelmetProvider>
-        <Helmet htmlAttributes={{ lang: lang ? lang.locale : 'en' }}>
+        <Helmet htmlAttributes={{ lang: currentLocal }}>
           <title>{t('app')}</title>
         </Helmet>
         <DirectionProvider >
           <MantineProvider>
-            <Notifications limit={5} position="bottom-right" />
-            <ModalsProvider labels={{ confirm: t('actions.yes'), cancel: t('actions.no') }}>
-              {userLoadStatus === 'loading' ? <Loader /> : <Router />}
-            </ModalsProvider>
+            <DatesProvider settings={{ locale: currentLocal }}>
+              <Notifications limit={5} position="bottom-right" />
+              <ModalsProvider labels={{ confirm: t('actions.yes'), cancel: t('actions.no') }}>
+                {userLoadStatus === 'loading' ? <Loader /> : <Router />}
+              </ModalsProvider>
+            </DatesProvider>
           </MantineProvider>
         </DirectionProvider>
       </HelmetProvider>

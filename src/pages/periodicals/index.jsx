@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
-import { useParams, useSearchParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 
 // UI Library Import
-import { Card, Grid, rem } from "@mantine/core";
+import { Button, Card, Grid, rem } from "@mantine/core";
 
 // Local Import
 import { SortDirection } from "@/models";
@@ -10,6 +10,7 @@ import PeriodicalsSideBar from "@/components/periodicals/periodicalsSideBar";
 import PeriodicalsList from "@/components/periodicals/periodicalsList";
 import PageHeader from "@/components/pageHeader";
 import IconNames from '@/components/iconNames'
+import { IconAdd } from '@/components/icon'
 // -----------------------------------------
 const PeriodicalsPage = () => {
     const { t } = useTranslation();
@@ -30,6 +31,8 @@ const PeriodicalsPage = () => {
             defaultIcon={IconNames.Periodicals}
             breadcrumbs={[
                 { title: t('header.home'), href: `/libraries/${libraryId}`, icon: IconNames.Home }
+            ]} actions={[
+                (<Button key="periodical-edit" component={Link} to={`/libraries/${libraryId}/periodicals/add`} variant='default' leftSection={<IconAdd />} >{t('periodical.actions.add.label')}</Button>)
             ]} />
         <Grid type="container" breakpoints={{ xs: '100px', sm: '200px', md: '300px', lg: '400px', xl: '500px' }} mx="md">
             <Grid.Col span={{ md: 12, lg: 3, xl: 2 }} style={{ minWidth: rem(200) }}>

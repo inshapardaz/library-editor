@@ -27,7 +27,6 @@ const Profile = () => {
             </Text>
         ),
         labels: { confirm: t('actions.yes'), cancel: t('actions.no') },
-        onCancel: () => console.log('Cancel'),
         onConfirm: () => {
             window.location.href = `${MAIN_SITE}/account/logout?returnUrl=${window.location.href}`
         },

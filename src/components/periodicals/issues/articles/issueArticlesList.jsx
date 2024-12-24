@@ -3,11 +3,15 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 
 // Ui Library Imports
-import { Avatar, Center, List, rem, Skeleton, Space, Stack, Text, Title } from '@mantine/core';
+import { Avatar, Center, Divider, Group, rem, Skeleton, Space, Stack, Text, Title, useMantineTheme } from '@mantine/core';
 
 // Local imports
-import { useGetIssueArticlesQuery } from '@/store/slices/issues.api';
+import { useGetIssueArticlesQuery } from '@/store/slices/issueArticles.api';
+import { IconEdit, IconDelete } from '@/components/icon';
+import AuthorsAvatar from '@/components/authors/authorsAvatar';
+import IconText from '@/components/iconText';
 import Error from '@/components/error';
+import If from '@/components/if';
 //------------------------------
 
 const PRIMARY_COL_HEIGHT = rem(300);
@@ -20,6 +24,7 @@ const IssueArticlesList = ({
     issueNumber = null
 }) => {
     const { t } = useTranslation();
+    const theme = useMantineTheme();
 
     const {
         refetch,
@@ -37,30 +42,54 @@ const IssueArticlesList = ({
         return (<Skeleton height={PRIMARY_COL_HEIGHT} radius="md" />);
     }
     if (isError) {
-        return (<Error title={t('book.error.loading.title')}
-            detail={t('book.error.loading.detail')}
+        return (<Error title={t('issues.error.loading.title')}
+            detail={t('issues.error.loading.detail')}
             onRetry={refetch} />)
     }
 
 
     if (!articles || !articles.data || articles.data.length < 1) {
-        return (<Center h={100}><Text>{t('book.chapterCount', { count: 0 })}</Text></Center>);
+        return (<Center h={100}><Text>{t('issue.articleCount', { count: 0 })}</Text></Center>);
     }
 
     return (<Stack>
-        <Title order={3}>{t('book.chapters')}</Title>
+        <Title order={3}>{t('issue.articles.title')}</Title>
         <Space h="md" />
-        <List size="lg" spacing="md"> {articles.data.map((article =>
-            <List.Item key={article.id}
-                icon={
-                    <Avatar color="cyan" radius="xl">{article.sequenceNumber}</Avatar>
-                }>
-                <Text component={Link} to={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/articles/${article.sequenceNumber}`}>
-                    {article.title}
-                </Text>
-            </List.Item>
+
+        <Stack
+            align="stretch"
+            justify="center"
+            gap="md"
+        >    {articles.data.map((article =>
+            <Stack key={article.id}>
+                <Group mt="md" >
+                    <Avatar >{article.sequenceNumber}</Avatar>
+                    <Text component={Link} to={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/articles/${article.sequenceNumber}`}>
+                        {article.title}
+                    </Text>
+                    <AuthorsAvatar libraryId={libraryId} authors={article?.authors} />
+                    <span style={{ flex: 1 }}></span>
+                    <If condition={article.links.update} >
+                        <Divider />
+                        <IconText
+                            icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />}
+                            tooltip={t('actions.edit')}
+                            link={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/articles/${article.sequenceNumber}/edit`}
+                        />
+                    </If>
+                    <If condition={article.links.delete} >
+                        <Divider orientation='vertical' />
+                        <IconText
+                            icon={<IconDelete height={16} style={{ color: theme.colors.dark[2] }} />}
+                            tooltip={t('actions.delete')}
+                            link={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/articles/${article.sequenceNumber}/edit`}
+                        />
+                    </If>
+                </Group>
+                <Divider />
+            </Stack>
         ))}
-        </List>
+        </Stack>
     </Stack>);
 }
 

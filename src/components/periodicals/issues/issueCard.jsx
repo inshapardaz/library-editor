@@ -9,7 +9,7 @@ import moment from "moment";
 
 // Local imports
 import { getDateFormatFromFrequency } from '@/utils';
-import { IconIssue, IconPages, IconIssueArticle } from '@/components/icon';
+import { IconIssue, IconPages, IconEdit, IconDelete } from '@/components/icon';
 import IconText from '@/components/iconText';
 import If from '@/components/if';
 //---------------------------------------
@@ -47,9 +47,21 @@ const IssueCard = ({ libraryId, issue, frequency }) => {
                 <If condition={issue.pageCount != null}>
                     <IconText icon={<IconPages style={{ color: theme.colors.dark[2] }} />} text={issue.pageCount} />
                 </If>
-                <If condition={issue.articleCount != null}>
-                    <Divider orientation="vertical" />
-                    <IconText icon={<IconIssueArticle style={{ color: theme.colors.dark[2] }} />} text={issue.articleCount} />
+                <If condition={issue.links.update} >
+                    <Divider orientation='vertical' />
+                    <IconText
+                        icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />}
+                        tooltip={t('actions.delete')}
+                        link={`/libraries/${libraryId}/periodicals/${issue.periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}/edit`}
+                    />
+                </If>
+                <If condition={issue.links.delete} >
+                    <Divider orientation='vertical' />
+                    <IconText
+                        icon={<IconDelete height={16} style={{ color: theme.colors.dark[2] }} />}
+                        tooltip={t('actions.delete')}
+                        link={`/libraries/${libraryId}/periodicals/${issue.periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}/edit`}
+                    />
                 </If>
             </Group>
         </Card>
@@ -69,7 +81,9 @@ IssueCard.propTypes = {
         pageCount: PropTypes.number,
         articleCount: PropTypes.number,
         links: PropTypes.shape({
-            image: PropTypes.string
+            image: PropTypes.string,
+            update: PropTypes.string,
+            delete: PropTypes.string,
         })
     })
 };

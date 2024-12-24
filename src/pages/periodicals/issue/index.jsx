@@ -1,14 +1,14 @@
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 // UI Library Import
-import { Card, Center, Divider, Group, rem, Skeleton, Text, useMantineTheme } from "@mantine/core";
+import { Button, Card, Center, Divider, Group, rem, Skeleton, Text, useMantineTheme } from "@mantine/core";
 import moment from "moment";
 
 // Local Import
 import { useGetPeriodicalByIdQuery } from '@/store/slices/periodicals.api';
 import { useGetIssueQuery } from "@/store/slices/issues.api";
-import { IconVolumeNumber, IconIssueNumber, IconPages, IconIssueArticle } from '@/components/icon';
+import { IconVolumeNumber, IconIssueNumber, IconPages, IconIssueArticle, IconAdd } from '@/components/icon';
 import IconNames from '@/components/iconNames';
 import { getDateFormatFromFrequency } from '@/utils';
 import IssueArticlesList from "@/components/periodicals//issues/articles/issueArticlesList";
@@ -25,7 +25,9 @@ const IssuePage = () => {
     const { libraryId, periodicalId, volumeNumber, issueNumber } = useParams();
 
     const {
-        data: periodical
+        data: periodical,
+        isError: errorPeriodical,
+        isFetching: isFetchingPeriodical,
     } = useGetPeriodicalByIdQuery({
         libraryId,
         periodicalId
@@ -34,8 +36,8 @@ const IssuePage = () => {
     const {
         refetch,
         data: issue,
-        isError,
-        isFetching,
+        isError: errorIssue,
+        isFetching: isFetchingIssue,
     } = useGetIssueQuery({
         libraryId,
         periodicalId,
@@ -43,12 +45,12 @@ const IssuePage = () => {
         issueNumber,
     });
 
-    if (isFetching) {
+    if (isFetchingPeriodical || isFetchingIssue) {
         return (<Skeleton height={PRIMARY_COL_HEIGHT} radius="md" />);
     }
-    if (isError) {
-        return (<Error title={t('book.error.loading.title')}
-            detail={t('book.error.loading.detail')}
+    if (errorPeriodical || errorIssue) {
+        return (<Error title={t('issue.error.loading.title')} //Add these translations
+            detail={t('issue.error.loading.detail')}
             onRetry={refetch} />)
     }
     if (!issue) {
@@ -83,6 +85,9 @@ const IssuePage = () => {
                 { title: t('header.home'), href: `/libraries/${libraryId}`, icon: IconNames.Home },
                 { title: t('header.periodicals'), href: `/libraries/${libraryId}/periodicals`, icon: IconNames.Periodical },
                 { title: periodical?.title, href: `/libraries/${libraryId}/periodicals/${periodicalId}`, icon: IconNames.Periodical },
+            ]} actions={[
+                (<Button key="issue-edit" component={Link} to={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}/edit`} variant='default' leftSection={<IconAdd />} >{t('actions.edit')}</Button>),
+                (<Button key="issue-add-article" component={Link} to={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}/articles/add`} variant='default' leftSection={<IconAdd />} >{t('issueArticle.actions.add.label')}</Button>)
             ]} />
         <Card withBorder m="sm">
             <IssueArticlesList

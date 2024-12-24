@@ -60,7 +60,7 @@ const AuthorCard = ({ libraryId, author }) => {
                     <IconText
                         icon={<IconDelete height={16} style={{ color: theme.colors.dark[2] }} />}
                         tooltip={t('actions.delete')}
-                        link={`/libraries/${libraryId}/series/${author.id}/edit`}
+                        link={`/libraries/${libraryId}/authors/${author.id}/edit`}
                     />
                 </If>
             </Group>

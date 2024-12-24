@@ -23,8 +23,11 @@ import PoetriesPage from "./poetry";
 import PoetryPage from "./poetry/poetryPage";
 import PeriodicalsPage from "./periodicals";
 import PeriodicalPage from "./periodicals/periodical";
+import EditPeriodicalPage from "./periodicals/edit";
 import IssuePage from "./periodicals/issue";
 import IssueArticlePage from "./periodicals/issue/article";
+import EditIssuePage from "./periodicals/issue/edit";
+import EditIssueArticlePage from "./periodicals/issue/article/edit";
 
 const Pages = {
     HomePage,
@@ -50,8 +53,11 @@ const Pages = {
     PoetryPage,
     PeriodicalsPage,
     PeriodicalPage,
+    EditPeriodicalPage,
     IssuePage,
-    IssueArticlePage
+    EditIssuePage,
+    IssueArticlePage,
+    EditIssueArticlePage
 };
 
 export default Pages;

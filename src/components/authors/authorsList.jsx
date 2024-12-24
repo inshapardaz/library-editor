@@ -57,15 +57,11 @@ const AuthorsList = ({
 
     const onAuthorTypeChanged = (value) => {
         if (value) {
-            console.log(`On Author type change '${value}'`)
             navigate(updateLinkToAuthorsPage(location, {
                 pageNumber: 1,
                 authorType: value,
             }))
         } else {
-            console.log(`On Author type change to ${updateLinkToAuthorsPage(location, {
-                pageNumber: 1
-            })}'`)
             navigate(updateLinkToAuthorsPage(location, {
                 pageNumber: 1,
                 authorType: null

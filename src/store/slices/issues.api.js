@@ -2,7 +2,8 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 
 import axiosBaseQuery from "@/utils/axiosBaseQuery";
 
-import { parseResponse } from "@/utils/parseResponse";
+import { processMultipleRequests } from "@/utils";
+import { parseResponse, removeLinks } from "@/utils/parseResponse";
 // ----------------------------------------------
 export const issuesApi = createApi({
     reducerPath: "issues",
@@ -76,19 +77,6 @@ export const issuesApi = createApi({
             transformResponse: (response) => parseResponse(response),
             providesTags: ["Issue"],
         }),
-        getIssueArticles: builder.query({
-            query: ({
-                libraryId,
-                periodicalId,
-                volumeNumber,
-                issueNumber,
-            }) => ({
-                url: `/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/articles`,
-                method: "get",
-            }),
-            transformResponse: (response) => parseResponse(response),
-            providesTags: ["IssueArticles"],
-        }),
         getArticle: builder.query({
             query: ({
                 libraryId,
@@ -117,7 +105,102 @@ export const issuesApi = createApi({
             transformResponse: (response) => parseResponse(response),
             providesTags: ["IssueArticlesContent"],
         }),
-
+        addIssue: builder.mutation({
+            query: ({
+                libraryId,
+                periodicalId,
+                volumeNumber,
+                issueNumber,
+                payload,
+            }) => ({
+                url: `/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}`,
+                method: "POST",
+                data: removeLinks(payload),
+            }),
+            transformResponse: (response) => parseResponse(response),
+            invalidatesTags: ["Issues"],
+        }),
+        updateIssue: builder.mutation({
+            query: ({
+                libraryId,
+                periodicalId,
+                volumeNumber,
+                issueNumber,
+                payload,
+            }) => ({
+                url: `/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}`,
+                method: "PUT",
+                data: removeLinks(payload),
+            }),
+            transformResponse: (response) => parseResponse(response),
+            invalidatesTags: ["Issue"],
+        }),
+        updateIssueImage: builder.mutation({
+            query: ({ libraryId, periodicalId, volumeNumber, issueNumber, payload }) => {
+                const formData = new FormData();
+                formData.append("file", payload, payload.fileName);
+                return {
+                    url: `/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/image`,
+                    method: "PUT",
+                    data: formData,
+                    formData: true,
+                    headers: {
+                        "content-type": "multipart/form-data",
+                    },
+                };
+            },
+            invalidatesTags: ["Issue"],
+        }),
+        deleteIssue: builder.mutation({
+            query: ({ issue }) => ({
+                url: issue.links.delete,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Issues"],
+        }),
+        addIssueContent: builder.mutation({
+            query: ({ issue, payload, language }) => {
+                const formData = new FormData();
+                formData.append("file", payload, payload.fileName);
+                return {
+                    url: issue.links.add_content,
+                    method: "POST",
+                    data: formData,
+                    formData: true,
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        "Accept-Language'": language,
+                    },
+                };
+            },
+            transformResponse: (response) => parseResponse(response),
+            invalidatesTags: ["Issue"],
+        }),
+        updateIssueContent: builder.mutation({
+            query: ({ content, payload, language }) => {
+                const formData = new FormData();
+                formData.append("file", payload, payload.fileName);
+                return {
+                    url: content.links.update,
+                    method: "PUT",
+                    data: formData,
+                    formData: true,
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        "Accept-Language'": language,
+                    },
+                };
+            },
+            transformResponse: (response) => parseResponse(response),
+            invalidatesTags: ["Issue"],
+        }),
+        deleteIssueContent: builder.mutation({
+            query: ({ content }) => ({
+                url: content.links.delete,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Issue"],
+        }),
         // Issue Page Api
         getIssuePages: builder.query({
             query: ({
@@ -172,6 +255,176 @@ export const issuesApi = createApi({
             transformResponse: (response) => parseResponse(response),
             providesTags: ["IssuePages"],
         }),
+        addIssuePage: builder.mutation({
+            query: ({
+                libraryId,
+                periodicalId,
+                volumeNumber,
+                issueNumber,
+                payload,
+            }) => ({
+                url: `/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/pages`,
+                method: "POST",
+                data: removeLinks(payload),
+            }),
+            transformResponse: (response) => parseResponse(response),
+            invalidatesTags: ["IssuePages"],
+        }),
+        updateIssuePage: builder.mutation({
+            query: ({ page }) => ({
+                url: page.links.update,
+                method: "PUT",
+                data: removeLinks(page),
+            }),
+            transformResponse: (response) => parseResponse(response),
+            invalidatesTags: ["IssuePages"],
+        }),
+        updateIssuePages: builder.mutation({
+            async queryFn(
+                { requests, payload, onProgress },
+                _queryApi,
+                _extraOptions,
+                baseQuery
+            ) {
+                return processMultipleRequests({
+                    baseQuery,
+                    method: "PUT",
+                    url: (request) => request.data.links.update,
+                    requests,
+                    payload,
+                    onProgress,
+                });
+            },
+            transformResponse: (response) => parseResponse(response),
+            invalidatesTags: (result, error) => (error ? [] : ["IssuePages"]),
+        }),
+        deleteIssuePage: builder.mutation({
+            query: ({ page }) => ({
+                url: page.links.delete,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["IssuePages"],
+        }),
+        deleteIssuePages: builder.mutation({
+            async queryFn(
+                { requests, payload, onProgress },
+                _queryApi,
+                _extraOptions,
+                baseQuery
+            ) {
+                return processMultipleRequests({
+                    baseQuery,
+                    method: "DELETE",
+                    url: (request) => request.data.links.delete,
+                    requests,
+                    payload,
+                    onProgress,
+                });
+            },
+            invalidatesTags: (result, error) => (error ? [] : ["IssuePages"]),
+        }),
+        assignIssuePage: builder.mutation({
+            query: ({ page, payload }) => ({
+                url:
+                    payload.accountId === "me"
+                        ? page.links.assign_to_me
+                        : page.links.assign,
+                method: "POST",
+                data: removeLinks(payload),
+            }),
+            invalidatesTags: ["IssuePages"],
+        }),
+        assignIssuePages: builder.mutation({
+            async queryFn(
+                { requests, payload, onProgress },
+                _queryApi,
+                _extraOptions,
+                baseQuery
+            ) {
+                return processMultipleRequests({
+                    baseQuery,
+                    method: "POST",
+                    url: (request, payload) =>
+                        payload.accountId === "me"
+                            ? request.data.links.assign_to_me
+                            : request.data.links.assign,
+                    requests,
+                    payload,
+                    onProgress,
+                });
+            },
+            invalidatesTags: (result, error) => (error ? [] : ["IssuePages"]),
+        }),
+        ocrIssuePage: builder.mutation({
+            query: ({ page, key }) => ({
+                url: page.links.ocr,
+                method: "POST",
+                data: { key: key },
+            }),
+            invalidatesTags: ["IssuePages"],
+        }),
+        ocrIssuePages: builder.mutation({
+            async queryFn(
+                { requests, payload, onProgress },
+                _queryApi,
+                _extraOptions,
+                baseQuery
+            ) {
+                return processMultipleRequests({
+                    baseQuery,
+                    method: "PUT",
+                    url: (request) => {
+                        return request.data.links.ocr;
+                    },
+                    requests,
+                    payload,
+                    onProgress,
+                });
+            },
+            invalidatesTags: (result, error) => (error ? [] : ["IssuePages"]),
+        }),
+        updateIssuePageImage: builder.mutation({
+            query: ({ page, payload }) => {
+                const formData = new FormData();
+                formData.append("file", payload, payload.fileName);
+                return {
+                    url: page.links.image_upload,
+                    method: "PUT",
+                    data: formData,
+                    formData: true,
+                    headers: {
+                        "content-type": "multipart/form-data",
+                    },
+                };
+            },
+            invalidatesTags: ["IssuePages"],
+        }),
+        updateIssuePageSequence: builder.mutation({
+            query: ({ page, payload }) => ({
+                url: page.links.page_sequence,
+                method: "POST",
+                data: removeLinks(payload),
+            }),
+            invalidatesTags: ["IssuePages"],
+        }),
+        createIssuePageWithImage: builder.mutation({
+            query: ({ issue, fileList }) => {
+                const formData = new FormData();
+                fileList.forEach((file, index) => {
+                    formData.append(index, file, `${index}.jpg`);
+                });
+                return {
+                    url: issue.links.create_multiple,
+                    method: "POST",
+                    data: formData,
+                    formData: true,
+                    headers: {
+                        "content-type": "multipart/form-data",
+                    },
+                };
+            },
+            invalidatesTags: ["Issue", "IssuePages"],
+        }),
     }),
 });
 
@@ -179,9 +432,27 @@ export const {
     useGetIssuesQuery,
     useGetIssuesYearsQuery,
     useGetIssueQuery,
-    useGetIssueArticlesQuery,
+    useAddIssueMutation,
+    useUpdateIssueMutation,
+    useUpdateIssueImageMutation,
+    useDeleteIssueMutation,
+    useAddIssueContentMutation,
+    useUpdateIssueContentMutation,
+    useDeleteIssueContentMutation,
     useGetArticleQuery,
     useGetArticleContentsQuery,
     useGetIssuePagesQuery,
     useGetIssuePageQuery,
+    useAddIssuePageMutation,
+    useUpdateIssuePageMutation,
+    useUpdateIssuePagesMutation,
+    useDeleteIssuePageMutation,
+    useDeleteIssuePagesMutation,
+    useAssignIssuePageMutation,
+    useAssignIssuePagesMutation,
+    useOcrIssuePageMutation,
+    useOcrIssuePagesMutation,
+    useUpdateIssuePageImageMutation,
+    useUpdateIssuePageSequenceMutation,
+    useCreateIssuePageWithImageMutation,
 } = issuesApi;

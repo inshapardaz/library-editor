@@ -9,7 +9,7 @@ import moment from "moment";
 
 // Local Imports
 import { getDateFormatFromFrequency } from '@/utils';
-import { IconIssue, IconPages, IconIssueArticle, IconVolumeNumber, IconIssueNumber } from '@/components/icon';
+import { IconIssue, IconPages, IconIssueArticle, IconVolumeNumber, IconIssueNumber, IconEdit, IconDelete } from '@/components/icon';
 import IconText from '@/components/iconText';
 import If from '@/components/if';
 //-------------------------------------
@@ -48,6 +48,22 @@ const IssueListItem = ({ libraryId, issue, frequency }) => {
                         <Divider orientation="vertical" />
                         <IconText size="sm" icon={<IconIssueArticle style={{ color: theme.colors.dark[2] }} />} text={t('issue.articleCount', { count: issue.articleCount })} />
                     </If>
+                    <If condition={issue.links.update} >
+                        <Divider orientation='vertical' />
+                        <IconText
+                            icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />}
+                            tooltip={t('actions.delete')}
+                            link={`/libraries/${libraryId}/periodicals/${issue.periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}/edit`}
+                        />
+                    </If>
+                    <If condition={issue.links.delete} >
+                        <Divider orientation='vertical' />
+                        <IconText
+                            icon={<IconDelete height={16} style={{ color: theme.colors.dark[2] }} />}
+                            tooltip={t('actions.delete')}
+                            link={`/libraries/${libraryId}/periodicals/${issue.periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}/edit`}
+                        />
+                    </If>
                 </Group>
             </Stack>
         </Group>
@@ -69,7 +85,9 @@ IssueListItem.propTypes = {
         pageCount: PropTypes.number,
         articleCount: PropTypes.number,
         links: PropTypes.shape({
-            image: PropTypes.string
+            image: PropTypes.string,
+            update: PropTypes.string,
+            delete: PropTypes.string
         })
     })
 }

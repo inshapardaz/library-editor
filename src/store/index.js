@@ -12,6 +12,7 @@ import { categoriesApi } from "./slices/categories.api";
 import { articlesApi } from "./slices/articles.api";
 import { periodicalsApi } from "./slices/periodicals.api";
 import { issuesApi } from "./slices/issues.api";
+import { issueArticlesApi } from "./slices/issueArticles.api";
 
 // ----------------------------------------------
 
@@ -28,6 +29,7 @@ export const store = configureStore({
         [categoriesApi.reducerPath]: categoriesApi.reducer,
         [periodicalsApi.reducerPath]: periodicalsApi.reducer,
         [issuesApi.reducerPath]: issuesApi.reducer,
+        [issueArticlesApi.reducerPath]: issueArticlesApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware()
@@ -40,4 +42,5 @@ export const store = configureStore({
             .concat(articlesApi.middleware)
             .concat(periodicalsApi.middleware)
             .concat(issuesApi.middleware)
+            .concat(issueArticlesApi.middleware)
 });

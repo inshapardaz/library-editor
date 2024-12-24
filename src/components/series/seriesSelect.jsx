@@ -69,7 +69,7 @@ const SeriesSelect = ({ t, libraryId, defaultValue = null, onChange, label, plac
                     })
                 })
                 .catch((e) => {
-                    console.log(e)
+                    console.error(e)
                     notifications.show({
                         color: 'red',
                         title: t("series.actions.add.error")

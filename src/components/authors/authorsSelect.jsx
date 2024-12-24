@@ -101,7 +101,7 @@ const AuthorsSelect = ({ t, libraryId, defaultValue = [], onChange, showAdd = fa
                     })
                 })
                 .catch((e) => {
-                    console.log(e)
+                    console.error(e)
                     notifications.show({
                         color: 'red',
                         title: t("author.actions.add.error")

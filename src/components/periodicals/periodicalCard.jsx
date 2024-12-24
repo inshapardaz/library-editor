@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Card, Text, Group, Tooltip, useMantineTheme, Center, Image, Divider } from '@mantine/core';
 
 // Local imports
-import { IconPeriodical } from '@/components/icon';
+import { IconPeriodical, IconEdit, IconDelete } from '@/components/icon';
 import IconText from '@/components/iconText';
 import FrequencyIcon from './frequencyIcon'
 import If from '@/components/if'
@@ -54,6 +54,24 @@ const PeriodicalCard = ({ libraryId, periodical }) => {
                     </>
                 </If>
             </Group>
+            <Group justify="space-between" mt="md" mb="xs">
+                <If condition={periodical.links.update} >
+                    <Divider />
+                    <IconText
+                        icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />}
+                        tooltip={t('actions.edit')}
+                        link={`/libraries/${libraryId}/periodicals/${periodical.id}/edit`}
+                    />
+                </If>
+                <If condition={periodical.links.delete} >
+                    <Divider orientation='vertical' />
+                    <IconText
+                        icon={<IconDelete height={16} style={{ color: theme.colors.dark[2] }} />}
+                        tooltip={t('actions.delete')}
+                        link={`/libraries/${libraryId}/periodicals/${periodical.id}/edit`}
+                    />
+                </If>
+            </Group>
         </Card >
     )
 }
@@ -68,7 +86,9 @@ PeriodicalCard.propTypes = {
         frequency: PropTypes.string,
         issueCount: PropTypes.number,
         links: PropTypes.shape({
-            image: PropTypes.string
+            image: PropTypes.string,
+            update: PropTypes.string,
+            delete: PropTypes.string,
         })
     })
 };

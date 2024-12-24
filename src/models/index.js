@@ -6,6 +6,7 @@ import EditingStatus from "./editingStatus";
 import PageStatus from "./pageStatus";
 import SortDirection from "./sortDirection";
 import ProcessStatus from "./processStatus";
+import PeriodicalFrequency from "./periodicalFrequency";
 
 export {
     AssignmentStatus,
@@ -16,4 +17,5 @@ export {
     PageStatus,
     SortDirection,
     ProcessStatus,
+    PeriodicalFrequency
 };

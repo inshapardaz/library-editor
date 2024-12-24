@@ -2,7 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 
 import axiosBaseQuery from "@/utils/axiosBaseQuery";
 
-import { parseResponse } from "@/utils/parseResponse";
+import { parseResponse, removeLinks } from "@/utils/parseResponse";
 // ----------------------------------------------
 export const periodicalsApi = createApi({
     reducerPath: "periodicals",
@@ -53,6 +53,45 @@ export const periodicalsApi = createApi({
             transformResponse: (response) => parseResponse(response),
             providesTags: ["Periodicals"],
         }),
+        addPeriodical: builder.mutation({
+            query: ({ libraryId, payload }) => ({
+                url: `/libraries/${libraryId}/periodicals`,
+                method: "POST",
+                data: removeLinks(payload),
+            }),
+            invalidatesTags: ["Periodicals"],
+        }),
+        updatePeriodical: builder.mutation({
+            query: ({ libraryId, periodicalId, payload }) => ({
+                url: `/libraries/${libraryId}/periodicals/${periodicalId}`,
+                method: "PUT",
+                data: removeLinks(payload),
+            }),
+            invalidatesTags: ["Periodicals"],
+        }),
+        deletePeriodical: builder.mutation({
+            query: ({ libraryId, periodicalId }) => ({
+                url: `/libraries/${libraryId}/periodicals/${periodicalId}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Periodicals"],
+        }),
+        updatePeriodicalImage: builder.mutation({
+            query: ({ libraryId, periodicalId, payload }) => {
+                const formData = new FormData();
+                formData.append("file", payload, payload.fileName);
+                return {
+                    url: `/libraries/${libraryId}/periodicals/${periodicalId}/image`,
+                    method: "PUT",
+                    data: formData,
+                    formData: true,
+                    headers: {
+                        "content-type": "multipart/form-data",
+                    },
+                };
+            },
+            invalidatesTags: ["Periodicals"],
+        }),
     }),
 });
 
@@ -60,4 +99,7 @@ export const {
     useGetPeriodicalsQuery,
     useGetPeriodicalByIdQuery,
     useAddPeriodicalMutation,
+    useUpdatePeriodicalMutation,
+    useDeletePeriodicalMutation,
+    useUpdatePeriodicalImageMutation,
 } = periodicalsApi;

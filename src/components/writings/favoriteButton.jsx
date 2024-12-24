@@ -26,7 +26,7 @@ const FavoriteButton = ({ article, size }) => {
                     })
                 })
                 .catch((e) => {
-                    console.log(e)
+                    console.error(e)
                     notifications.show({
                         color: 'red',
                         title: t("writing.actions.addFavorite.error")
@@ -41,7 +41,7 @@ const FavoriteButton = ({ article, size }) => {
                     })
                 })
                 .catch((e) => {
-                    console.log(e)
+                    console.error(e)
                     notifications.show({
                         color: 'red',
                         title: t("writing.actions.removeFavorite.error")

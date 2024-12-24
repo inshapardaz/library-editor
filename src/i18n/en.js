@@ -706,6 +706,26 @@ const en = {
             label: "Categories",
             placeholder: "Select categories for periodical",
         },
+        actions: {
+            add: {
+                label: "Add new periodical",
+                title: "New Periodical",
+                success: "Periodical created successfully.",
+                error: "Error creating periodical.",
+            },
+            edit: {
+                title: "Editing '{{name}}'",
+                success: "Periodical saved successfully.",
+                error: "Error saving periodical",
+            },
+            delete: {
+                title: "Delete periodical?",
+                message:
+                    "Are you sure you want to delete periodical '{{name}}'? It will remove all of its contents including issue, articles and files.",
+                success: "Periodical deleted successfully.",
+                error: "Error deleting periodical.",
+            },
+        },
     },
     issues: {
         title: "Issues",
@@ -741,6 +761,7 @@ const en = {
         issueDate: {
             label: "Issue Date",
             required: "Issue date is required for issue",
+            placeholder: "Date this issue was published",
         },
         status: {
             label: "Status",
@@ -785,6 +806,166 @@ const en = {
             empty: {
                 title: "No Pages found",
             }
+        },
+        actions: {
+            add: {
+                label: "Add new issue",
+                title: "New issue",
+                success: "Issue created successfully.",
+                error: "Error creating issue.",
+            },
+            edit: {
+                title: "Editing '{{name}}'",
+                success: "Issue saved successfully.",
+                error: "Error saving issue",
+            },
+            delete: {
+                title: "Delete issue?",
+                message:
+                    "Are you sure you want to delete issue '{{name}}'? It will remove all of its contents.",
+                success: "Issue deleted successfully.",
+                error: "Error deleting issue.",
+            },
+            addFile: {
+                title: "Upload file",
+                success: "File uploaded successfully.",
+                error: "Error uploading file.",
+            },
+            deleteFile: {
+                title: "Delete file?",
+                message: "Are you sure you want to delete issue file?",
+                success: "File deleted successfully.",
+                error: "Error deleting file",
+            },
+            downloadFile: {
+                title: "Download file",
+            },
+            setFirstPageAsImage: {
+                title: "Set first page of file as issue image.",
+                message:
+                    "Do you want to make the first page of this file to be the issue image?",
+                success: "Issue image set successfully",
+                error: "Unable to set issue image",
+            },
+        },
+    },
+    issueArticles: {
+        title: "Writings",
+        errors: {
+            loading: {
+                title: "Error",
+                subTitle: "Unable to load writings.",
+            },
+        },
+        empty: {
+            title: "No writing found",
+        },
+        search: {
+            placeholder: "Search writings...",
+        },
+        sort: {
+            title: "Title",
+            lastModified: "Last Modified",
+        },
+        favorites: {
+            title: "Favorites",
+        },
+        read: {
+            title: "Read books",
+        },
+        latest: {
+            title: "Latest books",
+        },
+        actions: {
+            reorder: {
+                success: "Sequence of articles has been updated.",
+                error: "Error updating sequence of articles.",
+            },
+        },
+    },
+    issueArticle: {
+        title: {
+            label: "Title",
+            placeholder: "Title of writing",
+            required: "Title is required for writing",
+        },
+        type: {
+            label: "Type",
+            placeholder: "Type of writing",
+            required: "Type is required for writing",
+            writing: "Prose",
+            poetry: "Poetry",
+        },
+        public: {
+            label: "Public",
+        },
+        authors: {
+            label: "Authors",
+            placeholder: "Select authors of the writing",
+            required: "Author is required",
+        },
+        layout: {
+            label: "Layout",
+            placeholder: "Select layout",
+        },
+        status: {
+            label: "Status",
+            placeholder: "Select writing status",
+        },
+        categories: {
+            label: "Categories",
+            placeholder: "Select categories",
+        },
+        information: {
+            label: "Information",
+        },
+        contents: {
+            label: "Contents",
+        },
+        messages: {
+            newContent:
+                "There are no contents available in chosen language. You are creating new content for this article۔",
+        },
+        user: {
+            label: "User",
+            required: "User is required.",
+        },
+        actions: {
+            add: {
+                label: "Add new article",
+                title: "New article",
+                success: "article created successfully.",
+                error: "Error creating article.",
+            },
+            edit: {
+                title: "Editing '{{title}}'",
+                success: "Article saved successfully.",
+                error: "Error saving article",
+            },
+            delete: {
+                title: "Delete article?",
+                message: "Are you sure you want to delete article '{{name}}'?",
+                success: "Article deleted successfully.",
+                error: "Error deleting article.",
+            },
+            updateStatus: {
+                title: "Article Status",
+                success: "Article status updated successfully.",
+                error: "Error saving article statuses.",
+            },
+            assign: {
+                label: "Assign Article",
+                success: "Article assigned successfully.",
+                error: "Error assigning article statuses.",
+            },
+        },
+        errors: {
+            contentNotFound: {
+                title: "Content Not Available in `{{language}}`.",
+                titleMissing: "Content Not Available.",
+                subTitle: "Please try a different language below.",
+                subTitleMissing: "Please visit us later.",
+            },
         },
     },
 };

@@ -1,12 +1,12 @@
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 // UI Library Imports
-import { Card, Container, Divider, Grid, Group, rem, Skeleton, useMantineTheme } from "@mantine/core";
+import { Button, Card, Container, Divider, Grid, Group, rem, Skeleton, useMantineTheme } from "@mantine/core";
 
 // Local Imports
 import { useGetPeriodicalByIdQuery } from '@/store/slices/periodicals.api';
-import { IconIssues } from '@/components/icon';
+import { IconIssues, IconEdit, IconAdd } from '@/components/icon';
 import IconNames from '@/components/iconNames';
 import IssuesList from "@/components/periodicals/issues/issuessList";
 import FrequencyIcon from "@/components/periodicals/frequencyIcon";
@@ -83,6 +83,10 @@ const PeriodicalPage = () => {
             breadcrumbs={[
                 { title: t('header.home'), href: `/libraries/${libraryId}`, icon: IconNames.Home },
                 { title: t('header.periodicals'), href: `/libraries/${libraryId}/periodicals`, icon: IconNames.Periodicals },
+            ]} actions={[
+                (<span key="periodical-spacer" style={{ flex: 1 }} />),
+                (<Button key="periodical-edit" component={Link} to={`/libraries/${libraryId}/periodicals/${periodical.id}/edit`} variant='default' leftSection={<IconEdit />} >{t('actions.edit')}</Button>),
+                (<Button key="periodical-issue-add" component={Link} to={`/libraries/${libraryId}/periodicals/${periodical.id}/issues/add`} variant='default' leftSection={<IconAdd />} >{t('issue.actions.add.label')}</Button>)
             ]} />
         <Grid type="container" breakpoints={{ xs: '100px', sm: '200px', md: '300px', lg: '400px', xl: '500px' }}>
             <Grid.Col span={{ md: 12, lg: 3, xl: 2 }} style={{ minWidth: rem(200) }}>

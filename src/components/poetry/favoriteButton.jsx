@@ -26,7 +26,7 @@ const FavoriteButton = ({ poetry, size }) => {
                     })
                 })
                 .catch((e) => {
-                    console.log(e)
+                    console.error(e)
                     notifications.show({
                         color: 'red',
                         title: t("poetry.actions.addFavorite.error")
@@ -41,7 +41,7 @@ const FavoriteButton = ({ poetry, size }) => {
                     })
                 })
                 .catch((e) => {
-                    console.log(e)
+                    console.error(e)
                     notifications.show({
                         color: 'red',
                         title: t("poetry.actions.removeFavorite.error")

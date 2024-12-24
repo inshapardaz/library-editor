@@ -27,9 +27,15 @@ const Router = () => {
                         <Route path="/libraries/:libraryId/books/:bookId" element={<Pages.BookPage />} />
                         <Route path="/libraries/:libraryId/books/:bookId/edit" element={<Pages.EditBookPage />} />
                         <Route path="/libraries/:libraryId/books" element={<Pages.BooksPage />} />
+                        <Route path="/libraries/:libraryId/periodicals/:periodicalId/issues/add" element={<Pages.EditIssuePage />} />
+                        <Route path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber/issues/:issueNumber/edit" element={<Pages.EditIssuePage />} />
+                        <Route path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber/issues/:issueNumber/articles/add" element={<Pages.EditIssueArticlePage />} />
+                        <Route path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber/issues/:issueNumber/articles/:articleNumber/edit" element={<Pages.EditIssueArticlePage />} />
                         <Route path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber/issues/:issueNumber/articles/:articleNumber" element={<Pages.IssueArticlePage />} />
                         <Route path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber/issues/:issueNumber" element={<Pages.IssuePage />} />
                         <Route path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber" element={<Pages.PeriodicalPage />} />
+                        <Route path="/libraries/:libraryId/periodicals/add" element={<Pages.EditPeriodicalPage />} />
+                        <Route path="/libraries/:libraryId/periodicals/:periodicalId/edit" element={<Pages.EditPeriodicalPage />} />
                         <Route path="/libraries/:libraryId/periodicals/:periodicalId" element={<Pages.PeriodicalPage />} />
                         <Route path="/libraries/:libraryId/periodicals" element={<Pages.PeriodicalsPage />} />
                         <Route path="/libraries/:libraryId/writings" element={<Pages.WritingsPage />} />
