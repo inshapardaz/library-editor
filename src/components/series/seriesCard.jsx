@@ -7,9 +7,10 @@ import { useTranslation } from 'react-i18next';
 import { Card, Text, Group, useMantineTheme, Center, Image, Divider } from '@mantine/core';
 
 // Local imports
-import { IconSeries, IconBooks, IconEdit, IconDelete } from '@/components/icon';
+import { IconSeries, IconBooks, IconEdit } from '@/components/icon';
 import IconText from '../iconText';
 import If from '@/components/if';
+import SeriesDeleteButton from './seriesDeleteButton';
 //---------------------------------------
 
 const IMAGE_HEIGHT = 225;
@@ -38,10 +39,11 @@ const SeriesCard = ({ libraryId, series }) => {
                 <If condition={series.bookCount != null}>
                     <IconText
                         icon={<IconBooks height={16} style={{ color: theme.colors.dark[2] }} />}
-                        text={t('series.bookCount', { count: series.bookCount })} />
+                        text={series.bookCount}
+                        tooltip={t('series.bookCount', { count: series.bookCount })} />
                 </If>
                 <If condition={series.links.update} >
-                    <Divider />
+                    <Divider orientation='vertical' />
                     <IconText
                         icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />}
                         tooltip={t('actions.edit')}
@@ -50,11 +52,7 @@ const SeriesCard = ({ libraryId, series }) => {
                 </If>
                 <If condition={series.links.delete} >
                     <Divider orientation='vertical' />
-                    <IconText
-                        icon={<IconDelete height={16} style={{ color: theme.colors.dark[2] }} />}
-                        tooltip={t('actions.delete')}
-                        link={`/libraries/${libraryId}/series/${series.id}/edit`}
-                    />
+                    <SeriesDeleteButton libraryId={libraryId} t={t} series={series} />
                 </If>
             </Group>
         </Card>

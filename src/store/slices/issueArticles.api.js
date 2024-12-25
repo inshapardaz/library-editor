@@ -83,6 +83,13 @@ export const issueArticlesApi = createApi({
             }),
             invalidatesTags: ["Article", "IssueArticles"],
         }),
+        deleteIssueArticle: builder.mutation({
+            query: ({ issueArticle }) => ({
+                url: issueArticle.links.delete,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["IssueArticles"],
+        }),
         deleteIssueArticles: builder.mutation({
             async queryFn(
                 { requests, payload, onProgress },
@@ -162,6 +169,7 @@ export const {
     useAddIssueArticleMutation,
     useUpdateIssueArticleMutation,
     useUpdateIssueArticlesMutation,
+    useDeleteIssueArticleMutation,
     useDeleteIssueArticlesMutation,
     useAssignIssueArticleMutation,
     useUpdateIssueArticleSequenceMutation,

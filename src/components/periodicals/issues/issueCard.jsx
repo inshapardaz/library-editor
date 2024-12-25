@@ -9,9 +9,10 @@ import moment from "moment";
 
 // Local imports
 import { getDateFormatFromFrequency } from '@/utils';
-import { IconIssue, IconPages, IconEdit, IconDelete } from '@/components/icon';
+import { IconIssue, IconPages, IconEdit } from '@/components/icon';
 import IconText from '@/components/iconText';
 import If from '@/components/if';
+import IssueDeleteButton from './issueDeleteButton';
 //---------------------------------------
 const IMAGE_HEIGHT = 400;
 const IMAGE_WIDTH = 200;
@@ -57,11 +58,7 @@ const IssueCard = ({ libraryId, issue, frequency }) => {
                 </If>
                 <If condition={issue.links.delete} >
                     <Divider orientation='vertical' />
-                    <IconText
-                        icon={<IconDelete height={16} style={{ color: theme.colors.dark[2] }} />}
-                        tooltip={t('actions.delete')}
-                        link={`/libraries/${libraryId}/periodicals/${issue.periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}/edit`}
-                    />
+                    <IssueDeleteButton libraryId={libraryId} t={t} issue={issue} frequency={frequency} />
                 </If>
             </Group>
         </Card>

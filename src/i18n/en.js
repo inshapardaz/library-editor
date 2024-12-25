@@ -366,11 +366,12 @@ const en = {
                 error: "Error saving book",
             },
             delete: {
+                label: "Delete book '{{title}}'",
                 title: "Delete book?",
                 message:
                     "Are you sure you want to delete book '{{title}}'? It will remove all of its contents including chapters, pages and files.",
-                success: "Book deleted successfully.",
-                error: "Error deleting book.",
+                success: "Book '{{title}}' deleted successfully.",
+                error: "Error '{{title}}' deleting book.",
             },
             addFile: {
                 title: "Upload file",
@@ -593,11 +594,12 @@ const en = {
                 error: "Error saving author",
             },
             delete: {
+                label: "Delete author '{{name}}'",
                 title: "Delete author?",
                 message:
                     "Are you sure you want to delete author '{{name}}'? It will remove all of its contents including books, writing and files.",
-                success: "Author deleted successfully.",
-                error: "Error deleting author.",
+                success: "Author '{{name}}' deleted successfully.",
+                error: "Error deleting author '{{name}}'.",
             },
         },
     },
@@ -723,10 +725,11 @@ const en = {
                 error: "Unable to save series.",
             },
             delete: {
+                label: "Delete series '{{name}}'",
                 title: "Delete Series?",
                 message: "Are you sure you want to delete series '{{name}}'?",
-                success: "Series deleted successfully.",
-                error: "Error deleting series.",
+                success: "Series '{{name}}' deleted successfully.",
+                error: "Error deleting series '{{name}}'.",
             },
         },
     },
@@ -805,11 +808,13 @@ const en = {
                 error: "Error saving periodical",
             },
             delete: {
+                label: "Delete periodical '{{title}}'",
+
                 title: "Delete periodical?",
                 message:
-                    "Are you sure you want to delete periodical '{{name}}'? It will remove all of its contents including issue, articles and files.",
-                success: "Periodical deleted successfully.",
-                error: "Error deleting periodical.",
+                    "Are you sure you want to delete periodical '{{title}}'? It will remove all of its contents including issue, articles and files.",
+                success: "Periodical '{{title}}' deleted successfully.",
+                error: "Error deleting periodical '{{title}}'.",
             },
         },
     },
@@ -906,11 +911,12 @@ const en = {
                 error: "Error saving issue",
             },
             delete: {
+                label: "Delete issue '{{title}}'",
                 title: "Delete issue?",
                 message:
                     "Are you sure you want to delete issue '{{name}}'? It will remove all of its contents.",
-                success: "Issue deleted successfully.",
-                error: "Error deleting issue.",
+                success: "Issue '{{name}}' deleted successfully.",
+                error: "Error deleting issue '{{name}}'.",
             },
             addFile: {
                 title: "Upload file",
@@ -1029,10 +1035,11 @@ const en = {
                 error: "Error saving article",
             },
             delete: {
+                label: "Delete article '{{name}}'",
                 title: "Delete article?",
                 message: "Are you sure you want to delete article '{{name}}'?",
-                success: "Article deleted successfully.",
-                error: "Error deleting article.",
+                success: "Article '{{name}}' deleted successfully.",
+                error: "Error deleting article '{{name}}'.",
             },
             read: {
                 title: "Read article",

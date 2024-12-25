@@ -7,11 +7,12 @@ import { useTranslation } from 'react-i18next';
 import { Divider, Group, Image, Stack, Text, Tooltip, useMantineTheme } from '@mantine/core';
 
 // Local Imports
-import { IconPages, IconEdit, IconDelete } from '@/components/icon';
+import { IconPages, IconEdit } from '@/components/icon';
 import IconText from '@/components/iconText';
 import FrequencyIcon from './frequencyIcon';
 import { IconPeriodical } from '@/components/icon';
 import If from '@/components/if';
+import PeriodicalDeleteButton from './periodicalDeleteButton';
 //-------------------------------------
 const IMAGE_WIDTH = 150;
 
@@ -60,11 +61,7 @@ const PeriodicalListItem = ({ libraryId, periodical }) => {
                     </If>
                     <If condition={periodical.links.delete} >
                         <Divider orientation='vertical' />
-                        <IconText
-                            icon={<IconDelete height={16} style={{ color: theme.colors.dark[2] }} />}
-                            tooltip={t('actions.delete')}
-                            link={`/libraries/${libraryId}/periodicals/${periodical.id}/edit`}
-                        />
+                        <PeriodicalDeleteButton libraryId={libraryId} t={t} periodical={periodical} />
                     </If>
                 </Group>
             </Stack >

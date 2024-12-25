@@ -7,9 +7,10 @@ import { useTranslation } from 'react-i18next';
 import { Divider, Group, Image, Stack, Text, Tooltip, useMantineTheme } from '@mantine/core';
 
 // Local Imports
-import { IconSeries, IconBooks, IconEdit, IconDelete } from '@/components/icon';
+import { IconSeries, IconBooks, IconEdit } from '@/components/icon';
 import If from '@/components/if';
 import IconText from '@/components/iconText';
+import SeriesDeleteButton from './seriesDeleteButton';
 //-------------------------------------
 const IMAGE_HEIGHT = 150;
 
@@ -50,11 +51,7 @@ const SeriesListItem = ({ libraryId, series }) => {
                     </If>
                     <If condition={series.links.delete} >
                         <Divider orientation='vertical' />
-                        <IconText
-                            icon={<IconDelete height={16} style={{ color: theme.colors.dark[2] }} />}
-                            tooltip={t('actions.delete')}
-                            link={`/libraries/${libraryId}/series/${series.id}/edit`}
-                        />
+                        <SeriesDeleteButton libraryId={libraryId} t={t} series={series} />
                     </If>
                 </Group>
             </Stack>

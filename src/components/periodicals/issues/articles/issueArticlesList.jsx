@@ -10,12 +10,13 @@ import cx from 'clsx';
 
 // Local imports
 import { useGetIssueArticlesQuery, useUpdateIssueArticleSequenceMutation } from '@/store/slices/issueArticles.api';
-import { IconEdit, IconDelete, IconReaderText, IconGripVertical } from '@/components/icon';
+import { IconEdit, IconReaderText, IconGripVertical } from '@/components/icon';
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
 import IconText from '@/components/iconText';
 import Error from '@/components/error';
 import If from '@/components/if';
 import classes from './issueArticlesList.module.css';
+import IssueArticleDeleteButton from './issueArticleDeleteButton';
 //------------------------------
 
 const PRIMARY_COL_HEIGHT = rem(300);
@@ -60,7 +61,6 @@ const IssueArticlesList = ({
     }
 
     const onOrderChanged = ({ destination, source }) => {
-        console.log({ from: source.index, to: destination?.index || 0 })
         const fromIndex = source.index;
         const toIndex = destination.index;
         let payload = [...articles.data];
@@ -137,11 +137,7 @@ const IssueArticlesList = ({
                         </If>
                         <If condition={article.links.delete} >
                             <Divider orientation='vertical' />
-                            <IconText
-                                icon={<IconDelete height={16} style={{ color: theme.colors.dark[2] }} />}
-                                tooltip={t('actions.delete')}
-                                link={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/articles/${article.sequenceNumber}/edit`}
-                            />
+                            <IssueArticleDeleteButton t={t} issueArticle={article} />
                         </If>
                     </Group>
                 </div>

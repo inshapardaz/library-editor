@@ -59,7 +59,6 @@ const BookChaptersList = ({ libraryId, book, isLoading }) => {
 
 
     const onOrderChanged = ({ destination, source }) => {
-        console.log({ from: source.index, to: destination?.index || 0 })
         const fromIndex = source.index;
         const toIndex = destination.index;
         let payload = [...chapters.data];

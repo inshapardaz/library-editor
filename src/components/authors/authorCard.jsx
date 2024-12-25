@@ -7,9 +7,10 @@ import { useTranslation } from 'react-i18next';
 import { Card, Text, Group, Divider, useMantineTheme, Image, Center } from '@mantine/core';
 
 // Local imports
-import { IconBooks, IconWritings, IconAuthor, IconPoetries, IconEdit, IconDelete } from '@/components/icon';
+import { IconBooks, IconWritings, IconAuthor, IconPoetries, IconEdit } from '@/components/icon';
 import IconText from '../iconText';
 import If from '@/components/if';
+import AuthorDeleteButton from './authorDeleteButton';
 //---------------------------------------
 
 const AuthorCard = ({ libraryId, author }) => {
@@ -57,11 +58,7 @@ const AuthorCard = ({ libraryId, author }) => {
                 </If>
                 <If condition={author.links.delete} >
                     <Divider orientation='vertical' />
-                    <IconText
-                        icon={<IconDelete height={16} style={{ color: theme.colors.dark[2] }} />}
-                        tooltip={t('actions.delete')}
-                        link={`/libraries/${libraryId}/authors/${author.id}/edit`}
-                    />
+                    <AuthorDeleteButton libraryId={libraryId} t={t} author={author} />
                 </If>
             </Group>
         </Card>

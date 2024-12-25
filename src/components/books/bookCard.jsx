@@ -64,9 +64,8 @@ const BookCard = ({ libraryId, book }) => {
                             text={book.chapterCount} />
                     </>
                 </If>
-            </Group>
-            <Group mt="md">
                 <If condition={book.links.update}>
+                    <Divider orientation="vertical" />
                     <IconText
                         tooltip={t('actions.edit')}
                         link={`/libraries/${libraryId}/books/${book.id}/edit`}

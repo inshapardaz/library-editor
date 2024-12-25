@@ -8,7 +8,7 @@ import { Button, Card, Container, Divider, Grid, Group, rem, Skeleton, useMantin
 import { useGetPeriodicalByIdQuery } from '@/store/slices/periodicals.api';
 import { IconIssues, IconEdit, IconAdd } from '@/components/icon';
 import IconNames from '@/components/iconNames';
-import IssuesList from "@/components/periodicals/issues/issuessList";
+import IssuesList from "@/components/periodicals/issues/issuesList";
 import FrequencyIcon from "@/components/periodicals/frequencyIcon";
 import PeriodicalSideBar from "@/components/periodicals/periodicalSideBar";
 import PageHeader from "@/components/pageHeader";
