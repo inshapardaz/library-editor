@@ -12,7 +12,7 @@ import { useGetBookQuery, useGetBookChaptersQuery, useGetBookPageQuery } from '@
 import TableOfContents from "@/components/reader/tableOfContents";
 import ImageReader from "@/components/reader/pages/imageReader";
 import Error from '@/components/error';
-import { IconBook, IconChapters, IconFullScreen, IconFullScreenExit } from '@/components/icon';
+import { IconBook, IconChapters, IconFullScreen, IconFullScreenExit } from '@/components/icons';
 import ReadModeToggle from "@/components/reader/readModeToggle";
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
 import ZoomControl from "@/components/reader/zoomControl";

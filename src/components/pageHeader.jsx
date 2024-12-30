@@ -6,7 +6,7 @@ import { Anchor, Box, Breadcrumbs, Divider, Flex, Group, Image, rem, Skeleton, S
 
 // Local import
 import If from '@/components/if';
-import { Icon } from './icon';
+import { Icon } from './icons';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 //----------------------------------

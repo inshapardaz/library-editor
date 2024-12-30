@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Avatar, Group, Stack, Text, Tooltip, useMantineTheme } from '@mantine/core';
 
 // Local Imports
-import { IconWorld, IconLibrary } from '@/components/icon';
+import { IconWorld, IconLibrary } from '@/components/icons';
 //-------------------------------------
 
 const LibraryListItem = ({ library }) => {

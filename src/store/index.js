@@ -13,6 +13,7 @@ import { articlesApi } from "./slices/articles.api";
 import { periodicalsApi } from "./slices/periodicals.api";
 import { issuesApi } from "./slices/issues.api";
 import { issueArticlesApi } from "./slices/issueArticles.api";
+import { accountsApi } from "./slices/accounts.api";
 
 // ----------------------------------------------
 
@@ -30,6 +31,7 @@ export const store = configureStore({
         [periodicalsApi.reducerPath]: periodicalsApi.reducer,
         [issuesApi.reducerPath]: issuesApi.reducer,
         [issueArticlesApi.reducerPath]: issueArticlesApi.reducer,
+        [accountsApi.reducerPath]: accountsApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware()
@@ -43,4 +45,5 @@ export const store = configureStore({
             .concat(periodicalsApi.middleware)
             .concat(issuesApi.middleware)
             .concat(issueArticlesApi.middleware)
+            .concat(accountsApi.middleware)
 });

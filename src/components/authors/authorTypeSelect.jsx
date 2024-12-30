@@ -5,7 +5,7 @@ import { Combobox, Group, Input, InputBase, useCombobox } from '@mantine/core';
 
 // Local Imports
 import { AuthorTypes } from '@/models';
-import { IconTick } from '@/components/icon';
+import { IconTick } from '@/components/icons';
 // -------------------------------------------------
 
 const AuthorTypeSelect = ({ t, defaultValue, placeholder, onChange, ...props }) => {

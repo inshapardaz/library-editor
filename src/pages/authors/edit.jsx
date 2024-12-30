@@ -19,7 +19,7 @@ import {
 
 import PageHeader from "@/components/pageHeader";
 import Error from '@/components/error';
-import { IconAuthor } from '@/components/icon';
+import { IconAuthor } from '@/components/icons';
 import ImageUpload from '@/components/imageUpload';
 import AuthorTypeSelect from '@/components/authors/authorTypeSelect';
 import { AuthorTypes } from '@/models';
@@ -203,7 +203,7 @@ const EditAuthorPage = () => {
                     </Grid.Col>
                     <Grid.Col span="auto" >
                         <Card withBorder maw={600}>
-                            <AuthorForm libraryId={libraryId} author={author} onSubmit={onSubmit} onCancel={() => navigate(-1)}/>
+                            <AuthorForm libraryId={libraryId} author={author} onSubmit={onSubmit} onCancel={() => navigate(-1)} />
                         </Card>
                     </Grid.Col>
                 </Grid>

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Center, rem, SegmentedControl } from "@mantine/core";
 
 // Local imports
-import { IconLayoutList, IconLayoutGrid } from '@/components/icon'
+import { IconLayoutList, IconLayoutGrid } from '@/components/icons'
 
 //-----------------------------------
 const LayoutToggle = ({ value, onChange }) => {

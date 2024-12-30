@@ -13,7 +13,7 @@ import {
 // Local imports
 import { SortDirection } from "@/models";
 import { useGetSeriesByIdQuery } from '@/store/slices/series.api';
-import { IconBooks, IconEdit } from '@/components/icon';
+import { IconBooks, IconEdit } from '@/components/icons';
 import IconNames from '@/components/iconNames';
 import BooksList from "@/components/books/booksList";
 import IconText from "@/components/iconText";

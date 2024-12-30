@@ -7,7 +7,7 @@ import { ActionIcon, rem } from "@mantine/core";
 import { createSpotlight, Spotlight } from "@mantine/spotlight";
 
 // Local imports
-import { IconAuthors, IconBooks, IconSearch, IconWritings, IconSeries } from "../icon";
+import { IconAuthors, IconBooks, IconSearch, IconWritings, IconSeries } from "../icons";
 // import { useGetBooksQuery } from '@/store/slices/books.api';
 // import { useGetAuthorsQuery } from '@/store/slices/authors.api';
 

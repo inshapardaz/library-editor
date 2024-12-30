@@ -7,7 +7,7 @@ import { ActionIcon, useMantineColorScheme, useComputedColorScheme, Group } from
 // Local imports
 import { setUiMode } from '../../store/slices/uiSlice';
 import classes from './darkModeToggle.module.css';
-import { IconMoon, IconSun } from '../icon';
+import { IconMoon, IconSun } from '../icons';
 
 // ----------------------------
 

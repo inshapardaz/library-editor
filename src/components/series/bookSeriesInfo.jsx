@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 // Ui Library Import
 
 // Local imports
-import { IconBooks } from '@/components/icon';
+import { IconBooks } from '@/components/icons';
 import IconText from '@/components/iconText';
 import { useMantineTheme } from '@mantine/core';
 //-----------------------------------------

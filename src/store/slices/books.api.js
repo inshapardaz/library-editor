@@ -247,7 +247,7 @@ export const booksApi = createApi({
                     method: "DELETE",
                     url: (request) => request.data.links.delete,
                     requests,
-                    payload: null,
+                    payload: {},
                     onProgress,
                 });
             },

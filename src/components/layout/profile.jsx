@@ -10,7 +10,7 @@ import { modals } from '@mantine/modals';
 
 // Local Imports
 import classes from './profile.module.css';
-import { IconLogout, IconSettings, IconChangePassword, IconChevronDown } from "../icon";
+import { IconLogout, IconSettings, IconChangePassword, IconChevronDown } from "../icons";
 import { MAIN_SITE } from '@/config';
 //-----------------------------------
 

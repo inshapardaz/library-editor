@@ -10,7 +10,7 @@ import { Carousel } from '@mantine/carousel';
 import { isLoggedIn } from "@/store/slices/authSlice";
 import { useGetBooksQuery } from '@/store/slices/books.api';
 import BookCard from './bookCard';
-import { IconRefreshAlert } from '@/components/icon';
+import { IconRefreshAlert } from '@/components/icons';
 //------------------------------
 
 const FavioriteBooks = ({ libraryId }) => {

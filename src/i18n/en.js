@@ -339,6 +339,8 @@ const en = {
         fileCount_other: "{{count}} files",
         publishLabel: "Published in {{year}}",
         isPublic: "Public Book",
+        pages: "Pages",
+        files: "Files",
         actions: {
             addFavorite: {
                 success: 'Book added to favorites.',
@@ -511,6 +513,7 @@ const en = {
                 error_other: "Error deleting {{ count }}} chapters.",
             },
             updateStatus: {
+                label: "Set cahpter status",
                 title: "Updating Status",
                 success: "Chapter status updated successfully.",
                 error: "Error saving chapter statuses.",
@@ -1062,6 +1065,20 @@ const en = {
                 subTitle: "Please try a different language below.",
                 subTitleMissing: "Please visit us later.",
             },
+        },
+    },
+    users: {
+        empty: {
+            title: "No Series",
+        },
+        me: {
+            title: "Me",
+        },
+        none: {
+            title: "Unassign",
+        },
+        others: {
+            title: "Other users",
         },
     },
 };

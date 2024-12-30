@@ -88,6 +88,17 @@ const IconNames = {
     Tick: "tick",
     Delete: "delete",
     GripVertical: "gripVertical",
+    Files: "files",
+    Assign: "assign",
+    Upload: "upload",
+    Busy: "busy",
+    Done: "done",
+    Failed: "failed",
+    Loading: "loading",
+    Error: "error",
+    Writer: "writer",
+    Reviewer: "reviewer",
+    Status: "status"
 };
 
 export default IconNames;

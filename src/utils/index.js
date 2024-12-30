@@ -371,8 +371,7 @@ export const processMultipleRequests = async ({
             let body =
                 typeof payload === "function" ? payload(request.data) : payload;
             if (body) {
-                const resolvedUrl =
-                    typeof url === "function" ? url(request, payload) : url;
+                const resolvedUrl = typeof url === "function" ? url(request, payload) : url;
                 var result = await baseQuery({
                     url: resolvedUrl,
                     method: method,

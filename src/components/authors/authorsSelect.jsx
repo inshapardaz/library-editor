@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 // 3rd party libraries
-import { Group, Avatar, Combobox, useCombobox, Loader, Pill, PillsInput } from "@mantine/core";
+import { Group, Avatar, Combobox, useCombobox, Loader, Pill, PillsInput, useMantineTheme } from "@mantine/core";
 import { notifications } from '@mantine/notifications';
 
 // local imports
-import { IconAuthor, IconAdd } from '@/components/icon';
+import { IconAuthor, IconAdd, IconError } from '@/components/icons';
 import { useGetAuthorsQuery, useAddAuthorMutation } from '@/store/slices/authors.api'
 import If from '@/components/if';
 // -------------------------------------------------
@@ -43,6 +43,7 @@ AuthorPill.propTypes = {
 //------------------------------------
 
 const AuthorsSelect = ({ t, libraryId, defaultValue = [], onChange, showAdd = false, placeholder, ...props }) => {
+    const theme = useMantineTheme();
     const [search, setSearch] = useState('');
     const [currentValue, setCurrentValue] = useState([]);
     const [selectedPills, setSelectedPills] = useState([]);
@@ -54,7 +55,7 @@ const AuthorsSelect = ({ t, libraryId, defaultValue = [], onChange, showAdd = fa
 
     // create new author
     //-------------------------------------------------
-    const [addAuthor, { isLoading: isAdding }] = useAddAuthorMutation();
+    const [addAuthor, { isLoading: isAdding, error }] = useAddAuthorMutation();
 
     // Fetach data and set the dropdown
     //-------------------------------------------------
@@ -138,9 +139,12 @@ const AuthorsSelect = ({ t, libraryId, defaultValue = [], onChange, showAdd = fa
     }, [currentValue, handleValueRemove]);
 
     return (
-        <Combobox {...props} store={combobox} onOptionSubmit={handleValueSelect} withinPortal={false}>
+        <Combobox {...props} store={combobox} onOptionSubmit={handleValueSelect}>
             <Combobox.DropdownTarget>
-                <PillsInput onClick={() => combobox.openDropdown()} rightSection={<Combobox.Chevron />}>
+                <PillsInput
+                    onClick={() => combobox.openDropdown()}
+                    leftSection={error && <IconError style={{ color: theme.colors.red[7] }} />}
+                    rightSection={<Combobox.Chevron />}>
                     <Pill.Group>
                         {selectedPills}
                         <Combobox.EventsTarget>

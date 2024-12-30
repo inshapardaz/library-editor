@@ -14,7 +14,7 @@ import {
     IconCalendar,
     IconReaderText,
     IconReaderImage
-} from '@/components/icon';
+} from '@/components/icons';
 
 import IconText from '@/components/iconText';
 import If from '@/components/if';

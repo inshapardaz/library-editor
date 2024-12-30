@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Card, Text, Group, Tooltip, useMantineTheme, Center, Image, Divider } from '@mantine/core';
 
 // Local imports
-import { IconPeriodical, IconEdit } from '@/components/icon';
+import { IconPeriodical, IconEdit } from '@/components/icons';
 import IconText from '@/components/iconText';
 import FrequencyIcon from './frequencyIcon'
 import If from '@/components/if'

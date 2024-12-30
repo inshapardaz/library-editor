@@ -5,7 +5,7 @@ import { Link, useParams, useSearchParams } from "react-router-dom";
 import { SortDirection } from "@/models";
 import AuthorsList from "@/components/authors/authorsList";
 import PageHeader from "@/components/pageHeader";
-import { IconAdd } from '@/components/icon';
+import { IconAdd } from '@/components/icons';
 import IconNames from '@/components/iconNames';
 import { Button, Card } from "@mantine/core";
 

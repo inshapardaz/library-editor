@@ -21,7 +21,7 @@ import { useGetPeriodicalByIdQuery }
     from '@/store/slices/periodicals.api';
 import PageHeader from "@/components/pageHeader";
 import Error from '@/components/error';
-import { IconPeriodical } from '@/components/icon';
+import { IconPeriodical } from '@/components/icons';
 import ImageUpload from '@/components/imageUpload';
 import PublishStatusSelect from '@/components/publishStatusSelect';
 import IssueDatePicker from '@/components/periodicals/issues/issueDatePicker';

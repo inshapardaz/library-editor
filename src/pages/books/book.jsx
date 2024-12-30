@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // UI library imports
@@ -16,6 +16,7 @@ import {
     Skeleton,
     Space,
     Stack,
+    Tabs,
     rem,
     useMantineTheme
 } from '@mantine/core';
@@ -31,7 +32,7 @@ import BookInfo from '@/components/books/bookInfo';
 import PageHeader from "@/components/pageHeader";
 import Error from '@/components/error';
 import If from '@/components/if';
-import { IconBook, IconEditBook } from '@/components/icon';
+import { IconBook, IconEditBook, IconPages, IconChapters, IconFiles } from '@/components/icons';
 import IconNames from '@/components/iconNames'
 //------------------------------------------------------
 
@@ -39,7 +40,10 @@ const PRIMARY_COL_HEIGHT = rem(300);
 
 const BookPage = () => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const { libraryId, bookId } = useParams();
+    const [searchParams] = useSearchParams();
+    const section = searchParams.get("section") ?? "chapters";
     const theme = useMantineTheme();
     const [imgError, setImgError] = useState(false);
 
@@ -84,6 +88,10 @@ const BookPage = () => {
                 onRetry={refetch} />
         </Container>)
     }
+
+    const onChange = (key) => {
+        navigate(`/libraries/${libraryId}/books/${book.id}/?section=${key}`);
+    };
 
     const icon = <Center h={450}><IconBook width={250} style={{ color: theme.colors.dark[1] }} /></Center>;
 
@@ -135,7 +143,31 @@ const BookPage = () => {
                 </Grid.Col>
                 <Grid.Col span="auto">
                     <Card withBorder>
-                        <BookChaptersList libraryId={libraryId} book={book} isLoading={{ loadingBook }} />
+                        <Tabs value={section} onChange={onChange}>
+                            <Tabs.List>
+                                <Tabs.Tab value="chapters" leftSection={<IconChapters style={{ color: theme.colors.dark[3] }} />}>
+                                    {t('book.chapters')}
+                                </Tabs.Tab>
+                                <Tabs.Tab value="pages" leftSection={<IconPages style={{ color: theme.colors.dark[3] }} />}>
+                                    {t('book.pages')}
+                                </Tabs.Tab>
+                                <Tabs.Tab value="files" leftSection={<IconFiles style={{ color: theme.colors.dark[3] }} />}>
+                                    {t('book.files')}
+                                </Tabs.Tab>
+                            </Tabs.List>
+
+                            <Tabs.Panel value="chapters">
+                                <BookChaptersList libraryId={libraryId} book={book} isLoading={{ loadingBook }} />
+                            </Tabs.Panel>
+
+                            <Tabs.Panel value="pages">
+                                Pages tab content
+                            </Tabs.Panel>
+
+                            <Tabs.Panel value="files">
+                                File tab content
+                            </Tabs.Panel>
+                        </Tabs>
                     </Card>
                 </Grid.Col>
             </Grid>

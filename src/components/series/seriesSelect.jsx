@@ -8,7 +8,7 @@ import { notifications } from '@mantine/notifications';
 // Local imports
 import { useGetSeriesQuery, useAddSeriesMutation } from '@/store/slices/series.api'
 import If from '@/components/if';
-import { IconAdd } from '@/components/icon';
+import { IconAdd } from '@/components/icons';
 
 //------------------------------------
 

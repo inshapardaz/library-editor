@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Center, rem, SegmentedControl } from "@mantine/core";
 
 // Local imports
-import { IconWriting, IconPoetries, IconAuthors } from '@/components/icon'
+import { IconWriting, IconPoetries, IconAuthors } from '@/components/icons'
 
 //-----------------------------------
 const AuthorTypeToggle = ({ value, onChange }) => {

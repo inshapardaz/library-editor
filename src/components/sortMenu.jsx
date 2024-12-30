@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Button, Menu } from '@mantine/core';
 
 // Local imports
-import { IconSort, IconChevronUp } from "@/components/icon";
+import { IconSort, IconChevronUp } from "@/components/icons";
 //-----------------------------------------
 
 const SortMenu = ({ options = [], value = "name", onChange = () => { } }) => {

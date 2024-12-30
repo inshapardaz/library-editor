@@ -10,7 +10,7 @@ import cx from 'clsx';
 
 // Local imports
 import { useGetIssueArticlesQuery, useUpdateIssueArticleSequenceMutation } from '@/store/slices/issueArticles.api';
-import { IconEdit, IconReaderText, IconGripVertical } from '@/components/icon';
+import { IconEdit, IconReaderText, IconGripVertical } from '@/components/icons';
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
 import IconText from '@/components/iconText';
 import Error from '@/components/error';

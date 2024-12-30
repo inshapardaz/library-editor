@@ -8,7 +8,7 @@ import moment from "moment";
 // Local Import
 import { useGetPeriodicalByIdQuery } from '@/store/slices/periodicals.api';
 import { useGetIssueQuery } from "@/store/slices/issues.api";
-import { IconVolumeNumber, IconIssueNumber, IconPages, IconIssueArticle, IconAdd } from '@/components/icon';
+import { IconVolumeNumber, IconIssueNumber, IconPages, IconIssueArticle, IconAdd } from '@/components/icons';
 import IconNames from '@/components/iconNames';
 import { getDateFormatFromFrequency } from '@/utils';
 import IssueArticlesList from "@/components/periodicals//issues/articles/issueArticlesList";

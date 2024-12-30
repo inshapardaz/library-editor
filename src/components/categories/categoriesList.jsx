@@ -5,7 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 import { Anchor, Group, Pill, useMantineTheme } from "@mantine/core";
 
 // Local imports
-import { IconCategory } from '@/components/icon';
+import { IconCategory } from '@/components/icons';
 import If from '@/components/if';
 //-----------------------------------------
 

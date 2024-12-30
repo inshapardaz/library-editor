@@ -9,7 +9,7 @@ import { Carousel } from '@mantine/carousel';
 
 // Local imports
 import { useGetBooksQuery } from '@/store/slices/books.api';
-import { IconRefreshAlert } from '@/components/icon';
+import { IconRefreshAlert } from '@/components/icons';
 import BookCard from './bookCard';
 import { SortDirection } from "@/models";
 

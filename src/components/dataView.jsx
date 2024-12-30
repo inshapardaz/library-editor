@@ -24,7 +24,7 @@ import {
 import { getHotkeyHandler } from '@mantine/hooks';
 
 // Local imports
-import { IconSearch } from '@/components/icon'
+import { IconSearch } from '@/components/icons'
 import LayoutToggle from '@/components/layoutToggle';
 import Error from './error';
 import If from '@/components/if';

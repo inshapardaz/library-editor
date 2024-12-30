@@ -10,7 +10,7 @@ import { ActionIcon, useDirection } from '@mantine/core';
 // Local Import
 import useTouchSlide from '@/hooks/useTouchSlide';
 import classes from './flipBook.module.css'
-import { IconLeft, IconRight } from '@/components/icon';
+import { IconLeft, IconRight } from '@/components/icons';
 import If from '@/components/if';
 //---------------------------------
 

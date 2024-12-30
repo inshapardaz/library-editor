@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Card, Text, Group, Tooltip, useMantineTheme, Center, Image, Divider } from '@mantine/core';
 
 // Local imports
-import { IconBook, IconPages, IconChapters, IconEditBook } from '@/components/icon';
+import { IconBook, IconPages, IconChapters, IconEditBook } from '@/components/icons';
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
 import FavoriteButton from '@/components/books/favoriteButton';
 import BookDeleteButton from '@/components/books/bookDeleteButton';

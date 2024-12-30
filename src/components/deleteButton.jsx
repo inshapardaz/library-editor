@@ -7,7 +7,7 @@ import { notifications } from '@mantine/notifications';
 
 // Local imports
 import IconText from '@/components/iconText';
-import { IconDelete } from '@/components/icon';
+import { IconDelete } from '@/components/icons';
 
 //---------------------------------
 const DeleteButton = ({ title, message, tooltip, icon, successMessage, errorMessage, isDeleting, onDelete = () => { }, onDeleted = () => { } }) => {

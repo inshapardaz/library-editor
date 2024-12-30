@@ -9,7 +9,7 @@ import { SortDirection, BookStatus } from "@/models";
 import BooksSideBar from "@/components/books/booksSidebar";
 import BooksList from "@/components/books/booksList";
 import PageHeader from "@/components/pageHeader";
-import { IconAdd } from '@/components/icon';
+import { IconAdd } from '@/components/icons';
 import IconNames from '@/components/iconNames';
 // -----------------------------------------
 const BooksPage = () => {

@@ -7,7 +7,7 @@ import { Badge, Card, Center, Divider, NavLink, SimpleGrid, Skeleton, useMantine
 
 // Local imports
 import { useGetCategoriesQuery } from '@/store/slices/categories.api';
-import { IconCategory, IconPeriodicals } from '@/components/icon';
+import { IconCategory, IconPeriodicals } from '@/components/icons';
 import PeriodicalFrequency from '@/models/periodicalFrequency'
 import FrequencyIcon from './frequencyIcon'
 //----------------------------------------------

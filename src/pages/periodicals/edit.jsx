@@ -19,7 +19,7 @@ import {
 
 import PageHeader from "@/components/pageHeader";
 import Error from '@/components/error';
-import { IconPeriodical } from '@/components/icon';
+import { IconPeriodical } from '@/components/icons';
 import ImageUpload from '@/components/imageUpload';
 import LanguageSelect from '@/components/languageSelect';
 import CategoriesSelect from '@/components/categories/categoriesSelect';

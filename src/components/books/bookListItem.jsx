@@ -8,7 +8,7 @@ import { Divider, Group, Image, Stack, Text, Tooltip, useMantineTheme } from '@m
 
 // Local Imports
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
-import { IconBook, IconPages, IconChapters, IconEditBook } from '@/components/icon';
+import { IconBook, IconPages, IconChapters, IconEditBook } from '@/components/icons';
 import IconText from '@/components/iconText';
 import FavoriteButton from '@/components/books/favoriteButton';
 import BookDeleteButton from '@/components/books/bookDeleteButton';

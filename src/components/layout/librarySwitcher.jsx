@@ -25,7 +25,7 @@ import classes from './librarySwitcher.module.css';
 import {
     IconRefreshAlert,
     IconLibrary,
-} from '../icon';
+} from '../icons';
 import { useDisclosure } from '@mantine/hooks';
 //------------------------------------
 

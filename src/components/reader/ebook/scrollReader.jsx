@@ -7,7 +7,7 @@ import { ActionIcon } from '@mantine/core';
 
 // Local imports
 import classes from './scrollReader.module.css'
-import { IconLeft, IconRight } from '@/components/icon';
+import { IconLeft, IconRight } from '@/components/icons';
 
 // Local Import
 import If from '@/components/if';

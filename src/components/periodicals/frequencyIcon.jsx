@@ -6,7 +6,7 @@ import { Group, Text } from '@mantine/core';
 
 // Local imports
 import PeriodicalFrequency from '@/models/periodicalFrequency'
-import { IconAnnually, IconQuarterly, IconMonthly, IconFornightly, IconWeekly, IconDaily } from '@/components/icon';
+import { IconAnnually, IconQuarterly, IconMonthly, IconFornightly, IconWeekly, IconDaily } from '@/components/icons';
 
 //-----------------------------------
 const FrequencyIcon = ({ frequency, showLabel, c, size, ...props }) => {

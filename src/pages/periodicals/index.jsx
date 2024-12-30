@@ -10,7 +10,7 @@ import PeriodicalsSideBar from "@/components/periodicals/periodicalsSideBar";
 import PeriodicalsList from "@/components/periodicals/periodicalsList";
 import PageHeader from "@/components/pageHeader";
 import IconNames from '@/components/iconNames'
-import { IconAdd } from '@/components/icon'
+import { IconAdd } from '@/components/icons'
 // -----------------------------------------
 const PeriodicalsPage = () => {
     const { t } = useTranslation();

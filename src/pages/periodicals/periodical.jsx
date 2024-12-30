@@ -6,7 +6,7 @@ import { Button, Card, Container, Divider, Grid, Group, rem, Skeleton, useMantin
 
 // Local Imports
 import { useGetPeriodicalByIdQuery } from '@/store/slices/periodicals.api';
-import { IconIssues, IconEdit, IconAdd } from '@/components/icon';
+import { IconIssues, IconEdit, IconAdd } from '@/components/icons';
 import IconNames from '@/components/iconNames';
 import IssuesList from "@/components/periodicals/issues/issuesList";
 import FrequencyIcon from "@/components/periodicals/frequencyIcon";

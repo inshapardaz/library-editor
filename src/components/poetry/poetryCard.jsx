@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { Card, Text, Group, useMantineTheme, Center, Image } from '@mantine/core';
 
 // Local imports
-import { IconWriting } from '@/components/icon';
+import { IconWriting } from '@/components/icons';
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
 import FavoriteButton from './favoriteButton';
 import If from '@/components/if';

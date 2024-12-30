@@ -7,8 +7,8 @@ import { Card, Center, Group, Text, useMantineTheme } from '@mantine/core';
 
 // Local Imports
 import classes from './libraryCard.module.css';
-import { IconWorld } from '@/components/icon';
-import { IconLibrary } from '@/components/icon';
+import { IconWorld } from '@/components/icons';
+import { IconLibrary } from '@/components/icons';
 //-------------------------------------
 
 const LibraryCard = ({ library }) => {

@@ -7,10 +7,10 @@ import { useTranslation } from 'react-i18next';
 import { Divider, Group, Image, Stack, Text, Tooltip, useMantineTheme } from '@mantine/core';
 
 // Local Imports
-import { IconPages, IconEdit } from '@/components/icon';
+import { IconPages, IconEdit } from '@/components/icons';
 import IconText from '@/components/iconText';
 import FrequencyIcon from './frequencyIcon';
-import { IconPeriodical } from '@/components/icon';
+import { IconPeriodical } from '@/components/icons';
 import If from '@/components/if';
 import PeriodicalDeleteButton from './periodicalDeleteButton';
 //-------------------------------------

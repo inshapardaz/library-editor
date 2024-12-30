@@ -20,7 +20,7 @@ import { useDisclosure } from '@mantine/hooks';
 // Local imports
 import classes from './appHeader.module.css';
 
-import { IconBooks, IconLibrary, IconChevronDown, IconAuthors, IconSeries, IconPoetries, IconPeriodicals, IconWritings } from '@/components/icon';
+import { IconBooks, IconLibrary, IconChevronDown, IconAuthors, IconSeries, IconPoetries, IconPeriodicals, IconWritings } from '@/components/icons';
 import Logo from '@/components/logo';
 import LanguageSwitch from './languageSwitch';
 import DarkModeToggle from './darkModeToggle';

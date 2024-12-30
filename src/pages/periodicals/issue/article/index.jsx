@@ -9,7 +9,7 @@ import { useDisclosure, useFullscreen } from '@mantine/hooks';
 
 // Local Import
 import { useGetArticleQuery, useGetArticleContentsQuery } from '@/store/slices/issues.api';
-import { IconFullScreen, IconFullScreenExit, IconSettings } from '@/components/icon';
+import { IconFullScreen, IconFullScreenExit, IconSettings } from '@/components/icons';
 import Error from '@/components/error';
 import ReaderSetting from "@/components/reader/ebook/readerSettings";
 import MarkdownReader from "@/components/reader/ebook/markdownReader";

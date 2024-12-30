@@ -17,7 +17,7 @@ import { useAddIssueArticleMutation, useUpdateIssueArticleMutation }
     from '@/store/slices/issueArticles.api';
 import PageHeader from "@/components/pageHeader";
 import Error from '@/components/error';
-import { IconPeriodical } from '@/components/icon';
+import { IconPeriodical } from '@/components/icons';
 import PublishStatusSelect from '@/components/publishStatusSelect';
 import AuthorsSelect from '@/components/authors/authorsSelect';
 import { BookStatus } from '@/models';

@@ -5,7 +5,7 @@ import { Combobox, Group, Input, InputBase, useCombobox } from '@mantine/core';
 
 // Local Imports
 import { Copyrights } from '@/models';
-import { IconTick } from '@/components/icon';
+import { IconTick } from '@/components/icons';
 // -------------------------------------------------
 
 const CopyrightSelect = ({ t, defaultValue, placeholder, onChange, ...props }) => {

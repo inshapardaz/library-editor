@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Center, rem, SegmentedControl } from "@mantine/core";
 
 // Local imports
-import { IconSortAscending, IconSortDescending } from '@/components/icon';
+import { IconSortAscending, IconSortDescending } from '@/components/icons';
 import SortDirection from '@/models/sortDirection'
 
 //-----------------------------------

@@ -7,7 +7,7 @@ import { Badge, Card, Center, Divider, NavLink, SimpleGrid, Skeleton, useMantine
 
 // Local imports
 import { useGetCategoriesQuery } from '@/store/slices/categories.api';
-import { IconCategory, IconFavorite, IconWriting, IconWritings } from '@/components/icon';
+import { IconCategory, IconFavorite, IconWriting, IconWritings } from '@/components/icons';
 
 //----------------------------------------------
 const WritingsSideBar = ({ selectedCategory, favorite, read }) => {

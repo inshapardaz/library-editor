@@ -10,7 +10,7 @@ import DataView from '@/components/dataView';
 import { updateLinkToWritingsPage } from '@/utils';
 import SortMenu from '@/components/sortMenu';
 import SortDirectionToggle from '@/components/sortDirectionToggle';
-import { IconTitle, IconDateCreated } from '@/components/icon';
+import { IconTitle, IconDateCreated } from '@/components/icons';
 //------------------------------
 
 const WritingsList = ({

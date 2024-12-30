@@ -13,7 +13,7 @@ import { useGetBookQuery, useAddBookMutation, useUpdateBookMutation, useUpdateBo
 import PageHeader from "@/components/pageHeader";
 import Error from '@/components/error';
 import { BookStatus, Copyrights } from '@/models';
-import { IconBook } from '@/components/icon';
+import { IconBook } from '@/components/icons';
 import PublishStatusSelect from '@/components/publishStatusSelect';
 import LanguageSelect from '@/components/languageSelect';
 import AuthorsSelect from '@/components/authors/authorsSelect';

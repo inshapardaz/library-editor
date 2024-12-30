@@ -15,7 +15,7 @@ import {
     IconReadyForProofRead,
     IconProofRead,
     IconAll,
-} from "@/components/icon";
+} from "@/components/icons";
 import BookStatus from '@/models/bookStatus';
 //-----------------------------------------
 

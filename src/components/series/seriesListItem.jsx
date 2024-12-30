@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Divider, Group, Image, Stack, Text, Tooltip, useMantineTheme } from '@mantine/core';
 
 // Local Imports
-import { IconSeries, IconBooks, IconEdit } from '@/components/icon';
+import { IconSeries, IconBooks, IconEdit } from '@/components/icons';
 import If from '@/components/if';
 import IconText from '@/components/iconText';
 import SeriesDeleteButton from './seriesDeleteButton';

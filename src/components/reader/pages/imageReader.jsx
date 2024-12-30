@@ -8,7 +8,7 @@ import { useElementSize, useHotkeys, useViewportSize } from '@mantine/hooks';
 
 // Local imports
 import Error from '@/components/error';
-import { IconLeft, IconRight } from '@/components/icon';
+import { IconLeft, IconRight } from '@/components/icons';
 import If from '@/components/if';
 import classes from './imageReader.module.css';
 import useTouchSlide from '@/hooks/useTouchSlide';

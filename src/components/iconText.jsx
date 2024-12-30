@@ -27,14 +27,14 @@ const IconText = ({ text, icon, link, onClick, tooltip, size = 'md', type = 'dim
 
     if (onClick) {
         if (tooltip) {
-            return (<Tooltip label={tooltip} {...props}>
-                <Button leftSection={icon} variant='transparent' onClick={onClick}>
+            return (<Tooltip label={tooltip}>
+                <Button {...props} leftSection={icon} variant='transparent' onClick={onClick}>
                     <Text truncate="end" c={type} size={size}>{text}</Text>
                 </Button>
             </Tooltip>);
         }
 
-        return (<Button leftSection={icon} variant='transparent' onClick={onClick}>
+        return (<Button {...props} leftSection={icon} variant='transparent' onClick={onClick}>
             <Text truncate="end" c={type} size={size}>{text}</Text>
         </Button>);
     }

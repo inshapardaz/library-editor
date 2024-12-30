@@ -26,7 +26,7 @@ import { useDisclosure } from '@mantine/hooks';
 import classes from './appHeader.module.css';
 
 import { useGetCategoriesQuery } from '@/store/slices/categories.api';
-import { IconCategory, IconChevronDown, IconRefreshAlert } from '@/components/icon';
+import { IconCategory, IconChevronDown, IconRefreshAlert } from '@/components/icons';
 import If from '@/components/if'
 
 //----------------------------------------------

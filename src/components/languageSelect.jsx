@@ -5,7 +5,7 @@ import { Combobox, Group, Input, InputBase, useCombobox } from '@mantine/core';
 
 // Local Imports
 import { languages } from '@/store/slices/uiSlice';
-import { IconTick } from '@/components/icon';
+import { IconTick } from '@/components/icons';
 // -------------------------------------------------
 
 const languageOptions = Object.values(languages)

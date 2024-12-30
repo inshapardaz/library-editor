@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { ActionIcon, Box, HoverCard, Slider } from "@mantine/core";
 
 // Local Import
-import { IconZoomIn } from '@/components/icon';
+import { IconZoomIn } from '@/components/icons';
 //----------------------------------------
 const minZoom = -200;
 const maxZoom = 200;

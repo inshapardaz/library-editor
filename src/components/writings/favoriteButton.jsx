@@ -6,7 +6,7 @@ import { ActionIcon, useMantineTheme } from "@mantine/core";
 import { notifications } from '@mantine/notifications';
 
 // Local imports
-import { IconFavorite, IconFavoriteFill } from '@/components/icon';
+import { IconFavorite, IconFavoriteFill } from '@/components/icons';
 import { useAddArticleToFavoriteMutation, useRemoveArticleFromFavoriteMutation } from '@/store/slices/articles.api';
 //---------------------------------------
 

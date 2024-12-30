@@ -7,7 +7,7 @@ import { Divider, Group, Image, Stack, Text, useMantineTheme } from '@mantine/co
 
 // Local Imports
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
-import { IconWriting } from '@/components/icon';
+import { IconWriting } from '@/components/icons';
 import FavoriteButton from './favoriteButton';
 import If from '@/components/if';
 //-------------------------------------

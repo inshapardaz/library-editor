@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Center, SegmentedControl } from "@mantine/core";
 
 // Local imports
-import { IconReaderViewScroll, IconReaderViewSinglePage, IconReaderViewDoublePage } from '@/components/icon'
+import { IconReaderViewScroll, IconReaderViewSinglePage, IconReaderViewDoublePage } from '@/components/icons'
 import { setReaderView } from "@/store/slices/uiSlice";
 //-----------------------------------
 const ReadViewToggle = () => {

@@ -11,6 +11,7 @@ import BookPage from "./books/book";
 import EditBookPage from "./books/edit";
 import BookReaderPage from "./books/reader";
 import EBookReaderPage from "./books/ebookReader";
+import ChapterEditorPage from "./books/chapters/edit";
 import AuthorsPage from "./authors";
 import AuthorPage from "./authors/authorPage";
 import EditAuthorPage from "./authors/edit";
@@ -41,6 +42,7 @@ const Pages = {
     EditBookPage,
     BookReaderPage,
     EBookReaderPage,
+    ChapterEditorPage,
     AuthorsPage,
     AuthorPage,
     EditAuthorPage,

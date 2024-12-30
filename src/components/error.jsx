@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Box, Button, rem, Stack, Text, Title, useMantineTheme } from "@mantine/core"
 
 // Local imnports
-import { IconAlert, IconRefreshAlert } from "@/components/icon";
+import { IconAlert, IconRefreshAlert } from "@/components/icons";
 
 //----------------------------------
 

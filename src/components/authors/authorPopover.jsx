@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Paper, Image, Avatar, Text } from "@mantine/core";
 
 // Local imports
-import { IconAuthor, IconBooks, IconWritings } from '@/components/icon';
+import { IconAuthor, IconBooks, IconWritings } from '@/components/icons';
 import IconText from '@/components/iconText';
 import { forwardRef } from 'react';
 

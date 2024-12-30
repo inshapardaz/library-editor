@@ -13,7 +13,7 @@ import DataView from '@/components/dataView';
 import { updateLinkToBooksPage } from '@/utils';
 import SortMenu from '@/components/sortMenu';
 import SortDirectionToggle from '@/components/sortDirectionToggle';
-import { IconTitle, IconDateCreated, IconSeriesIndex, IconAdd } from '@/components/icon';
+import { IconTitle, IconDateCreated, IconSeriesIndex, IconAdd } from '@/components/icons';
 import BookFilterMenu from './bookFilterMenu';
 //------------------------------
 

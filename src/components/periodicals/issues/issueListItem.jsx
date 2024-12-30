@@ -9,7 +9,7 @@ import moment from "moment";
 
 // Local Imports
 import { getDateFormatFromFrequency } from '@/utils';
-import { IconIssue, IconPages, IconIssueArticle, IconVolumeNumber, IconIssueNumber, IconEdit } from '@/components/icon';
+import { IconIssue, IconPages, IconIssueArticle, IconVolumeNumber, IconIssueNumber, IconEdit } from '@/components/icons';
 import IconText from '@/components/iconText';
 import If from '@/components/if';
 import IssueDeleteButton from './issueDeleteButton';

@@ -25,7 +25,7 @@ import DarkModeToggle from './darkModeToggle';
 import Profile from './profile';
 import LibrarySwitcher from './librarySwitcher';
 import SearchBox from './searchBox';
-import { IconHome, IconLibrary, IconLibraryEditor, IconDictionary, IconFont, IconTools, IconChevronDown } from '@/components/icon';
+import { IconHome, IconLibrary, IconLibraryEditor, IconDictionary, IconFont, IconTools, IconChevronDown } from '@/components/icons';
 //----------------------------------------------
 
 const AppHeader = () => {

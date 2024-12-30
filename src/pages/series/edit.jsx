@@ -19,7 +19,7 @@ import {
 
 import PageHeader from "@/components/pageHeader";
 import Error from '@/components/error';
-import { IconSeries } from '@/components/icon';
+import { IconSeries } from '@/components/icons';
 import ImageUpload from '@/components/imageUpload';
 //---------------------------------
 

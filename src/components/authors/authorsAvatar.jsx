@@ -5,7 +5,7 @@ import { Avatar, Group, Tooltip, useMantineTheme } from "@mantine/core";
 
 // Local imports
 import IconText from '@/components/iconText';
-import { IconAuthor } from '@/components/icon';
+import { IconAuthor } from '@/components/icons';
 //-------------------------------
 
 const AuthorsAvatar = ({ libraryId, authors, size = "sm", showNames = false }) => {

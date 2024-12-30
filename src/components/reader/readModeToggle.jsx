@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Center, SegmentedControl } from "@mantine/core";
 
 // Local imports
-import { IconReaderImage, IconReaderText } from '@/components/icon'
+import { IconReaderImage, IconReaderText } from '@/components/icons'
 //-----------------------------------
 const ReadModeToggle = ({ value, onChange }) => {
     const layouts = [{

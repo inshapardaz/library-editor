@@ -5,7 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 import { Avatar, Group, Stack, Text, useSafeMantineTheme } from "@mantine/core";
 
 // Local imports
-import { IconAuthor } from '@/components/icon';
+import { IconAuthor } from '@/components/icons';
 //-----------------------------------------
 
 const BookAuthorsList = ({ authors }) => {

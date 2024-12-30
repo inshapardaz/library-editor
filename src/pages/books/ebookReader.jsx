@@ -13,7 +13,7 @@ import TableOfContents from "@/components/reader/tableOfContents";
 import MarkdownReader from "@/components/reader/ebook/markdownReader";
 import ReaderSetting from "@/components/reader/ebook/readerSettings";
 import Error from '@/components/error';
-import { IconBook, IconChapters, IconFullScreen, IconFullScreenExit, IconSettings } from '@/components/icon';
+import { IconBook, IconChapters, IconFullScreen, IconFullScreenExit, IconSettings } from '@/components/icons';
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
 import classes from './ebookReader.module.css'
 import ReadModeToggle from "@/components/reader/readModeToggle";

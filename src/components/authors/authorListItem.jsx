@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Divider, Group, Image, Stack, Text, useMantineTheme } from '@mantine/core';
 
 // local imports
-import { IconBooks, IconWritings, IconAuthor, IconPoetries, IconEdit } from '@/components/icon';
+import { IconBooks, IconWritings, IconAuthor, IconPoetries, IconEdit } from '@/components/icons';
 import IconText from '@/components/iconText';
 import If from '@/components/if';
 import AuthorDeleteButton from './authorDeleteButton';

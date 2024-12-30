@@ -8,7 +8,7 @@ import { useDisclosure, useFullscreen } from "@mantine/hooks";
 
 // Local imports
 import { useGetArticleQuery, useGetArticleContentsQuery } from "@/store/slices/articles.api";
-import { IconWritings, IconWriting, IconFullScreen, IconFullScreenExit, IconSettings } from '@/components/icon';
+import { IconWritings, IconWriting, IconFullScreen, IconFullScreenExit, IconSettings } from '@/components/icons';
 import Error from '@/components/error';
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
 import ReaderSetting from "@/components/reader/ebook/readerSettings";

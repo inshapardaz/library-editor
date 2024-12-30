@@ -11,7 +11,7 @@ import { updateLinkToAuthorsPage } from '@/utils';
 import AuthorTypeToggle from './authorTypeToggle';
 import SortMenu from '@/components/sortMenu';
 import SortDirectionToggle from '@/components/sortDirectionToggle';
-import { IconName, IconType } from "@/components/icon";
+import { IconName, IconType } from "@/components/icons";
 //------------------------------
 
 const AuthorsList = ({

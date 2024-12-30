@@ -7,7 +7,7 @@ import { Badge, Card, Center, Divider, NavLink, SimpleGrid, Skeleton } from '@ma
 
 // Local imports
 import { useGetIssuesYearsQuery } from '@/store/slices/issues.api';
-import { IconAnnually } from '@/components/icon';
+import { IconAnnually } from '@/components/icons';
 import PeriodicalFrequency from '@/models/periodicalFrequency'
 //----------------------------------------------
 const PeriodicalSideBar = ({ libraryId, periodicalId }) => {

@@ -5,7 +5,7 @@ import { Group, Select } from '@mantine/core';
 
 // Local Imports
 import { BookStatus } from '@/models';
-import { IconAvailableForTyping, IconBeingTyped, IconReadyForProofRead, IconProofRead, IconPublished, IconTick } from '@/components/icon';
+import { IconAvailableForTyping, IconBeingTyped, IconReadyForProofRead, IconProofRead, IconPublished, IconTick } from '@/components/icons';
 // -------------------------------------------------
 
 const StatusIcon = {

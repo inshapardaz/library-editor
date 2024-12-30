@@ -9,7 +9,7 @@ import { SortDirection } from "@/models";
 import SeriesList from "@/components/series/seriesList";
 import PageHeader from "@/components/pageHeader";
 import IconNames from '@/components/iconNames';
-import { IconAdd } from '@/components/icon';
+import { IconAdd } from '@/components/icons';
 
 // -----------------------------------------
 const SeriesListPage = () => {
