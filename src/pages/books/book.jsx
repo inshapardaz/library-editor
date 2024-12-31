@@ -23,7 +23,8 @@ import {
 
 // Local imports
 import { useGetBookQuery } from '@/store/slices/books.api';
-import BookChaptersList from '@/components/books/bookChaptersList';
+import BookChaptersList from '@/components/books/chapters/bookChaptersList';
+import BookPagesList from '@/components/books/pages/bookPagesList';
 import BookSeriesInfo from '@/components/series/bookSeriesInfo';
 import FavoriteButton from '@/components/books/favoriteButton';
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
@@ -44,6 +45,13 @@ const BookPage = () => {
     const { libraryId, bookId } = useParams();
     const [searchParams] = useSearchParams();
     const section = searchParams.get("section") ?? "chapters";
+    const writerAssignmentFilter = searchParams.get("writerAssignmentFilter");
+    const reviewerAssignmentFilter = searchParams.get("reviewerAssignmentFilter");
+    const sortDirection = searchParams.get("sortDirection") ?? "ascending";
+    const status = searchParams.get("status");
+    const pageNumber = parseInt(searchParams.get("pageNumber") ?? "1");
+    const pageSize = parseInt(searchParams.get("pageSize") ?? "12");
+
     const theme = useMantineTheme();
     const [imgError, setImgError] = useState(false);
 
@@ -161,7 +169,14 @@ const BookPage = () => {
                             </Tabs.Panel>
 
                             <Tabs.Panel value="pages">
-                                Pages tab content
+                                <BookPagesList libraryId={libraryId} book={book} isLoading={{ loadingBook }}
+                                    writerAssignmentFilter={writerAssignmentFilter}
+                                    reviewerAssignmentFilter={reviewerAssignmentFilter}
+                                    sortDirection={sortDirection}
+                                    status={status}
+                                    pageNumber={pageNumber}
+                                    pageSize={pageSize}
+                                />
                             </Tabs.Panel>
 
                             <Tabs.Panel value="files">

@@ -10,7 +10,7 @@ import EditingStatusIcon from './editingStatusIcon';
 
 const EditingStatusSelect = ({ t, defaultValue, onChange, ...props }) => {
 
-    const statuses = [
+    const options = [
         { value: EditingStatus.Available, label: t('editingStatus.Available') },
         { value: EditingStatus.Typing, label: t('editingStatus.Typing') },
         { value: EditingStatus.Typed, label: t('editingStatus.Typed') },
@@ -29,7 +29,7 @@ const EditingStatusSelect = ({ t, defaultValue, onChange, ...props }) => {
     return (<Select {...props}
         allowDeselect={false}
         defaultValue={defaultValue}
-        data={statuses}
+        data={options}
         onChange={val => onChange && onChange(val)}
         renderOption={renderSelectOption}>
     </Select >);

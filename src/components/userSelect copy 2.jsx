@@ -43,12 +43,8 @@ const UserSelect = ({ t, libraryId, defaultValue = null, onChange, addMeOption =
     }, [data]);
 
     //-------------------------------------------------
-    // const hasSelectedOption = useMemo(() => search === NoneValue || search === MeValue || data.find(x => x.name == search) != null, [data, search]);
-    //-------------------------------------------------
-
     const handleValueSelect = useCallback((val) => {
         const selectedValue = val === NoneValue || val === MeValue ? { id: val, name: val } : data.find(x => x.id == val)
-        console.log('selected value:', selectedValue)
         if (selectedValue) {
             setCurrentValue({ id: selectedValue.id, value: selectedValue.name });
             setSearch(selectedValue.name);
@@ -87,7 +83,6 @@ const UserSelect = ({ t, libraryId, defaultValue = null, onChange, addMeOption =
                     placeholder={placeholder}
                     value={search || ''}
                     onChange={(event) => {
-                        console.log('search changed');
                         setSearch(event.currentTarget.value);
                         combobox.openDropdown();
                     }}

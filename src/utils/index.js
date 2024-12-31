@@ -98,6 +98,41 @@ export const updateLinkToBooksPage = (
     return `${location.pathname}?${searchParams.toString()}`;
 };
 
+export const updateLinkToBooksPagesPage = (
+    location,
+    {
+        pageNumber,
+        pageSize,
+        statusFilter,
+        writerAssignmentFilter,
+        reviewerAssignmentFilter,
+        sortDirection,
+    }
+) => {
+    var searchParams = new URLSearchParams(location.search);
+    if (pageNumber) {
+        searchParams.set("pageNumber", pageNumber);
+    }
+    if (pageSize) {
+        searchParams.set("pageSize", pageSize);
+    }
+    if (statusFilter) {
+        searchParams.set("status", statusFilter);
+    }
+    if (writerAssignmentFilter) {
+        searchParams.set("writerAssignmentFilter", writerAssignmentFilter);
+    }
+    if (reviewerAssignmentFilter) {
+        searchParams.set("reviewerAssignmentFilter", reviewerAssignmentFilter);
+    }
+    if (sortDirection) {
+        searchParams.set("sortDirection", sortDirection);
+    }
+
+    return `${location.pathname}?${searchParams.toString()}`;
+};
+
+
 export const updateLinkToWritingsPage = (
     location,
     {
@@ -489,40 +524,6 @@ export const buildLinkToAuthorsPage = (
     return location;
 };
 
-
-export const updateLinkToBooksPagesPage = (
-    location,
-    {
-        pageNumber,
-        pageSize,
-        statusFilter,
-        assignmentFilter,
-        reviewerAssignmentFilter,
-        sortDirection,
-    }
-) => {
-    var searchParams = new URLSearchParams(location.search);
-    if (pageNumber) {
-        searchParams.set("pageNumber", pageNumber);
-    }
-    if (pageSize) {
-        searchParams.set("pageSize", pageSize);
-    }
-    if (statusFilter) {
-        searchParams.set("status", statusFilter);
-    }
-    if (assignmentFilter) {
-        searchParams.set("assignment", assignmentFilter);
-    }
-    if (reviewerAssignmentFilter) {
-        searchParams.set("reviewerAssignment", reviewerAssignmentFilter);
-    }
-    if (sortDirection) {
-        searchParams.set("sortDirection", sortDirection);
-    }
-
-    return `${location.pathname}?${searchParams.toString()}`;
-};
 
 export const buildLinkToCategoriesList = (libraryId, page, pageSize, query) => {
     let querystring = "";

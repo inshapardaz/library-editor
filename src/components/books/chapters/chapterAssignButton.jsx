@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 // UI Library Imprort
 import { useField } from '@mantine/form';
@@ -12,6 +13,7 @@ import UserSelect from '@/components/userSelect';
 // ------------------------------------------------------
 
 const ChapterAssignButton = ({ libraryId, chapters = [], t, type, showIcon = true, onCompleted = () => { } }) => {
+    const user = useSelector(state => state.auth.user)
     const [assignChapters, { isLoading: isAssigning }] = useAssignChaptersMutation();
     const count = chapters ? chapters.length : 0;
 
@@ -28,7 +30,7 @@ const ChapterAssignButton = ({ libraryId, chapters = [], t, type, showIcon = tru
                 unassign: true
             } :
                 {
-                    accountId: value === "me" ? null : value,
+                    accountId: value === "me" ? user.id : value,
                 };
         }
 

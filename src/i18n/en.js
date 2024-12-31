@@ -209,6 +209,13 @@ const en = {
         Completed: "Completed",
         All: "All",
     },
+    assignmentStatus: {
+        all: "All",
+        assignedToMe: "Assigned to me",
+        assigned: "Assigned",
+        unassigned: "Unassigned",
+        allStatuses: "All Statuses",
+    },
     profile: {
         title: "Profile",
     },
@@ -547,6 +554,160 @@ const en = {
             newContents: "New chapter contents being created.",
             unsavedContents:
                 "Unsaved changed found for this chapter. Would you like to continue editing it?",
+        },
+    },
+    pages: {
+        title: "Pages",
+        label: "Page {{sequenceNumber}}",
+        errors: {
+            loading: {
+                title: "Error",
+                subTitle: "Unable to load pages.",
+            },
+        },
+        empty: {
+            title: "No page found",
+        },
+        assignment: {
+            all: "All",
+            mine: "Assigned to me",
+            assigned: "Assigned",
+            unassigned: "Unassigned",
+            allStatuses: "All Statuses",
+        },
+        filters: {
+            all: "All",
+            availableToType: "Available",
+            typing: "Typing",
+            typed: "Typed",
+            proofreading: "Proofreading",
+            completed: "Completed",
+        },
+        actions: {
+            upload: {
+                label: "Upload",
+                title: "Upload pages for {{book}}",
+                message:
+                    "Click or drag book page images  to this area to upload",
+                detail: "You can upload JPG, PNG files. Any file added here will be uploaded in to book in the sequence so please select pages in book sequence.",
+                success: "Pages created successfully.",
+                error: "Error creating pagers.",
+            },
+            autoFillChapter: {
+                title: "Auto fill page chapters",
+                message:
+                    "Set Chapter of first page of every chapter. Using this option will automatically set the chapters for remaining pages. This will overwrite any page chapter already set. Would you like to continue?",
+            },
+        },
+    },
+    page: {
+        sequenceNumber: {
+            title: "Sequence Number",
+            placeholder: "Page Sequence Number",
+            required: "Sequence Number is required.",
+        },
+        status: {
+            title: "Status",
+            required: "Status is required.",
+            placeholder: "Select status",
+        },
+        chapter: {
+            label: "Chapter",
+            required: "Chapter is required.",
+            placeholder: "Select chapter",
+        },
+        user: {
+            label: "User",
+            placeholder: "Select user",
+            required: "User is required",
+        },
+        label: "Page {{sequenceNumber}}",
+        actions: {
+            add: {
+                label: "Add new page",
+                title: "New page",
+                success: "Page created successfully.",
+                error: "Error creating page.",
+            },
+            edit: {
+                title: "Editing page {{sequenceNumber}}",
+                success: "Page saved successfully.",
+                error: "Error saving page.",
+            },
+            assign: {
+                title: "Assign pages?",
+                message: "Assign page(s)?",
+                success_one: "Page assigned successfully.",
+                success_other: "{{count}} pages assigned successfully.",
+                error_one: "Error assigning page.",
+                error_other: "Error assigning {{count}} pages.",
+            },
+            uploadImage: {
+                label: "Upload image",
+            },
+            uploadPage: {
+                label: "Upload new page",
+                title: "Upload page",
+                success: "Page created successfully.",
+                error: "Error creating page.",
+            },
+            uploadPdf: {
+                label: "Upload PDF",
+                title: "Upload PDF File",
+                success: "PDF uploaded successfully.",
+                error: "Error uploading pdf.",
+            },
+            uploadZip: {
+                label: "Upload Zip",
+                title: "Upload Zip File",
+                success: "Zip file uploaded successfully.",
+                error: "Error uploading zip file.",
+            },
+            updateStatus: {
+                title: "Updating Status",
+                success: "Page status updated successfully.",
+                error: "Error saving page statuses.",
+            },
+            delete: {
+                title: "Delete pages",
+                message: "Are you sure you want to delete pages?",
+                success: "Page deleted successfully.",
+                error: "Error deleting page.",
+            },
+            setChapter: {
+                title_one: "Setting Chapter",
+                title_other: "Setting Chapter for {{count}} pages",
+                message: "Are you sure you want to change chapter for page(s)?",
+                success: "Pages updated successfully.",
+                error: "Error updating pages.",
+            },
+            ocr: {
+                title_one: "Extract text for page",
+                title_other: "Extract text for {{count}} pages",
+                message:
+                    "Are you sure you want to extract text for page(s)? This will overwrite existing text for pages and cannot be recovered.",
+                success: "Text extraction successfully.",
+                error: "Error extracting text.",
+                key: {
+                    label: "OCR Key",
+                    description:
+                        "This key will be used to extract text from images.",
+                    required: "OCR Key is required.",
+                },
+                saveKey: {
+                    label: "Save OCR Key",
+                    description:
+                        "It will save this key locally on your computer for future use. No part of key information is stored on our servers. If you are using a public or shared computer, please do not save key.",
+                },
+            },
+            sequence: {
+                label: "Move page",
+                title: "Move page?",
+                message:
+                    "Please provide new sequence number for page '{{ sequenceNumber }}'?",
+                success: "Page moved successfully.",
+                error: "Error moving page.",
+            },
         },
     },
     author: {

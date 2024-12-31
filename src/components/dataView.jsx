@@ -22,6 +22,7 @@ import {
     Title
 } from "@mantine/core";
 import { getHotkeyHandler } from '@mantine/hooks';
+import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 
 // Local imports
 import { IconSearch } from '@/components/icons'
@@ -84,24 +85,35 @@ const DataView = ({
     isError = false,
     errorTitle = '',
     errorDetail = '',
+    onReload = () => { },
+    actions = null,
+    //Draggable
+    draggable = false,
+    droppableId = null,
+    onOrderChanged = () => { },
+    //View
     showViewToggle = true,
+    defaultViewType = "card",
     viewToggleKey,
+    //Search
     showSearch,
     searchValue,
-    showPagination = true,
-    extraFilters = null,
     onSearchChanged = () => { },
+    //Pagination
+    showPagination = true,
+    onPageChanged = () => { },
+    //Filters
+    extraFilters = null,
+    //Render
     cardRender = () => null,
     listItemRender = () => null,
-    onReload = () => { },
-    onPageChanged = () => { },
     cols = { base: 1, sm: 2, md: 3, lg: 4 },
     spacing = { base: 10, sm: 'xl' },
     verticalSpacing = { base: 'md', sm: 'xl' }
 }) => {
     const [viewType, setViewType] = useLocalStorage({
         key: viewToggleKey,
-        defaultValue: 'card',
+        defaultValue: defaultViewType,
     });
 
     const toggleViewType = () =>
@@ -143,14 +155,14 @@ const DataView = ({
                 detail={errorDetail}
                 onRetry={onReload} />)
     } else if (dataSource && dataSource.data.length > 0) {
-        if (viewType == 'card') {
+        if (viewType === 'card') {
             content = (<Stack>
                 <SimpleGrid
                     cols={cols}
                     spacing={spacing}
                     verticalSpacing={verticalSpacing}
                 >
-                    {dataSource.data.map(item => cardRender(item))}
+                    {dataSource.data.map((item, index) => cardRender(item, index))}
                 </SimpleGrid>
                 <If condition={showPagination}>
                     <Center>
@@ -164,7 +176,7 @@ const DataView = ({
                     <Stack align="stretch"
                         justify="center"
                         gap="md">
-                        {dataSource.data.map(item => listItemRender(item))}
+                        {dataSource.data.map((item, index) => listItemRender(item, index))}
                     </Stack>
                     <If condition={showPagination}>
                         <Center>
@@ -177,9 +189,12 @@ const DataView = ({
         content = (<Center h={100}><Text>{emptyText}</Text></Center>)
     }
     return (<>
-        <Grid>
+        <Grid mt="md">
             <Grid.Col span="auto">
                 <Title order={3}>{title}</Title>
+                <If condition={actions}>
+                    {actions}
+                </If>
             </Grid.Col>
             <Grid.Col span="auto"></Grid.Col>
             <Grid.Col span="contents" visibleFrom="sm">
@@ -210,7 +225,19 @@ const DataView = ({
             </Grid.Col>
         </Grid>
         <Divider my="sm" />
-        {content}
+        <If condition={draggable} elseChildren={content}>
+            <DragDropContext onDragEnd={onOrderChanged}>
+                <Droppable droppableId={droppableId} direction={viewType == 'card' ? "horizontal" : "vertical"}>
+                    {(provided) => (
+                        <div {...provided.droppableProps} ref={provided.innerRef}>
+                            {content}
+                            {provided.placeholder}
+                        </div>
+                    )}
+                </Droppable>
+            </DragDropContext>
+
+        </If>
     </>)
 }
 
@@ -228,7 +255,12 @@ DataView.propTypes = {
     isError: PropTypes.bool,
     errorTitle: PropTypes.string,
     errorDetail: PropTypes.string,
+    actions: PropTypes.any,
+    draggable: PropTypes.bool,
+    droppableId: PropTypes.string,
+    onOrderChanged: PropTypes.func,
     showViewToggle: PropTypes.bool,
+    defaultViewType: PropTypes.string,
     viewToggleKey: PropTypes.string,
     extraFilters: PropTypes.any,
     showSearch: PropTypes.bool,

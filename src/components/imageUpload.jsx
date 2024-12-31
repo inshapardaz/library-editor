@@ -10,7 +10,7 @@ import Img from '@/components/img';
 import { useState } from 'react';
 
 //--------------------------------
-const ImageUpload = ({ t, src, alt, fallback, onChange, ...props }) => {
+const ImageUpload = ({ t, src, alt, fallback, onChange, height = rem(400), width = "auto", fit = "contain", ...props }) => {
     const [file, setFile] = useState(null);
 
     const getImage = () => {
@@ -43,11 +43,11 @@ const ImageUpload = ({ t, src, alt, fallback, onChange, ...props }) => {
 
         <Img
             src={getImage()}
-            h={rem(400)}
-            w="auto"
+            h={height}
+            w={width}
             radius="md"
             alt={alt}
-            fit='contain'
+            fit={fit}
             fallback={fallback}
         />
     </Dropzone>)
@@ -59,5 +59,8 @@ ImageUpload.propTypes = {
     src: PropTypes.string,
     fallback: PropTypes.any,
     onChange: PropTypes.func,
+    height: PropTypes.any,
+    width: PropTypes.any,
+    fit: PropTypes.string,
 };
 export default ImageUpload;

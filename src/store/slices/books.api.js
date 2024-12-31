@@ -98,18 +98,25 @@ export const booksApi = createApi({
                 libraryId,
                 bookId,
                 status = "Typing",
-                assignment = null,
+                writerAssignmentFilter = null,
                 reviewerAssignmentFilter = null,
                 pageNumber = 1,
                 pageSize = 12,
+                sortDirection
             }) => {
-                let queryVal = `?pageNumber=${pageNumber}&pageSize=${pageSize}${status ? `&status=${status}` : ""
-                    }${assignment ? `&assignmentFilter=${assignment}` : ""}${reviewerAssignmentFilter
-                        ? `&reviewerAssignmentFilter=${reviewerAssignmentFilter}`
-                        : ""
-                    }`;
+                let queryVal = status ? `&status=${status}` : "";
+                if (writerAssignmentFilter) {
+                    queryVal += `&assignmentFilter=${writerAssignmentFilter}`;
+                }
+                if (reviewerAssignmentFilter) {
+                    queryVal += `&reviewerAssignmentFilter=${reviewerAssignmentFilter}`;
+                }
+                if (sortDirection) {
+                    queryVal += `&sortDirection=${sortDirection}`;
+                }
+
                 return {
-                    url: `/libraries/${libraryId}/books/${bookId}/pages${queryVal}`,
+                    url: `/libraries/${libraryId}/books/${bookId}/pages?pageNumber=${pageNumber}&pageSize=${pageSize}${queryVal}`,
                 };
             },
             transformResponse: (response) => parseResponse(response),
@@ -500,19 +507,17 @@ export const booksApi = createApi({
 export const {
     useGetBooksQuery,
     useGetBookQuery,
-    useGetBookChaptersQuery,
-    useGetChapterQuery,
-    useGetChapterContentsQuery,
-    useGetBookPagesQuery,
-    useGetBookPageQuery,
     useAddBookToFavoriteMutation,
     useRemoveBookFromFavoriteMutation,
-
     useAddBookMutation,
     useUpdateBookMutation,
     useDeleteBookMutation,
     usePublishBookMutation,
     useUpdateBookImageMutation,
+    // Book Chapter
+    useGetBookChaptersQuery,
+    useGetChapterQuery,
+    useGetChapterContentsQuery,
     useAddChapterMutation,
     useUpdateChapterMutation,
     useUpdateChaptersMutation,
@@ -520,6 +525,9 @@ export const {
     useAssignChapterMutation,
     useAssignChaptersMutation,
     useUpdateChapterSequenceMutation,
+    // Book Page
+    useGetBookPagesQuery,
+    useGetBookPageQuery,
     useAddBookPageMutation,
     useUpdateBookPageMutation,
     useUpdateBookPagesMutation,
@@ -532,6 +540,7 @@ export const {
     useUpdateBookPageImageMutation,
     useUpdateBookPageSequenceMutation,
     useCreateBookPageWithImageMutation,
+    // Book Contents
     useAddBookContentMutation,
     useUpdateBookContentMutation,
     useDeleteBookContentMutation,

@@ -27,7 +27,7 @@ const getIcon = (request) => {
         case ProcessStatus.Failed:
             return <IconFailed style={{ color: 'red' }} />;
         default:
-            return null;
+            return <IconBusy />;
     }
 }
 // -------------------------------------------
@@ -36,11 +36,12 @@ const RequestList = ({ requests, itemTitleFunc, itemDescriptionFunc }) => {
     return (
         <List>
             {requests.map(request => (
-                <List.Item key={request.id} icon={<Avatar size={32} icon={getIcon(request)} />}>
+                <List.Item key={request.id} icon={<Avatar size={32}>{getIcon(request)}</Avatar>}>
                     {itemTitleFunc ? itemTitleFunc(request.data) : request.id}
                     {itemDescriptionFunc && itemDescriptionFunc(request.data)}
-                </List.Item>))}
-        </List>);
+                </List.Item>))
+            }
+        </List >);
 }
 
 RequestList.propTypes = {
@@ -171,7 +172,7 @@ const BatchActionDrawer = ({
 
             setRequests(mappedRequests);
         }
-    }, [open, items, busy]);
+    }, [open, items]);
 
     return (
         <>

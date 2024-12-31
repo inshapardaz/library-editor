@@ -98,7 +98,13 @@ const IconNames = {
     Error: "error",
     Writer: "writer",
     Reviewer: "reviewer",
-    Status: "status"
+    Status: "status",
+    Image: "image",
+    User: "user",
+    AssignAll: "assignAll",
+    AssignMe: "assignMe",
+    AssignAssigned: "assignAssigned",
+    AssignUnassigned: "assignUnassigned",
 };
 
 export default IconNames;

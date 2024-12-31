@@ -103,7 +103,13 @@ const iconTheme = {
         error: "exclamation-circle",
         writer: "user-edit",
         reviewer: "user-check",
-        status: "status-change"
+        status: "status-change",
+        image: "photo",
+        user: "user",
+        assignAll: "users-group",
+        assignMe: "user-filled",
+        assignAssigned: "users",
+        assignUnassigned: "user-off",
     }
 };
 //-------------------------------------
@@ -147,6 +153,7 @@ export const IconWorld = (props) => getIcon(IconNames.World, props)
 export const IconLanguage = (props) => getIcon(IconNames.Language, props)
 export const IconCopyright = (props) => getIcon(IconNames.Copyright, props)
 export const IconPages = (props) => getIcon(IconNames.Pages, props)
+export const IconImage = (props) => getIcon(IconNames.Image, props)
 export const IconPublisher = (props) => getIcon(IconNames.Publisher, props)
 export const IconChapters = (props) => getIcon(IconNames.Chapters, props)
 export const IconArrowLeft = (props) => getIcon(IconNames.ArrowLeft, props)
@@ -212,7 +219,11 @@ export const IconError = (props) => getIcon(IconNames.Error, props)
 export const IconWriter = (props) => getIcon(IconNames.Writer, props)
 export const IconReviewer = (props) => getIcon(IconNames.Reviewer, props)
 export const IconStatus = (props) => getIcon(IconNames.Status, props)
-
+export const IconUser = (props) => getIcon(IconNames.User, props)
+export const IconAssignAll = (props) => getIcon(IconNames.AssignAll, props)
+export const IconAssignMe = (props) => getIcon(IconNames.AssignMe, props)
+export const IconAssignAssigned = (props) => getIcon(IconNames.AssignAssigned, props)
+export const IconAssignUnassigned = (props) => getIcon(IconNames.AssignUnassigned, props)
 
 export const Icon = ({ name, ...rest }) => <IconifyIcon icon={getIconName(name)} {...rest} />
 
