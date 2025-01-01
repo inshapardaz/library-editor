@@ -89,6 +89,7 @@ const IconNames = {
     Delete: "delete",
     GripVertical: "gripVertical",
     Files: "files",
+    File: "file",
     Assign: "assign",
     Upload: "upload",
     Busy: "busy",
@@ -105,6 +106,13 @@ const IconNames = {
     AssignMe: "assignMe",
     AssignAssigned: "assignAssigned",
     AssignUnassigned: "assignUnassigned",
+    UploadAccept: "uploadAccept",
+    UploadReject: "uploadReject",
+    UplaodDocument: "uplaodDocument",
+    FilePdf: "filePdf",
+    FileWord: "fileWord",
+    DownloadDocument: "downloadDocument",
+    ProcessDocument: "processDocument"
 };
 
 export default IconNames;

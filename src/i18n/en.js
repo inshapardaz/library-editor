@@ -347,7 +347,16 @@ const en = {
         publishLabel: "Published in {{year}}",
         isPublic: "Public Book",
         pages: "Pages",
-        files: "Files",
+        files: {
+            title: "Files",
+            empty: {
+                title: "No file found",
+            },
+            upload: {
+                title: "Drag images here or click to select files",
+                message: "Attach as many files as you like, each file should not exceed 100mb",
+            }
+        },
         actions: {
             addFavorite: {
                 success: 'Book added to favorites.',
@@ -386,10 +395,13 @@ const en = {
                 title: "Upload file",
                 success: "File uploadedsuccessfully.",
                 error: "Error uploading file.",
+                invalidFileTypeError: "Unacceptable file type. You can upload PDF or Word Documents"
             },
             deleteFile: {
                 title: "Delete file?",
                 message: "Are you sure you want to delete book '{{title}}'?.",
+                success: "File deleted successfully.",
+                error: "Error deleting file",
             },
             downloadFile: {
                 title: "Download file",

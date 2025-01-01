@@ -94,6 +94,7 @@ const iconTheme = {
         delete: "trash",
         gripVertical: "grip-vertical",
         files: "files",
+        file: "file",
         assign: "user-bolt",
         upload: "file-upload",
         busy: "hourglass-empty",
@@ -110,6 +111,13 @@ const iconTheme = {
         assignMe: "user-filled",
         assignAssigned: "users",
         assignUnassigned: "user-off",
+        uplaodDocument: "file-upload",
+        uploadAccept: "upload",
+        uploadReject: "x",
+        filePdf: "file-type-pdf",
+        fileWord: "file-word",
+        downloadDocument: "file-download",
+        processDocument: "file-settings"
     }
 };
 //-------------------------------------
@@ -224,6 +232,12 @@ export const IconAssignAll = (props) => getIcon(IconNames.AssignAll, props)
 export const IconAssignMe = (props) => getIcon(IconNames.AssignMe, props)
 export const IconAssignAssigned = (props) => getIcon(IconNames.AssignAssigned, props)
 export const IconAssignUnassigned = (props) => getIcon(IconNames.AssignUnassigned, props)
+export const IconDownloadDocument = (props) => getIcon(IconNames.DownloadDocument, props)
+export const IconUplaodDocument = (props) => getIcon(IconNames.UplaodDocument, props)
+export const IconUploadAccept = (props) => getIcon(IconNames.UploadAccept, props)
+export const IconUploadReject = (props) => getIcon(IconNames.UploadReject, props)
+export const IconProcessDocument = (props) => getIcon(IconNames.ProcessDocument, props)
+
 
 export const Icon = ({ name, ...rest }) => <IconifyIcon icon={getIconName(name)} {...rest} />
 

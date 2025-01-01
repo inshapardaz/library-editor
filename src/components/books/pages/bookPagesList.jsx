@@ -57,7 +57,7 @@ const BookPagesList = ({ libraryId, book, isLoading,
         reviewerAssignmentFilter: reviewerAssignmentFilter,
         pageNumber: pageNumber,
         pageSize: pageSize,
-    }, { skip: isLoading === false || !libraryId || book === null || book?.id === null });
+    }, { skip: isLoading || !libraryId || book === null || book?.id === null });
 
     const [updateBookPageSequence, { isLoading: isUpdatingSequence }] =
         useUpdateBookPageSequenceMutation();
@@ -232,7 +232,7 @@ BookPagesList.propTypes = {
             percentage: PropTypes.number
         })),
     }),
-    isLoading: PropTypes.object,
+    isLoading: PropTypes.bool,
     writerAssignmentFilter: PropTypes.string,
     reviewerAssignmentFilter: PropTypes.string,
     sortBy: PropTypes.string,

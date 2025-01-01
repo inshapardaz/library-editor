@@ -37,7 +37,7 @@ const BookChaptersList = ({ libraryId, book, isLoading }) => {
     } = useGetBookChaptersQuery({
         libraryId,
         bookId: book?.id
-    }, { skip: isLoading === false || !libraryId || book === null || book?.id === null });
+    }, { skip: isLoading || !libraryId || book === null || book?.id === null });
 
     const [updateChapterSequence, { isLoading: isUpdatingSequence }] =
         useUpdateChapterSequenceMutation();
@@ -184,7 +184,7 @@ BookChaptersList.propTypes = {
         pageCount: PropTypes.number,
         chapterCount: PropTypes.number,
     }),
-    isLoading: PropTypes.object
+    isLoading: PropTypes.bool
 };
 
 export default BookChaptersList;

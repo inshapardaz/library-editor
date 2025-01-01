@@ -35,6 +35,7 @@ import Error from '@/components/error';
 import If from '@/components/if';
 import { IconBook, IconEditBook, IconPages, IconChapters, IconFiles } from '@/components/icons';
 import IconNames from '@/components/iconNames'
+import BookFilesList from '@/components/books/files/bookFilesList';
 //------------------------------------------------------
 
 const PRIMARY_COL_HEIGHT = rem(300);
@@ -160,16 +161,16 @@ const BookPage = () => {
                                     {t('book.pages')}
                                 </Tabs.Tab>
                                 <Tabs.Tab value="files" leftSection={<IconFiles style={{ color: theme.colors.dark[3] }} />}>
-                                    {t('book.files')}
+                                    {t('book.files.title')}
                                 </Tabs.Tab>
                             </Tabs.List>
 
                             <Tabs.Panel value="chapters">
-                                <BookChaptersList libraryId={libraryId} book={book} isLoading={{ loadingBook }} />
+                                <BookChaptersList libraryId={libraryId} book={book} isLoading={loadingBook} />
                             </Tabs.Panel>
 
                             <Tabs.Panel value="pages">
-                                <BookPagesList libraryId={libraryId} book={book} isLoading={{ loadingBook }}
+                                <BookPagesList libraryId={libraryId} book={book} isLoading={loadingBook}
                                     writerAssignmentFilter={writerAssignmentFilter}
                                     reviewerAssignmentFilter={reviewerAssignmentFilter}
                                     sortDirection={sortDirection}
@@ -180,7 +181,7 @@ const BookPage = () => {
                             </Tabs.Panel>
 
                             <Tabs.Panel value="files">
-                                File tab content
+                                <BookFilesList libraryId={libraryId} book={book} isLoading={loadingBook} />
                             </Tabs.Panel>
                         </Tabs>
                     </Card>

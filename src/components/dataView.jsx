@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocalStorage } from '@mantine/hooks';
 import {
     ActionIcon,
+    Box,
     Center,
     CloseButton,
     Divider,
@@ -87,6 +88,8 @@ const DataView = ({
     errorDetail = '',
     onReload = () => { },
     actions = null,
+    footer = null,
+
     //Draggable
     draggable = false,
     droppableId = null,
@@ -236,7 +239,11 @@ const DataView = ({
                     )}
                 </Droppable>
             </DragDropContext>
-
+        </If>
+        <If condition={footer}>
+            <Box mt="md">
+                {footer}
+            </Box>
         </If>
     </>)
 }
@@ -256,6 +263,7 @@ DataView.propTypes = {
     errorTitle: PropTypes.string,
     errorDetail: PropTypes.string,
     actions: PropTypes.any,
+    footer: PropTypes.any,
     draggable: PropTypes.bool,
     droppableId: PropTypes.string,
     onOrderChanged: PropTypes.func,

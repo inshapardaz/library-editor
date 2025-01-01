@@ -11,8 +11,8 @@ const IconText = ({ text, icon, link, onClick, tooltip, size = 'md', type = 'dim
 
     if (link) {
         if (tooltip) {
-            return (<Tooltip label={tooltip} {...props}>
-                <Group wrap='nowrap' component={Link} to={link} gap="sm" style={{ textDecoration: 'none' }}>
+            return (<Tooltip label={tooltip}>
+                <Group wrap='nowrap' component={Link} to={link} gap="sm" style={{ textDecoration: 'none' }} {...props}>
                     {icon}
                     <Text truncate="end" c={type} size={size}>{text}</Text>
                 </Group>
