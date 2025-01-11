@@ -63,10 +63,7 @@ const BookFileListItem = ({ t, libraryId, book, content }) => {
             <span style={{ flex: 1 }}></span>
             <If condition={content.links.update}>
                 <Tooltip title={t('book.actions.addFile.title')}>
-                    <FileButton onChange={uploadFile} onReject={() => notifications.show({
-                        color: 'red',
-                        title: t("book.actions.addFile.invalidFileTypeError")
-                    })}
+                    <FileButton onChange={uploadFile}
                         maxSize={100 * 1024 ** 2}
                         accept={[IMAGE_MIME_TYPE, PDF_MIME_TYPE, MS_WORD_MIME_TYPE]}>
                         {(props) => <ActionIcon {...props} disabled={isUpdating} variant='subtle' color='gray' >

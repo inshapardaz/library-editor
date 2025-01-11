@@ -20,7 +20,7 @@ const SortMenu = ({ options = [], value = "name", onChange = () => { } }) => {
     </Menu.Item>);
 
     const selectedOption = options.find(o => o.value === value) ?? options[0];
-    return (<Menu shadow="md" width={200} opened={opened} onChange={setOpened}>
+    return (<Menu shadow="md" width={200} opened={opened} onChange={setOpened} transitionProps={{ transition: 'scale-y', duration: 150 }}>
         <Menu.Target>
             <Button variant='default' leftSection={<IconSort />} rightSection={<IconChevronUp style={{
                 transform: opened ? "rotate(0)" : "rotate(180deg)",

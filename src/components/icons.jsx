@@ -98,7 +98,7 @@ const iconTheme = {
         assign: "user-bolt",
         upload: "file-upload",
         busy: "hourglass-empty",
-        done: "circle-check",
+        done: "check",
         failed: "circle-x",
         loading: "loader-2",
         error: "exclamation-circle",
@@ -117,7 +117,36 @@ const iconTheme = {
         filePdf: "file-type-pdf",
         fileWord: "file-word",
         downloadDocument: "file-download",
-        processDocument: "file-settings"
+        processDocument: "file-settings",
+        save: "device-floppy",
+        undo: "rotate",
+        redo: "rotate-clockwise",
+        h1: "h-1",
+        h2: "h-2",
+        h3: "h-3",
+        h4: "h-4",
+        h5: "h-5",
+        h6: "h-6",
+        listBullet: "list",
+        listNumbers: "list-numbers",
+        paragraph: "mist",
+        quote: "quote",
+        code: "code",
+        alignLeft: "align-left",
+        alignRight: "align-right",
+        alignJustified: "align-justified",
+        alignCenter: "align-center",
+        bold: "bold",
+        italic: "italic",
+        underline: "underline",
+        strikethrough: "strikethrough",
+        subScript: "subscript",
+        superScript: "superscript",
+        fontSize: "text-size",
+        link: "link",
+        upperCase: "letter-case-upper",
+        lowerCase: "letter-case-lower",
+        capitalize: "letter-case",
     }
 };
 //-------------------------------------
@@ -238,6 +267,38 @@ export const IconUploadAccept = (props) => getIcon(IconNames.UploadAccept, props
 export const IconUploadReject = (props) => getIcon(IconNames.UploadReject, props)
 export const IconProcessDocument = (props) => getIcon(IconNames.ProcessDocument, props)
 
+//Editor
+export const IconSave = (props) => getIcon(IconNames.Save, props)
+export const IconUndo = (props) => getIcon(IconNames.Undo, props)
+export const IconRedo = (props) => getIcon(IconNames.Redo, props)
+export const IconH1 = (props) => getIcon(IconNames.H1, props)
+export const IconH2 = (props) => getIcon(IconNames.H2, props)
+export const IconH3 = (props) => getIcon(IconNames.H3, props)
+export const IconH4 = (props) => getIcon(IconNames.H4, props)
+export const IconH5 = (props) => getIcon(IconNames.H5, props)
+export const IconH6 = (props) => getIcon(IconNames.H6, props)
+export const IconListBullet = (props) => getIcon(IconNames.ListBullet, props)
+export const IconListNumber = (props) => getIcon(IconNames.ListNumbers, props)
+export const IconParagraph = (props) => getIcon(IconNames.Paragraph, props)
+export const IconQuote = (props) => getIcon(IconNames.Quote, props)
+export const IconCode = (props) => getIcon(IconNames.Code, props)
+export const IconAlignLeft = (props) => getIcon(IconNames.AlignLeft, props)
+export const IconAlignRight = (props) => getIcon(IconNames.AlignRight, props)
+export const IconAlignJustified = (props) => getIcon(IconNames.AlignJustified, props)
+export const IconAlignCenter = (props) => getIcon(IconNames.AlignCenter, props)
+
+export const IconBold = (props) => getIcon(IconNames.Bold, props)
+export const IconItalic = (props) => getIcon(IconNames.Italic, props)
+export const IconUnderline = (props) => getIcon(IconNames.Underline, props)
+export const IconStrikethrough = (props) => getIcon(IconNames.Strikethrough, props)
+export const IconSubScript = (props) => getIcon(IconNames.SubScript, props)
+export const IconSuperScript = (props) => getIcon(IconNames.SuperScript, props)
+export const IconFontSize = (props) => getIcon(IconNames.FontSize, props)
+export const IconLink = (props) => getIcon(IconNames.Link, props)
+
+export const IconUpperCase = (props) => getIcon(IconNames.LowerCase, props)
+export const IconLowerCase = (props) => getIcon(IconNames.UpperCase, props)
+export const IconCapitalize = (props) => getIcon(IconNames.Capitalize, props)
 
 export const Icon = ({ name, ...rest }) => <IconifyIcon icon={getIconName(name)} {...rest} />
 

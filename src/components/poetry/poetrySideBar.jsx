@@ -70,7 +70,7 @@ const PoetrySidebar = ({ selectedCategory, favorite, read }) => {
             to={`/libraries/${libraryId}/poetry`}
             label={t('poetries.all')}
             active={!selectedCategory && !favorite && !read}
-            leftPortry={<IconPoetries style={{ color: theme.colors.blue[9] }} />}
+            leftSection={<IconPoetries style={{ color: theme.colors.blue[9] }} />}
         />
         <Divider />
         {
