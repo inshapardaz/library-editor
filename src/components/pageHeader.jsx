@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 // Ui library import
-import { Anchor, Box, Breadcrumbs, Divider, Flex, Group, Image, rem, Skeleton, Spoiler, Stack, Text, Title, useMantineTheme } from '@mantine/core';
+import { Anchor, Box, Breadcrumbs, Divider, Flex, Group, Image, Menu, rem, Skeleton, Spoiler, Stack, Text, Title, useMantineTheme } from '@mantine/core';
 
 // Local import
 import If from '@/components/if';
-import { Icon } from './icons';
-import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import { Icon, IconChevronUp, IconTick } from './icons';
 //----------------------------------
 export const PageHeaderSkeleton = () => {
     return (<Flex
@@ -28,13 +28,74 @@ export const PageHeaderSkeleton = () => {
 }
 
 //----------------------------------
+const BreadcrumbsMenu = ({ index, item }) => {
+    const [opened, setOpened] = useState(false);
+    return (<Menu key={`breadcrumb-${index}`} opened={opened} onChange={setOpened} transitionProps={{ transition: 'scale-y', duration: 150 }}>
+        <Menu.Target>
+            <Anchor key={`breadcrumb-${index}`} underline="hover" c="dimmed">
+                <Group wrap='nowrap' gap='xs'>
+                    <If condition={item.icon}>
+                        <Icon name={item.icon} height={16} />
+                    </If>
+                    {item.title}
+                    <IconChevronUp style={{
+                        transform: opened ? "rotate(0)" : "rotate(180deg)",
+                        transitionDuration: "250ms"
+                    }} />
+                </Group>
+            </Anchor>
+        </Menu.Target>
+        <Menu.Dropdown>
+            {item.items.map(v => (
+                <Menu.Item key={v.value}
+                    component={Link} to={v.href}
+                    disabled={v.selected}
+                    leftSection={<Icon name={v.icon} l height={16} />}
+                    rightSection={v.selected ? <IconTick height={16} /> : null}>
+                    {v.title}
+                </Menu.Item>))}
+        </Menu.Dropdown>
+    </Menu>
+    );
+}
+BreadcrumbsMenu.propTypes = {
+    index: PropTypes.number,
+    item: PropTypes.shape({
+        title: PropTypes.string,
+        icon: PropTypes.string,
+        items: PropTypes.arrayOf(PropTypes.shape({
+            title: PropTypes.string,
+            href: PropTypes.string,
+            icon: PropTypes.string,
+        }))
+    }),
+}
+//----------------------------------
 const PageHeader = ({ title, subTitle, details, imageLink, defaultIcon, breadcrumbs = [], actions = [] }) => {
     const { t } = useTranslation();
     const theme = useMantineTheme();
     const [imgError, setImgError] = useState(false);
 
+    const renderBreadcrumb = () => {
+        return breadcrumbs.map((item, index) => {
+            if (item.items) {
+                return (<BreadcrumbsMenu key={`breadcrumb-${index}`} item={item} index={index} />);
+            }
+            return (
+                <Anchor component={Link} to={item.href} key={`breadcrumb-${index}`} underline="hover" c="dimmed">
+                    <Group wrap='nowrap' gap='xs'>
+                        <If condition={item.icon}>
+                            <Icon name={item.icon} l height={16} />
+                        </If>
+                        {item.title}
+                    </Group>
+                </Anchor>
+            );
+        })
+    }
     return (<Flex
         mih={50}
+        m="md"
         gap="sm"
         justify="flex-start"
         align="flex-end"
@@ -65,24 +126,15 @@ const PageHeader = ({ title, subTitle, details, imageLink, defaultIcon, breadcru
         </Stack>
         <span style={{ flex: '1' }} />
         <Stack>
-            <If condition={breadcrumbs}>
-                <Breadcrumbs>
-                    {breadcrumbs.map((item, index) => (
-                        <Anchor component={Link} to={item.href} key={`breadcrumb-${index}`} underline="hover" c="dimmed">
-                            <Group wrap='nowrap' gap='xs'>
-                                <If condition={item.icon}>
-                                    <Icon name={item.icon} l height={16} />
-                                </If>
-                                {item.title}
-                            </Group>
-                        </Anchor>
-                    ))}
-                </Breadcrumbs>
-            </If>
             <If condition={actions}>
                 <Group justify="flex-end">
                     {actions}
                 </Group>
+            </If>
+            <If condition={breadcrumbs}>
+                <Breadcrumbs>
+                    {renderBreadcrumb()}
+                </Breadcrumbs>
             </If>
         </Stack>
         <If condition={details}>

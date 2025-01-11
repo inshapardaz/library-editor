@@ -11,7 +11,7 @@ import EditingStatusSelect from '@/components/editingStatusSelect';
 
 // ------------------------------------------------------
 
-const ChapterStatusButton = ({ chapters = [], t, type, showIcon = true, onCompleted = () => { } }) => {
+const ChapterStatusButton = ({ chapters = [], t, type, buttonSize, showIcon = true, onCompleted = () => { } }) => {
     const [updateChapters, { isLoading: isUpdating }] = useUpdateChaptersMutation();
     const count = chapters ? chapters.length : 0;
 
@@ -39,6 +39,7 @@ const ChapterStatusButton = ({ chapters = [], t, type, showIcon = true, onComple
         <BatchActionDrawer t={t}
             tooltip={t('chapter.actions.updateStatus.label')}
             buttonType={type}
+            buttonSize={buttonSize}
             disabled={count === 0}
             icon={showIcon && <IconStatus />}
             sliderTitle={t("chapter.actions.updateStatus.title", { count })}
@@ -63,6 +64,7 @@ ChapterStatusButton.propTypes = {
     t: PropTypes.any,
     libraryId: PropTypes.string,
     type: PropTypes.string,
+    buttonSize: PropTypes.string,
     showIcon: PropTypes.bool,
     chapters: PropTypes.arrayOf(
         PropTypes.shape({

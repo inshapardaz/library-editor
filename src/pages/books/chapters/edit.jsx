@@ -4,11 +4,11 @@ import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 // UI Library Import
-import { Alert, Box, Button, Center, Container, Grid, Group, LoadingOverlay, rem, Skeleton, Tooltip, useMantineTheme } from "@mantine/core";
+import { Alert, Box, Button, Container, Grid, Group, LoadingOverlay, rem, Skeleton, Tooltip } from "@mantine/core";
 import { notifications } from '@mantine/notifications';
 
 // Local Imports
-import { useGetBookQuery, useGetChapterQuery, useUpdateChapterMutation, useGetChapterContentsQuery } from '@/store/slices/books.api';
+import { useGetBookQuery, useGetBookChaptersQuery, useGetChapterQuery, useUpdateChapterMutation, useGetChapterContentsQuery } from '@/store/slices/books.api';
 import { selectedLanguage } from "@/store/slices/uiSlice";
 
 import {
@@ -17,7 +17,7 @@ import {
 } from '@/domain/book.service'
 import PageHeader from "@/components/pageHeader";
 import IconNames from '@/components/iconNames';
-import { IconAdd, IconLeft, IconRight, IconDone, IconChapters } from "@/components/icons";
+import { IconAdd, IconLeft, IconRight, IconDone } from "@/components/icons";
 import Error from '@/components/error';
 import If from '@/components/if';
 import { EditingStatus } from '@/models';
@@ -29,10 +29,8 @@ import EditingStatusIcon from "@/components/editingStatusIcon";
 
 const PRIMARY_COL_HEIGHT = rem(300);
 
-
 const ChapterEditorPage = () => {
     const { t } = useTranslation();
-    const theme = useMantineTheme();
     const { libraryId, bookId, chapterNumber } = useParams();
     const lang = useSelector(selectedLanguage)
     const [contents, setContents] = useState('')
@@ -50,6 +48,16 @@ const ChapterEditorPage = () => {
         libraryId,
         bookId
     });
+
+    const {
+        data: chapters,
+        error: errorLoadingChapters,
+        isFetching: loadingChapters,
+        refetch: refetchChapters
+    } = useGetBookChaptersQuery({
+        libraryId,
+        bookId: book?.id
+    }, { skip: loadingBook || !libraryId || book === null || book?.id === null });
 
     const {
         data: chapter,
@@ -79,7 +87,6 @@ const ChapterEditorPage = () => {
     const isNewContent = useMemo(() => chapterContent && chapterContentError?.status === 404, [chapterContent, chapterContentError?.status]);
 
     useEffect(() => {
-        console.log(chapterContent?.text)
         if (chapterContent?.text) {
             setContents(chapterContent.text);
         } else {
@@ -88,7 +95,7 @@ const ChapterEditorPage = () => {
     }, [chapterContent, chapterContentError, loadingChapterContent]);
 
     const onEditorSave = (content) => {
-        if (isNewContent()) {
+        if (isNewContent) {
             setIsBusy(true)
             return addChapterContent({ chapter, language, payload: content })
                 .then(() => notifications.show({
@@ -141,7 +148,7 @@ const ChapterEditorPage = () => {
         (chapter.status === EditingStatus.Typing ||
             chapter.status === EditingStatus.InReview);
 
-    const actions = chapter ? <Group justify="flex-end" gap="xs" my="md">
+    const actions = chapter ? <Group justify="flex-end" gap="xs" mb="md">
         {showCompleteButton && (
             <Tooltip label={t("actions.done")}>
                 <Button onClick={onComplete} variant="outline" color="green">
@@ -151,6 +158,8 @@ const ChapterEditorPage = () => {
         )}
         {chapter && chapter.links.assign && (
             <ChapterAssignButton
+                type="default"
+                buttonSize="xs"
                 libraryId={libraryId}
                 chapters={[chapter]}
                 t={t}
@@ -159,19 +168,21 @@ const ChapterEditorPage = () => {
         )}
         {chapter && chapter.links.update && (
             <ChapterStatusButton
+                type="default"
+                buttonSize="xs"
                 libraryId={libraryId}
                 chapters={[chapter]}
                 t={t}
             />
         )}
         <Tooltip key="previous" label={t("actions.previous")}>
-            <Button variant="default" disabled={!chapter || !chapter.links.previous} component={Link}
+            <Button variant="default" size="xs" disabled={!chapter || !chapter.links.previous} component={Link}
                 to={`/libraries/${libraryId}/books/${bookId}/chapters/${chapter.chapterNumber - 1}/contents/edit`}>
                 {lang.isRtl ? <IconRight /> : <IconLeft />}
             </Button>
         </Tooltip>
         <Tooltip key="next" label={t("actions.next")}>
-            <Button variant="default" disabled={!chapter || !chapter.links.next} component={Link}
+            <Button variant="default" size="xs" disabled={!chapter || !chapter.links.next} component={Link}
                 to={`/libraries/${libraryId}/books/${bookId}/chapters/${chapter.chapterNumber + 1}/contents/edit`}>
                 {lang.isRtl ? <IconLeft /> : <IconRight />}
             </Button>
@@ -180,7 +191,7 @@ const ChapterEditorPage = () => {
 
     const SECONDARY_COL_HEIGHT = `calc(${PRIMARY_COL_HEIGHT} / 2 - var(--mantine-spacing-md) / 2)`;
 
-    if (loadingBook || loadingChapter || loadingChapterContent) {
+    if (loadingBook || loadingChapters || loadingChapter || loadingChapterContent) {
         return (<Container fluid mt="sm">
             <Grid
                 mih={50}
@@ -201,21 +212,21 @@ const ChapterEditorPage = () => {
         </Container>);
     }
 
-    if (errorLoadingBook || errorLoadingChapter) {
+    if (errorLoadingBook || errorLoadingChapters || errorLoadingChapter) {
         return (<Container fluid mt="sm">
             <Error title={t('chapter.error.loading.title')}
                 detail={t('chapter.error.loading.detail')}
                 onRetry={() => {
                     refetchBook();
+                    refetchChapters();
                     refetchChapter();
                 }} />
         </Container>)
     }
     const title = chapter ? chapter.title : t('chapter.actions.add.title');
-    const icon = <Center h={450}><IconChapters width={250} style={{ color: theme.colors.dark[1] }} /></Center>;
 
     return (<Container fluid mt="sm">
-        <PageHeader title={title} defaultIcon={icon}
+        <PageHeader title={title} defaultIcon={IconNames.Chapters}
             subTitle={
                 <Group visibleFrom='md'>
                     <EditingStatusIcon editingStatus={chapter.status} showText t={t} />
@@ -225,7 +236,15 @@ const ChapterEditorPage = () => {
                 { title: t('header.home'), href: `/libraries/${libraryId}`, icon: IconNames.Home },
                 { title: t('header.books'), href: `/libraries/${libraryId}/books`, icon: IconNames.Books },
                 { title: book.title, href: `/libraries/${libraryId}/books/${bookId}`, icon: IconNames.Book },
-                { title: t('book.chapters'), href: `/libraries/${libraryId}/books/${bookId}/chapters`, icon: IconNames.Chapters },
+                { title: t('book.chapters'), href: `/libraries/${libraryId}/books/${bookId}?section=chapters`, icon: IconNames.Chapters },
+                {
+                    title: chapter?.title, icon: IconNames.Chapters, items: chapters?.data?.map(c => ({
+                        title: c.title,
+                        href: `/libraries/${libraryId}/books/${bookId}/chapters/${c.chapterNumber}/contents/edit`,
+                        icon: IconNames.Chapters,
+                        selected: c.chapterNumber == chapterNumber
+                    }))
+                },
             ]}
             actions={actions}
         />

@@ -24,7 +24,7 @@ const LayoutWithHeaderAndFooter = () => {
                         <AppHeader />
                     }
                 </AppShell.Header>
-                <AppShell.Main pt={`calc(${rem(60)} + var(--mantine-spacing-md))`} pb='var(--mantine-spacing-md)' className="pageBackgound">
+                <AppShell.Main pt={rem(60)} pb='var(--mantine-spacing-md)' className="pageBackgound">
                     <Outlet />
                 </AppShell.Main>
                 <AppFooter />

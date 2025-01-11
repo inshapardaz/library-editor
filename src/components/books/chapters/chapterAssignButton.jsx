@@ -12,7 +12,7 @@ import UserSelect from '@/components/userSelect';
 
 // ------------------------------------------------------
 
-const ChapterAssignButton = ({ libraryId, chapters = [], t, type, showIcon = true, onCompleted = () => { } }) => {
+const ChapterAssignButton = ({ libraryId, chapters = [], t, type, buttonSize, showIcon = true, onCompleted = () => { } }) => {
     const user = useSelector(state => state.auth.user)
     const [assignChapters, { isLoading: isAssigning }] = useAssignChaptersMutation();
     const count = chapters ? chapters.length : 0;
@@ -41,6 +41,8 @@ const ChapterAssignButton = ({ libraryId, chapters = [], t, type, showIcon = tru
         <BatchActionDrawer t={t}
             tooltip={t('chapter.actions.assign.label')}
             buttonType={type}
+            buttonSize={buttonSize}
+            variant="default" size="xs"
             disabled={count === 0}
             icon={showIcon && <IconAssign />}
             sliderTitle={t("chapter.actions.assign.title", { count })}
@@ -68,6 +70,7 @@ ChapterAssignButton.propTypes = {
     t: PropTypes.any,
     libraryId: PropTypes.string,
     type: PropTypes.string,
+    buttonSize: PropTypes.string,
     showIcon: PropTypes.bool,
     chapters: PropTypes.arrayOf(
         PropTypes.shape({

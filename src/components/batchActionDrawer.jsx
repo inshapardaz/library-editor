@@ -61,6 +61,7 @@ const BatchActionDrawer = ({
     icon,
     tooltip,
     buttonType,
+    buttonSize,
     disabled,
     sliderTitle,
     placement = 'right',
@@ -179,6 +180,7 @@ const BatchActionDrawer = ({
             <Tooltip label={tooltip}>
                 <Button
                     variant={buttonType}
+                    size={buttonSize}
                     onClick={onShowDrawer}
                     disabled={disabled}
                     leftSection={title ? icon : null}
@@ -219,6 +221,7 @@ BatchActionDrawer.propTypes = {
     icon: PropTypes.node,
     tooltip: PropTypes.string,
     buttonType: PropTypes.string,
+    buttonSize: PropTypes.string,
     disabled: PropTypes.bool,
     sliderTitle: PropTypes.string,
     placement: PropTypes.string,
