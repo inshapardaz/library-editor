@@ -35,8 +35,7 @@ const PageHeader = ({ title, subTitle, details, imageLink, defaultIcon, breadcru
 
     return (<Flex
         mih={50}
-        m="md"
-        gap="md"
+        gap="sm"
         justify="flex-start"
         align="flex-end"
         direction="row"
@@ -59,27 +58,33 @@ const PageHeader = ({ title, subTitle, details, imageLink, defaultIcon, breadcru
         <Stack>
             <Group>
                 <Title order={2}>{title}</Title>
-                {actions}
             </Group>
             <If condition={subTitle}>
                 <Title order={4}>{subTitle}</Title>
             </If>
         </Stack>
         <span style={{ flex: '1' }} />
-        <If condition={breadcrumbs}>
-            <Breadcrumbs>
-                {breadcrumbs.map((item, index) => (
-                    <Anchor component={Link} to={item.href} key={`breadcrumb-${index}`} underline="hover" c="dimmed">
-                        <Group wrap='nowrap' gap='xs'>
-                            <If condition={item.icon}>
-                                <Icon name={item.icon} l height={16} />
-                            </If>
-                            {item.title}
-                        </Group>
-                    </Anchor>
-                ))}
-            </Breadcrumbs>
-        </If>
+        <Stack>
+            <If condition={breadcrumbs}>
+                <Breadcrumbs>
+                    {breadcrumbs.map((item, index) => (
+                        <Anchor component={Link} to={item.href} key={`breadcrumb-${index}`} underline="hover" c="dimmed">
+                            <Group wrap='nowrap' gap='xs'>
+                                <If condition={item.icon}>
+                                    <Icon name={item.icon} l height={16} />
+                                </If>
+                                {item.title}
+                            </Group>
+                        </Anchor>
+                    ))}
+                </Breadcrumbs>
+            </If>
+            <If condition={actions}>
+                <Group justify="flex-end">
+                    {actions}
+                </Group>
+            </If>
+        </Stack>
         <If condition={details}>
             <Box style={{ width: '100%' }}>
                 <Divider />

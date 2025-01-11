@@ -101,12 +101,11 @@ const Editor = ({ language, defaultValue, onSave = () => { }, onChange = () => {
     };
 
     // ---- State Management ------
-    const editorState =
-        defaultValue === EMPTY_CONTENT
-            ? configuration.format == EditorFormat.Markdown
-                ? " "
-                : EMPTY_CONTENT
-            : defaultValue === EMPTY_CONTENT;
+    const editorState = useMemo(() => !defaultValue || defaultValue === EMPTY_CONTENT
+        ? configuration.format == EditorFormat.Markdown
+            ? " "
+            : EMPTY_CONTENT
+        : defaultValue === EMPTY_CONTENT, [configuration.format, defaultValue]);
 
     // ----- Editor configuration -----
     const initialConfig = {
