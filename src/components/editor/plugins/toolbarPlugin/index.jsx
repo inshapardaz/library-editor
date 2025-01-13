@@ -46,9 +46,10 @@ import {
 } from './toolbarContext';
 import { SAVE_COMMAND } from "../../commands/saveCommand";
 import classes from './toolbar.module.css'
+import { AUTO_CORRECT_COMMAND, PUNCTUATION_CORRECT_COMMAND } from '../../commands/spellCheckCommand';
 
 // Local imports
-import { IconSave, IconUndo, IconRedo, IconBold, IconItalic, IconUnderline, IconSubScript, IconStrikethrough, IconSuperScript, IconLink } from "@/components/icons";
+import { IconSave, IconUndo, IconRedo, IconBold, IconItalic, IconUnderline, IconSubScript, IconStrikethrough, IconSuperScript, IconLink, IconAutoCorrect, IconPunctuation } from "@/components/icons";
 import CheckboxButton from './controls/checkboxButton';
 import AlignFormatDropDown from './alignFormatDropDown';
 import FontDropDown from './fontDropdown';
@@ -351,6 +352,18 @@ const ToolbarPlugin = ({ configuration, setIsLinkEditMode, locale }) => {
             checked={toolbarState.isLink}
             onClick={insertLink} />
 
+        )}
+        {configuration.spellchecker.enabled && (
+          <Button.Group>
+            <CheckboxButton tooltip={t('editor.punctuation')}
+              size="lg"
+              icon={<IconPunctuation />}
+              onClick={() => editor.dispatchCommand(PUNCTUATION_CORRECT_COMMAND)} />
+            <CheckboxButton tooltip={t('editor.autoCorrect')}
+              size="lg"
+              icon={<IconAutoCorrect />}
+              onClick={() => editor.dispatchCommand(AUTO_CORRECT_COMMAND)} />
+          </Button.Group>
         )}
       </Group>
     </div >

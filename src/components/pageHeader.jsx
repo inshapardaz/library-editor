@@ -32,7 +32,7 @@ const BreadcrumbsMenu = ({ index, item }) => {
     const [opened, setOpened] = useState(false);
     return (<Menu key={`breadcrumb-${index}`} opened={opened} onChange={setOpened} transitionProps={{ transition: 'scale-y', duration: 150 }}>
         <Menu.Target>
-            <Anchor key={`breadcrumb-${index}`} underline="hover" c="dimmed">
+            <Anchor underline="hover" c="dimmed">
                 <Group wrap='nowrap' gap='xs'>
                     <If condition={item.icon}>
                         <Icon name={item.icon} height={16} />
@@ -47,7 +47,7 @@ const BreadcrumbsMenu = ({ index, item }) => {
         </Menu.Target>
         <Menu.Dropdown>
             {item.items.map(v => (
-                <Menu.Item key={v.value}
+                <Menu.Item key={`breadcrumb-${index}-${v.value}`}
                     component={Link} to={v.href}
                     disabled={v.selected}
                     leftSection={<Icon name={v.icon} l height={16} />}

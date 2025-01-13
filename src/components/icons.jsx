@@ -147,6 +147,10 @@ const iconTheme = {
         upperCase: "letter-case-upper",
         lowerCase: "letter-case-lower",
         capitalize: "letter-case",
+        spellCheck: "text-spellcheck",
+        autoCorrect: "file-text-ai",
+        punctuation: "message-language",
+        completeWord: "alphabet-latin",
     }
 };
 //-------------------------------------
@@ -299,6 +303,10 @@ export const IconLink = (props) => getIcon(IconNames.Link, props)
 export const IconUpperCase = (props) => getIcon(IconNames.LowerCase, props)
 export const IconLowerCase = (props) => getIcon(IconNames.UpperCase, props)
 export const IconCapitalize = (props) => getIcon(IconNames.Capitalize, props)
+export const IconSpellCheck = (props) => getIcon(IconNames.SpellCheck, props)
+export const IconAutoCorrect = (props) => getIcon(IconNames.AutoCorrect, props)
+export const IconPunctuation = (props) => getIcon(IconNames.Punctuation, props)
+export const IconCompleteWord = (props) => getIcon(IconNames.CompleteWord, props)
 
 export const Icon = ({ name, ...rest }) => <IconifyIcon icon={getIconName(name)} {...rest} />
 

@@ -64,7 +64,9 @@ const ur = {
         done: "مکمل",
         viewAll: "تمام دیکھیں",
         showMore: "مزید دیکھیں",
-        hide: "چھپائیں"
+        hide: "چھپائیں",
+        fullscreen: "مکمل سکرین",
+        fullscreenExit: "مکمل سکرین سے اخراج"
     },
     errors: {
         imageRequired:
@@ -1384,6 +1386,59 @@ const ur = {
         punctuation: "املا",
         autoCorrect: "خودکار تصحیح",
         tools: "آلات",
+    },
+    corrections: {
+        title: "تصحیحات",
+        language: {
+            label: "زبان",
+            placeholder: "تصحیح کی زبان چنیں",
+            required: "تصحیح کی زبان ضروری ہے۔",
+        },
+        incorrectText: {
+            label: "غلط متن",
+            placeholder: "غلط متن فراہم کریں",
+            required: "غلط متن ضروری ہے",
+        },
+        correctText: {
+            label: "درست متن",
+            placeholder: "درست متن فراہم کریں",
+            required: "درست متن ضروری ہے",
+            mismatch: "غلط اور درست متن مختلف ہونے چاہیں۔",
+        },
+        completeWord: {
+            label: "مکمل لفظ کی تصحیح",
+            title: "مکمل لفظ"
+        },
+        errors: {
+            loading: {
+                title: "تصحیحات حاصل نہیں ہو سکیں",
+                subTitle: "براہ کرم دوبارہ کوشش کریں۔",
+            },
+        },
+        empty: {
+            title: "تصحیح موجود نہیں۔",
+        },
+        actions: {
+            add: {
+                label: "نئی تصحیح",
+                title: "نئی تصحیح",
+                success: "تصحیح کامیابی سے تخلیق کر دی گیا ہے۔",
+                error: "تصحیح تخلیق کرنے میں ناکامی ہوئی۔",
+            },
+            edit: {
+                title: "'{{title}}' میں تدوین",
+                success: "تصحیح میں تبدیلیاں محفوظ ہو گئی ہیں",
+                error: "تصحیح میں تبدیلیاں محفوظ نہیں ہو سکیں۔",
+            },
+            delete: {
+                label: "تصحیح '{{title}}' حذف کریں",
+                title: "تصحیح حذف کریں؟",
+                message:
+                    "کیا آپ تصحیح '{{title}}' کو حذف کرنا چاہیں گے؟",
+                success: "شمادہ '{{title}}' تصحیح کر دی گیا ہے۔",
+                error: "شمارہ '{{title}}' تصحیح کرنے میں ناکامی ہوئی۔",
+            },
+        }
     }
 };
 

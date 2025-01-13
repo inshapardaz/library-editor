@@ -26,6 +26,7 @@ import Profile from './profile';
 import LibrarySwitcher from './librarySwitcher';
 import SearchBox from './searchBox';
 import { IconHome, IconLibrary, IconLibraryEditor, IconDictionary, IconFont, IconTools, IconChevronDown } from '@/components/icons';
+import ToolsMenu from './tools';
 //----------------------------------------------
 
 const AppHeader = () => {
@@ -83,13 +84,7 @@ const AppHeader = () => {
                 {t('header.fonts')}
               </Text>
             </Link>
-            <Link to="https://tools.nawishta.co.uk" className={classes.link}>
-              <IconTools height="24px" />
-              <Space w="md" />
-              <Text visibleFrom="lg">
-                {t('header.tools')}
-              </Text>
-            </Link>
+            <ToolsMenu />
           </Group>
           <Group visibleFrom="sm">
             <SearchBox />

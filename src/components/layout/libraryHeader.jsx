@@ -28,6 +28,7 @@ import LibrarySwitcher from './librarySwitcher';
 import Profile from './profile';
 import SearchBox from './searchBox';
 import CategoriesMenu from './categoriesMenu';
+import ToolsMenu from './tools';
 
 //----------------------------------------------
 
@@ -102,6 +103,7 @@ const LibraryHeader = ({ library }) => {
                             countFunc={i => i.periodicalCount}
                             title={t('header.periodicals')}
                             icon={<IconPeriodicals height="24px" />} />
+                        <ToolsMenu />
                     </Group>
                     <Group visibleFrom="sm">
                         <SearchBox />

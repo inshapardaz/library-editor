@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 // UI Library Import
 import { Alert, Box, Button, Container, Grid, Group, LoadingOverlay, rem, Skeleton, Tooltip } from "@mantine/core";
+import { useFullscreen } from "@mantine/hooks";
 import { notifications } from '@mantine/notifications';
 
 // Local Imports
@@ -17,7 +18,7 @@ import {
 } from '@/domain/book.service'
 import PageHeader from "@/components/pageHeader";
 import IconNames from '@/components/iconNames';
-import { IconAdd, IconLeft, IconRight, IconDone } from "@/components/icons";
+import { IconAdd, IconLeft, IconRight, IconDone, IconFullScreenExit, IconFullScreen } from "@/components/icons";
 import Error from '@/components/error';
 import If from '@/components/if';
 import { EditingStatus } from '@/models';
@@ -31,6 +32,7 @@ const PRIMARY_COL_HEIGHT = rem(300);
 
 const ChapterEditorPage = () => {
     const { t } = useTranslation();
+    const { ref, toggle, fullscreen } = useFullscreen();
     const { libraryId, bookId, chapterNumber } = useParams();
     const lang = useSelector(selectedLanguage)
     const [contents, setContents] = useState('')
@@ -187,6 +189,11 @@ const ChapterEditorPage = () => {
                 {lang.isRtl ? <IconLeft /> : <IconRight />}
             </Button>
         </Tooltip>
+        <Tooltip key="fullscreen" label={t(fullscreen ? "actions.fullscreenExit" : "actions.fullscreen")}>
+            <Button variant="default" size="xs" onClick={toggle} >
+                {fullscreen ? <IconFullScreenExit /> : <IconFullScreen />}
+            </Button>
+        </Tooltip>
     </Group> : null;
 
     const SECONDARY_COL_HEIGHT = `calc(${PRIMARY_COL_HEIGHT} / 2 - var(--mantine-spacing-md) / 2)`;
@@ -251,8 +258,20 @@ const ChapterEditorPage = () => {
         <If condition={isNewContent}>
             <Alert variant="light" color="yellow" withCloseButton title={t('chapter.editor.newContents')} icon={<IconAdd />} />
         </If>
-        <Box style={{ height: '100%', overflow: 'auto' }} >
+        <Box style={{ height: '100%', overflow: 'auto' }} bg="var(--mantine-color-body)" ref={ref}>
             <LoadingOverlay visible={isBusy || isUpdatingChapter} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
+            <If condition={fullscreen}>
+                <Container fluid py="xs">
+                    <Group justify="space-between">
+                        {title}
+                        <Tooltip key="fullscreen" label={t(fullscreen ? "actions.fullscreenExit" : "actions.fullscreen")}>
+                            <Button variant="default" size="xs" onClick={toggle} >
+                                {fullscreen ? <IconFullScreenExit /> : <IconFullScreen />}
+                            </Button>
+                        </Tooltip>
+                    </Group>
+                </Container>
+            </If>
             <Editor defaultValue={contents}
                 configuration={{
                     ...DefaultConfiguration,
@@ -260,8 +279,12 @@ const ChapterEditorPage = () => {
                     format: EditorFormat.Markdown,
                     toolbar: {
                         ...DefaultConfiguration.toolbar,
-                        showSave: true
-                    }
+                        showSave: true,
+                    },
+                    spellchecker: {
+                        enabled: true,
+                        language: language,
+                    },
                 }}
                 language={language}
                 contentKey={`chapter-${libraryId}-${bookId}-${chapterNumber}`}

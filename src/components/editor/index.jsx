@@ -28,6 +28,7 @@ import ControlledValuePlugin from "./plugins/controlledValuePlugin";
 import EditorNodes from './nodes';
 import DraggableBlockPlugin from './plugins/draggableBlockPlugin';
 import { ToolbarContext } from './plugins/toolbarPlugin/toolbarContext';
+import SpellCheckerPlugin from './plugins/spellCheckerPlugin';
 
 // Local Imports
 import { languages } from '@/i18n';
@@ -181,6 +182,13 @@ const Editor = ({ language, defaultValue, onSave = () => { }, onChange = () => {
                     />
                 )}
                 <HistoryPlugin />
+                <SpellCheckerPlugin
+                    locale={language}
+                    language={
+                        configuration.spellchecker.language || configuration.language
+                    }
+                    configuration={configuration.spellchecker}
+                />
                 <SavePlugin onSave={onSave} format={configuration.format} />
                 <ControlledValuePlugin
                     value={defaultValue}

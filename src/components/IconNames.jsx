@@ -142,6 +142,10 @@ const IconNames = {
     UpperCase: "lowerCase",
     LowerCase: "upperCase",
     Capitalize: "capitalize",
+    SpellCheck: "spellCheck",
+    AutoCorrect: "autoCorrect",
+    Punctuation: "punctuation",
+    CompleteWord: "completeWord"
 };
 
 export default IconNames;

@@ -45,6 +45,7 @@ const Router = () => {
                         <Route path="/libraries/:libraryId/poetry" element={<Pages.PoetriesPage />} />
                         <Route path="/libraries/:libraryId" element={<Pages.LibraryPage />} />
                         <Route path="/libraries" element={<Pages.LibrariesPage />} />
+                        <Route path="/tools/language/:profile" element={<Pages.CorrectionsPage />} />
                     </Route>
                     <Route path="/403" element={<Pages.Error403Page />} />
                     <Route path="/500" element={<Pages.Error500Page />} />

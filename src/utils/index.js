@@ -132,7 +132,6 @@ export const updateLinkToBooksPagesPage = (
     return `${location.pathname}?${searchParams.toString()}`;
 };
 
-
 export const updateLinkToWritingsPage = (
     location,
     {
@@ -367,6 +366,34 @@ export const updateLinkToIssuePage = (
     }
     if (sortDirection) {
         searchParams.set("sortDirection", sortDirection);
+    }
+
+    return `${location.pathname}?${searchParams.toString()}`;
+};
+
+export const updateLinkToCorrectionsPage = (
+    location,
+    {
+        language,
+        query,
+        pageNumber,
+        pageSize
+    }
+) => {
+    var searchParams = new URLSearchParams(location.search);
+    if (pageNumber) {
+        searchParams.set("pageNumber", pageNumber);
+    }
+    if (pageSize) {
+        searchParams.set("pageSize", pageSize);
+    }
+    if (query) {
+        searchParams.set("query", query);
+    } else if (query === "") {
+        searchParams.delete("query");
+    }
+    if (language) {
+        searchParams.set("year", language);
     }
 
     return `${location.pathname}?${searchParams.toString()}`;

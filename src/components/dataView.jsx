@@ -96,7 +96,7 @@ const DataView = ({
     onOrderChanged = () => { },
     //View
     showViewToggle = true,
-    defaultViewType = "card",
+    defaultViewType = "list",
     viewToggleKey,
     //Search
     showSearch,

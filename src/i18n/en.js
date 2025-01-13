@@ -43,6 +43,8 @@ const en = {
         hide: "Hide",
         sortAscending: "Ascending",
         sortDescending: "Descending",
+        fullscreen: "Full screen",
+        fullscreenExit: "Exit full screen"
     },
     errors: {
         imageRequired:
@@ -1294,6 +1296,59 @@ const en = {
         punctuation: "Punctuation",
         autoCorrect: "Auto Correct",
         tools: "Tools",
+    },
+    corrections: {
+        title: "Corrections",
+        language: {
+            label: "Language",
+            placeholder: "Select language for correction",
+            required: "Language is required",
+        },
+        incorrectText: {
+            label: "Incorrect Text",
+            placeholder: "Provide incorrect text",
+            required: "Incorrect Text is required",
+        },
+        correctText: {
+            label: "Correct Text",
+            placeholder: "Select correct text for correction",
+            required: "Correct text is required",
+            mismatch: "Incoorect and correct text must not match",
+        },
+        completeWord: {
+            label: "Correction for complete word",
+            title: "Complete word"
+        },
+        errors: {
+            loading: {
+                title: "Error",
+                subTitle: "Unable to load corrections.",
+            },
+        },
+        empty: {
+            label: "No correction found.",
+        },
+        actions: {
+            add: {
+                label: "New correction",
+                title: "New correction",
+                success: "Correction created successfully.",
+                error: "Error creating correction.",
+            },
+            edit: {
+                title: "Editing '{{title}}'",
+                success: "Correction saved successfully.",
+                error: "Error saving correction",
+            },
+            delete: {
+                label: "Delete correction '{{title}}'",
+                title: "Delete correction?",
+                message:
+                    "Are you sure you want to delete correction '{{title}}'?",
+                success: "Correction '{{title}}' deleted successfully.",
+                error: "Error deleting correction '{{title}}'.",
+            },
+        }
     }
 };
 
