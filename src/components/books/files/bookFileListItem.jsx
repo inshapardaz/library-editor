@@ -64,7 +64,6 @@ const BookFileListItem = ({ t, libraryId, book, content }) => {
             <If condition={content.links.update}>
                 <Tooltip title={t('book.actions.addFile.title')}>
                     <FileButton onChange={uploadFile}
-                        maxSize={100 * 1024 ** 2}
                         accept={[IMAGE_MIME_TYPE, PDF_MIME_TYPE, MS_WORD_MIME_TYPE]}>
                         {(props) => <ActionIcon {...props} disabled={isUpdating} variant='subtle' color='gray' >
                             <IconUplaodDocument />

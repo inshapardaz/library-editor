@@ -18,7 +18,7 @@ const getIcon = (request) => {
         case ProcessStatus.Pending:
             return <IconBusy />;
         case ProcessStatus.InProcess:
-            return <IconLoading />;
+            return <IconLoading style={{ animation: 'rotation 1s linear infinite' }} />;
         case ProcessStatus.CreatingBook:
         case ProcessStatus.UploadingContents:
             return <IconUpload />

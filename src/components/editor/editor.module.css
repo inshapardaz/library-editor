@@ -7,7 +7,6 @@
 }
 
 .editorInput {
-  min-height: 150px;
   resize: none;
   font-size: 15px;
   caret-color: rgb(5, 5, 5);
@@ -39,15 +38,12 @@
 }
 
 .editorShell {
-  margin: var(--mantine-spacing-md) auto;
-  border-radius: var(--mantine-radius-md);
   color: var(--mantine-color-text);
-  border: 1px solid var(--mantine-color-default-border);
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  position: relative;
+  position: absolute;
   display: flex;
   flex-direction: column;
   background-color: var(--mantine-color-body);
@@ -76,19 +72,27 @@
 
 .editorScroller {
   flex-grow: 1;
-  display: block;
-  position: relative;
+  display: flex;
   outline: 0;
-  overflow: hidden;
-  padding: var(--mantine-spacing-sm);
-  padding-top: 0;
+  overflow: scroll;
+  margin: var(--mantine-spacing-xs);
+  margin-top: 0;
   resize: vertical;
+  border: 1px solid var(--mantine-color-default-border);
+  border-top: none;
+  border-radius: var(--mantine-radius-xs);
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  position: relative;
+  resize: none;
 }
 
 .editor {
   flex: auto;
   resize: vertical;
-  z-index: -1;
+  position: relative;
+  padding-left: var(--mantine-spacing-xs);
+  padding-right: var(--mantine-spacing-xs);
 }
 
 .contentEditable {
@@ -98,18 +102,14 @@
   position: relative;
   outline: 0;
   padding: var(--mantine-spacing-sm);
-  min-height: 200px;
+  min-height: 100%;
+  cursor: text;
 }
 
 .contentEditableRoot {
   border: 0;
   font-size: 15px;
-  display: block;
   position: relative;
   outline: none;
-  
-  @media (max-width: 1025px) {
-    padding-left: 8px;
-    padding-right: 8px;
-  }
+  padding:  var(--mantine-spacing-sm);
 }

@@ -91,7 +91,7 @@ export const DefaultConfiguration = {
 const Editor = ({ language, defaultValue, onSave = () => { }, onChange = () => { }, configuration = DefaultConfiguration }) => {
     const direction = useMemo(() => languages[language]?.dir ?? 'ltr', [language]);
     const onError = (error) => console.error(error);
-    const isRtl = useMemo(() => configuration.language == "ur" ? true : false, [configuration.language]);
+    const isRtl = useMemo(() => direction == "rtl" ? true : false, [direction]);
     const [floatingAnchorElem, setFloatingAnchorElem] = useState(null);
     const [isLinkEditMode, setIsLinkEditMode] = useState(false);
 
@@ -137,7 +137,7 @@ const Editor = ({ language, defaultValue, onSave = () => { }, onChange = () => {
                         <RichTextPlugin
                             contentEditable={
                                 <div className={classes.editorScroller}>
-                                    <div className="editor" ref={onRef}>
+                                    <div className={classes.editor} ref={onRef}>
                                         <ContentEditable className={classes.contentEditableRoot} />
                                     </div>
                                 </div>

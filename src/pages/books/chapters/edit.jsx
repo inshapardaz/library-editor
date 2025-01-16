@@ -232,7 +232,7 @@ const ChapterEditorPage = () => {
     }
     const title = chapter ? chapter.title : t('chapter.actions.add.title');
 
-    return (<Container fluid mt="sm">
+    return (<Container fluid mt="sm" bg="var(--mantine-color-body)" ref={ref}>
         <PageHeader title={title} defaultIcon={IconNames.Chapters}
             subTitle={
                 <Group visibleFrom='md'>
@@ -258,37 +258,27 @@ const ChapterEditorPage = () => {
         <If condition={isNewContent}>
             <Alert variant="light" color="yellow" withCloseButton title={t('chapter.editor.newContents')} icon={<IconAdd />} />
         </If>
-        <Box style={{ height: '100%', overflow: 'auto' }} bg="var(--mantine-color-body)" ref={ref}>
+        <Box style={{ height: '100%', overflow: 'auto' }} >
             <LoadingOverlay visible={isBusy || isUpdatingChapter} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
-            <If condition={fullscreen}>
-                <Container fluid py="xs">
-                    <Group justify="space-between">
-                        {title}
-                        <Tooltip key="fullscreen" label={t(fullscreen ? "actions.fullscreenExit" : "actions.fullscreen")}>
-                            <Button variant="default" size="xs" onClick={toggle} >
-                                {fullscreen ? <IconFullScreenExit /> : <IconFullScreen />}
-                            </Button>
-                        </Tooltip>
-                    </Group>
-                </Container>
-            </If>
-            <Editor defaultValue={contents}
-                configuration={{
-                    ...DefaultConfiguration,
-                    richText: true,
-                    format: EditorFormat.Markdown,
-                    toolbar: {
-                        ...DefaultConfiguration.toolbar,
-                        showSave: true,
-                    },
-                    spellchecker: {
-                        enabled: true,
-                        language: language,
-                    },
-                }}
-                language={language}
-                contentKey={`chapter-${libraryId}-${bookId}-${chapterNumber}`}
-                onSave={onEditorSave} />
+            <div style={{ height: `calc(100vh - ${fullscreen ? '124px' : '180px'})`, position: 'relative' }}>
+                <Editor defaultValue={contents}
+                    configuration={{
+                        ...DefaultConfiguration,
+                        richText: true,
+                        format: EditorFormat.Markdown,
+                        toolbar: {
+                            ...DefaultConfiguration.toolbar,
+                            showSave: true,
+                        },
+                        spellchecker: {
+                            enabled: true,
+                            language: language,
+                        },
+                    }}
+                    language={language}
+                    contentKey={`chapter-${libraryId}-${bookId}-${chapterNumber}`}
+                    onSave={onEditorSave} />
+            </div>
         </Box>
     </Container>
     );

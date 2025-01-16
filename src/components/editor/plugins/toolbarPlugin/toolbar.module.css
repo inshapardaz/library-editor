@@ -3,6 +3,8 @@
     margin-bottom: 0;
     padding: var(--mantine-spacing-xs);
     border: 1px solid var(--mantine-color-default-border);
-    border-radius: var(--mantine-radius-md);
+    border-radius: var(--mantine-radius-xs);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
     background-color: var(--mantine-color-body);
 }

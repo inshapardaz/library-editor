@@ -41,7 +41,8 @@ const iconTheme = {
         world: "world",
         language: "language",
         copyright: "copyright",
-        pages: "notes",
+        pages: "files",
+        page: "file-description",
         publisher: "book-upload",
         chapters: "versions",
         arrowLeft: "arrow-left",
@@ -151,6 +152,7 @@ const iconTheme = {
         autoCorrect: "file-text-ai",
         punctuation: "message-language",
         completeWord: "alphabet-latin",
+        ocrDocument: "eye-cog",
     }
 };
 //-------------------------------------
@@ -194,6 +196,7 @@ export const IconWorld = (props) => getIcon(IconNames.World, props)
 export const IconLanguage = (props) => getIcon(IconNames.Language, props)
 export const IconCopyright = (props) => getIcon(IconNames.Copyright, props)
 export const IconPages = (props) => getIcon(IconNames.Pages, props)
+export const IconPage = (props) => getIcon(IconNames.Page, props)
 export const IconImage = (props) => getIcon(IconNames.Image, props)
 export const IconPublisher = (props) => getIcon(IconNames.Publisher, props)
 export const IconChapters = (props) => getIcon(IconNames.Chapters, props)
@@ -270,6 +273,7 @@ export const IconUplaodDocument = (props) => getIcon(IconNames.UplaodDocument, p
 export const IconUploadAccept = (props) => getIcon(IconNames.UploadAccept, props)
 export const IconUploadReject = (props) => getIcon(IconNames.UploadReject, props)
 export const IconProcessDocument = (props) => getIcon(IconNames.ProcessDocument, props)
+export const IconOcrDocument = (props) => getIcon(IconNames.OcrDocument, props)
 
 //Editor
 export const IconSave = (props) => getIcon(IconNames.Save, props)

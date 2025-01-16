@@ -1,0 +1,38 @@
+.split {
+    display: flex;
+    direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: var(--mantine-spacing-md);
+    height: calc(100vh - 180px);
+  }
+  
+  .left {
+    flex-basis: 50%;
+    position: relative;
+  }
+  .left > *{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  
+  .right {
+      flex-basis: 50%;
+      position: relative;
+  }
+  .right > *{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  
+  .drag {
+    background-color: var(--mantine-color-default-border);
+    width: 5px;
+    cursor: col-resize;;
+  }

@@ -26,7 +26,6 @@ const Router = () => {
                         <Route path="/libraries/:libraryId/books/add" element={<Pages.EditBookPage />} />
                         <Route path="/libraries/:libraryId/books/:bookId" element={<Pages.BookPage />} />
                         <Route path="/libraries/:libraryId/books/:bookId/chapters/add" element={<Pages.ChapterEditorPage />} />
-                        <Route path="/libraries/:libraryId/books/:bookId/chapters/:chapterNumber/contents/edit" element={<Pages.ChapterEditorPage />} />
                         <Route path="/libraries/:libraryId/books/:bookId/edit" element={<Pages.EditBookPage />} />
                         <Route path="/libraries/:libraryId/books" element={<Pages.BooksPage />} />
                         <Route path="/libraries/:libraryId/periodicals/:periodicalId/issues/add" element={<Pages.EditIssuePage />} />
@@ -55,6 +54,8 @@ const Router = () => {
                     <Route path="/libraries/:libraryId/books/:bookId/read" element={<Pages.BookReaderPage />} />
                     <Route path="/libraries/:libraryId/books/:bookId/ebook" element={<Pages.EBookReaderPage />} />
                     <Route path="/libraries/:libraryId/writings/:articleId" element={<Pages.WritingPage />} />
+                    <Route path="/libraries/:libraryId/books/:bookId/chapters/:chapterNumber/contents/edit" element={<Pages.ChapterEditorPage />} />
+                    <Route path="/libraries/:libraryId/books/:bookId/pages/:pageNumber/contents/edit" element={<Pages.BookPageEditPage />} />
                 </Route>
             </Routes>
         </BrowserRouter>

@@ -9,11 +9,6 @@
   will-change: transform;
 }
 
-.draggable-block-menu-rtl {
-  right: 0;
-  left: unset;
-}
-
 .draggable-block-menu .icon {
   width: 16px;
   height: 16px;

@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 // Ui Library imports
 import { rem } from '@mantine/core';
@@ -7,7 +8,6 @@ import { notifications } from '@mantine/notifications';
 
 // Local imports
 import Img from '@/components/img';
-import { useState } from 'react';
 
 //--------------------------------
 const ImageUpload = ({ t, src, alt, fallback, onChange, height = rem(400), width = "auto", fit = "contain", ...props }) => {
@@ -40,16 +40,17 @@ const ImageUpload = ({ t, src, alt, fallback, onChange, height = rem(400), width
         maxFiles={1}
         accept={IMAGE_MIME_TYPE}
         {...props}>
-
-        <Img
-            src={getImage()}
-            h={height}
-            w={width}
-            radius="md"
-            alt={alt}
-            fit={fit}
-            fallback={fallback}
-        />
+        <div style={{ overflow: 'scroll' }}>
+            <Img
+                src={getImage()}
+                h={height}
+                w={width}
+                radius="md"
+                alt={alt}
+                fit={fit}
+                fallback={fallback}
+            />
+        </div>
     </Dropzone>)
 }
 

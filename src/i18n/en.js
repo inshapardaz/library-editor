@@ -35,6 +35,7 @@ const en = {
         resizeImage: "Resize Image",
         zoonIn: "Zoom In",
         zoonOut: "Zoom Out",
+        zoonReset: "Reset Zoom",
         next: "Next",
         previous: "Previous",
         done: "Done",
@@ -636,6 +637,11 @@ const en = {
             required: "User is required",
         },
         label: "Page {{sequenceNumber}}",
+        editor: {
+            title: "Edit chapter contents",
+            unsavedContents:
+                "Unsaved changed found for this chapter. Would you like to continue editing it?",
+        },
         actions: {
             add: {
                 label: "Add new page",
@@ -723,6 +729,12 @@ const en = {
                 error: "Error moving page.",
             },
         },
+        error: {
+            loading: {
+                title: "Error",
+                detail: "Unable to load page.",
+            },
+        }
     },
     author: {
         name: {

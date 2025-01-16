@@ -37,6 +37,7 @@ const IconNames = {
     Language: "language",
     Copyright: "copyright",
     Pages: "pages",
+    Page: "page",
     Publisher: "publisher",
     Chapters: "chapters",
     ArrowLeft: "arrowLeft",
@@ -145,7 +146,8 @@ const IconNames = {
     SpellCheck: "spellCheck",
     AutoCorrect: "autoCorrect",
     Punctuation: "punctuation",
-    CompleteWord: "completeWord"
+    CompleteWord: "completeWord",
+    OcrDocument: "ocrDocument"
 };
 
 export default IconNames;

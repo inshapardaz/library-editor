@@ -21,6 +21,7 @@ import PageEditForm from './pageEditForm';
 import PageDeleteButton from './pageDeleteButton';
 import PageAssignButton from './pageAssignButton';
 import PageStatusButton from './pageStatusButton';
+import PageOcrButton from './pageOcrButton';
 import EditingStatusFilterMenu from '@/components/editingStatusFilterMenu';
 import SortDirectionToggle from '@/components/sortDirectionToggle';
 import AssignmentFilterMenu from '@/components/asssignmentFilterMenu';
@@ -179,6 +180,7 @@ const BookPagesList = ({ libraryId, book, isLoading,
                     <PageDeleteButton pages={selectedPages} t={t} type='default' onDeleted={clearSelection} />
                     <PageAssignButton libraryId={libraryId} pages={selectedPages} t={t} type='default' onCompleted={clearSelection} />
                     <PageStatusButton book={book} pages={selectedPages} t={t} type='default' onCompleted={clearSelection} />
+                    <PageOcrButton book={book} pages={selectedPages} t={t} type='default' onCompleted={clearSelection} />
                 </Button.Group>
             </Group>
         }

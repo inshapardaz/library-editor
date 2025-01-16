@@ -132,7 +132,6 @@ const SpellCheckerPlugin = ({ locale, language, configuration = { enabled: false
     }
 
     const autoCorrect = () => {
-      console.log('autocorrect')
       editor.update(() => {
         var root = $getRoot(editor);
         var children = root.getChildren();
