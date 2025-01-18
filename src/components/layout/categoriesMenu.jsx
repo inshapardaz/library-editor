@@ -31,7 +31,7 @@ import If from '@/components/if'
 
 //----------------------------------------------
 
-const CategoriesMenu = ({ library, title, icon, className, target, allLabel, extraLinks, countFunc = () => null, onClick = () => { } }) => {
+const CategoriesMenu = ({ library, title, icon, className, target, allLabel, extraLink, countFunc = () => null, onClick = () => { } }) => {
     const { t } = useTranslation();
     const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
     const { data: categories, isFetching, error }
@@ -110,18 +110,10 @@ const CategoriesMenu = ({ library, title, icon, className, target, allLabel, ext
                                     {categoriesList}
                                 </SimpleGrid>
                             </If>
-                            <If condition={extraLinks}>
+                            <If condition={extraLink}>
                                 <div className={classes.dropdownFooter}>
                                     <Group justify="space-between">
-                                        <div>
-                                            <Text fw={500} fz="sm">
-                                                Get started
-                                            </Text>
-                                            <Text size="xs" c="dimmed">
-                                                Their food sources have decreased, and their numbers
-                                            </Text>
-                                        </div>
-                                        <Button variant="default">Get started</Button>
+                                        {extraLink}
                                     </Group>
                                 </div>
                             </If>
@@ -171,7 +163,7 @@ CategoriesMenu.propTypes = {
     className: PropTypes.any,
     target: PropTypes.string,
     allLabel: PropTypes.string,
-    extraLinks: PropTypes.any,
+    extraLink: PropTypes.any,
     title: PropTypes.string,
     icon: PropTypes.node,
     countFunc: PropTypes.func,

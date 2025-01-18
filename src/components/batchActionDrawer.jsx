@@ -5,38 +5,19 @@ import { useEffect } from "react";
 // Ui Library imports
 import { Avatar, Button, Drawer, List, ScrollArea, Stack, Tooltip } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
-
-
-// Local imports
-import { IconUpload, IconBusy, IconDone, IconFailed, IconLoading } from '@/components/icons';
-import { ProcessStatus } from "@/models";
 import { useDisclosure } from '@mantine/hooks';
 
-// -------------------------------------------
-const getIcon = (request) => {
-    switch (request.status) {
-        case ProcessStatus.Pending:
-            return <IconBusy />;
-        case ProcessStatus.InProcess:
-            return <IconLoading style={{ animation: 'rotation 1s linear infinite' }} />;
-        case ProcessStatus.CreatingBook:
-        case ProcessStatus.UploadingContents:
-            return <IconUpload />
-        case ProcessStatus.Completed:
-            return <IconDone />;
-        case ProcessStatus.Failed:
-            return <IconFailed style={{ color: 'red' }} />;
-        default:
-            return <IconBusy />;
-    }
-}
+// Local imports
+import { ProcessStatus } from "@/models";
+import ProcessStatusIcon from '@/components/processStatusIcon';
+
 // -------------------------------------------
 
 const RequestList = ({ requests, itemTitleFunc, itemDescriptionFunc }) => {
     return (
         <List>
             {requests.map(request => (
-                <List.Item key={request.id} icon={<Avatar size={32}>{getIcon(request)}</Avatar>}>
+                <List.Item mb="xs" key={request.id} icon={<Avatar size={32}><ProcessStatusIcon status={request.status} /></Avatar>}>
                     {itemTitleFunc ? itemTitleFunc(request.data) : request.id}
                     {itemDescriptionFunc && itemDescriptionFunc(request.data)}
                 </List.Item>))

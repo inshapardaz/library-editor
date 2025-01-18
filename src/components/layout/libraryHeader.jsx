@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 // ui library imports
 import {
@@ -13,6 +13,7 @@ import {
     rem,
     Space,
     Text,
+    Button,
 } from '@mantine/core';
 
 import { useDisclosure } from '@mantine/hooks';
@@ -67,6 +68,16 @@ const LibraryHeader = ({ library }) => {
                             countFunc={i => i.bookCount}
                             title={t('header.books')}
                             icon={<IconBooks height="24px" />}
+                            extraLink={(<><div>
+                                <Text fw={500} fz="sm">
+                                    {t('bookUpload.title')}
+                                </Text>
+                                <Text size="xs" c="dimmed">
+                                    {t('bookUpload.description')}
+                                </Text>
+                            </div>
+                                <Button component={Link} to={`/libraries/${library.id}/books/upload`}
+                                    variant="default">{t('bookUpload.title')}</Button></>)}
                         />
                         <CategoriesMenu library={library}
                             className={classes.link}

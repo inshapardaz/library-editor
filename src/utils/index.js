@@ -416,6 +416,50 @@ export const getDateFormatFromFrequency = (frequency) => {
     }
 };
 
+export const readBinaryFile = (file) => {
+    return new Promise((resolve, reject) => {
+        var reader = new FileReader();
+        reader.onload = () => resolve(new Uint8Array(reader.result));
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(file);
+    });
+};
+
+
+export const loadPdfPage = async (pdf, index) => {
+    const canvas = document.createElement("canvas");
+    canvas.setAttribute("className", "canv");
+    canvas.setAttribute("willReadFrequently", true);
+    var page = await pdf.getPage(index);
+    var viewport = page.getViewport({ scale: 1.5 });
+    canvas.height = viewport.height;
+    canvas.width = viewport.width;
+    var render_context = {
+        canvasContext: canvas.getContext("2d"),
+        viewport: viewport,
+    };
+    await page.render(render_context).promise;
+    const data = canvas.toDataURL("image/png");
+    canvas.remove();
+    return data;
+};
+
+export const dataURItoBlob = (dataURI) => {
+    var byteString;
+    if (dataURI.split(",")[0].indexOf("base64") >= 0)
+        byteString = atob(dataURI.split(",")[1]);
+    else byteString = unescape(dataURI.split(",")[1]);
+
+    var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+
+    var ia = new Uint8Array(byteString.length);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([ia], { type: mimeString });
+};
+
 // ------------------  batch work --------------------------------------
 export const processMultipleRequests = async ({
     baseQuery,
@@ -463,6 +507,7 @@ export const processMultipleRequests = async ({
 
     return { data: requests };
 };
+
 
 // --------------------------------------------------------------
 // FUNCTION USED IN THIS APP ABOVE THIS LINE
@@ -718,39 +763,6 @@ export const downloadFile = async (url, onProgress = () => { }) => {
     });
 };
 
-export const loadPdfPage = async (pdf, index) => {
-    const canvas = document.createElement("canvas");
-    canvas.setAttribute("className", "canv");
-    canvas.setAttribute("willReadFrequently", true);
-    var page = await pdf.getPage(index);
-    var viewport = page.getViewport({ scale: 1.5 });
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
-    var render_context = {
-        canvasContext: canvas.getContext("2d"),
-        viewport: viewport,
-    };
-    await page.render(render_context).promise;
-    const data = canvas.toDataURL("image/png");
-    canvas.remove();
-    return data;
-};
-
-export const dataURItoBlob = (dataURI) => {
-    var byteString;
-    if (dataURI.split(",")[0].indexOf("base64") >= 0)
-        byteString = atob(dataURI.split(",")[1]);
-    else byteString = unescape(dataURI.split(",")[1]);
-
-    var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
-
-    var ia = new Uint8Array(byteString.length);
-    for (var i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
-    }
-
-    return new Blob([ia], { type: mimeString });
-};
 
 export const splitImage = ({ URI, splitPercentage, rtl = false }) => {
     if (splitPercentage === 0) return Promise.resolve(dataURItoBlob(URI));
@@ -810,14 +822,7 @@ export const splitImage = ({ URI, splitPercentage, rtl = false }) => {
     });
 };
 
-export const readBinaryFile = (file) => {
-    return new Promise((resolve, reject) => {
-        var reader = new FileReader();
-        reader.onload = () => resolve(new Uint8Array(reader.result));
-        reader.onerror = reject;
-        reader.readAsArrayBuffer(file);
-    });
-};
+
 
 export const readBlob = (file) => {
     return new Promise((resolve, reject) => {

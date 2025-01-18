@@ -340,6 +340,7 @@ const ur = {
         yearPublished: {
             label: "سنِ اشاعت",
             placeholder: "کتاب کا سن اشاعت",
+            error: "سن اشاعت ۱۰۰۰ اور حالیہ سن کے درمیان ہو"
         },
         series: {
             label: "سلسلہ",
@@ -511,6 +512,16 @@ const ur = {
             Completed: "مکمل",
             All: "تمام",
         },
+    },
+    bookUpload: {
+        title: "کتاب اپلوڈ",
+        description: "نئی کتب مہیا کر کے لائیبریری کو وسعت دیں۔",
+        actions: {
+            add: {
+                success: "کتب کامیابی سے تخلیق کر دی گئی ہیں",
+                error: "کتب تخلیق کرنے میں مسائل کا سامنا رہا۔ ",
+            }
+        }
     },
     chapters: {
         title: "ابواب",

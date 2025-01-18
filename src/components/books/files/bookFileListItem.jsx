@@ -78,7 +78,7 @@ const BookFileListItem = ({ t, libraryId, book, content }) => {
                     tooltip={t('book.actions.downloadFile.title')}
                     link={content.links.download} target="_blank" rel="noreferrer" />
             </If>
-            <If condition={content.links.update}>
+            <If condition={book && content.links.update}>
                 <Divider orientation='vertical' />
                 <IconText
                     icon={<IconProcessDocument height={16} style={{ color: theme.colors.dark[2] }} />}

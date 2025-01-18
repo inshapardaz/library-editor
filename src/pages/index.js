@@ -31,6 +31,7 @@ import EditIssuePage from "./periodicals/issue/edit";
 import EditIssueArticlePage from "./periodicals/issue/article/edit";
 import CorrectionsPage from "./tools/correctionsPage";
 import BookPageEditPage from "./books/pages/edit";
+import BookUploadPage from "./books/upload";
 
 const Pages = {
     HomePage,
@@ -63,7 +64,8 @@ const Pages = {
     IssueArticlePage,
     EditIssueArticlePage,
     CorrectionsPage,
-    BookPageEditPage
+    BookPageEditPage,
+    BookUploadPage
 };
 
 export default Pages;

@@ -24,6 +24,7 @@ const Router = () => {
                         <Route path="/libraries/:libraryId/series/:seriesId" element={<Pages.SeriesPage />} />
                         <Route path="/libraries/:libraryId/series" element={<Pages.SeriesListPage />} />
                         <Route path="/libraries/:libraryId/books/add" element={<Pages.EditBookPage />} />
+                        <Route path="/libraries/:libraryId/books/upload" element={<Pages.BookUploadPage />} />
                         <Route path="/libraries/:libraryId/books/:bookId" element={<Pages.BookPage />} />
                         <Route path="/libraries/:libraryId/books/:bookId/chapters/add" element={<Pages.ChapterEditorPage />} />
                         <Route path="/libraries/:libraryId/books/:bookId/edit" element={<Pages.EditBookPage />} />

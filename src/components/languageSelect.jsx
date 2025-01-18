@@ -11,7 +11,7 @@ import { IconTick } from '@/components/icons';
 const languageOptions = Object.values(languages)
     .map(l => ({ value: l.key, label: l.name }));
 
-const LanguageSelect = ({ defaultValue, placeholder, onChange, ...props }) => {
+const LanguageSelect = ({ defaultValue, placeholder, disabled, onChange, ...props }) => {
 
     const combobox = useCombobox({
         onDropdownClose: () => combobox.resetSelectedOption(),
@@ -42,9 +42,11 @@ const LanguageSelect = ({ defaultValue, placeholder, onChange, ...props }) => {
                 combobox.updateSelectedOptionIndex('active');
                 combobox.closeDropdown();
             }}
+            disabled={disabled}
         >
             <Combobox.Target targetType="button">
                 <InputBase
+                    disabled={disabled}
                     component="button"
                     type="button"
                     pointer
@@ -66,6 +68,7 @@ const LanguageSelect = ({ defaultValue, placeholder, onChange, ...props }) => {
 LanguageSelect.propTypes = {
     defaultValue: PropTypes.string,
     placeholder: PropTypes.string,
+    disabled: PropTypes.bool,
     onChange: PropTypes.func
 };
 

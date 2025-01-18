@@ -42,7 +42,7 @@ AuthorPill.propTypes = {
 
 //------------------------------------
 
-const AuthorsSelect = ({ t, libraryId, defaultValue = [], onChange, showAdd = false, placeholder, ...props }) => {
+const AuthorsSelect = ({ t, libraryId, defaultValue = [], disabled, onChange, showAdd = false, placeholder, ...props }) => {
     const theme = useMantineTheme();
     const [search, setSearch] = useState('');
     const [currentValue, setCurrentValue] = useState([]);
@@ -139,7 +139,7 @@ const AuthorsSelect = ({ t, libraryId, defaultValue = [], onChange, showAdd = fa
     }, [currentValue, handleValueRemove]);
 
     return (
-        <Combobox {...props} store={combobox} onOptionSubmit={handleValueSelect}>
+        <Combobox {...props} disabled={disabled} store={combobox} onOptionSubmit={handleValueSelect}>
             <Combobox.DropdownTarget>
                 <PillsInput
                     onClick={() => combobox.openDropdown()}
@@ -149,6 +149,7 @@ const AuthorsSelect = ({ t, libraryId, defaultValue = [], onChange, showAdd = fa
                         {selectedPills}
                         <Combobox.EventsTarget>
                             <PillsInput.Field
+                                disabled={disabled}
                                 onFocus={() => combobox.openDropdown()}
                                 onBlur={() => combobox.closeDropdown()}
                                 value={search}
@@ -180,7 +181,7 @@ const AuthorsSelect = ({ t, libraryId, defaultValue = [], onChange, showAdd = fa
                         {/* When no items found  and no search */}
 
                         <If condition={options.length == 0 && search.trim().length === 0} >
-                            <Combobox.Empty>{t('author.empty.title')}</Combobox.Empty>
+                            <Combobox.Empty>{t('authors.empty')}</Combobox.Empty>
                         </If>
                         <If condition={showAdd && options.length < 1 && search.trim().length !== 0} >
                             <Combobox.Option value="$create"><Group gap="sm" wrap='nowrap'>
@@ -202,6 +203,7 @@ AuthorsSelect.propTypes = {
     onChange: PropTypes.func,
     placeholder: PropTypes.any,
     showAdd: PropTypes.bool,
+    disabled: PropTypes.bool,
     defaultValue: PropTypes.arrayOf(
         PropTypes.shape({
             id: PropTypes.number,

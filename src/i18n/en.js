@@ -332,6 +332,7 @@ const en = {
         yearPublished: {
             label: "Publish Year",
             placeholder: "Book publication year",
+            error: "Year should be between 1000 and current year"
         },
         dateCreated: "Date Created",
         latestBooks: "Latest Additions",
@@ -483,6 +484,16 @@ const en = {
             ProofRead: "Proof Read",
             All: "All",
         },
+    },
+    bookUpload: {
+        title: "Upload Books",
+        description: "Contribute to the library by adding new books",
+        actions: {
+            add: {
+                success: "Books created successfully",
+                error: "Some Books failed to be created.",
+            }
+        }
     },
     chapters: {
         title: "Chapters",

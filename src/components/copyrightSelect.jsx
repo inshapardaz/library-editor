@@ -8,7 +8,7 @@ import { Copyrights } from '@/models';
 import { IconTick } from '@/components/icons';
 // -------------------------------------------------
 
-const CopyrightSelect = ({ t, defaultValue, placeholder, onChange, ...props }) => {
+const CopyrightSelect = ({ t, defaultValue, placeholder, disabled, onChange, ...props }) => {
 
     const copyrights = [
         { value: Copyrights.Unknown, label: t('copyrights.Unknown') },
@@ -40,6 +40,7 @@ const CopyrightSelect = ({ t, defaultValue, placeholder, onChange, ...props }) =
 
     return (
         <Combobox {...props}
+            disabled={disabled}
             store={combobox}
             withinPortal={false}
             onOptionSubmit={(val) => {
@@ -49,6 +50,7 @@ const CopyrightSelect = ({ t, defaultValue, placeholder, onChange, ...props }) =
         >
             <Combobox.Target targetType="button">
                 <InputBase
+                    disabled={disabled}
                     component="button"
                     type="button"
                     pointer
@@ -71,6 +73,7 @@ CopyrightSelect.propTypes = {
     t: PropTypes.any,
     defaultValue: PropTypes.string,
     placeholder: PropTypes.string,
+    disabled: PropTypes.bool,
     onChange: PropTypes.func
 };
 

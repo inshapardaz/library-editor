@@ -12,7 +12,7 @@ import { IconAdd } from '@/components/icons';
 
 //------------------------------------
 
-const SeriesSelect = ({ t, libraryId, defaultValue = null, onChange, label, placeholder, ...props }) => {
+const SeriesSelect = ({ t, libraryId, defaultValue = null, onChange, label, placeholder, disabled, ...props }) => {
     const [value, setValue] = useState(null);
     const [currentValue, setCurrentValue] = useState(null);
     const combobox = useCombobox({
@@ -102,9 +102,9 @@ const SeriesSelect = ({ t, libraryId, defaultValue = null, onChange, label, plac
     }, [value, currentValue]);
 
     return (
-        <Combobox {...props} error={error} store={combobox} onOptionSubmit={handleValueSelect} withinPortal={false}>
+        <Combobox {...props} disabled={disabled} error={error} store={combobox} onOptionSubmit={handleValueSelect} withinPortal={false}>
             <Combobox.Target>
-                <TextInput
+                <TextInput disabled={disabled}
                     label={label}
                     placeholder={placeholder}
                     value={value || ''}
@@ -154,6 +154,7 @@ SeriesSelect.propTypes = {
     label: PropTypes.any,
     placeholder: PropTypes.any,
     showAdd: PropTypes.bool,
+    disabled: PropTypes.bool,
     defaultValue: PropTypes.number
 };
 

@@ -9,7 +9,7 @@ import { useGetCategoriesQuery } from '@/store/slices/categories.api'
 import If from '@/components/if';
 //------------------------------------
 
-export function CategoriesSelect({ t, libraryId, defaultValue = [], onChange, placeholder, ...props }) {
+export function CategoriesSelect({ t, libraryId, defaultValue = [], disabled, onChange, placeholder, ...props }) {
     const [search, setSearch] = useState('');
     const [currentValue, setCurrentValue] = useState([]);
     const [selectedPills, setSelectedPills] = useState([]);
@@ -75,13 +75,14 @@ export function CategoriesSelect({ t, libraryId, defaultValue = [], onChange, pl
     }, [currentValue, handleValueRemove]);
 
     return (
-        <Combobox {...props} error={error} store={combobox} onOptionSubmit={handleValueSelect} withinPortal={false}>
+        <Combobox {...props} error={error} disabled={disabled} store={combobox} onOptionSubmit={handleValueSelect} withinPortal={false}>
             <Combobox.DropdownTarget>
                 <PillsInput onClick={() => combobox.openDropdown()} rightSection={<Combobox.Chevron />}>
                     <Pill.Group>
                         {selectedPills}
                         <Combobox.EventsTarget>
                             <PillsInput.Field
+                                disabled={disabled}
                                 onFocus={() => combobox.openDropdown()}
                                 onBlur={() => combobox.closeDropdown()}
                                 value={search}
@@ -118,6 +119,7 @@ CategoriesSelect.propTypes = {
     libraryId: PropTypes.any,
     onChange: PropTypes.func,
     placeholder: PropTypes.any,
+    disabled: PropTypes.bool,
     defaultValue: PropTypes.arrayOf(
         PropTypes.shape({
             id: PropTypes.number,

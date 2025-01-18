@@ -89,7 +89,7 @@ const DataView = ({
     onReload = () => { },
     actions = null,
     footer = null,
-
+    showHeader = true,
     //Draggable
     draggable = false,
     droppableId = null,
@@ -192,42 +192,46 @@ const DataView = ({
         content = (<Center h={100}><Text>{emptyText}</Text></Center>)
     }
     return (<>
-        <Grid mt="md">
-            <Grid.Col span="auto">
-                <Title order={3}>{title}</Title>
-                <If condition={actions}>
-                    {actions}
-                </If>
-            </Grid.Col>
-            <Grid.Col span="auto"></Grid.Col>
-            <Grid.Col span="contents" visibleFrom="sm">
-                <Group justify="space-between">
-                    <If condition={showSearch}>
-                        <SearchInput query={searchValue} onQueryChanged={onSearchChanged} />
-                    </If>
-                    <If condition={extraFilters}>
-                        {extraFilters}
-                    </If>
-                    <If condition={showViewToggle}>
-                        <LayoutToggle value={viewType} onChange={toggleViewType} />
-                    </If>
-                </Group>
-            </Grid.Col>
-            <Grid.Col hiddenFrom="sm">
-                <Group justify="space-between">
-                    <If condition={showSearch}>
-                        <SearchInput query={searchValue} onQueryChanged={onSearchChanged} />
-                    </If>
-                    <If condition={extraFilters}>
-                        {extraFilters}
-                    </If>
-                    <If condition={showViewToggle}>
-                        <LayoutToggle value={viewType} onChange={toggleViewType} />
-                    </If>
-                </Group>
-            </Grid.Col>
-        </Grid>
-        <Divider my="sm" />
+        <If condition={showHeader}>
+            <>
+                <Grid mt="md">
+                    <Grid.Col span="auto">
+                        <Title order={3}>{title}</Title>
+                        <If condition={actions}>
+                            {actions}
+                        </If>
+                    </Grid.Col>
+                    <Grid.Col span="auto"></Grid.Col>
+                    <Grid.Col span="contents" visibleFrom="sm">
+                        <Group justify="space-between">
+                            <If condition={showSearch}>
+                                <SearchInput query={searchValue} onQueryChanged={onSearchChanged} />
+                            </If>
+                            <If condition={extraFilters}>
+                                {extraFilters}
+                            </If>
+                            <If condition={showViewToggle}>
+                                <LayoutToggle value={viewType} onChange={toggleViewType} />
+                            </If>
+                        </Group>
+                    </Grid.Col>
+                    <Grid.Col hiddenFrom="sm">
+                        <Group justify="space-between">
+                            <If condition={showSearch}>
+                                <SearchInput query={searchValue} onQueryChanged={onSearchChanged} />
+                            </If>
+                            <If condition={extraFilters}>
+                                {extraFilters}
+                            </If>
+                            <If condition={showViewToggle}>
+                                <LayoutToggle value={viewType} onChange={toggleViewType} />
+                            </If>
+                        </Group>
+                    </Grid.Col>
+                </Grid>
+                <Divider my="sm" />
+            </>
+        </If>
         <If condition={draggable} elseChildren={content}>
             <DragDropContext onDragEnd={onOrderChanged}>
                 <Droppable droppableId={droppableId} direction={viewType == 'card' ? "horizontal" : "vertical"}>
@@ -264,6 +268,7 @@ DataView.propTypes = {
     errorDetail: PropTypes.string,
     actions: PropTypes.any,
     footer: PropTypes.any,
+    showHeader: PropTypes.bool,
     draggable: PropTypes.bool,
     droppableId: PropTypes.string,
     onOrderChanged: PropTypes.func,
