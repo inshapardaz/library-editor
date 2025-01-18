@@ -45,7 +45,8 @@ const en = {
         sortAscending: "Ascending",
         sortDescending: "Descending",
         fullscreen: "Full screen",
-        fullscreenExit: "Exit full screen"
+        fullscreenExit: "Exit full screen",
+        reset: "Reset"
     },
     errors: {
         imageRequired:
@@ -358,7 +359,7 @@ const en = {
             },
             upload: {
                 title: "Drag images here or click to select files",
-                message: "Attach as many files as you like, each file should not exceed 100mb",
+                message: "Attach as many files as you like, each file should not exceed 300mb",
             }
         },
         actions: {
@@ -492,6 +493,9 @@ const en = {
             add: {
                 success: "Books created successfully",
                 error: "Some Books failed to be created.",
+            },
+            applyToAll: {
+                title: "Bulk change properties"
             }
         }
     },

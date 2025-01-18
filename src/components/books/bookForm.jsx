@@ -52,7 +52,7 @@ const BookForm = ({ libraryId,
             title: isNotEmpty(t("book.title.required")),
             authors: value => value.length < 1 ? (t("book.authors.required")) : null,
             language: isNotEmpty(t("book.language.required")),
-            yearPublished: isInRange({ min: 1000, max: new Date().getFullYear() }, t("book.language.required")),
+            yearPublished: value => value ? isInRange({ min: 1000, max: new Date().getFullYear() }, t("book.yearPublished.error"))(value) : null,
         },
         onValuesChange: (values) => {
             form.validate();
