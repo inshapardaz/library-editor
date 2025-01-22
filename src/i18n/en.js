@@ -46,7 +46,8 @@ const en = {
         sortDescending: "Descending",
         fullscreen: "Full screen",
         fullscreenExit: "Exit full screen",
-        reset: "Reset"
+        reset: "Reset",
+        help: "Help"
     },
     errors: {
         imageRequired:
@@ -434,6 +435,9 @@ const en = {
             },
             split: {
                 title: "Split",
+                moveLeft: "Move Left",
+                moveRight: "Move Right",
+                save: "Save page split"
             },
             applySplitToAll: {
                 title: "Apply split to all pages.",

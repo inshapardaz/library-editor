@@ -765,7 +765,13 @@ export const downloadFile = async (url, onProgress = () => { }) => {
 
 
 export const splitImage = ({ URI, splitPercentage, rtl = false }) => {
-    if (splitPercentage === 0) return Promise.resolve(dataURItoBlob(URI));
+    if (splitPercentage === 0 || splitPercentage === 100) {
+        return Promise.resolve(dataURItoBlob(URI));
+    }
+
+    if (rtl) {
+        splitPercentage = 100 - splitPercentage;
+    }
     return new Promise(function (resolve, reject) {
         if (URI == null) return reject();
         var image = new Image();
@@ -992,7 +998,8 @@ const helpers = {
     },
 
     splitImageUrl: (URI, splitPercentage) => {
-        if (splitPercentage === 0) return Promise.resolve(dataURItoBlob(URI));
+        console.log(splitPercentage)
+        if (splitPercentage === 0 || splitPercentage === 100) return Promise.resolve(dataURItoBlob(URI));
         return new Promise(function (resolve, reject) {
             if (URI == null) return reject();
             var image = new Image();
@@ -1001,7 +1008,7 @@ const helpers = {
                 function () {
                     var imagePieces = [];
                     const splitSize = (splitPercentage / 100) * image.width;
-
+                    console.log(splitSize)
                     // Draw the left part of the image
                     var canvas1 = document.createElement("canvas");
                     var context1 = canvas1.getContext("2d");

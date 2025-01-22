@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
 // UI Library Imports
-import { Button, Card, Container, Grid, Group, Image, LoadingOverlay, Progress, ScrollArea, Stack, Text, Title, Tooltip, useMantineTheme } from "@mantine/core";
+import { Button, Card, Container, Divider, Grid, Group, Image, LoadingOverlay, Popover, Progress, ScrollArea, Stack, Text, Title, Tooltip, useMantineTheme } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 
 // Local Import
@@ -21,7 +21,8 @@ import {
     IconSettingApplyDown,
     IconFullScreenExit,
     IconFullScreen,
-    IconSave
+    IconSave,
+    IconHelp
 } from '@/components/icons';
 import IconNames from '@/components/iconNames';
 import PageHeader from "@/components/pageHeader";
@@ -29,7 +30,7 @@ import Error from '@/components/error';
 import If from '@/components/if';
 import { downloadFile, loadPdfPage, splitImage, dataURItoBlob } from '@/utils'
 import { pdfjsLib } from '@/utils/pdf'
-import { useFullscreen, useLocalStorage } from '@mantine/hooks';
+import { useFullscreen, useHotkeys, useLocalStorage } from '@mantine/hooks';
 import PageImageEditor from '../../components/books/pages/pageImageEditor';
 import { selectedLanguage } from "@/store/slices/uiSlice";
 import { languages } from '@/store/slices/uiSlice';
@@ -55,6 +56,81 @@ BusyContent.propTypes = {
     t: PropTypes.any
 }
 
+//---------------------------
+const Help = ({ t }) => {
+    return (<Popover width={200} position="bottom" withArrow shadow="md" zIndex={10001}>
+        <Popover.Target>
+            <Tooltip label={t("actions.help")}>
+                <Button variant="default" size="sm" >
+                    <IconHelp />
+                </Button>
+            </Tooltip>
+        </Popover.Target>
+        <Popover.Dropdown>
+            <Stack>
+                <Group justify="space-between" wrap="nowrap">
+                    {t("book.actions.processAndSave.title")}
+                    <Text size="xs" c="dimmed">
+                        ⌘ + Shift + Alt + S
+                    </Text>
+                </Group>
+                <Group justify="space-between" wrap="nowrap">
+                    {t("actions.previous")}
+                    <Text size="xs" c="dimmed">
+                        ⌘ + Shift + Up
+                    </Text>
+                </Group>
+                <Group justify="space-between" wrap="nowrap">
+                    {t("actions.next")}
+                    <Text size="xs" c="dimmed">
+                        ⌘ + Shift + Down
+                    </Text>
+                </Group>
+                <Divider />
+                <Group justify="space-between" wrap="nowrap">
+                    {t("book.actions.applySplitToAll.title")}
+                    <Text size="xs" c="dimmed">
+                        ⌘ + Shift + A
+                    </Text>
+                </Group>
+                <Group justify="space-between" wrap="nowrap">
+                    {t("book.actions.applySplitToAllBelow.title")}
+                    <Text size="xs" c="dimmed">
+                        ⌘ + Shift + N
+                    </Text>
+                </Group>
+                <Divider />
+                <Group justify="space-between" wrap="nowrap">
+                    {t("book.actions.split.save")}
+                    <Text size="xs" c="dimmed">
+                        ⌘ + Shift + X
+                    </Text>
+                </Group>
+                <Group justify="space-between" wrap="nowrap">
+                    {t("book.actions.split.title")}
+                    <Text size="xs" c="dimmed">
+                        ⌘ + Shift + D
+                    </Text>
+                </Group>
+                <Group justify="space-between" wrap="nowrap">
+                    {t("book.actions.split.moveLeft")}
+                    <Text size="xs" c="dimmed">
+                        ⌘ + Shift + Left
+                    </Text>
+                </Group>
+                <Group justify="space-between" wrap="nowrap">
+                    {t("book.actions.split.moveRight")}
+                    <Text size="xs" c="dimmed">
+                        ⌘ + Shift + Right
+                    </Text>
+                </Group>
+            </Stack>
+        </Popover.Dropdown>
+    </Popover>)
+}
+Help.propTypes = {
+    t: PropTypes.any,
+}
 //---------------------------
 
 const BookProcessPage = () => {
@@ -228,10 +304,11 @@ const BookProcessPage = () => {
     }
 
     //----------------Navigation-----------------------
-    const canGoNext = () => selectedImage && selectedImage.index < images.length - 1;
-    const canGoPrevious = () => selectedImage && selectedImage.index > 0;
+    const canGoNext = useMemo(() => selectedImage && selectedImage.index < images.length - 1, [images.length, selectedImage]);
+    const canGoPrevious = useMemo(() => selectedImage && selectedImage.index > 0, [selectedImage]);
+
     const goNext = () => {
-        if (canGoNext()) {
+        if (canGoNext) {
             const currentIndex = images.findIndex(x => x.index === selectedImage.index);
             setSelectedImage(images[currentIndex + 1]);
         }
@@ -258,6 +335,15 @@ const BookProcessPage = () => {
             setZoom(e => e - 10);
         }
     }
+    //------------------------------------------------------
+
+    useHotkeys([
+        ['mod+shift+ArrowUp', goPrevious],
+        ['mod+shift+ArrowDown', goNext],
+        ['mod+shift+alt+S', savePages],
+        ['mod+shift+A', applySettingsToAll],
+        ['mod+shift+N', applySettingsToAllNext]
+    ])
     //-------------Rendering---------------------
     if (errorLoadingBook) {
         return (<Container fluid mt="sm">
@@ -304,7 +390,7 @@ const BookProcessPage = () => {
         <If condition={busy}>
             <BusyContent t={t} processingProgress={processingProgress} />
         </If>
-        <If condition={hasImagesLoaded}>
+        <If condition={hasImagesLoaded && !busy}>
             <Container fluid bg="var(--mantine-color-body)" ref={ref}>
                 <Group my="md">
                     <Tooltip label={t("actions.save")}>
@@ -349,7 +435,7 @@ const BookProcessPage = () => {
                             </Button>
                         </Tooltip>
                         <Button variant="default" size="sm">
-                            {selectedImage ? `${selectedImage.index} / ${images.length}` : ''}
+                            {selectedImage ? `${selectedImage.index + 1} / ${images.length}` : ''}
                         </Button>
                         <Tooltip label={t("actions.next")}>
                             <Button variant="default" size="sm" disabled={!canGoNext} onClick={goNext} >
@@ -357,6 +443,7 @@ const BookProcessPage = () => {
                             </Button>
                         </Tooltip>
                     </Button.Group>
+                    <Help t={t} />
                     <Tooltip key="fullscreen" label={t(fullscreen ? "actions.fullscreenExit" : "actions.fullscreen")}>
                         <Button variant="default" size="sm" onClick={toggle} >
                             {fullscreen ? <IconFullScreenExit /> : <IconFullScreen />}
@@ -370,8 +457,8 @@ const BookProcessPage = () => {
                                 <Stack gap="sm">
                                     {images.map((x, index) => (
                                         <Card withBorder key={`image-list-${index}`}
-                                            shadow={selectedImage.index === x.index ? 'md' : null}
-                                            style={{ borderColor: selectedImage.index === x.index ? theme.colors.blue[6] : theme.colors.gray[6] }}
+                                            shadow={selectedImage?.index === x.index ? 'md' : null}
+                                            style={{ borderColor: selectedImage?.index === x.index ? theme.colors.blue[6] : theme.colors.gray[6] }}
                                             onClick={() => setSelectedImage(x)} >
                                             <Image src={x.data} w={200} />
                                         </Card>
@@ -381,7 +468,7 @@ const BookProcessPage = () => {
                         </Grid.Col>
                         <Grid.Col span="auto">
                             <Card withBorder style={{ height: `calc(100vh - ${fullscreen ? 90 : 260}px)`, position: 'relative' }}>
-                                <PageImageEditor
+                                <PageImageEditor t={t} isRtl={lang.isRtl}
                                     zoom={zoom}
                                     image={selectedImage}
                                     onNext={goNext}

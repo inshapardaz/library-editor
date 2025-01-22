@@ -8,6 +8,7 @@ import { DirectionProvider, Loader, MantineProvider } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
 import { DatesProvider } from '@mantine/dates';
+
 // Local imports
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
@@ -19,6 +20,7 @@ import '@mantine/dates/styles.css';
 import Router from "./router";
 import { selectedLanguage } from "@/store/slices/uiSlice";
 import { init } from '@/store/slices/authSlice';
+import If from '@/components/if';
 // ------------------------------------------------------------------
 
 function App() {
@@ -44,7 +46,10 @@ function App() {
             <DatesProvider settings={{ locale: currentLocal }}>
               <Notifications limit={5} position="bottom-right" />
               <ModalsProvider labels={{ confirm: t('actions.yes'), cancel: t('actions.no') }}>
-                {userLoadStatus === 'loading' ? <Loader /> : <Router />}
+                <If condition={userLoadStatus === 'loading'}
+                  elseChildren={<Router />}>
+                  <div style={{ position: 'fixed', top: '50%', left: '50%' }}><Loader /></div>
+                </If>
               </ModalsProvider>
             </DatesProvider>
           </MantineProvider>

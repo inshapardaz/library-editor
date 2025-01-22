@@ -76,8 +76,13 @@ const LibraryHeader = ({ library }) => {
                                     {t('bookUpload.description')}
                                 </Text>
                             </div>
-                                <Button component={Link} to={`/libraries/${library.id}/books/upload`}
-                                    variant="default">{t('bookUpload.title')}</Button></>)}
+                                <Button.Group>
+                                    <Button component={Link} to={`/libraries/${library.id}/books/add`}
+                                        variant="default">{t('book.actions.add.title')}</Button>
+                                    <Button component={Link} to={`/libraries/${library.id}/books/upload`}
+                                        variant="default">{t('bookUpload.title')}</Button>
+                                </Button.Group>
+                            </>)}
                         />
                         <CategoriesMenu library={library}
                             className={classes.link}

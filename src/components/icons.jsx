@@ -154,7 +154,9 @@ const iconTheme = {
         completeWord: "alphabet-latin",
         ocrDocument: "eye-cog",
         settingApplyDown: "settings-down",
-        settingApplyAll: "settings-check"
+        settingApplyAll: "settings-check",
+        splitVertical: "minus-vertical",
+        help: "help"
     }
 };
 //-------------------------------------
@@ -316,6 +318,8 @@ export const IconCompleteWord = (props) => getIcon(IconNames.CompleteWord, props
 
 export const IconSettingApplyDown = (props) => getIcon(IconNames.SettingApplyDown, props)
 export const IconSettingApplyAll = (props) => getIcon(IconNames.SettingApplyAll, props)
+export const IconSplitVertical = (props) => getIcon(IconNames.SplitVertical, props)
+export const IconHelp = (props) => getIcon(IconNames.Help, props)
 
 export const Icon = ({ name, ...rest }) => <IconifyIcon icon={getIconName(name)} {...rest} />
 

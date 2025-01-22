@@ -149,7 +149,9 @@ const IconNames = {
     CompleteWord: "completeWord",
     OcrDocument: "ocrDocument",
     SettingApplyDown: "settingApplyDown",
-    SettingApplyAll: "settingApplyAll"
+    SettingApplyAll: "settingApplyAll",
+    SplitVertical: "splitVertical",
+    Help: "help"
 };
 
 export default IconNames;
