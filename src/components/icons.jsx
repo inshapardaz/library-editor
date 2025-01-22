@@ -153,6 +153,8 @@ const iconTheme = {
         punctuation: "message-language",
         completeWord: "alphabet-latin",
         ocrDocument: "eye-cog",
+        settingApplyDown: "settings-down",
+        settingApplyAll: "settings-check"
     }
 };
 //-------------------------------------
@@ -311,6 +313,9 @@ export const IconSpellCheck = (props) => getIcon(IconNames.SpellCheck, props)
 export const IconAutoCorrect = (props) => getIcon(IconNames.AutoCorrect, props)
 export const IconPunctuation = (props) => getIcon(IconNames.Punctuation, props)
 export const IconCompleteWord = (props) => getIcon(IconNames.CompleteWord, props)
+
+export const IconSettingApplyDown = (props) => getIcon(IconNames.SettingApplyDown, props)
+export const IconSettingApplyAll = (props) => getIcon(IconNames.SettingApplyAll, props)
 
 export const Icon = ({ name, ...rest }) => <IconifyIcon icon={getIconName(name)} {...rest} />
 

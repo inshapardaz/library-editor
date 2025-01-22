@@ -54,6 +54,7 @@ const Router = () => {
                 <Route element={<LayoutWithHeader />}>
                     <Route path="/libraries/:libraryId/books/:bookId/read" element={<Pages.BookReaderPage />} />
                     <Route path="/libraries/:libraryId/books/:bookId/ebook" element={<Pages.EBookReaderPage />} />
+                    <Route path="/libraries/:libraryId/books/:bookId/files/:fileId/process" element={<Pages.BookProcessPage />} />
                     <Route path="/libraries/:libraryId/writings/:articleId" element={<Pages.WritingPage />} />
                     <Route path="/libraries/:libraryId/books/:bookId/chapters/:chapterNumber/contents/edit" element={<Pages.ChapterEditorPage />} />
                     <Route path="/libraries/:libraryId/books/:bookId/pages/:pageNumber/contents/edit" element={<Pages.BookPageEditPage />} />

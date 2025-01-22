@@ -147,7 +147,9 @@ const IconNames = {
     AutoCorrect: "autoCorrect",
     Punctuation: "punctuation",
     CompleteWord: "completeWord",
-    OcrDocument: "ocrDocument"
+    OcrDocument: "ocrDocument",
+    SettingApplyDown: "settingApplyDown",
+    SettingApplyAll: "settingApplyAll"
 };
 
 export default IconNames;
