@@ -91,6 +91,10 @@ const BooksList = ({
             pageNumber: index,
             pageSize: pageSize,
         }))}
+        onPageSizeChanged={(size) => navigate(updateLinkToBooksPage(location, {
+            pageNumber: 1,
+            pageSize: size,
+        }))}
         showSearch={showSearch}
         searchValue={query}
         onSearchChanged={search => navigate(updateLinkToBooksPage(location, {

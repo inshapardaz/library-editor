@@ -162,6 +162,10 @@ const BookPagesList = ({ libraryId, book, isLoading,
             pageNumber: index,
             pageSize: pageSize,
         }))}
+        onPageSizeChanged={(size) => navigate(updateLinkToBooksPagesPage(location, {
+            pageNumber: 1,
+            pageSize: size,
+        }))}
         showSearch={false}
         actions={
             <Group>

@@ -59,6 +59,10 @@ const PeriodicalsList = ({
             pageNumber: index,
             pageSize: pageSize,
         }))}
+        onPageSizeChanged={(size) => navigate(updateLinkToPeriodicalsPage(location, {
+            pageNumber: 1,
+            pageSize: size,
+        }))}
         showSearch={showSearch}
         searchValue={query}
         onSearchChanged={search => navigate(updateLinkToPeriodicalsPage(location, {

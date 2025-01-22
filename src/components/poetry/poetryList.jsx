@@ -79,6 +79,10 @@ const PoetryList = ({
             pageNumber: index,
             pageSize: pageSize,
         }))}
+        onPageSizeChanged={(size) => navigate(updateLinkToWritingsPage(location, {
+            pageNumber: 1,
+            pageSize: size,
+        }))}
         showSearch={showSearch}
         searchValue={query}
         onSearchChanged={search => navigate(updateLinkToWritingsPage(location, {

@@ -85,6 +85,10 @@ const AuthorsList = ({
             pageNumber: index,
             pageSize: pageSize,
         }))}
+        onPageSizeChanged={(size) => navigate(updateLinkToAuthorsPage(location, {
+            pageNumber: 1,
+            pageSize: size,
+        }))}
         showSearch={showSearch}
         searchValue={query}
         onSearchChanged={search => navigate(updateLinkToAuthorsPage(location, {

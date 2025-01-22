@@ -50,6 +50,11 @@ const CorrectionsList = ({
             pageNumber: index,
             pageSize: pageSize,
         }))}
+        onPageSizeChanged={(size) => navigate(updateLinkToCorrectionsPage(location, {
+            pageNumber: 1,
+            pageSize: size,
+        }))}
+
         showSearch={showSearch}
         searchValue={query}
         onSearchChanged={search => navigate(updateLinkToCorrectionsPage(location, {

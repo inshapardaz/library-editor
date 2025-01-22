@@ -15,6 +15,7 @@ import {
     Input,
     Pagination,
     rem,
+    Select,
     SimpleGrid,
     Skeleton,
     Stack,
@@ -105,6 +106,7 @@ const DataView = ({
     //Pagination
     showPagination = true,
     onPageChanged = () => { },
+    onPageSizeChanged = () => { },
     //Filters
     extraFilters = null,
     //Render
@@ -125,14 +127,35 @@ const DataView = ({
         );
 
     let content = null;
-    const pageination = (<Pagination siblings={2}
-        total={dataSource?.pageCount}
-        defaultValue={dataSource?.currentPageIndex}
-        onChange={onPageChanged}
-        withControls
-        withEdges
-        hideWithOnePage
-    />)
+    const pageination = (<Group>
+        <Pagination siblings={2}
+            total={dataSource?.pageCount}
+            defaultValue={dataSource?.currentPageIndex}
+            onChange={onPageChanged}
+            withControls
+            withEdges
+            hideWithOnePage
+        />
+        <If condition={dataSource?.pageCount > 1}>
+            <Select width={100}
+                value={`${dataSource?.pageSize}`}
+                data={[
+                    { value: '12', label: '12' },
+                    { value: '24', label: '24' },
+                    { value: '48', label: '48' },
+                    { value: '96', label: '96' },
+                ]}
+                withCheckIcon
+                checkIconPosition='right'
+                onChange={onPageSizeChanged}
+                comboboxProps={{ width: 100 }}
+                styles={{
+                    wrapper: { width: 100 }
+                }}
+            />
+        </If>
+    </Group>
+    )
 
     if (isFetching) {
         if (viewType == 'card') {
@@ -284,6 +307,7 @@ DataView.propTypes = {
     listItemRender: PropTypes.func,
     onReload: PropTypes.func,
     onPageChanged: PropTypes.func,
+    onPageSizeChanged: PropTypes.func,
     cols: PropTypes.any,
     spacing: PropTypes.any,
     verticalSpacing: PropTypes.any

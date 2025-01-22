@@ -65,6 +65,10 @@ const IssuesList = ({
             pageNumber: index,
             pageSize: pageSize,
         }))}
+        onPageSizeChanged={(size) => navigate(updateLinkToIssuePage(location, {
+            pageNumber: 1,
+            pageSize: size,
+        }))}
         showSearch={false}
         searchValue={query}
         onSearchChanged={search => navigate(updateLinkToIssuePage(location, {

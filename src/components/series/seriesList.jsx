@@ -68,6 +68,10 @@ const SeriesList = ({
             pageNumber: index,
             pageSize: pageSize,
         }))}
+        onPageSizeChanged={(size) => navigate(updateLinkToSeriesPage(location, {
+            pageNumber: 1,
+            pageSize: size,
+        }))}
         showSearch={showSearch}
         searchValue={query}
         onSearchChanged={search => navigate(updateLinkToSeriesPage(location, {
