@@ -36,6 +36,25 @@ import If from '@/components/if';
 import { IconBook, IconEditBook, IconPages, IconChapters, IconFiles } from '@/components/icons';
 import IconNames from '@/components/iconNames'
 import BookFilesList from '@/components/books/files/bookFilesList';
+import { BookStatus, PageStatus } from '@/models';
+//------------------------------------------------------
+
+const getFilterFromBookStatus = (book) => {
+    switch (book?.status) {
+        case BookStatus.AvailableForTyping:
+            return PageStatus.AvailableForTyping;
+        case BookStatus.BeingTyped:
+            return PageStatus.Typing;
+        case BookStatus.ReadyForProofRead:
+            return PageStatus.Typed;
+        case BookStatus.ProofRead:
+            return PageStatus.InReview;
+        case BookStatus.Published:
+        default:
+            return PageStatus.All;
+    }
+};
+
 //------------------------------------------------------
 
 const PRIMARY_COL_HEIGHT = rem(300);
@@ -49,7 +68,6 @@ const BookPage = () => {
     const writerAssignmentFilter = searchParams.get("writerAssignmentFilter");
     const reviewerAssignmentFilter = searchParams.get("reviewerAssignmentFilter");
     const sortDirection = searchParams.get("sortDirection") ?? "ascending";
-    const status = searchParams.get("status");
     const pageNumber = parseInt(searchParams.get("pageNumber") ?? "1");
     const pageSize = parseInt(searchParams.get("pageSize") ?? "12");
 
@@ -66,6 +84,7 @@ const BookPage = () => {
         bookId
     });
 
+    const status = searchParams.get("status") ?? getFilterFromBookStatus(book);
     const SECONDARY_COL_HEIGHT = `calc(${PRIMARY_COL_HEIGHT} / 2 - var(--mantine-spacing-md) / 2)`;
 
 

@@ -27,8 +27,11 @@ import SortDirectionToggle from '@/components/sortDirectionToggle';
 import AssignmentFilterMenu from '@/components/asssignmentFilterMenu';
 import PageListItem from './pageListItem';
 import PageCard from './pageCard';
+import { BookStatus } from '@/models';
+
 //------------------------------------------------------
 
+const ReviewBookStatuses = [BookStatus.ReadyForProofRead, BookStatus.ProofRead]
 const BookPagesList = ({ libraryId, book, isLoading,
     writerAssignmentFilter = null,
     reviewerAssignmentFilter = null,
@@ -190,11 +193,13 @@ const BookPagesList = ({ libraryId, book, isLoading,
         }
         extraFilters={
             <Group>
-                <AssignmentFilterMenu value={status} onChange={value => navigate(updateLinkToBooksPagesPage(location, {
-                    pageNumber: 1,
-                    writerAssignmentFilter: value,
-                    reviewerAssignmentFilter: value,
-                }))} />
+                <AssignmentFilterMenu
+                    value={ReviewBookStatuses.includes(book?.status) ? reviewerAssignmentFilter : writerAssignmentFilter}
+                    onChange={value => navigate(updateLinkToBooksPagesPage(location, {
+                        pageNumber: 1,
+                        writerAssignmentFilter: ReviewBookStatuses.includes(book?.status) ? null : value,
+                        reviewerAssignmentFilter: ReviewBookStatuses.includes(book?.status) ? value : null,
+                    }))} />
                 <EditingStatusFilterMenu statuses={book?.pageStatus} value={status} onChange={value => navigate(updateLinkToBooksPagesPage(location, {
                     pageNumber: 1,
                     statusFilter: value
@@ -232,6 +237,7 @@ BookPagesList.propTypes = {
         isPublic: PropTypes.bool,
         copyrights: PropTypes.string,
         pageCount: PropTypes.number,
+        status: PropTypes.string,
         pageStatus: PropTypes.arrayOf(PropTypes.shape({
             status: PropTypes.string,
             count: PropTypes.number,

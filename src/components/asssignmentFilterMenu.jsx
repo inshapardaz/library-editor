@@ -41,7 +41,7 @@ const AssignmentFilterMenu = ({ value, onChange = () => { } }) => {
 
     const comboOptions = options.map(o => <Menu.Item
         key={o.value}
-        selected={value === o.value}
+        disabled={value === o.value}
         leftSection={o.icon}
         onClick={() => onChange(o.value)}>
         {o.label}

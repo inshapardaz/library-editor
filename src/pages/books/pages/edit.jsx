@@ -205,20 +205,22 @@ const BookPageEditPage = () => {
                 t={t}
                 type='default' />
         )}
-        <Tooltip key="previous" label={t("actions.previous")}>
-            <Button variant="default" size="xs" disabled={!page || !page.links.previous} component={Link}
-                to={`/libraries/${libraryId}/books/${bookId}/pages/${page.sequenceNumber - 1}/contents/edit`}>
-                {lang.isRtl ? <IconRight /> : <IconLeft />}
-            </Button>
-        </Tooltip>
-        <Tooltip key="next" label={t("actions.next")}>
-            <Button variant="default" size="xs" disabled={!page || !page.links.next} component={Link}
-                to={`/libraries/${libraryId}/books/${bookId}/pages/${page.sequenceNumber + 1}/contents/edit`}>
-                {lang.isRtl ? <IconLeft /> : <IconRight />}
-            </Button>
-        </Tooltip>
+        <Button.Group>
+            <Tooltip key="previous" label={t("actions.previous")}>
+                <Button variant="default" disabled={!page || !page.links.previous} component={Link}
+                    to={`/libraries/${libraryId}/books/${bookId}/pages/${page.sequenceNumber - 1}/contents/edit`}>
+                    {lang.isRtl ? <IconRight /> : <IconLeft />}
+                </Button>
+            </Tooltip>
+            <Tooltip key="next" label={t("actions.next")}>
+                <Button variant="default" disabled={!page || !page.links.next} component={Link}
+                    to={`/libraries/${libraryId}/books/${bookId}/pages/${page.sequenceNumber + 1}/contents/edit`}>
+                    {lang.isRtl ? <IconLeft /> : <IconRight />}
+                </Button>
+            </Tooltip>
+        </Button.Group>
         <Tooltip key="fullscreen" label={t(fullscreen ? "actions.fullscreenExit" : "actions.fullscreen")}>
-            <Button variant="default" size="xs" onClick={toggle} >
+            <Button variant="default" onClick={toggle} >
                 {fullscreen ? <IconFullScreenExit /> : <IconFullScreen />}
             </Button>
         </Tooltip>

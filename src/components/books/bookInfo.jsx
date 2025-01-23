@@ -80,7 +80,7 @@ const BookInfo = ({ libraryId, book }) => {
             <Text>{t('book.pagesStatus')}</Text>
             <Stack gap="sm">
                 {book.pageStatus?.map(s =>
-                (<Group key={s.status} >
+                (<Group key={s.status} component={Link} to={`/libraries/${libraryId}/books/${book.id}/?section=pages&status=${s.status}`}>
                     <EditingStatusIcon editingStatus={s.status} t={t} style={{ color: theme.colors.dark[2] }} />
                     <Progress size="lg" value={s.percentage} color={getStatusColor(s.status)} style={{ flex: 1 }} />
                 </Group>
