@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { Icon as IconifyIcon } from '@iconify-icon/react';
-import IconNames from './IconNames';
+import IconNames from './iconNames';
 
 //-------------------------------------
 
