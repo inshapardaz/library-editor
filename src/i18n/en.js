@@ -353,6 +353,7 @@ const en = {
         publishLabel: "Published in {{year}}",
         isPublic: "Public Book",
         pages: "Pages",
+        pagesStatus: "Pages Progess",
         files: {
             title: "Files",
             empty: {
@@ -459,6 +460,8 @@ const en = {
                 title: "Publish Book",
                 message:
                     "Are you sure you want to publish book '{{title}}'? It will merge text in all pages and save into chapters. It will overwrite all chapter contents.",
+                busyMessage: "Publishing book....",
+                updateBookStatus: "Mark book as published?",
                 success: "Book published successfully.",
                 error: "Error publishing book.",
             },

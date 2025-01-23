@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 // Ui Library Imports
-import { Text, useMantineTheme } from '@mantine/core';
+import { Button, Text, useMantineTheme } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 
@@ -10,7 +10,7 @@ import IconText from '@/components/iconText';
 import { IconDelete } from '@/components/icons';
 
 //---------------------------------
-const DeleteButton = ({ title, message, tooltip, icon, successMessage, errorMessage, isDeleting, onDelete = () => { }, onDeleted = () => { } }) => {
+const DeleteButton = ({ title, message, tooltip, icon, successMessage, errorMessage, type = "icon", isDeleting, onDelete = () => { }, onDeleted = () => { }, ...props }) => {
     const theme = useMantineTheme();
     const openDeleteModal = () =>
         modals.openConfirmModal({
@@ -41,14 +41,24 @@ const DeleteButton = ({ title, message, tooltip, icon, successMessage, errorMess
             },
         });
 
-    return (
-        <IconText
-            tooltip={tooltip}
-            onClick={openDeleteModal}
-            icon={icon || <IconDelete height={16} style={{ color: theme.colors.dark[2] }} />} />)
+    if (type == "icon") {
+        return (
+            <IconText
+                tooltip={tooltip}
+                onClick={openDeleteModal}
+                icon={icon || <IconDelete height={16} style={{ color: theme.colors.dark[2] }} />} />)
+    } else {
+        return (
+            <Button {...props}
+                onClick={openDeleteModal}
+                leftSection={icon || <IconDelete height={16} />}>
+                {title}
+            </Button >)
+    }
 }
 
 DeleteButton.propTypes = {
+    type: PropTypes.string,
     title: PropTypes.string,
     message: PropTypes.string,
     tooltip: PropTypes.string,

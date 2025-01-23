@@ -301,7 +301,7 @@ export const booksApi = createApi({
                 data: removeLinks(payload),
             }),
             transformResponse: (response) => parseResponse(response),
-            invalidatesTags: ["BookPages"],
+            invalidatesTags: ["Book", "BookPages"],
         }),
         updateBookPage: builder.mutation({
             query: ({ page }) => ({
@@ -310,7 +310,7 @@ export const booksApi = createApi({
                 data: removeLinks(page),
             }),
             transformResponse: (response) => parseResponse(response),
-            invalidatesTags: ["BookPages"],
+            invalidatesTags: ["Book", "BookPages"],
         }),
         updateBookPages: builder.mutation({
             async queryFn(
@@ -329,14 +329,14 @@ export const booksApi = createApi({
                 });
             },
             transformResponse: (response) => parseResponse(response),
-            invalidatesTags: (result, error) => (error ? [] : ["BookPages"]),
+            invalidatesTags: (result, error) => (error ? [] : ["Book", "BookPages"]),
         }),
         deleteBookPage: builder.mutation({
             query: ({ page }) => ({
                 url: page.links.delete,
                 method: "DELETE",
             }),
-            invalidatesTags: ["BookPages"],
+            invalidatesTags: ["Book", "BookPages"],
         }),
         deleteBookPages: builder.mutation({
             async queryFn(
@@ -354,7 +354,7 @@ export const booksApi = createApi({
                     onProgress,
                 });
             },
-            invalidatesTags: (result, error) => (error ? [] : ["BookPages"]),
+            invalidatesTags: (result, error) => (error ? [] : ["Book", "BookPages"]),
         }),
         assignBookPage: builder.mutation({
             query: ({ page, payload }) => ({

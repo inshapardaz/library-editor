@@ -8,3 +8,18 @@ const EditingStatus = {
 };
 
 export default EditingStatus;
+
+export const getStatusColor = (status) => {
+    switch (status) {
+        case EditingStatus.Available:
+            return "green";
+        case EditingStatus.Typing:
+            return "yellow";
+        case EditingStatus.Typed:
+            return "cyan";
+        case EditingStatus.InReview:
+            return "orange";
+        case EditingStatus.Completed:
+            return "blue";
+    }
+}

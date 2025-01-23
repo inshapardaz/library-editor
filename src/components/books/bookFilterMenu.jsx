@@ -9,45 +9,39 @@ import { Button, Menu } from '@mantine/core';
 import {
     IconFilter,
     IconChevronUp,
-    IconPublished,
-    IconAvailableForTyping,
-    IconBeingTyped,
-    IconReadyForProofRead,
-    IconProofRead,
-    IconAll,
 } from "@/components/icons";
 import BookStatus from '@/models/bookStatus';
-//-----------------------------------------
+import { getBookStatusText, BookStatusIcon } from './BookStatusIcon';
 
-
+//--------------------------
 const BookFilterMenu = ({ value, onChange = () => { } }) => {
     const { t } = useTranslation()
     const [opened, setOpened] = useState(false);
 
     const options = [{
-        label: t(`book.statuses.${BookStatus.AvailableForTyping}`),
+        label: getBookStatusText({ status: BookStatus.AvailableForTyping, t }),
         value: BookStatus.AvailableForTyping,
-        icon: <IconAvailableForTyping />
+        icon: <BookStatusIcon status={BookStatus.AvailableForTyping} />
     }, {
-        label: t(`book.statuses.${BookStatus.BeingTyped}`),
+        label: getBookStatusText({ status: BookStatus.BeingTyped, t }),
         value: BookStatus.BeingTyped,
-        icon: <IconBeingTyped />
+        icon: <BookStatusIcon status={BookStatus.BeingTyped} />
     }, {
-        label: t(`book.statuses.${BookStatus.ReadyForProofRead}`),
+        label: getBookStatusText({ status: BookStatus.ReadyForProofRead, t }),
         value: BookStatus.ReadyForProofRead,
-        icon: <IconReadyForProofRead />
+        icon: <BookStatusIcon status={BookStatus.ReadyForProofRead} />
     }, {
-        label: t(`book.statuses.${BookStatus.ProofRead}`),
+        label: getBookStatusText({ status: BookStatus.ProofRead, t }),
         value: BookStatus.ProofRead,
-        icon: <IconProofRead />
+        icon: <BookStatusIcon status={BookStatus.ProofRead} />
     }, {
-        label: t(`book.statuses.${BookStatus.Published}`),
+        label: getBookStatusText({ status: BookStatus.Published, t }),
         value: BookStatus.Published,
-        icon: <IconPublished />
+        icon: <BookStatusIcon status={BookStatus.Published} />
     }, {
-        label: t(`book.statuses.${BookStatus.All}`),
+        label: getBookStatusText({ status: BookStatus.All, t }),
         value: BookStatus.All,
-        icon: <IconAll />
+        icon: <BookStatusIcon status={BookStatus.All} />
     }]
 
     const comboOptions = options.map(o => <Menu.Item

@@ -5,10 +5,10 @@ import { useDeleteBookMutation } from '@/store/slices/books.api';
 import DeleteButton from "@/components/deleteButton";
 
 //---------------------------------
-const BookDeleteButton = ({ book, t, onDeleted = () => { } }) => {
+const BookDeleteButton = ({ book, t, onDeleted = () => { }, ...props }) => {
     const [deleteBook, { isLoading: isDeleting }] = useDeleteBookMutation();
 
-    return (<DeleteButton
+    return (<DeleteButton {...props}
         title={t("book.actions.delete.title")}
         message={t("book.actions.delete.message", { title: book.title })}
         tooltip={t('book.actions.delete.label', { title: book.title })}
