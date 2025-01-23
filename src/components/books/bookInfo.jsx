@@ -20,7 +20,7 @@ import {
 import IconText from '@/components/iconText';
 import If from '@/components/if';
 import PublishButton from './publishButton';
-import { getBookStatusText, BookStatusIcon } from './BookStatusIcon';
+import { getBookStatusText, BookStatusIcon } from './bookStatusIcon';
 import { getStatusColor } from '@/models/editingStatus';
 import EditingStatusIcon from '@/components/editingStatusIcon';
 import BookDeleteButton from './bookDeleteButton';

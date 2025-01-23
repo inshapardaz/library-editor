@@ -15,7 +15,7 @@ import { useAddBookContentMutation, useAddBookMutation, useUpdateBookImageMutati
 import PageHeader from "@/components/pageHeader";
 import IconNames from '@/components/iconNames';
 import { IconLink, IconSave, IconDelete, IconChevronDown, IconUplaodDocument, IconUploadAccept, IconUploadReject } from '@/components/icons';
-import ProcessStatusIcon from '@/components/ProcessStatusIcon';
+import ProcessStatusIcon from '@/components/processStatusIcon';
 import If from '@/components/if';
 import { ProcessStatus } from "@/models";
 import { pdfjsLib } from '@/utils/pdf'

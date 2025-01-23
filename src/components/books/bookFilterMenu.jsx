@@ -11,7 +11,7 @@ import {
     IconChevronUp,
 } from "@/components/icons";
 import BookStatus from '@/models/bookStatus';
-import { getBookStatusText, BookStatusIcon } from './BookStatusIcon';
+import { getBookStatusText, BookStatusIcon } from './bookStatusIcon';
 
 //--------------------------
 const BookFilterMenu = ({ value, onChange = () => { } }) => {
