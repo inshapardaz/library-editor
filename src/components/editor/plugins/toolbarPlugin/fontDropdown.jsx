@@ -54,11 +54,12 @@ const FontDropDown = ({ t, editor, value, locale }) => {
   );
 
   useEffect(() => {
+    console.log('1')
     const found = configuredFonts.find(b => b.value === value);
     if (found) {
       setSelected(found);
     }
-  }, [configuredFonts, value]);
+  }, [value]);
 
   const onItemClick = item => {
     setSelected(item);
