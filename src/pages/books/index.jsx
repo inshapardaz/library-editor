@@ -6,7 +6,7 @@ import { Button, Card, Grid, rem } from "@mantine/core";
 
 // Local Import
 import { SortDirection, BookStatus } from "@/models";
-import BooksSideBar from "@/components/books/booksSidebar";
+import BooksSideBar from "@/components/books/booksSideBar.jsx";
 import BooksList from "@/components/books/booksList";
 import PageHeader from "@/components/pageHeader";
 import { IconAdd } from '@/components/icons';
