@@ -1,7 +1,7 @@
 import { notifications } from '@mantine/notifications';
 
 // Local Import
-import { IconError, IconSuccess, IconWarning, IconInfo } from '@/components/icons';
+// import { IconError, IconSuccess, IconWarning, IconInfo } from '@/components/icons';
 
 //----------------------------------------
 export function error({ title, message, allowClose = true }) {
@@ -10,7 +10,7 @@ export function error({ title, message, allowClose = true }) {
         title: title,
         message: message,
         withCloseButton: allowClose,
-        icon: <IconError />,
+        // icon: (<IconError />),
     });
 }
 
@@ -20,7 +20,7 @@ export function success({ title, message, allowClose = true }) {
         title: title,
         message: message,
         withCloseButton: allowClose,
-        icon: <IconSuccess />,
+        // icon: <IconSuccess />,
     });
 }
 
@@ -30,7 +30,7 @@ export function warning({ title, message, allowClose = true }) {
         title: title,
         message: message,
         withCloseButton: allowClose,
-        icon: <IconWarning />,
+        // icon: (<IconWarning />),
     });
 }
 
@@ -40,6 +40,6 @@ export function info({ title, message, allowClose = true }) {
         title: title,
         message: message,
         withCloseButton: allowClose,
-        icon: <IconInfo />,
+        // icon: (<IconInfo />),
     });
 }
