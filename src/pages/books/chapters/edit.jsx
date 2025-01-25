@@ -161,7 +161,6 @@ const ChapterEditorPage = () => {
         {chapter && chapter.links.assign && (
             <ChapterAssignButton
                 type="default"
-                buttonSize="xs"
                 libraryId={libraryId}
                 chapters={[chapter]}
                 t={t}
@@ -171,26 +170,25 @@ const ChapterEditorPage = () => {
         {chapter && chapter.links.update && (
             <ChapterStatusButton
                 type="default"
-                buttonSize="xs"
                 libraryId={libraryId}
                 chapters={[chapter]}
                 t={t}
             />
         )}
         <Tooltip key="previous" label={t("actions.previous")}>
-            <Button variant="default" size="xs" disabled={!chapter || !chapter.links.previous} component={Link}
+            <Button variant="default" disabled={!chapter || !chapter.links.previous} component={Link}
                 to={`/libraries/${libraryId}/books/${bookId}/chapters/${chapter.chapterNumber - 1}/contents/edit`}>
                 {lang.isRtl ? <IconRight /> : <IconLeft />}
             </Button>
         </Tooltip>
         <Tooltip key="next" label={t("actions.next")}>
-            <Button variant="default" size="xs" disabled={!chapter || !chapter.links.next} component={Link}
+            <Button variant="default" disabled={!chapter || !chapter.links.next} component={Link}
                 to={`/libraries/${libraryId}/books/${bookId}/chapters/${chapter.chapterNumber + 1}/contents/edit`}>
                 {lang.isRtl ? <IconLeft /> : <IconRight />}
             </Button>
         </Tooltip>
         <Tooltip key="fullscreen" label={t(fullscreen ? "actions.fullscreenExit" : "actions.fullscreen")}>
-            <Button variant="default" size="xs" onClick={toggle} >
+            <Button variant="default" onClick={toggle} >
                 {fullscreen ? <IconFullScreenExit /> : <IconFullScreen />}
             </Button>
         </Tooltip>
@@ -260,7 +258,7 @@ const ChapterEditorPage = () => {
         </If>
         <Box style={{ height: '100%', overflow: 'auto' }} >
             <LoadingOverlay visible={isBusy || isUpdatingChapter} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
-            <div style={{ height: `calc(100vh - ${fullscreen ? '124px' : '180px'})`, position: 'relative' }}>
+            <div style={{ height: `calc(100vh - ${fullscreen ? '160px' : '220px'})`, position: 'relative' }}>
                 <Editor defaultValue={contents}
                     configuration={{
                         ...DefaultConfiguration,
@@ -268,7 +266,11 @@ const ChapterEditorPage = () => {
                         format: EditorFormat.Markdown,
                         toolbar: {
                             ...DefaultConfiguration.toolbar,
+                            showFontFormat: false,
                             showSave: true,
+                            showZoom: true,
+                            showViewFont: true,
+                            showExtraFormat: false
                         },
                         spellchecker: {
                             enabled: true,

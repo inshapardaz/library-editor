@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 // UI library import
 import { Box, Button, Container, Grid, Group, LoadingOverlay, rem, Skeleton, Switch, Tooltip } from "@mantine/core";
-import { useFullscreen } from "@mantine/hooks";
+import { useFullscreen, useLocalStorage } from "@mantine/hooks";
 import { notifications } from '@mantine/notifications';
 
 // Local imports
@@ -41,9 +41,11 @@ const BookPageEditPage = () => {
     const navigate = useNavigate();
     const [contents, setContents] = useState('')
     const [isBusy, setIsBusy] = useState(false)
-    const [showImge, setShowImage] = useState(false)
     const [image, setImage] = useState();
-
+    const [showImge, setShowImage] = useLocalStorage({
+        key: "page-editor-view-image",
+        defaultValue: null
+    });
     // Data operations
     const [addBookPage, { isLoading: isAddingPage }] = useAddBookPageMutation();
     const [updateBookPage, { isLoading: isUpdatingPage }] = useUpdateBookPageMutation();
@@ -298,7 +300,11 @@ const BookPageEditPage = () => {
                             format: EditorFormat.Markdown,
                             toolbar: {
                                 ...DefaultConfiguration.toolbar,
+                                showFontFormat: false,
                                 showSave: true,
+                                showZoom: true,
+                                showViewFont: true,
+                                showExtraFormat: false
                             },
                             spellchecker: {
                                 enabled: true,

@@ -8,7 +8,7 @@ import { $patchStyleText } from "@lexical/selection";
 // Ui Library Imports
 
 // Local imprts
-import { Button, Menu } from '@mantine/core';
+import { Button, Menu, Text } from '@mantine/core';
 import { IconFontSize, IconTick, IconChevronUp } from '@/components/icons';
 import { updateFontSizeInSelection } from './utils';
 // --------------------------------------------------
@@ -73,7 +73,7 @@ const FontSizeDropDown = ({ editor, value }) => {
         transform: opened ? "rotate(0)" : "rotate(180deg)",
         transitionDuration: "250ms"
       }} />}>
-        {selected.label}
+        <Text>{selected.label}</Text>
       </Button>
     </Menu.Target>
     <Menu.Dropdown>

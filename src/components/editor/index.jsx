@@ -30,6 +30,9 @@ import DraggableBlockPlugin from './plugins/draggableBlockPlugin';
 import { ToolbarContext } from './plugins/toolbarPlugin/toolbarContext';
 import SpellCheckerPlugin from './plugins/spellCheckerPlugin';
 
+// UI Library Imports
+import { useLocalStorage } from '@mantine/hooks';
+
 // Local Imports
 import { languages } from '@/i18n';
 import classes from './editor.module.css';
@@ -77,6 +80,8 @@ export const DefaultConfiguration = {
         showExtraFormat: true,
         showInsertLink: true,
         showSave: false,
+        showZoom: false,
+        showViewFont: false,
     },
     spellchecker: {
         enabled: false,
@@ -94,7 +99,14 @@ const Editor = ({ language, defaultValue, onSave = () => { }, onChange = () => {
     const isRtl = useMemo(() => direction == "rtl" ? true : false, [direction]);
     const [floatingAnchorElem, setFloatingAnchorElem] = useState(null);
     const [isLinkEditMode, setIsLinkEditMode] = useState(false);
-
+    const [zoom] = useLocalStorage({
+        key: "editor-text-zoom",
+        defaultValue: 100
+    });
+    const [viewFont] = useLocalStorage({
+        key: "editor-view-font",
+        defaultValue: null
+    });
     const onRef = (_floatingAnchorElem) => {
         if (_floatingAnchorElem !== null) {
             setFloatingAnchorElem(_floatingAnchorElem);
@@ -121,7 +133,6 @@ const Editor = ({ language, defaultValue, onSave = () => { }, onChange = () => {
         onError,
     };
 
-
     return (<div className={classes.editorShell} style={{ direction: direction }}>
         <ToolbarContext>
             <LexicalComposer initialConfig={initialConfig}>
@@ -138,7 +149,8 @@ const Editor = ({ language, defaultValue, onSave = () => { }, onChange = () => {
                             contentEditable={
                                 <div className={classes.editorScroller}>
                                     <div className={classes.editor} ref={onRef}>
-                                        <ContentEditable className={classes.contentEditableRoot} />
+                                        <ContentEditable className={classes.contentEditableRoot}
+                                            style={{ zoom: `${zoom}%`, fontFamily: viewFont }} />
                                     </div>
                                 </div>
                             }
@@ -226,6 +238,8 @@ Editor.propTypes = {
             showExtraFormat: PropTypes.bool,
             showInsertLink: PropTypes.bool,
             showSave: PropTypes.bool,
+            showZoom: PropTypes.bool,
+            showViewFont: PropTypes.bool,
         }),
         spellchecker: PropTypes.shape({
             enabled: PropTypes.bool,

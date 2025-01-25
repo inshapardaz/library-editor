@@ -9,7 +9,7 @@ import {
 // Ui Library imports
 
 // Local imports
-import { Button, Menu } from '@mantine/core';
+import { Button, Menu, Text } from '@mantine/core';
 import {
   IconTick,
   IconAlignLeft,
@@ -52,7 +52,7 @@ const AlignFormatDropDown = ({ editor, disabled = false, value = 'left' }) => {
         transform: opened ? "rotate(0)" : "rotate(180deg)",
         transitionDuration: "250ms"
       }} />}>
-        {selected.label}
+        <Text>{selected.label}</Text>
       </Button>
     </Menu.Target>
     <Menu.Dropdown>

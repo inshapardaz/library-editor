@@ -13,7 +13,7 @@ import {
 } from './utils';
 
 // Local imports
-import { Button, Menu } from '@mantine/core';
+import { Button, Menu, Text } from '@mantine/core';
 import {
   IconH1, IconH2, IconH3, IconH4, IconH5, IconH6,
   IconTick,
@@ -67,7 +67,7 @@ const BlockFormatDropDown = ({
         transform: opened ? "rotate(0)" : "rotate(180deg)",
         transitionDuration: "250ms"
       }} />}>
-        {selected.label}
+        <Text>{selected.label}</Text>
       </Button>
     </Menu.Target>
     <Menu.Dropdown>

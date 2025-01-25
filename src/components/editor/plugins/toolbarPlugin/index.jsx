@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from 'react-i18next';
 
 // Lexical imports
@@ -35,6 +35,7 @@ import { $isHeadingNode } from "@lexical/rich-text";
 
 // UI Library Import
 import { ActionIcon, Button, Group, Tooltip } from "@mantine/core";
+import { useLocalStorage } from '@mantine/hooks';
 
 // Editor Imports
 import { sanitizeUrl } from "../../utils/url";
@@ -49,12 +50,17 @@ import classes from './toolbar.module.css'
 import { AUTO_CORRECT_COMMAND, PUNCTUATION_CORRECT_COMMAND } from '../../commands/spellCheckCommand';
 
 // Local imports
-import { IconSave, IconUndo, IconRedo, IconBold, IconItalic, IconUnderline, IconSubScript, IconStrikethrough, IconSuperScript, IconLink, IconAutoCorrect, IconPunctuation } from "@/components/icons";
+import { IconSave, IconZoomIn, IconZoomOut, IconUndo, IconRedo, IconBold, IconItalic, IconUnderline, IconSubScript, IconStrikethrough, IconSuperScript, IconLink, IconAutoCorrect, IconPunctuation } from "@/components/icons";
 import CheckboxButton from './controls/checkboxButton';
 import AlignFormatDropDown from './alignFormatDropDown';
 import FontDropDown from './fontDropdown';
 import FontSizeDropDown from './fontSizeDropdown';
+import If from '@/components/if';
 // -----------------------------------------------------------
+
+const MIN_ZOOM = 10;
+const MAX_ZOOM = 200;
+const ZOOM_STEP = 10;
 
 const ToolbarPlugin = ({ configuration, setIsLinkEditMode, locale }) => {
   const { t } = useTranslation();
@@ -64,7 +70,14 @@ const ToolbarPlugin = ({ configuration, setIsLinkEditMode, locale }) => {
   const [canUndo, setCanUndo] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
   const [isEditable, setIsEditable] = useState(() => editor.isEditable());
-
+  const [zoom, setZoom] = useLocalStorage({
+    key: "editor-text-zoom",
+    defaultValue: 100
+  });
+  const [viewFont, setViewFont] = useLocalStorage({
+    key: "editor-view-font",
+    defaultValue: null
+  });
   const $updateToolbar = useCallback(() => {
     const selection = $getSelection();
     if ($isRangeSelection(selection)) {
@@ -252,10 +265,31 @@ const ToolbarPlugin = ({ configuration, setIsLinkEditMode, locale }) => {
     }
   }, [editor, setIsLinkEditMode, toolbarState.isLink]);
 
+  //----------- Zoom functions ------------------------
+
+  const canZoomIn = useMemo(() => zoom < MAX_ZOOM, [zoom]);
+  const canZoomOut = useMemo(() => zoom > MIN_ZOOM, [zoom]);
+
+  const resetZoom = () => {
+    setZoom(100);
+  }
+
+  const zoomIn = () => {
+    if (canZoomIn) {
+      setZoom(z => z + ZOOM_STEP);
+    }
+  }
+
+  const zoomOut = () => {
+    if (canZoomOut) {
+      setZoom(z => z - ZOOM_STEP);
+    }
+  }
+
   return (
     <div className={classes.toolbar}>
       <Group>
-        {configuration.toolbar.showSave && (
+        <If condition={configuration.toolbar.showSave}>
           <Tooltip label={t('editor.save')}>
             <ActionIcon size="lg"
               variant="default"
@@ -264,9 +298,8 @@ const ToolbarPlugin = ({ configuration, setIsLinkEditMode, locale }) => {
               <IconSave />
             </ActionIcon>
           </Tooltip>
-        )
-        }
-        {configuration.toolbar.showUndoRedo && (
+        </If>
+        <If condition={configuration.toolbar.showUndoRedo}>
           <Button.Group>
             <Tooltip label={t('editor.undo')}>
               <ActionIcon size="lg"
@@ -289,22 +322,21 @@ const ToolbarPlugin = ({ configuration, setIsLinkEditMode, locale }) => {
               </ActionIcon>
             </Tooltip>
           </Button.Group>
-        )}
-        {configuration.toolbar.showBlockFormat && (
+        </If>
+        <If condition={configuration.toolbar.showBlockFormat}>
           <BlockFormatDropDown
             disabled={!isEditable}
             blockType={toolbarState.blockType}
-            // rootType={rootType}
             editor={editor}
             locale={locale}
           />
-        )}
+        </If>
         <Button.Group>
           <CheckboxButton tooltip={t('editor.bold')} size="lg" icon={<IconBold />} checked={toolbarState.isBold} onClick={() => activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold")} />
           <CheckboxButton tooltip={t('editor.italic')} size="lg" icon={<IconItalic />} checked={toolbarState.isItalic} onClick={() => activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic")} />
           <CheckboxButton tooltip={t('editor.underline')} size="lg" icon={<IconUnderline />} checked={toolbarState.isUnderline} onClick={() => activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, "underline")} />
         </Button.Group>
-        {configuration.toolbar.showExtraFormat && (
+        <If condition={configuration.toolbar.showExtraFormat}>
           <Button.Group>
             <CheckboxButton tooltip={t('editor.strikethrough')}
               size="lg"
@@ -322,16 +354,16 @@ const ToolbarPlugin = ({ configuration, setIsLinkEditMode, locale }) => {
               checked={toolbarState.isSuperscript}
               onClick={() => activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, "superscript")} />
           </Button.Group>
-        )}
-        {configuration.toolbar.showAlignment && (
+        </If>
+        <If condition={configuration.toolbar.showAlignment}>
           <AlignFormatDropDown
             editor={editor}
             disabled={!isEditable}
             locale={locale}
             value={toolbarState.elementFormat}
           />
-        )}
-        {configuration.toolbar.showFontFormat && (
+        </If>
+        <If condition={configuration.toolbar.showFontFormat}>
           <>
             <FontDropDown
               t={t}
@@ -344,16 +376,16 @@ const ToolbarPlugin = ({ configuration, setIsLinkEditMode, locale }) => {
               value={toolbarState.fontSize}
             />
           </>
-        )}
-        {configuration.toolbar.showInsertLink && (
+        </If>
+        <If condition={configuration.toolbar.showInsertLink}>
           <CheckboxButton tooltip={t('editor.link')}
             size="lg"
             icon={<IconLink />}
             checked={toolbarState.isLink}
             onClick={insertLink} />
 
-        )}
-        {configuration.spellchecker.enabled && (
+        </If>
+        <If condition={configuration.spellchecker.enabled}>
           <Button.Group>
             <CheckboxButton tooltip={t('editor.punctuation')}
               size="lg"
@@ -364,7 +396,36 @@ const ToolbarPlugin = ({ configuration, setIsLinkEditMode, locale }) => {
               icon={<IconAutoCorrect />}
               onClick={() => editor.dispatchCommand(AUTO_CORRECT_COMMAND)} />
           </Button.Group>
-        )}
+        </If>
+
+        <If condition={configuration.toolbar.showViewFont}>
+          <FontDropDown
+            t={t}
+            editor={editor}
+            locale={locale}
+            value={viewFont || toolbarState.fontFamily}
+            onFontSelected={setViewFont}
+          />
+        </If>
+        <If condition={configuration.toolbar.showZoom}>
+          <Button.Group>
+            <Tooltip label={t("actions.zoonIn")}>
+              <Button variant="default" size="sm" onClick={zoomIn} >
+                <IconZoomIn />
+              </Button>
+            </Tooltip>
+            <Tooltip label={t("actions.zoonReset")}>
+              <Button variant="default" size="sm" onClick={resetZoom} >
+                {`${zoom}%`}
+              </Button>
+            </Tooltip>
+            <Tooltip label={t("actions.zoonOut")}>
+              <Button variant="default" size="sm" onClick={zoomOut} >
+                <IconZoomOut />
+              </Button>
+            </Tooltip>
+          </Button.Group>
+        </If>
       </Group>
     </div >
   );
@@ -388,6 +449,8 @@ ToolbarPlugin.propTypes = {
       showExtraFormat: PropTypes.bool,
       showInsertLink: PropTypes.bool,
       showSave: PropTypes.bool,
+      showZoom: PropTypes.bool,
+      showViewFont: PropTypes.bool,
     }),
     spellchecker: PropTypes.shape({
       enabled: PropTypes.bool,

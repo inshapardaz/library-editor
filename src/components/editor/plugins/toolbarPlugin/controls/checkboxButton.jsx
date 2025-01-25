@@ -7,7 +7,7 @@ import { ActionIcon, Tooltip } from "@mantine/core"
 //---------------------------------
 const CheckboxButton = ({ tooltip, icon, onClick, checked, variant = "default", ...props }) => {
     const button = (<ActionIcon {...props} variant={checked ? "light" : variant} color="gray" aria-label={tooltip}
-        onClick={() => onClick(!checked)}>
+        onClick={() => onClick ? onClick(!checked) : null}>
         {icon}
     </ActionIcon>);
     if (tooltip) {

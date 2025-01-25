@@ -6,7 +6,7 @@ import { $getSelection } from 'lexical';
 import { $patchStyleText } from '@lexical/selection';
 
 // Ui Library Imports
-import { Button, Menu } from '@mantine/core';
+import { Button, Menu, Text } from '@mantine/core';
 
 // Local imprts
 import { getFonts } from '@/i18n';
@@ -33,7 +33,7 @@ export const defaultFont = (configuration) => {
 };
 
 // --------------------------------------------------
-const FontDropDown = ({ t, editor, value, locale }) => {
+const FontDropDown = ({ t, editor, value, locale, onFontSelected = null }) => {
   const [opened, setOpened] = useState(false);
 
   const configuredFonts = getFonts(t, locale) ?? FONT_FAMILY_OPTIONS;
@@ -41,16 +41,21 @@ const FontDropDown = ({ t, editor, value, locale }) => {
 
   const onChange = useCallback(
     (_value) => {
-      editor.update(() => {
-        const selection = $getSelection();
-        if (selection !== null) {
-          $patchStyleText(selection, {
-            ['font-family']: _value,
-          });
-        }
-      });
+      if (onFontSelected) {
+        onFontSelected(_value)
+      } else {
+
+        editor.update(() => {
+          const selection = $getSelection();
+          if (selection !== null) {
+            $patchStyleText(selection, {
+              ['font-family']: _value,
+            });
+          }
+        });
+      }
     },
-    [editor],
+    [editor, onFontSelected],
   );
 
   useEffect(() => {
@@ -72,7 +77,7 @@ const FontDropDown = ({ t, editor, value, locale }) => {
         transform: opened ? "rotate(0)" : "rotate(180deg)",
         transitionDuration: "250ms"
       }} />}>
-        {selected.label}
+        <Text>{selected.label}</Text>
       </Button>
     </Menu.Target>
     <Menu.Dropdown>
@@ -93,6 +98,7 @@ FontDropDown.propTypes = {
   disabled: PropTypes.bool,
   locale: PropTypes.string,
   value: PropTypes.string,
+  onFontSelected: PropTypes.func,
 }
 
 export default FontDropDown;
