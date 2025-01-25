@@ -99,7 +99,7 @@ const PageImage = ({ page, t, image, onChange = () => { } }) => {
                 height="auto"
                 width="auto"
                 fit={null}
-                style={{ transform: `scale(${zoom / 100})` }}
+                style={{ transform: `scale(${zoom / 100})`, transformOrigin: 'top' }}
             />
         </div>
     </Stack>)

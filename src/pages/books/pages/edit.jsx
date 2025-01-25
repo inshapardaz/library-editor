@@ -44,7 +44,7 @@ const BookPageEditPage = () => {
     const [image, setImage] = useState();
     const [showImge, setShowImage] = useLocalStorage({
         key: "page-editor-view-image",
-        defaultValue: null
+        defaultValue: true
     });
     // Data operations
     const [addBookPage, { isLoading: isAddingPage }] = useAddBookPageMutation();
