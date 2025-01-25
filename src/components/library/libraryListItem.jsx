@@ -3,17 +3,20 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // Ui Library Imports
-import { Avatar, Group, Stack, Text, Tooltip, useMantineTheme } from '@mantine/core';
+import { Avatar, Divider, Group, Stack, Text, Tooltip, useMantineTheme } from '@mantine/core';
 
 // Local Imports
-import { IconWorld, IconLibrary } from '@/components/icons';
+import { IconWorld, IconLibrary, IconLibraryEditor } from '@/components/icons';
+import If from '@/components/if';
+import IconText from '@/components/iconText';
+import LibraryDeleteButton from './libraryDeleteButton';
 //-------------------------------------
 
 const LibraryListItem = ({ library }) => {
     const { t } = useTranslation();
     const theme = useMantineTheme();
 
-    return (
+    return (<>
         <Group gap="sm">
             <Avatar size={64} radius={30} ><IconLibrary /></Avatar>
             <Stack>
@@ -38,7 +41,28 @@ const LibraryListItem = ({ library }) => {
                     </Text>
                 </Group>
             </Stack>
-        </Group>)
+            <span style={{ flex: 1 }} />
+            <Group>
+                <If condition={library.links.update}>
+                    <>
+                        <Divider orientation="vertical" />
+                        <IconText
+                            tooltip={t('actions.edit')}
+                            link={`/libraries/${library.id}/edit`}
+                            icon={<IconLibraryEditor height={16} style={{ color: theme.colors.dark[2] }} />} />
+                    </>
+                </If>
+                <If condition={library.links.delete != null}>
+                    <>
+                        <Divider orientation="vertical" />
+                        <LibraryDeleteButton library={library} t={t} />
+                    </>
+                </If>
+            </Group>
+        </Group>
+        <Divider />
+    </>
+    )
 }
 
 LibraryListItem.propTypes = {
@@ -46,7 +70,12 @@ LibraryListItem.propTypes = {
         id: PropTypes.number,
         name: PropTypes.string,
         description: PropTypes.string,
-        language: PropTypes.string
+        language: PropTypes.string,
+        links: PropTypes.shape({
+            image: PropTypes.string,
+            update: PropTypes.string,
+            delete: PropTypes.string
+        })
     })
 }
 

@@ -317,12 +317,9 @@ const BookUploadPage = () => {
         if (values.source) additionalProperties.source = values.source;
         if (values.status) additionalProperties.status = values.status;
 
-        console.log(additionalProperties)
-
         //status and year published is not working
         itemForm.getValues().requests.forEach((r, index) => {
             const n = { ...r, book: { ...r.book, ...additionalProperties } };
-            console.log(n)
             itemForm.replaceListItem('requests', index, n)
         });
 

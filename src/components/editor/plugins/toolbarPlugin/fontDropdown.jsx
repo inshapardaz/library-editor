@@ -54,11 +54,11 @@ const FontDropDown = ({ t, editor, value, locale }) => {
   );
 
   useEffect(() => {
-    console.log('1')
     const found = configuredFonts.find(b => b.value === value);
     if (found) {
       setSelected(found);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   const onItemClick = item => {

@@ -240,7 +240,82 @@ const en = {
     },
     library: {
         noDescription: "No Description",
-        isPublic: "Public Library"
+        isPublic: "Public Library",
+        loadingError: "Unable to load library",
+        bookCount_one: "1 book",
+        bookCount_other: "{{count}} books",
+        email: {
+            label: "Owner Email",
+            placeholder: "Email of owner",
+            error: "Email is invalid",
+            required: "Owner email is required",
+        },
+        name: {
+            label: "Name",
+            placeholder: "Name of library",
+            required: "Library name is required",
+        },
+        description: {
+            label: "Description",
+            placeholder: "Short description of library",
+            required: "Library name is required",
+            noDescription: "No details...",
+        },
+        language: {
+            label: "Language",
+            placeholder: "Select language for library",
+            required: "Language is required",
+        },
+        supportsPeriodicals: {
+            label: "Support Periodicals",
+        },
+        public: {
+            label: "Public Library",
+        },
+        fileStoreType: {
+            label: "File Store Type",
+            placeholder: "Select type of file store to use for this library",
+            required: "File store type is required",
+            database: "Database",
+            azurebolbstorage: "Azure Blob Storage",
+            s3storage: "S3 Storage",
+            filesystem: "File System",
+        },
+        fileStoreSource: {
+            label: "file Store Source",
+            placeholder: "Select File store source",
+            required: "File Store Source is required",
+        },
+        databaseConnection: {
+            label: "Database Connection",
+            placeholder: "Database connection string",
+        },
+        actions: {
+            add: {
+                label: "Add new library",
+                title: "New Library",
+                success: "Library created successfully.",
+                error: "Error creating library.",
+            },
+            edit: {
+                title: "Editing '{{title}}'",
+                success: "Library saved successfully.",
+                error: "Error saving library",
+            },
+            delete: {
+                title: "Delete library?",
+                message:
+                    "Are you sure you want to delete library '{{title}}'? It will remove all of its contents including books, authors, periodicals, issues, articles and files.",
+                success: "Library deleted successfully.",
+                error: "Error deleting library.",
+            },
+        },
+        error: {
+            loading: {
+                title: "Error loading library",
+                detail: "Unexpected error occured loading library. Please retry again."
+            },
+        }
     },
     categories: {
         title: "Categories",

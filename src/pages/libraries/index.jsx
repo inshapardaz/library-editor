@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router-dom";
 // Local Import
 import { SortDirection } from "@/models";
 import LibrariesList from "@/components/library/librariesList";
+import { Container } from "@mantine/core";
 
 // -----------------------------------------
 const LibraryHomePage = () => {
@@ -15,13 +16,17 @@ const LibraryHomePage = () => {
     const pageNumber = searchParams.get("pageNumber") ?? 1;
     const pageSize = searchParams.get("pageSize") ?? 12;
 
-    return (<LibrariesList
-        query={query}
-        sortBy={sortBy}
-        sortDirection={sortDirection}
-        pageNumber={pageNumber}
-        pageSize={pageSize}
-        showSearch />)
+    return (
+        <Container fluid mt="sm">
+            <LibrariesList
+                query={query}
+                sortBy={sortBy}
+                sortDirection={sortDirection}
+                pageNumber={pageNumber}
+                pageSize={pageSize}
+                showSearch />
+        </Container>
+    )
 }
 
 export default LibraryHomePage;

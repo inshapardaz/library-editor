@@ -35,7 +35,7 @@ const LibrariesList = ({
         emptyText={t('libraries.empty')}
         dataSource={libraries}
         isFetching={isFetching}
-        isErro={isError}
+        isError={isError}
         showViewToggle={true}
         viewToggleKey='library-list-view'
         cardRender={library => (<LibraryCard library={library} key={library.id} />)}
@@ -59,7 +59,7 @@ LibrariesList.propTypes = {
     sortBy: PropTypes.string,
     sortDirection: PropTypes.string,
     pageNumber: PropTypes.number,
-    pageSize: PropTypes.string,
+    pageSize: PropTypes.number,
     showSearch: PropTypes.bool,
     showMore: PropTypes.bool
 }

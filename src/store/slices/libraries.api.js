@@ -42,27 +42,29 @@ export const librariesApi = createApi({
             providesTags: ["Libraries"],
         }),
         addLibrary: builder.mutation({
-            query: ({ library }) => ({
+            query: ({ payload }) => ({
                 url: `/libraries`,
                 method: "POST",
-                data: removeLinks(library),
+                data: removeLinks(payload),
             }),
+            transformResponse: (response) => parseResponse(response),
             invalidatesTags: ["Libraries"],
         }),
         updateLibrary: builder.mutation({
-            query: ({ libraryId, library }) => ({
+            query: ({ libraryId, payload }) => ({
                 url: `/libraries/${libraryId}`,
                 method: "PUT",
-                data: removeLinks(library),
+                data: removeLinks(payload),
             }),
-            invalidatesTags: ["Libraries"],
+            transformResponse: (response) => parseResponse(response),
+            invalidatesTags: ["Library", "Libraries"],
         }),
         deleteLibrary: builder.mutation({
             query: ({ library }) => ({
                 url: library.links.delete,
                 method: "DELETE",
             }),
-            invalidatesTags: ["Libraries"],
+            invalidatesTags: ["Library", "Libraries"],
         }),
         updateLibraryImage: builder.mutation({
             query: ({ library, payload }) => {
@@ -78,7 +80,7 @@ export const librariesApi = createApi({
                     },
                 };
             },
-            invalidatesTags: ["Libraries"],
+            invalidatesTags: ["Library", "Libraries"],
         }),
     }),
 });

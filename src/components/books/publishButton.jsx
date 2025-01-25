@@ -30,7 +30,6 @@ const PublishButton = ({ libraryId, book, onPublished = () => { }, ...props }) =
                 .unwrap();
 
             if (updateStatus) {
-                console.log("updating status")
                 await updateBook({ libraryId, bookId: book.id, payload: { ...book, status: BookStatus.Published } }).unwrap();
             }
 

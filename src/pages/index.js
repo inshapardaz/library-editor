@@ -33,6 +33,7 @@ import CorrectionsPage from "./tools/correctionsPage";
 import BookPageEditPage from "./books/pages/edit";
 import BookUploadPage from "./books/upload";
 import BookProcessPage from "./books/process";
+import LibraryEditPage from "./libraries/edit";
 
 const Pages = {
     HomePage,
@@ -67,7 +68,8 @@ const Pages = {
     CorrectionsPage,
     BookPageEditPage,
     BookUploadPage,
-    BookProcessPage
+    BookProcessPage,
+    LibraryEditPage
 };
 
 export default Pages;
