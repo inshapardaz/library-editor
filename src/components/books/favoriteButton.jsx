@@ -3,11 +3,12 @@ import { useTranslation } from 'react-i18next';
 
 // Ui Library Impports
 import { ActionIcon, useMantineTheme } from "@mantine/core";
-import { notifications } from '@mantine/notifications';
 
 // Local imports
 import { IconFavorite, IconFavoriteFill } from '@/components/icons';
 import { useAddBookToFavoriteMutation, useRemoveBookFromFavoriteMutation } from '@/store/slices/books.api';
+import { error, success } from '@/utils/notifications';
+
 //---------------------------------------
 
 const FavoriteButton = ({ book, readonly, size }) => {
@@ -20,32 +21,20 @@ const FavoriteButton = ({ book, readonly, size }) => {
         if (book.links.create_favorite) {
             addBookToFavorite({ book })
                 .then(() => {
-                    notifications.show({
-                        color: 'green',
-                        title: t("book.actions.addFavorite.success")
-                    })
+                    success({ message: t("book.actions.addFavorite.success") })
                 })
                 .catch((e) => {
                     console.error(e)
-                    notifications.show({
-                        color: 'red',
-                        title: t("book.actions.addFavorite.error")
-                    });
+                    error({ message: t("book.actions.addFavorite.error") });
                 })
         } else if (book.links.remove_favorite) {
             removeBookFromFavorite({ book })
                 .then(() => {
-                    notifications.show({
-                        color: 'green',
-                        title: t("book.actions.removeFavorite.success")
-                    })
+                    success({ message: t("book.actions.removeFavorite.success") })
                 })
                 .catch((e) => {
                     console.error(e)
-                    notifications.show({
-                        color: 'red',
-                        title: t("book.actions.removeFavorite.error")
-                    });
+                    error({ message: t("book.actions.removeFavorite.error") });
                 });
         }
     }

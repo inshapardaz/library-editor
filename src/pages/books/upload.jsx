@@ -5,7 +5,6 @@ import { Link, useParams } from "react-router-dom";
 // Ui library imports
 import { ActionIcon, Box, Button, Card, Collapse, Container, Flex, Group, LoadingOverlay, NumberInput, rem, SimpleGrid, Switch, Text, Textarea, TextInput, Tooltip } from "@mantine/core";
 import { Dropzone, PDF_MIME_TYPE } from "@mantine/dropzone";
-import { notifications } from "@mantine/notifications";
 import { randomId, useDisclosure } from '@mantine/hooks';
 import { isInRange, isNotEmpty, useForm } from '@mantine/form';
 
@@ -27,6 +26,7 @@ import CopyrightSelect from '@/components/copyrightSelect';
 import LanguageSelect from '@/components/languageSelect';
 import PublishStatusSelect from '@/components/publishStatusSelect';
 import SeriesSelect from '@/components/series/seriesSelect';
+import { error, success } from '@/utils/notifications';
 //-----------------------------------
 const removeFileExtension = (filename) => {
     if (typeof filename !== "string") {
@@ -272,7 +272,7 @@ const BookUploadPage = () => {
         setIsSaving(true);
         const requests = itemForm.getValues().requests;
 
-        let success = true;
+        let isSuccess = true;
         for (var i = 0; i < requests.length; i++) {
             let request = requests[i];
             try {
@@ -281,21 +281,15 @@ const BookUploadPage = () => {
             }
             catch (e) {
                 console.error(e);
-                success = false;
+                isSuccess = false;
                 updateRequest({ id: request.id, status: ProcessStatus.Failed, error: e });
             }
         }
         setIsSaving(false)
-        if (success) {
-            notifications.show({
-                color: 'green',
-                title: t("bookUpload.actions.add.success")
-            })
+        if (isSuccess) {
+            success({ message: t("bookUpload.actions.add.success") })
         } else {
-            notifications.show({
-                color: 'red',
-                title: t("bookUpload.actions.add.error")
-            })
+            error({ message: t("bookUpload.actions.add.error") })
         }
     }, [itemForm, saveBook, t, updateRequest]);
 
@@ -416,10 +410,7 @@ const BookUploadPage = () => {
             <Card.Section withBorder p="sm">
                 <Dropzone
                     onDrop={onFilesAdded}
-                    onReject={() => notifications.show({
-                        color: 'red',
-                        title: t("book.actions.addFile.invalidFileTypeError")
-                    })}
+                    onReject={() => error({ message: t("book.actions.addFile.invalidFileTypeError") })}
                     maxSize={300 * 1024 ** 2}
                     accept={[PDF_MIME_TYPE]}
                 >

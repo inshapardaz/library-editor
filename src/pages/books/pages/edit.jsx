@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 // UI library import
 import { Box, Button, Container, Grid, Group, LoadingOverlay, rem, Skeleton, Switch, Tooltip } from "@mantine/core";
 import { useFullscreen, useLocalStorage } from "@mantine/hooks";
-import { notifications } from '@mantine/notifications';
 
 // Local imports
 import {
@@ -29,6 +28,7 @@ import PageImage from "@/components/books/pages/pageImage";
 import PageAssignButton from '@/components/books/pages/pageAssignButton';
 import PageStatusButton from '@/components/books/pages/pageStatusButton';
 import PageOcrButton from "@/components/books/pages/pageOcrButton";
+import { error, success } from '@/utils/notifications';
 import classes from './edit.module.css'
 //-------------------------------
 const PRIMARY_COL_HEIGHT = rem(300);
@@ -111,17 +111,11 @@ const BookPageEditPage = () => {
                     return uploadImage(r)
                 })
                 .then(() => setImage(null))
-                .then(() => notifications.show({
-                    color: 'green',
-                    title: t("page.actions.edit.success")
-                }))
+                .then(() => success({ message: t("page.actions.edit.success") }))
                 .then(() => navigate(
                     `/libraries/${libraryId}/books/${bookId}/pages/${newPage.sequenceNumber}/edit`
                 ))
-                .catch(() => notifications.show({
-                    color: 'red',
-                    title: t("page.actions.edit.error")
-                }))
+                .catch(() => error({ message: t("page.actions.edit.error") }))
                 .finally(() => setIsBusy(false));
         } else if (page) {
             setIsBusy(true)
@@ -139,14 +133,8 @@ const BookPageEditPage = () => {
                 .unwrap()
                 .then(uploadImage)
                 .then(() => setImage(null))
-                .then(() => notifications.show({
-                    color: 'green',
-                    title: t("page.actions.add.success")
-                }))
-                .catch(() => notifications.show({
-                    color: 'red',
-                    title: t("page.actions.add.error")
-                }))
+                .then(() => success({ message: t("page.actions.add.success") }))
+                .catch(() => error({ message: t("page.actions.add.error") }))
                 .finally(() => setIsBusy(false));
         }
     };
@@ -161,14 +149,8 @@ const BookPageEditPage = () => {
             };
             return updateBookPage({ page: payload })
                 .unwrap()
-                .then(() => notifications.show({
-                    color: 'green',
-                    title: t("page.actions.edit.success")
-                }))
-                .catch(() => notifications.show({
-                    color: 'red',
-                    title: t("page.actions.edit.error")
-                }));
+                .then(() => success({ message: t("page.actions.edit.success") }))
+                .catch(() => error({ message: t("page.actions.edit.error") }));
         }
     };
 

@@ -4,13 +4,13 @@ import { useTranslation } from 'react-i18next';
 // UI library imports
 import { Group, rem, Text } from '@mantine/core';
 import { Dropzone, IMAGE_MIME_TYPE, PDF_MIME_TYPE, MS_WORD_MIME_TYPE } from '@mantine/dropzone';
-import { notifications } from '@mantine/notifications';
 
 // Local imports
 import { useAddBookContentMutation } from '@/store/slices/books.api';
 import DataView from '@/components/dataView';
 import BookFileListItem from './bookFileListItem';
 import { IconUplaodDocument, IconUploadAccept, IconUploadReject } from '@/components/icons';
+import { error, success } from '@/utils/notifications';
 //------------------------------------------------------
 
 
@@ -24,26 +24,15 @@ const BookFilesList = ({ libraryId, book, isLoading }) => {
         const file = files[0];
         const isAllowed = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"].includes(file.type);
         if (!isAllowed) {
-            notifications.show({
-                color: 'red',
-                title: t("book.actions.addFile.invalidFileTypeError")
-            });
+            error({ message: t("book.actions.addFile.invalidFileTypeError") });
             return;
         }
 
         addBookContent({ book: book, payload: file, language: 'en' }).unwrap()
-            .then(() => {
-                notifications.show({
-                    color: 'green',
-                    title: t("book.actions.addFile.success")
-                });
-            })
+            .then(() => success({ message: t("book.actions.addFile.success") }))
             .catch((e) => {
                 console.error(e)
-                notifications.show({
-                    color: 'red',
-                    title: t("book.actions.addFile.error")
-                });
+                error({ message: t("book.actions.addFile.error") });
             });
     }
     //------------------------------------------------------
@@ -68,10 +57,7 @@ const BookFilesList = ({ libraryId, book, isLoading }) => {
         showSearch={false}
         footer={<Dropzone
             onDrop={uploadFile}
-            onReject={() => notifications.show({
-                color: 'red',
-                title: t("book.actions.addFile.invalidFileTypeError")
-            })}
+            onReject={() => error({ message: t("book.actions.addFile.invalidFileTypeError") })}
             maxSize={100 * 1024 ** 2}
             accept={[IMAGE_MIME_TYPE, PDF_MIME_TYPE, MS_WORD_MIME_TYPE]}
         >

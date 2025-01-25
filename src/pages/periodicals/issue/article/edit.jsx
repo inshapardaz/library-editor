@@ -6,7 +6,6 @@ import { useNavigate, useParams } from "react-router-dom";
 // UI Library Imports
 import { Box, Button, Card, Center, Container, Grid, Group, LoadingOverlay, rem, Skeleton, TextInput, useMantineTheme } from "@mantine/core";
 import { useForm, isNotEmpty } from '@mantine/form';
-import { notifications } from '@mantine/notifications';
 
 // Local imports
 import {
@@ -21,6 +20,8 @@ import { IconPeriodical } from '@/components/icons';
 import PublishStatusSelect from '@/components/publishStatusSelect';
 import AuthorsSelect from '@/components/authors/authorsSelect';
 import { BookStatus } from '@/models';
+import { error, success } from '@/utils/notifications';
+
 //---------------------------------
 
 
@@ -137,15 +138,9 @@ const EditIssueArticlePage = () => {
         if (isEditing) {
             updateIssueArticle({ url: values.links.update, payload: values })
                 .unwrap()
-                .then(() => notifications.show({
-                    color: 'green',
-                    title: t("issueArticle.actions.edit.success")
-                }))
+                .then(() => success({ message: t("issueArticle.actions.edit.success") }))
                 .then(() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}`))
-                .catch(() => notifications.show({
-                    color: 'red',
-                    title: t("issueArticle.actions.edit.error")
-                }));
+                .catch(() => error({ message: t("issueArticle.actions.edit.error") }));
         } else {
             addIssueArticle({
                 libraryId,
@@ -155,15 +150,9 @@ const EditIssueArticlePage = () => {
                 payload: values
             })
                 .unwrap()
-                .then(() => notifications.show({
-                    color: 'green',
-                    title: t("issueArticle.actions.add.success")
-                }))
+                .then(() => success({ message: t("issueArticle.actions.add.success") }))
                 .then(() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}`))
-                .catch(() => notifications.show({
-                    color: 'red',
-                    title: t("issueArticle.actions.add.error")
-                }));
+                .catch(() => error({ message: t("issueArticle.actions.add.error") }));
         }
     };
 

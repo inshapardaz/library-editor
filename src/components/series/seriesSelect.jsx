@@ -3,13 +3,12 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 // Ui Library Import
 import { Group, Combobox, useCombobox, Loader, TextInput } from "@mantine/core";
-import { notifications } from '@mantine/notifications';
 
 // Local imports
 import { useGetSeriesQuery, useAddSeriesMutation } from '@/store/slices/series.api'
 import If from '@/components/if';
 import { IconAdd } from '@/components/icons';
-
+import { error, success } from '@/utils/notifications';
 //------------------------------------
 
 const SeriesSelect = ({ t, libraryId, defaultValue = null, onChange, label, placeholder, disabled, ...props }) => {
@@ -25,7 +24,7 @@ const SeriesSelect = ({ t, libraryId, defaultValue = null, onChange, label, plac
 
     // Fetach data and set the dropdown
     //-------------------------------------------------
-    const { data: series, error, isFetching } = useGetSeriesQuery({ libraryId, query: value, pageNumber: 1, pageSize: 10 })
+    const { data: series, error: errorLoading, isFetching } = useGetSeriesQuery({ libraryId, query: value, pageNumber: 1, pageSize: 10 })
 
     const data = useMemo(() => series?.data ? series.data : [], [series]);
 
@@ -62,18 +61,10 @@ const SeriesSelect = ({ t, libraryId, defaultValue = null, onChange, label, plac
                 .then((addedValue) => {
                     setSelection(addedValue);
                 })
-                .then(() => {
-                    notifications.show({
-                        color: 'green',
-                        title: t("series.actions.add.success")
-                    })
-                })
+                .then(() => success({ message: t("series.actions.add.success") }))
                 .catch((e) => {
                     console.error(e)
-                    notifications.show({
-                        color: 'red',
-                        title: t("series.actions.add.error")
-                    });
+                    error({ message: t("series.actions.add.error") });
                 });
         } else {
             const addedValue = data.find(x => x.id == val);
@@ -102,7 +93,7 @@ const SeriesSelect = ({ t, libraryId, defaultValue = null, onChange, label, plac
     }, [value, currentValue]);
 
     return (
-        <Combobox {...props} disabled={disabled} error={error} store={combobox} onOptionSubmit={handleValueSelect} withinPortal={false}>
+        <Combobox {...props} disabled={disabled} error={errorLoading} store={combobox} onOptionSubmit={handleValueSelect} withinPortal={false}>
             <Combobox.Target>
                 <TextInput disabled={disabled}
                     label={label}

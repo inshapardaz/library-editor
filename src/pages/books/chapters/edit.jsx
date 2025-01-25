@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 // UI Library Import
 import { Alert, Box, Button, Container, Grid, Group, LoadingOverlay, rem, Skeleton, Tooltip } from "@mantine/core";
 import { useFullscreen } from "@mantine/hooks";
-import { notifications } from '@mantine/notifications';
 
 // Local Imports
 import { useGetBookQuery, useGetBookChaptersQuery, useGetChapterQuery, useUpdateChapterMutation, useGetChapterContentsQuery } from '@/store/slices/books.api';
@@ -26,6 +25,7 @@ import Editor, { EditorFormat, DefaultConfiguration } from "@/components/editor"
 import ChapterAssignButton from '@/components/books/chapters/chapterAssignButton';
 import ChapterStatusButton from '@/components/books/chapters/chapterStatusButton';
 import EditingStatusIcon from "@/components/editingStatusIcon";
+import { error, success } from '@/utils/notifications';
 //----------------------------------------
 
 const PRIMARY_COL_HEIGHT = rem(300);
@@ -100,26 +100,14 @@ const ChapterEditorPage = () => {
         if (isNewContent) {
             setIsBusy(true)
             return addChapterContent({ chapter, language, payload: content })
-                .then(() => notifications.show({
-                    color: 'green',
-                    title: t("book.actions.edit.success")
-                }))
-                .catch(() => notifications.show({
-                    color: 'red',
-                    title: t("book.actions.edit.error")
-                }))
+                .then(() => success({ message: t("book.actions.edit.success") }))
+                .catch(() => error({ message: t("book.actions.edit.error") }))
                 .finally(() => setIsBusy(false));
         } else if (chapterContent) {
             setIsBusy(true)
             return updateChapterContent({ chapterContent, language, payload: content })
-                .then(() => notifications.show({
-                    color: 'green',
-                    title: t("book.actions.add.success")
-                }))
-                .catch(() => notifications.show({
-                    color: 'red',
-                    title: t("book.actions.add.error")
-                }))
+                .then(() => success({ message: t("book.actions.add.success") }))
+                .catch(() => error({ message: t("book.actions.add.error") }))
                 .finally(() => setIsBusy(false));
         }
     };
@@ -132,14 +120,8 @@ const ChapterEditorPage = () => {
             };
             return updateChapter({ chapter: payload })
                 .unwrap()
-                .then(() => notifications.show({
-                    color: 'green',
-                    title: t("chapter.actions.edit.success")
-                }))
-                .catch(() => notifications.show({
-                    color: 'red',
-                    title: t("chapter.actions.edit.error")
-                }));
+                .then(() => success({ message: t("chapter.actions.edit.success") }))
+                .catch(() => error({ message: t("chapter.actions.edit.error") }));
         }
     };
 

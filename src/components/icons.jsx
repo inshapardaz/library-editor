@@ -101,6 +101,9 @@ const iconTheme = {
         busy: "hourglass-empty",
         done: "check",
         failed: "circle-x",
+        success: "circle-check",
+        warning: "alert-triangle",
+        info: "info-circle",
         loading: "loader-2",
         error: "exclamation-circle",
         writer: "user-edit",
@@ -264,6 +267,9 @@ export const IconUpload = (props) => getIcon(IconNames.Upload, props)
 export const IconBusy = (props) => getIcon(IconNames.Busy, props)
 export const IconDone = (props) => getIcon(IconNames.Done, props)
 export const IconFailed = (props) => getIcon(IconNames.Failed, props)
+export const IconSuccess = (props) => getIcon(IconNames.Success, props)
+export const IconWarning = (props) => getIcon(IconNames.Warning, props)
+export const IconInfo = (props) => getIcon(IconNames.Info, props)
 export const IconLoading = (props) => getIcon(IconNames.Loading, props)
 export const IconError = (props) => getIcon(IconNames.Error, props)
 export const IconWriter = (props) => getIcon(IconNames.Writer, props)

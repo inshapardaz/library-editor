@@ -6,7 +6,6 @@ import { useParams } from "react-router-dom";
 
 // UI Library Imports
 import { Button, Card, Container, Divider, Grid, Group, Image, LoadingOverlay, Popover, Progress, ScrollArea, Stack, Text, Title, Tooltip, useMantineTheme } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
 
 // Local Import
 import { useGetBookQuery, useCreateBookPageWithImageMutation } from '@/store/slices/books.api';
@@ -34,6 +33,7 @@ import { useFullscreen, useHotkeys, useLocalStorage } from '@mantine/hooks';
 import PageImageEditor from '../../components/books/pages/pageImageEditor';
 import { selectedLanguage } from "@/store/slices/uiSlice";
 import { languages } from '@/store/slices/uiSlice';
+import { error, success } from '@/utils/notifications';
 //---------------------------
 const BusyContent = ({ processingProgress, t }) => {
     if (processingProgress.type === 'idle') return null;
@@ -209,17 +209,11 @@ const BookProcessPage = () => {
 
             setImages((e) => [...e, ...imagesList]);
             if (imagesList.length > 0) setSelectedImage(imagesList[0]);
-            notifications.show({
-                color: 'green',
-                title: t("book.actions.loadFileImages.messages.loaded")
-            })
+            success({ message: t("book.actions.loadFileImages.messages.loaded") })
         }
         catch (e) {
             console.error(e)
-            notifications.show({
-                color: 'red',
-                title: t("book.actions.loadFileImages.messages.failedLoading")
-            })
+            error({ message: t("book.actions.loadFileImages.messages.failedLoading") })
         }
         finally {
             setProcessingProgress({ type: 'idle', value: 0 });
@@ -286,17 +280,11 @@ const BookProcessPage = () => {
                 await (createBookPageWithImage({ book, fileList: chunk }).unwrap())
                 setProcessingProgress({ type: 'savingPages', value: (i * 100) / files.length });
             }
-            notifications.show({
-                color: 'green',
-                title: t("pages.actions.upload.success")
-            })
+            success({ message: t("pages.actions.upload.success") })
         }
         catch (e) {
             console.error(e)
-            notifications.show({
-                color: 'red',
-                title: t("pages.actions.upload.error")
-            })
+            error({ message: t("pages.actions.upload.error") })
         }
         finally {
             setProcessingProgress({ type: 'idle', value: 0 });

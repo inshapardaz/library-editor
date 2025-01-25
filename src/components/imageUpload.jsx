@@ -4,10 +4,10 @@ import { useState } from 'react';
 // Ui Library imports
 import { rem } from '@mantine/core';
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
-import { notifications } from '@mantine/notifications';
 
 // Local imports
 import Img from '@/components/img';
+import { error } from '@/utils/notifications';
 
 //--------------------------------
 const ImageUpload = ({ t, src, alt, fallback, onChange, height = rem(400), width = "auto", fit = "contain", ...props }) => {
@@ -31,10 +31,7 @@ const ImageUpload = ({ t, src, alt, fallback, onChange, height = rem(400), width
     }
 
     return (<Dropzone onDrop={onFileRead}
-        onReject={() => notifications.show({
-            color: 'red',
-            title: t("errors.imageRequired")
-        })}
+        onReject={() => error({ message: t("errors.imageRequired") })}
         maxSize={5 * 1024 ** 2}
         multiple={false}
         maxFiles={1}

@@ -13,7 +13,6 @@ import {
     useMantineTheme
 } from '@mantine/core';
 import { IMAGE_MIME_TYPE, PDF_MIME_TYPE, MS_WORD_MIME_TYPE } from '@mantine/dropzone';
-import { notifications } from '@mantine/notifications';
 
 // Local imports
 import { useUpdateBookContentMutation } from '@/store/slices/books.api';
@@ -23,6 +22,7 @@ import If from '@/components/if';
 import FileDeleteButton from './fileDeleteButton';
 import IconText from '@/components/iconText';
 import { IconDownloadDocument, IconUplaodDocument, IconProcessDocument } from '@/components/icons';
+import { error, success } from '@/utils/notifications';
 //------ ---------------------------------------
 const BookFileListItem = ({ t, libraryId, book, content }) => {
     const theme = useMantineTheme();
@@ -31,26 +31,17 @@ const BookFileListItem = ({ t, libraryId, book, content }) => {
     const uploadFile = (file) => {
         const isAllowed = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"].includes(file.type);
         if (!isAllowed) {
-            notifications.show({
-                color: 'red',
-                title: t("book.actions.addFile.invalidFileTypeError")
-            });
+            error({ message: t("book.actions.addFile.invalidFileTypeError") });
             return;
         }
 
         updateBookContent({ content: content, payload: file }).unwrap()
             .then(() => {
-                notifications.show({
-                    color: 'green',
-                    title: t("book.actions.addFile.success")
-                });
+                success({ message: t("book.actions.addFile.success") });
             })
             .catch((e) => {
                 console.error(e)
-                notifications.show({
-                    color: 'red',
-                    title: t("book.actions.addFile.error")
-                });
+                error({ message: t("book.actions.addFile.error") });
             });
     }
 

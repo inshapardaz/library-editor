@@ -7,7 +7,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import moment from 'moment/moment';
 import { Box, Button, Card, Center, Container, Grid, Group, LoadingOverlay, NumberInput, rem, Skeleton, useMantineTheme } from "@mantine/core";
 import { useForm, isInRange } from '@mantine/form';
-import { notifications } from '@mantine/notifications';
 
 // Local imports
 import {
@@ -27,6 +26,7 @@ import PublishStatusSelect from '@/components/publishStatusSelect';
 import IssueDatePicker from '@/components/periodicals/issues/issueDatePicker';
 import { BookStatus, PeriodicalFrequency } from '@/models';
 import { getDateFormatFromFrequency } from '@/utils'
+import { error, success } from '@/utils/notifications';
 //---------------------------------
 
 
@@ -144,7 +144,7 @@ const EditIssuePage = () => {
     const [updateIssue, { isLoading: isUpdating }] = useUpdateIssueMutation();
     const [updateIssueImage, { isLoading: isUpdatingImage }] = useUpdateIssueImageMutation();
 
-    const { data: issue, refetch, error, isFetching } = useGetIssueQuery({ libraryId, periodicalId, volumeNumber, issueNumber }, { skip: !libraryId || !periodicalId || !volumeNumber || !issueNumber });
+    const { data: issue, refetch, error: issueError, isFetching } = useGetIssueQuery({ libraryId, periodicalId, volumeNumber, issueNumber }, { skip: !libraryId || !periodicalId || !volumeNumber || !issueNumber });
     const { data: periodical, refetch: refetchPeriodical, error: periodicalError, isFetching: isFetchingPeriodical } = useGetPeriodicalByIdQuery({ libraryId, periodicalId }, { skip: !libraryId || !periodicalId });
 
     useEffect(() => {
@@ -158,30 +158,18 @@ const EditIssuePage = () => {
             updateIssue({ libraryId, periodicalId, volumeNumber: issue.volumeNumber, issueNumber: issue.issueNumber, payload: issue })
                 .unwrap()
                 .then(() => uploadImage(periodicalId, issue.volumeNumber, issue.issueNumber))
-                .then(() => notifications.show({
-                    color: 'green',
-                    title: t("issue.actions.edit.success")
-                }))
+                .then(() => success({ message: t("issue.actions.edit.success") }))
                 .then(() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}`))
-                .catch(() => notifications.show({
-                    color: 'red',
-                    title: t("issue.actions.edit.error")
-                }));
+                .catch(() => error({ message: t("issue.actions.edit.error") }));
         } else {
             let response = null;
             addIssue({ libraryId, periodicalId, volumeNumber: issue.volumeNumber, issueNumber: issue.issueNumber, payload: issue })
                 .unwrap()
                 .then((r) => (response = r))
                 .then(() => uploadImage(response.volumeNumber, response.issueNumber))
-                .then(() => notifications.show({
-                    color: 'green',
-                    title: t("issue.actions.add.success")
-                }))
+                .then(() => success({ message: t("issue.actions.add.success") }))
                 .then(() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}/issues/${response.id}`))
-                .catch(() => notifications.show({
-                    color: 'red',
-                    title: t("issue.actions.add.error")
-                }));
+                .catch(() => error({ message: t("issue.actions.add.error") }));
         }
     };
 
@@ -196,7 +184,7 @@ const EditIssuePage = () => {
     const title = issue ? moment(issue.issueDate).format(getDateFormatFromFrequency(issue.frequency)) : t("issue.actions.add.label");
 
     if (isFetching || isFetchingPeriodical) return <PageLoading />;
-    if (error || periodicalError) {
+    if (issueError || periodicalError) {
         return (<Container fluid mt="sm">
             <Error title={t('issue.error.loading.title')} //Add these translations
                 detail={t('issue.error.loading.detail')}

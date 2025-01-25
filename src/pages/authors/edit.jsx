@@ -6,7 +6,6 @@ import { useNavigate, useParams } from "react-router-dom";
 // UI Library Imports
 import { Box, Button, Card, Center, Container, Grid, Group, LoadingOverlay, rem, Skeleton, Textarea, TextInput, useMantineTheme } from "@mantine/core";
 import { useForm, isNotEmpty } from '@mantine/form';
-import { notifications } from '@mantine/notifications';
 
 // Local imports
 import {
@@ -23,6 +22,7 @@ import { IconAuthor } from '@/components/icons';
 import ImageUpload from '@/components/imageUpload';
 import AuthorTypeSelect from '@/components/authors/authorTypeSelect';
 import { AuthorTypes } from '@/models';
+import { error, success } from '@/utils/notifications';
 //---------------------------------
 
 
@@ -125,7 +125,7 @@ const EditAuthorPage = () => {
     const [updateAuthor, { isLoading: isUpdating }] = useUpdateAuthorMutation();
     const [updateAuthorImage, { isLoading: isUpdatingImage }] = useUpdateAuthorImageMutation();
 
-    const { data: author, refetch, error, isFetching } = useGetAuthorQuery({ libraryId, authorId }, { skip: !libraryId || !authorId });
+    const { data: author, refetch, error: errorLoading, isFetching } = useGetAuthorQuery({ libraryId, authorId }, { skip: !libraryId || !authorId });
 
     useEffect(() => {
         if (author && !author?.links?.update) {
@@ -138,30 +138,18 @@ const EditAuthorPage = () => {
             updateAuthor({ libraryId, authorId, payload: author })
                 .unwrap()
                 .then(() => uploadImage(authorId))
-                .then(() => notifications.show({
-                    color: 'green',
-                    title: t("author.actions.edit.success")
-                }))
+                .then(() => success({ message: t("author.actions.edit.success") }))
                 .then(() => navigate(`/libraries/${libraryId}/authors/${authorId}`))
-                .catch(() => notifications.show({
-                    color: 'red',
-                    title: t("author.actions.edit.error")
-                }));
+                .catch(() => error({ message: t("author.actions.edit.error") }));
         } else {
             let response = null;
             addAuthor({ libraryId, payload: author })
                 .unwrap()
                 .then((r) => (response = r))
                 .then(() => uploadImage(response.id))
-                .then(() => notifications.show({
-                    color: 'green',
-                    title: t("author.actions.add.success")
-                }))
+                .then(() => success({ message: t("author.actions.add.success") }))
                 .then(() => navigate(`/libraries/${libraryId}/authors/${response.id}`))
-                .catch(() => notifications.show({
-                    color: 'red',
-                    title: t("author.actions.add.error")
-                }));
+                .catch(() => error({ message: t("author.actions.add.error") }));
         }
     };
 
@@ -175,7 +163,7 @@ const EditAuthorPage = () => {
 
     const title = author ? author.name : t("author.actions.add.title");
     if (isFetching) return <PageLoading />;
-    if (error) {
+    if (errorLoading) {
         return (<Container fluid mt="sm">
             <Error title={t('author.error.loading.title')}
                 detail={t('author.error.loading.detail')}

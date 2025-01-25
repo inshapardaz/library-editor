@@ -9,7 +9,6 @@ import {
     Group,
     Tooltip,
 } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
 
 // Local imports
 import { useGetBookChaptersQuery, useUpdateChapterSequenceMutation } from '@/store/slices/books.api';
@@ -20,6 +19,8 @@ import ChapterDeleteButton from './chapterDeleteButton';
 import ChapterAssignButton from './chapterAssignButton';
 import ChapterStatusButton from './chapterStatusButton';
 import BookChapterListItem from './bookChapterListItem';
+import { error, success } from '@/utils/notifications';
+
 //------------------------------------------------------
 
 
@@ -59,16 +60,10 @@ const BookChaptersList = ({ libraryId, book, isLoading }) => {
             return updateChapterSequence({ libraryId, bookId: book.id, payload })
                 .unwrap()
                 .then(() =>
-                    notifications.show({
-                        color: 'green',
-                        title: t("chapter.actions.reorder.success")
-                    })
+                    success({ message: t("chapter.actions.reorder.success") })
                 )
                 .catch(() =>
-                    notifications.show({
-                        color: 'red',
-                        title: t("chapter.actions.reorder.error")
-                    })
+                    error({ message: t("chapter.actions.reorder.error") })
                 );
         }
     }

@@ -3,12 +3,12 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 // 3rd party libraries
 import { Group, Avatar, Combobox, useCombobox, Loader, Pill, PillsInput, useMantineTheme } from "@mantine/core";
-import { notifications } from '@mantine/notifications';
 
 // local imports
 import { IconAuthor, IconAdd, IconError } from '@/components/icons';
 import { useGetAuthorsQuery, useAddAuthorMutation } from '@/store/slices/authors.api'
 import If from '@/components/if';
+import { error, success } from '@/utils/notifications';
 // -------------------------------------------------
 
 const AuthorPill = ({ author, onRemove }) => {
@@ -55,7 +55,7 @@ const AuthorsSelect = ({ t, libraryId, defaultValue = [], disabled, onChange, sh
 
     // create new author
     //-------------------------------------------------
-    const [addAuthor, { isLoading: isAdding, error }] = useAddAuthorMutation();
+    const [addAuthor, { isLoading: isAdding, error: addingFailed }] = useAddAuthorMutation();
 
     // Fetach data and set the dropdown
     //-------------------------------------------------
@@ -96,17 +96,11 @@ const AuthorsSelect = ({ t, libraryId, defaultValue = [], disabled, onChange, sh
                     onChange(newCurrent)
                 })
                 .then(() => {
-                    notifications.show({
-                        color: 'green',
-                        title: t("author.actions.add.success")
-                    })
+                    success({ message: t("author.actions.add.success") })
                 })
                 .catch((e) => {
                     console.error(e)
-                    notifications.show({
-                        color: 'red',
-                        title: t("author.actions.add.error")
-                    });
+                    error({ message: t("author.actions.add.error") });
                 });
         } else {
             const addedValue = data.find(x => x.id == val);
@@ -143,7 +137,7 @@ const AuthorsSelect = ({ t, libraryId, defaultValue = [], disabled, onChange, sh
             <Combobox.DropdownTarget>
                 <PillsInput
                     onClick={() => combobox.openDropdown()}
-                    leftSection={error && <IconError style={{ color: theme.colors.red[7] }} />}
+                    leftSection={<If condition={addingFailed}><IconError style={{ color: theme.colors.red[7] }} /></If>}
                     rightSection={<Combobox.Chevron />}>
                     <Pill.Group>
                         {selectedPills}

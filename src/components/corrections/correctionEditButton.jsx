@@ -6,14 +6,13 @@ import { useTranslation } from 'react-i18next';
 import { isNotEmpty, useForm } from '@mantine/form';
 import { Button, Center, Group, Loader, LoadingOverlay, Modal, Switch, TextInput, Tooltip } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { notifications } from '@mantine/notifications';
 
 // Local imports
 import { useAddCorrectionMutation, useUpdateCorrectionMutation } from "@/store/slices/tools.api";
 import LanguageSelect from '@/components/languageSelect';
 import If from '@/components/if';
 import { IconAdd, IconEdit } from '@/components/icons';
-
+import { error, success } from '@/utils/notifications';
 // ------------------------------------------------------
 
 const CorrectionForm = ({ correction = null, onSubmit, onCancel }) => {
@@ -113,33 +112,21 @@ const CorrectionEditButton = ({ createNew, showLabel, profile, language, correct
 
         if (createNew) {
             addCorrection({ language: values.language, profile, payload })
-                .then(() => notifications.show({
-                    color: 'green',
-                    title: t('corrections.actions.add.success')
-                }))
+                .then(() => success({ message: t('corrections.actions.add.success') }))
                 .then(onCompleted)
                 .then(close())
                 .catch(e => {
                     console.error(e)
-                    notifications.show({
-                        color: 'red',
-                        title: t('corrections.actions.add.error')
-                    })
+                    error({ message: t('corrections.actions.add.error') })
                 })
         } else {
             updateCorrection({ language: values.language, profile, id: correction.id, payload })
-                .then(() => notifications.show({
-                    color: 'green',
-                    title: t('corrections.actions.edit.success')
-                }))
+                .then(() => success({ message: t('corrections.actions.edit.success') }))
                 .then(onCompleted)
                 .then(close())
                 .catch(e => {
                     console.error(e)
-                    notifications.show({
-                        color: 'red',
-                        title: t('corrections.actions.edit.error')
-                    })
+                    error({ message: t('corrections.actions.edit.error') })
                 })
         }
     };

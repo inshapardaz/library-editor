@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 import { TextInput, Group, Button, Drawer, Box } from "@mantine/core";
 import { useDisclosure } from '@mantine/hooks';
 import { useForm, isNotEmpty } from "@mantine/form";
-import { notifications } from '@mantine/notifications';
 
 // Local Import
 import {
@@ -15,7 +14,7 @@ import {
 } from "/src/store/slices/books.api";
 import EditingStatusSelect from '@/components/editingStatusSelect';
 import { EditingStatus } from '@/models';
-
+import { error, success } from '@/utils/notifications';
 // --------------------------------------
 const ChapterEditForm = ({ libraryId, bookId, chapter = null, children }) => {
     const { t } = useTranslation();
@@ -54,27 +53,15 @@ const ChapterEditForm = ({ libraryId, bookId, chapter = null, children }) => {
             };
             return updateChapter({ chapter: payload })
                 .unwrap()
-                .then(() => notifications.show({
-                    color: 'green',
-                    title: t("chapter.actions.edit.success")
-                }))
+                .then(() => success({ message: t("chapter.actions.edit.success") }))
                 .then(() => close())
-                .catch(() => notifications.show({
-                    color: 'red',
-                    title: t("chapter.actions.edit.error")
-                }));
+                .catch(() => error({ message: t("chapter.actions.edit.error") }));
         } else {
             return addChapter({ libraryId, bookId, payload: values })
                 .unwrap()
-                .then(() => notifications.show({
-                    color: 'green',
-                    title: t("chapter.actions.add.success")
-                }))
+                .then(() => success({ message: t("chapter.actions.add.success") }))
                 .then(() => close())
-                .catch(() => notifications.show({
-                    color: 'red',
-                    title: t("chapter.actions.add.error")
-                }));
+                .catch(() => error({ message: t("chapter.actions.add.error") }));
         }
     }
 

@@ -6,7 +6,6 @@ import { useNavigate, useParams } from "react-router-dom";
 // UI Library Imports
 import { Box, Button, Card, Center, Container, Grid, Group, LoadingOverlay, rem, Skeleton, Textarea, TextInput, useMantineTheme } from "@mantine/core";
 import { useForm, isNotEmpty } from '@mantine/form';
-import { notifications } from '@mantine/notifications';
 
 // Local imports
 import {
@@ -25,6 +24,8 @@ import LanguageSelect from '@/components/languageSelect';
 import CategoriesSelect from '@/components/categories/categoriesSelect';
 import FrequencyTypeSelect from '@/components/periodicals/frequencyTypeSelect';
 import { PeriodicalFrequency } from '@/models';
+import { error, success } from '@/utils/notifications';
+
 //---------------------------------
 
 
@@ -142,7 +143,7 @@ const EditPeriodicalPage = () => {
     const [updatePeriodical, { isLoading: isUpdating }] = useUpdatePeriodicalMutation();
     const [updatePeriodicalImage, { isLoading: isUpdatingImage }] = useUpdatePeriodicalImageMutation();
 
-    const { data: periodical, refetch, error, isFetching } = useGetPeriodicalByIdQuery({ libraryId, periodicalId }, { skip: !libraryId || !periodicalId });
+    const { data: periodical, refetch, error: errorLoading, isFetching } = useGetPeriodicalByIdQuery({ libraryId, periodicalId }, { skip: !libraryId || !periodicalId });
 
     useEffect(() => {
         if (periodical && !periodical?.links?.update) {
@@ -155,30 +156,18 @@ const EditPeriodicalPage = () => {
             updatePeriodical({ libraryId, periodicalId, payload: periodical })
                 .unwrap()
                 .then(() => uploadImage(periodicalId))
-                .then(() => notifications.show({
-                    color: 'green',
-                    title: t("periodical.actions.edit.success")
-                }))
+                .then(() => success({ message: t("periodical.actions.edit.success") }))
                 .then(() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}`))
-                .catch(() => notifications.show({
-                    color: 'red',
-                    title: t("periodical.actions.edit.error")
-                }));
+                .catch(() => error({ message: t("periodical.actions.edit.error") }));
         } else {
             let response = null;
             addPeriodical({ libraryId, payload: periodical })
                 .unwrap()
                 .then((r) => (response = r))
                 .then(() => uploadImage(response.id))
-                .then(() => notifications.show({
-                    color: 'green',
-                    title: t("periodical.actions.add.success")
-                }))
+                .then(() => success({ message: t("periodical.actions.add.success") }))
                 .then(() => navigate(`/libraries/${libraryId}/periodicals/${response.id}`))
-                .catch(() => notifications.show({
-                    color: 'red',
-                    title: t("periodical.actions.add.error")
-                }));
+                .catch(() => error({ message: t("periodical.actions.add.error") }));
         }
     };
 
@@ -192,7 +181,7 @@ const EditPeriodicalPage = () => {
 
     const title = periodical ? periodical.title : t("periodical.actions.add.title");
     if (isFetching) return <PageLoading />;
-    if (error) {
+    if (errorLoading) {
         return (<Container fluid mt="sm">
             <Error title={t('periodical.error.loading.title')} //Add these translations
                 detail={t('periodical.error.loading.detail')}

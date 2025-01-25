@@ -4,7 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 
 // UI Library Imports
 import { Box, Card, Center, Container, Grid, LoadingOverlay, rem, Skeleton, useMantineTheme } from "@mantine/core";
-import { notifications } from '@mantine/notifications';
 
 // Local imports
 import { useGetBookQuery, useAddBookMutation, useUpdateBookMutation, useUpdateBookImageMutation } from '@/store/slices/books.api';
@@ -13,7 +12,7 @@ import Error from '@/components/error';
 import { IconBook } from '@/components/icons';
 import ImageUpload from '@/components/imageUpload';
 import BookForm from '@/components/books/bookForm';
-
+import { error, success } from '@/utils/notifications';
 //---------------------------------
 const PageLoading = () => {
     const PRIMARY_COL_HEIGHT = rem(300);
@@ -47,7 +46,7 @@ const EditBookPage = () => {
     const [updateBook, { isLoading: isUpdating }] = useUpdateBookMutation();
     const [updateBookImage, { isLoading: isUpdatingImage }] = useUpdateBookImageMutation();
 
-    const { data: book, refetch, error, isFetching } = useGetBookQuery({ libraryId, bookId }, { skip: !libraryId || !bookId });
+    const { data: book, refetch, error: errorLoading, isFetching } = useGetBookQuery({ libraryId, bookId }, { skip: !libraryId || !bookId });
 
     useEffect(() => {
         if (book && !book?.links?.update) {
@@ -60,30 +59,18 @@ const EditBookPage = () => {
             updateBook({ libraryId, bookId, payload: book })
                 .unwrap()
                 .then(() => uploadImage(bookId))
-                .then(() => notifications.show({
-                    color: 'green',
-                    title: t("book.actions.edit.success")
-                }))
+                .then(() => success({ message: t("book.actions.edit.success") }))
                 .then(() => navigate(`/libraries/${libraryId}/books/${bookId}`))
-                .catch(() => notifications.show({
-                    color: 'red',
-                    title: t("book.actions.edit.error")
-                }));
+                .catch(() => error({ message: t("book.actions.edit.error") }));
         } else {
             let response = null;
             addBook({ libraryId, payload: book })
                 .unwrap()
                 .then((r) => (response = r))
                 .then(() => uploadImage(response.id))
-                .then(() => notifications.show({
-                    color: 'green',
-                    title: t("book.actions.add.success")
-                }))
+                .then(() => success({ message: t("book.actions.add.success") }))
                 .then(() => navigate(`/libraries/${libraryId}/books/${response.id}`))
-                .catch(() => notifications.show({
-                    color: 'red',
-                    title: t("book.actions.add.error")
-                }));
+                .catch(() => error({ message: t("book.actions.add.error") }));
         }
     };
 
@@ -97,7 +84,7 @@ const EditBookPage = () => {
 
     const title = book ? book.title : t("book.actions.add.title");
     if (isFetching) return <PageLoading />;
-    if (error) {
+    if (errorLoading) {
         return (<Container fluid mt="sm">
             <Error title={t('book.error.loading.title')}
                 detail={t('book.error.loading.detail')}

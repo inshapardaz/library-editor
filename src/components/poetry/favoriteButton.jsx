@@ -3,11 +3,11 @@ import { useTranslation } from 'react-i18next';
 
 // Ui Library Impports
 import { ActionIcon, useMantineTheme } from "@mantine/core";
-import { notifications } from '@mantine/notifications';
 
 // Local imports
 import { IconFavorite, IconFavoriteFill } from '@/components/icons';
 import { useAddArticleToFavoriteMutation, useRemoveArticleFromFavoriteMutation } from '@/store/slices/articles.api';
+import { error, success } from '@/utils/notifications';
 //---------------------------------------
 
 const FavoriteButton = ({ poetry, size }) => {
@@ -19,33 +19,17 @@ const FavoriteButton = ({ poetry, size }) => {
     const onFavorite = () => {
         if (poetry.links.create_favorite) {
             addArticleToFavorite({ article: poetry })
-                .then(() => {
-                    notifications.show({
-                        color: 'green',
-                        title: t("poetry.actions.addFavorite.success")
-                    })
-                })
+                .then(() => success({ message: t("poetry.actions.addFavorite.success") }))
                 .catch((e) => {
                     console.error(e)
-                    notifications.show({
-                        color: 'red',
-                        title: t("poetry.actions.addFavorite.error")
-                    });
+                    error({ message: t("poetry.actions.addFavorite.error") });
                 })
         } else if (poetry.links.remove_favorite) {
             removeArticleFromFavorite({ article: poetry })
-                .then(() => {
-                    notifications.show({
-                        color: 'green',
-                        title: t("poetry.actions.removeFavorite.success")
-                    })
-                })
+                .then(() => success({ message: t("poetry.actions.removeFavorite.success") }))
                 .catch((e) => {
                     console.error(e)
-                    notifications.show({
-                        color: 'red',
-                        title: t("poetry.actions.removeFavorite.error")
-                    });
+                    error({ message: t("poetry.actions.removeFavorite.error") });
                 });
         }
     }

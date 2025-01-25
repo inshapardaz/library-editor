@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 // Ui Library Imports
 import { Button, Text, useMantineTheme } from '@mantine/core';
 import { modals } from '@mantine/modals';
-import { notifications } from '@mantine/notifications';
 
 // Local imports
 import IconText from '@/components/iconText';
 import { IconDelete } from '@/components/icons';
-
+import { error, success } from '@/utils/notifications';
 //---------------------------------
 const DeleteButton = ({ title, message, tooltip, icon, successMessage, errorMessage, type = "icon", isDeleting, onDelete = () => { }, onDeleted = () => { }, ...props }) => {
     const theme = useMantineTheme();
@@ -27,16 +26,10 @@ const DeleteButton = ({ title, message, tooltip, icon, successMessage, errorMess
                 return onDelete()
                     .then(() => onDeleted())
                     .then(() => {
-                        notifications.show({
-                            color: 'green',
-                            title: successMessage
-                        })
+                        success({ message: successMessage })
                     })
                     .catch(() => {
-                        notifications.show({
-                            color: 'red',
-                            title: errorMessage
-                        })
+                        error({ message: errorMessage })
                     });
             },
         });

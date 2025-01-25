@@ -4,13 +4,12 @@ import { useEffect } from "react";
 
 // Ui Library imports
 import { Avatar, Button, Drawer, List, ScrollArea, Stack, Tooltip } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';
 
 // Local imports
 import { ProcessStatus } from "@/models";
 import ProcessStatusIcon from '@/components/processStatusIcon';
-
+import { error, success } from '@/utils/notifications';
 // -------------------------------------------
 
 const RequestList = ({ requests, itemTitleFunc, itemDescriptionFunc }) => {
@@ -115,17 +114,11 @@ const BatchActionDrawer = ({
 
             if (hasFailure) {
                 if (errorMessage) {
-                    notifications.show({
-                        color: 'red',
-                        title: errorMessage
-                    });
+                    error({ message: errorMessage });
                 }
             } else {
                 if (successMessage) {
-                    notifications.show({
-                        color: 'green',
-                        title: successMessage
-                    })
+                    success({ message: successMessage })
                 }
 
                 onCloseDrawer();
@@ -135,10 +128,7 @@ const BatchActionDrawer = ({
         catch (e) {
             console.error(e);
             if (errorMessage) {
-                notifications.show({
-                    color: 'red',
-                    title: errorMessage
-                });
+                error({ message: errorMessage });
             }
         }
     }, [errorMessage, mutation, onCloseDrawer, onOkFunc, onProgress, onSuccess, requests, successMessage]);
@@ -154,7 +144,7 @@ const BatchActionDrawer = ({
 
             setRequests(mappedRequests);
         }
-    }, [open, items]);
+    }, [open, items, busy]);
 
     return (
         <>

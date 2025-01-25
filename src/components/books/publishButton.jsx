@@ -5,13 +5,14 @@ import { useMemo, useState } from 'react';
 // Ui Library Impports
 import { Button, Divider, Group, LoadingOverlay, Modal, Stack, Switch, Text } from "@mantine/core";
 import { useDisclosure } from '@mantine/hooks';
-import { notifications } from '@mantine/notifications';
 
 // Local imports
 import { IconPublisher } from '@/components/icons';
 import { usePublishBookMutation, useUpdateBookMutation } from '@/store/slices/books.api';
 import If from '@/components/if';
 import { BookStatus } from '@/models';
+import { success, error } from '@/utils/notifications';
+
 //---------------------------------------
 
 const PublishButton = ({ libraryId, book, onPublished = () => { }, ...props }) => {
@@ -33,19 +34,12 @@ const PublishButton = ({ libraryId, book, onPublished = () => { }, ...props }) =
                 await updateBook({ libraryId, bookId: book.id, payload: { ...book, status: BookStatus.Published } }).unwrap();
             }
 
-            notifications.show({
-                color: 'green',
-                title: t("book.actions.publish.success")
-            });
-
+            success({ message: t("book.actions.publish.success") });
             onPublished();
         }
         catch (e) {
             console.error(e)
-            notifications.show({
-                color: 'red',
-                title: t("book.actions.publish.error")
-            })
+            error({ message: t("book.actions.publish.error") })
         };
     }
 

@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 import { Group, Button, Drawer, Box, NumberInput, Center, useMantineTheme } from "@mantine/core";
 import { useDisclosure } from '@mantine/hooks';
 import { useForm, isNotEmpty } from "@mantine/form";
-import { notifications } from '@mantine/notifications';
 
 // Local Import
 import {
@@ -18,7 +17,7 @@ import { IconImage } from '@/components/icons';
 import ImageUpload from '@/components/imageUpload';
 import EditingStatusSelect from '@/components/editingStatusSelect';
 import { EditingStatus } from '@/models';
-
+import { error, success } from '@/utils/notifications';
 // --------------------------------------
 const PageEditForm = ({ libraryId, bookId, page = null, children }) => {
     const { t } = useTranslation();
@@ -67,28 +66,16 @@ const PageEditForm = ({ libraryId, bookId, page = null, children }) => {
             return updatePage({ page: payload })
                 .unwrap()
                 .then((p) => uploadImage(p))
-                .then(() => notifications.show({
-                    color: 'green',
-                    title: t("page.actions.edit.success")
-                }))
+                .then(() => success({ message: t("page.actions.edit.success") }))
                 .then(() => close())
-                .catch(() => notifications.show({
-                    color: 'red',
-                    title: t("page.actions.edit.error")
-                }));
+                .catch(() => error({ message: t("page.actions.edit.error") }));
         } else {
             return addPage({ libraryId, bookId, payload: values })
                 .unwrap()
                 .then((p) => uploadImage(p))
-                .then(() => notifications.show({
-                    color: 'green',
-                    title: t("page.actions.add.success")
-                }))
+                .then(() => success({ message: t("page.actions.add.success") }))
                 .then(() => close())
-                .catch(() => notifications.show({
-                    color: 'red',
-                    title: t("page.actions.add.error")
-                }));
+                .catch(() => error({ message: t("page.actions.add.error") }));
         }
     }
 

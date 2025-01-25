@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 
 // UI Library Import
 import { Button, Card, Center, Container, Grid, Group, LoadingOverlay, SimpleGrid, Switch, Textarea, TextInput, useMantineTheme } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
 
 // Local Impoprt
 import PageHeader from "@/components/pageHeader";
@@ -22,6 +21,7 @@ import ImageUpload from '@/components/imageUpload';
 import Error from '@/components/error';
 import LanguageSelect from '@/components/languageSelect';
 import FilestoreTypeSelect from '@/components/filestoreTypeSelect';
+import { error, success } from '@/utils/notifications';
 //---------------------------------------
 const LibraryEditPage = () => {
     const { libraryId } = useParams();
@@ -35,7 +35,7 @@ const LibraryEditPage = () => {
     const [add, { isLoading: isAdding }] = useAddLibraryMutation();
     const [update, { isLoading: isUpdating }] = useUpdateLibraryMutation();
     const [updateImage, { isLoading: isUpdatingImage }] = useUpdateLibraryImageMutation();
-    const { data: library, refetch, error, isFetching } = useGetLibraryQuery({ libraryId }, { skip: !libraryId });
+    const { data: library, refetch, error: errorLoading, isFetching } = useGetLibraryQuery({ libraryId }, { skip: !libraryId });
 
     // ------------------------- Form --------------------------------
     const form = useForm({
@@ -81,19 +81,13 @@ const LibraryEditPage = () => {
                 const response = await update({ libraryId, payload: _library })
                     .unwrap();
                 await uploadImage(response);
-                notifications.show({
-                    color: 'green',
-                    title: t("library.actions.edit.success")
-                })
+                success({ message: t("library.actions.edit.success") })
 
                 navigate(`/libraries/${libraryId}`)
             }
             catch (e) {
                 console.error(e)
-                notifications.show({
-                    color: 'red',
-                    title: t("library.actions.edit.error")
-                })
+                error({ message: t("library.actions.edit.error") })
             }
         } else {
             try {
@@ -101,18 +95,12 @@ const LibraryEditPage = () => {
                     .unwrap();
 
                 await uploadImage(response)
-                notifications.show({
-                    color: 'green',
-                    title: t("library.actions.add.success")
-                });
+                success({ message: t("library.actions.add.success") });
                 navigate(`/libraries/${response.id}`);
             }
             catch (e) {
                 console.error(e);
-                notifications.show({
-                    color: 'red',
-                    title: t("library.actions.add.error")
-                });
+                error({ message: t("library.actions.add.error") });
             }
         }
     };
@@ -127,7 +115,7 @@ const LibraryEditPage = () => {
 
     const icon = <Center h={450}><IconLibrary width={250} style={{ color: theme.colors.dark[1] }} /></Center>;
 
-    if (error) {
+    if (errorLoading) {
         return (<Container fluid mt="sm">
             <Error title={t('library.error.loading.title')}
                 detail={t('library.error.loading.detail')}

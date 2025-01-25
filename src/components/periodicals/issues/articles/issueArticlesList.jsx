@@ -1,12 +1,11 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
+import cx from 'clsx';
 
 // Ui Library Imports
 import { Center, Divider, Group, Loader, LoadingOverlay, rem, Skeleton, Space, Stack, Text, Title, useMantineTheme } from '@mantine/core';
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
-import { notifications } from '@mantine/notifications';
-import cx from 'clsx';
 
 // Local imports
 import { useGetIssueArticlesQuery, useUpdateIssueArticleSequenceMutation } from '@/store/slices/issueArticles.api';
@@ -17,6 +16,7 @@ import Error from '@/components/error';
 import If from '@/components/if';
 import classes from './issueArticlesList.module.css';
 import IssueArticleDeleteButton from './issueArticleDeleteButton';
+import { error, success } from '@/utils/notifications';
 //------------------------------
 
 const PRIMARY_COL_HEIGHT = rem(300);
@@ -82,18 +82,8 @@ const IssueArticlesList = ({
                 payload
             })
                 .unwrap()
-                .then(() =>
-                    notifications.show({
-                        color: 'green',
-                        title: t("issueArticles.actions.reorder.success")
-                    })
-                )
-                .catch(() =>
-                    notifications.show({
-                        color: 'red',
-                        title: t("issueArticles.actions.reorder.error")
-                    })
-                );
+                .then(() => success({ message: t("issueArticles.actions.reorder.success") }))
+                .catch(() => error({ message: t("issueArticles.actions.reorder.error") }));
         }
     }
 

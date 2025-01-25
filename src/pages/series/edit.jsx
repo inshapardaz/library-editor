@@ -6,7 +6,6 @@ import { useNavigate, useParams } from "react-router-dom";
 // UI Library Imports
 import { Box, Button, Card, Center, Container, Grid, Group, LoadingOverlay, rem, Skeleton, Textarea, TextInput, useMantineTheme } from "@mantine/core";
 import { useForm, isNotEmpty } from '@mantine/form';
-import { notifications } from '@mantine/notifications';
 
 // Local imports
 import {
@@ -21,6 +20,7 @@ import PageHeader from "@/components/pageHeader";
 import Error from '@/components/error';
 import { IconSeries } from '@/components/icons';
 import ImageUpload from '@/components/imageUpload';
+import { error, success } from '@/utils/notifications';
 //---------------------------------
 
 
@@ -45,7 +45,6 @@ const PageLoading = () => {
     </Container>);
 }
 //---------------------------------
-
 
 const SeriesForm = ({ series = null, onSubmit, onCancel }) => {
     const { t } = useTranslation();
@@ -116,7 +115,7 @@ const EditSeriesPage = () => {
     const [updateSeries, { isLoading: isUpdating }] = useUpdateSeriesMutation();
     const [updateSeriesImage, { isLoading: isUpdatingImage }] = useUpdateSeriesImageMutation();
 
-    const { data: series, refetch, error, isFetching } = useGetSeriesByIdQuery({ libraryId, seriesId }, { skip: !libraryId || !seriesId });
+    const { data: series, refetch, error: errorLoading, isFetching } = useGetSeriesByIdQuery({ libraryId, seriesId }, { skip: !libraryId || !seriesId });
 
     useEffect(() => {
         if (series && !series?.links?.update) {
@@ -129,30 +128,18 @@ const EditSeriesPage = () => {
             updateSeries({ libraryId, seriesId, payload: series })
                 .unwrap()
                 .then(() => uploadImage(seriesId))
-                .then(() => notifications.show({
-                    color: 'green',
-                    title: t("series.actions.edit.success")
-                }))
+                .then(() => success({ message: t("series.actions.edit.success") }))
                 .then(() => navigate(`/libraries/${libraryId}/series/${seriesId}`))
-                .catch(() => notifications.show({
-                    color: 'red',
-                    title: t("series.actions.edit.error")
-                }));
+                .catch(() => error({ message: t("series.actions.edit.error") }));
         } else {
             let response = null;
             addSeries({ libraryId, payload: series })
                 .unwrap()
                 .then((r) => (response = r))
                 .then(() => uploadImage(response.id))
-                .then(() => notifications.show({
-                    color: 'green',
-                    title: t("series.actions.add.success")
-                }))
+                .then(() => success({ message: t("series.actions.add.success") }))
                 .then(() => navigate(`/libraries/${libraryId}/series/${response.id}`))
-                .catch(() => notifications.show({
-                    color: 'red',
-                    title: t("series.actions.add.error")
-                }));
+                .catch(() => error({ message: t("series.actions.add.error") }));
         }
     };
 
@@ -166,7 +153,7 @@ const EditSeriesPage = () => {
 
     const title = series ? series.name : t("series.actions.add.title");
     if (isFetching) return <PageLoading />;
-    if (error) {
+    if (errorLoading) {
         return (<Container fluid mt="sm">
             <Error title={t('series.error.loading.title')}
                 detail={t('series.error.loading.detail')}

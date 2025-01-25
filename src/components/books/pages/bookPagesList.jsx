@@ -10,7 +10,6 @@ import {
     Group,
     Tooltip,
 } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
 
 // Local imports
 import { useGetBookPagesQuery, useUpdateBookPageSequenceMutation } from '@/store/slices/books.api';
@@ -28,7 +27,7 @@ import AssignmentFilterMenu from '@/components/asssignmentFilterMenu';
 import PageListItem from './pageListItem';
 import PageCard from './pageCard';
 import { BookStatus } from '@/models';
-
+import { error, success } from '@/utils/notifications';
 //------------------------------------------------------
 
 const ReviewBookStatuses = [BookStatus.ReadyForProofRead, BookStatus.ProofRead]
@@ -78,18 +77,8 @@ const BookPagesList = ({ libraryId, book, isLoading,
                     payload: { sequenceNumber: toIndex },
                 })
                     .unwrap()
-                    .then(() =>
-                        notifications.show({
-                            color: 'green',
-                            title: t("page.actions.sequence.success")
-                        })
-                    )
-                    .catch(() =>
-                        notifications.show({
-                            color: 'red',
-                            title: t("page.actions.sequence.error")
-                        })
-                    );
+                    .then(() => success({ message: t("page.actions.sequence.success") }))
+                    .catch(() => error({ message: t("page.actions.sequence.error") }));
             }
         }
     }
