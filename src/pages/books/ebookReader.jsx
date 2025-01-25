@@ -1,10 +1,10 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // UI library import
-import { ActionIcon, Button, Breadcrumbs, Container, Drawer, Group, rem, Skeleton, Stack, Center, useMantineTheme, Image } from "@mantine/core";
+import { ActionIcon, Button, Breadcrumbs, Container, Drawer, Group, rem, Skeleton, Stack, Center, useMantineTheme } from "@mantine/core";
 import { useDisclosure, useFullscreen } from '@mantine/hooks';
 
 // Local imports
@@ -15,15 +15,15 @@ import ReaderSetting from "@/components/reader/ebook/readerSettings";
 import Error from '@/components/error';
 import { IconBook, IconChapters, IconFullScreen, IconFullScreenExit, IconSettings } from '@/components/icons';
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
-import classes from './ebookReader.module.css'
 import ReadModeToggle from "@/components/reader/readModeToggle";
+import Img from '@/components/img';
+import classes from './ebookReader.module.css'
 //------------------------------------------------------
 
 const EBookReaderPage = () => {
     const { t } = useTranslation();
     const theme = useMantineTheme();
     const navigate = useNavigate();
-    const [imgError, setImgError] = useState(false);
     const readerTheme = useSelector(state => state.ui.readerTheme);
     const readerView = useSelector(state => state.ui.readerView);
     const { ref, toggle, fullscreen } = useFullscreen();
@@ -156,16 +156,14 @@ const EBookReaderPage = () => {
         <ReaderSetting opened={settingsOpened} onClose={closeSettings} language={selectedLanguage} />
         <Drawer opened={opened} onClose={close} title={<Group><IconChapters />{t('book.chapters')}</Group>}>
             <TableOfContents title={book?.title}
-                image={book.links?.image && !imgError ?
-                    <Image
-                        h={200}
-                        w="auto"
-                        fit="contain"
-                        radius="sm"
-                        src={book?.links?.image}
-                        onError={() => setImgError(true)} /> :
-                    icon
-                }
+                image={<Img
+                    h={200}
+                    w="auto"
+                    fit="contain"
+                    radius="sm"
+                    src={book?.links?.image}
+                    fallback={icon}
+                />}
                 subTitle={<AuthorsAvatar libraryId={libraryId} authors={book?.authors} />}
                 links={chapterLinks}
                 selectedKey={selectedChapterNumber}

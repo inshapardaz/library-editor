@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // Ui Library Imports
-import { Center, Divider, Group, Image, Stack, Text, useMantineTheme } from '@mantine/core';
+import { Center, Divider, Group, Stack, Text, useMantineTheme } from '@mantine/core';
 import moment from "moment";
 
 // Local Imports
@@ -12,6 +11,7 @@ import { getDateFormatFromFrequency } from '@/utils';
 import { IconIssue, IconPages, IconIssueArticle, IconVolumeNumber, IconIssueNumber, IconEdit } from '@/components/icons';
 import IconText from '@/components/iconText';
 import If from '@/components/if';
+import Img from '@/components/img';
 import IssueDeleteButton from './issueDeleteButton';
 //-------------------------------------
 const IMAGE_WIDTH = 150;
@@ -19,16 +19,13 @@ const IMAGE_WIDTH = 150;
 const IssueListItem = ({ libraryId, issue, frequency }) => {
     const { t } = useTranslation();
     const theme = useMantineTheme();
-    const [imgError, setImgError] = useState(false);
 
     const icon = <Center w={IMAGE_WIDTH}><IconIssue width={IMAGE_WIDTH} style={{ color: theme.colors.dark[1] }} /></Center>;
     const title = moment(issue.issueDate).format(getDateFormatFromFrequency(frequency));
 
     return (<>
         <Group gap="sm" wrap="nowrap">
-            <If condition={issue.links?.image && !imgError} elseChildren={icon}>
-                <Image w={IMAGE_WIDTH} radius="sm" src={issue?.links?.image} onError={() => setImgError(true)} />
-            </If>
+            <Img w={IMAGE_WIDTH} radius="sm" src={issue?.links?.image} elseChildren={icon} />
             <Stack>
                 <Group justify="space-between">
                     <Text component={Link} to={`/libraries/${libraryId}/periodicals/${issue.periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}`} truncate="end" fw={500}>{title}</Text>

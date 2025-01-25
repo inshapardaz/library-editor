@@ -4,10 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 // Ui library import
-import { Anchor, Box, Breadcrumbs, Divider, Flex, Group, Image, Menu, rem, Skeleton, Spoiler, Stack, Text, Title, useMantineTheme } from '@mantine/core';
+import { Anchor, Box, Breadcrumbs, Divider, Flex, Group, Menu, rem, Skeleton, Spoiler, Stack, Text, Title, useMantineTheme } from '@mantine/core';
 
 // Local import
 import If from '@/components/if';
+import Img from '@/components/img';
 import { Icon, IconChevronUp, IconTick } from './icons';
 //----------------------------------
 export const PageHeaderSkeleton = () => {
@@ -74,7 +75,6 @@ BreadcrumbsMenu.propTypes = {
 const PageHeader = ({ title, subTitle, details, imageLink, defaultIcon, breadcrumbs = [], actions = [] }) => {
     const { t } = useTranslation();
     const theme = useMantineTheme();
-    const [imgError, setImgError] = useState(false);
 
     const renderBreadcrumb = () => {
         return breadcrumbs.map((item, index) => {
@@ -103,18 +103,15 @@ const PageHeader = ({ title, subTitle, details, imageLink, defaultIcon, breadcru
         wrap="wrap"
     >
         <Box visibleFrom='sm'>
-            <If condition={imageLink && !imgError}
-                elseChildren={<Icon name={defaultIcon} height={rem(64)} style={{ color: theme.colors.dark[1] }} />}>
-                <Image
-                    src={imageLink}
-                    h={96}
-                    w="auto"
-                    radius="md"
-                    alt={title}
-                    fit="contain"
-                    onError={() => setImgError(true)}
-                />
-            </If>
+            <Img
+                src={imageLink}
+                h={96}
+                w="auto"
+                radius="md"
+                alt={title}
+                fit="contain"
+                fallback={<Icon name={defaultIcon} height={rem(64)} style={{ color: theme.colors.dark[1] }} />}
+            />
         </Box>
         <Stack>
             <Group>

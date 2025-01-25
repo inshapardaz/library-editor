@@ -1,30 +1,26 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 // Ui Library Imports
-import { Divider, Group, Image, Stack, Text, useMantineTheme } from '@mantine/core';
+import { Divider, Group, Stack, Text, useMantineTheme } from '@mantine/core';
 
 // Local Imports
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
 import { IconWriting } from '@/components/icons';
 import FavoriteButton from './favoriteButton';
-import If from '@/components/if';
+import Img from '@/components/img';
 //-------------------------------------
 const IMAGE_HEIGHT = 150;
 
 const WritingListItem = ({ libraryId, writing }) => {
     const theme = useMantineTheme();
-    const [imgError, setImgError] = useState(false);
 
     const icon = <IconWriting width={IMAGE_HEIGHT} style={{ color: theme.colors.dark[1] }} />;
 
     return (
         <>
             <Group gap="sm" wrap="nowrap" key={writing.id}>
-                <If condition={writing.links?.image && !imgError} elseChildren={icon}>
-                    <Image h={IMAGE_HEIGHT} radius="sm" src={writing?.links?.image} onError={() => setImgError(true)} />
-                </If>
+                <Img h={IMAGE_HEIGHT} radius="sm" src={writing?.links?.image} fallback={icon} />
                 <Stack>
                     <Group justify="space-between">
                         <Text component={Link} to={`/libraries/${libraryId}/writings/${writing.id}`} truncate="end" fw={500}>{writing.title}</Text>

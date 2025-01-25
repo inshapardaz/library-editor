@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // Ui Library Imports
-import { Divider, Group, Image, Stack, Text, Tooltip, useMantineTheme } from '@mantine/core';
+import { Divider, Group, Stack, Text, Tooltip, useMantineTheme } from '@mantine/core';
 
 // Local Imports
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
@@ -13,20 +12,18 @@ import IconText from '@/components/iconText';
 import FavoriteButton from '@/components/books/favoriteButton';
 import BookDeleteButton from '@/components/books/bookDeleteButton';
 import If from '@/components/if';
+import Img from '@/components/img';
 //-------------------------------------
 
 const BookListItem = ({ libraryId, book }) => {
     const { t } = useTranslation();
     const theme = useMantineTheme();
-    const [imgError, setImgError] = useState(false);
 
     const icon = <IconBook width={150} style={{ color: theme.colors.dark[1] }} />;
 
     return (<>
         <Group gap="sm" wrap="nowrap">
-            <If condition={book.links?.image && !imgError} elseChildren={icon}>
-                <Image w={150} radius="sm" src={book?.links?.image} onError={() => setImgError(true)} />
-            </If>
+            <Img w={150} radius="sm" src={book?.links?.image} fallback={icon} />
             <Stack>
                 <Group justify="space-between">
                     <Text component={Link} to={`/libraries/${libraryId}/books/${book.id}`} truncate="end" fw={500}>{book.title}</Text>

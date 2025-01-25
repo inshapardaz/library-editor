@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -12,7 +11,6 @@ import {
     Divider,
     Grid,
     Group,
-    Image,
     Skeleton,
     Space,
     Stack,
@@ -33,6 +31,7 @@ import BookInfo from '@/components/books/bookInfo';
 import PageHeader from "@/components/pageHeader";
 import Error from '@/components/error';
 import If from '@/components/if';
+import Img from '@/components/img';
 import { IconBook, IconEditBook, IconPages, IconChapters, IconFiles } from '@/components/icons';
 import IconNames from '@/components/iconNames'
 import BookFilesList from '@/components/books/files/bookFilesList';
@@ -72,7 +71,6 @@ const BookPage = () => {
     const pageSize = parseInt(searchParams.get("pageSize") ?? "12");
 
     const theme = useMantineTheme();
-    const [imgError, setImgError] = useState(false);
 
     const {
         data: book,
@@ -150,17 +148,15 @@ const BookPage = () => {
                 mih={50}
             >
                 <Grid.Col span="content">
-                    <If condition={book.links?.image && !imgError} elseChildren={icon}>
-                        <Image
-                            src={book?.links?.image}
-                            h={rem(400)}
-                            w="auto"
-                            radius="md"
-                            alt={book?.title}
-                            fit='contain'
-                            onError={() => setImgError(true)}
-                        />
-                    </If>
+                    <Img
+                        src={book?.links?.image}
+                        h={rem(400)}
+                        w="auto"
+                        radius="md"
+                        alt={book?.title}
+                        fit='contain'
+                        fallback={icon}
+                    />
                     <Stack hiddenFrom='md'>
                         <Space h="md" />
                         <AuthorsAvatar libraryId={libraryId} authors={book?.authors} showNames />

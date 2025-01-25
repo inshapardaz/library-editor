@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // Ui Library import
-import { Card, Text, Group, Divider, useMantineTheme, Image, Center } from '@mantine/core';
+import { Card, Text, Group, Divider, useMantineTheme, Center } from '@mantine/core';
 
 // Local imports
 import { IconBooks, IconWritings, IconAuthor, IconPoetries, IconEdit } from '@/components/icons';
 import IconText from '../iconText';
 import If from '@/components/if';
+import Img from '@/components/img';
 import AuthorDeleteButton from './authorDeleteButton';
 //---------------------------------------
 
@@ -17,16 +17,12 @@ const AuthorCard = ({ libraryId, author }) => {
     const theme = useMantineTheme();
     const { t } = useTranslation();
 
-    const [imgError, setImgError] = useState(false);
-
     const icon = <Center h={225}><IconAuthor width={125} style={{ color: theme.colors.dark[1] }} /></Center>;
 
     return (
         <Card shadow="sm" padding="lg" radius="md" withBorder>
             <Card.Section>
-                <If condition={author.links?.image && !imgError} elseChildren={icon}>
-                    <Image h={225} radius="sm" src={author?.links?.image} onError={() => setImgError(true)} />
-                </If>
+                <Img h={225} radius="sm" src={author?.links?.image} fallback={icon} />
             </Card.Section>
 
             <Group justify="space-between" mt="md" mb="xs">

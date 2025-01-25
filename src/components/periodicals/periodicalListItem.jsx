@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // Ui Library Imports
-import { Divider, Group, Image, Stack, Text, Tooltip, useMantineTheme } from '@mantine/core';
+import { Divider, Group, Stack, Text, Tooltip, useMantineTheme } from '@mantine/core';
 
 // Local Imports
 import { IconPages, IconEdit } from '@/components/icons';
@@ -12,6 +11,7 @@ import IconText from '@/components/iconText';
 import FrequencyIcon from './frequencyIcon';
 import { IconPeriodical } from '@/components/icons';
 import If from '@/components/if';
+import Img from '@/components/img';
 import PeriodicalDeleteButton from './periodicalDeleteButton';
 //-------------------------------------
 const IMAGE_WIDTH = 150;
@@ -19,16 +19,13 @@ const IMAGE_WIDTH = 150;
 const PeriodicalListItem = ({ libraryId, periodical }) => {
     const { t } = useTranslation();
     const theme = useMantineTheme();
-    const [imgError, setImgError] = useState(false);
 
 
     const icon = <IconPeriodical width={IMAGE_WIDTH} style={{ color: theme.colors.dark[1] }} />;
 
     return (<>
         <Group gap="sm" wrap="nowrap">
-            <If condition={periodical.links?.image && !imgError} elseChildren={icon}>
-                <Image w={IMAGE_WIDTH} radius="sm" src={periodical?.links?.image} onError={() => setImgError(true)} />
-            </If>
+            <Img w={IMAGE_WIDTH} radius="sm" src={periodical?.links?.image} fallback={icon} />
             <Stack>
                 <Group justify="space-between">
                     <Text component={Link} to={`/libraries/${libraryId}/periodicals/${periodical.id}`} truncate="end" fw={500}>{periodical.title}</Text>

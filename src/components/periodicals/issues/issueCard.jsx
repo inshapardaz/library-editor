@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // Ui Library import
-import { Card, Text, Group, useMantineTheme, Center, Image, Divider } from '@mantine/core';
+import { Card, Text, Group, useMantineTheme, Center, Divider } from '@mantine/core';
 import moment from "moment";
 
 // Local imports
@@ -12,6 +11,7 @@ import { getDateFormatFromFrequency } from '@/utils';
 import { IconIssue, IconPages, IconEdit } from '@/components/icons';
 import IconText from '@/components/iconText';
 import If from '@/components/if';
+import Img from '@/components/img';
 import IssueDeleteButton from './issueDeleteButton';
 //---------------------------------------
 const IMAGE_HEIGHT = 400;
@@ -20,7 +20,6 @@ const IMAGE_WIDTH = 200;
 const IssueCard = ({ libraryId, issue, frequency }) => {
     const { t } = useTranslation();
     const theme = useMantineTheme();
-    const [imgError, setImgError] = useState(false);
 
     const icon = <Center h={IMAGE_HEIGHT}><IconIssue width={IMAGE_WIDTH} style={{ color: theme.colors.dark[1] }} /></Center>;
     const title = moment(issue.issueDate).format(getDateFormatFromFrequency(frequency));
@@ -28,9 +27,7 @@ const IssueCard = ({ libraryId, issue, frequency }) => {
     return (
         <Card shadow="sm" padding="lg" radius="md" withBorder>
             <Card.Section>
-                <If condition={issue.links?.image && !imgError} elseChildren={icon}>
-                    <Image h={IMAGE_HEIGHT} radius="sm" src={issue?.links?.image} onError={() => setImgError(true)} />
-                </If>
+                <Img h={IMAGE_HEIGHT} radius="sm" src={issue?.links?.image} elseChildren={icon} />
             </Card.Section>
 
             <Group justify="space-between" mt="md" mb="xs">

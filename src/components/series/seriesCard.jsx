@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // Ui Library import
-import { Card, Text, Group, useMantineTheme, Center, Image, Divider } from '@mantine/core';
+import { Card, Text, Group, useMantineTheme, Center, Divider } from '@mantine/core';
 
 // Local imports
 import { IconSeries, IconBooks, IconEdit } from '@/components/icons';
 import IconText from '../iconText';
 import If from '@/components/if';
+import Img from '@/components/img';
 import SeriesDeleteButton from './seriesDeleteButton';
 //---------------------------------------
 
@@ -19,16 +19,13 @@ const IMAGE_WIDTH = 150;
 const SeriesCard = ({ libraryId, series }) => {
     const { t } = useTranslation();
     const theme = useMantineTheme();
-    const [imgError, setImgError] = useState(false);
 
     const icon = <Center h={IMAGE_HEIGHT}><IconSeries width={IMAGE_WIDTH} style={{ color: theme.colors.dark[1] }} /></Center>;
 
     return (
         <Card shadow="sm" padding="lg" radius="md" withBorder>
             <Card.Section>
-                <If condition={series.links?.image && !imgError} elseChildren={icon}>
-                    <Image h={IMAGE_HEIGHT} radius="sm" src={series?.links?.image} onError={() => setImgError(true)} />
-                </If>
+                <Img h={IMAGE_HEIGHT} radius="sm" src={series?.links?.image} fallback={icon} />
             </Card.Section>
 
             <Group justify="space-between" mt="md" mb="xs">

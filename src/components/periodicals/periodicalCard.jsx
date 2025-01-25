@@ -1,16 +1,16 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // Ui Library import
-import { Card, Text, Group, Tooltip, useMantineTheme, Center, Image, Divider } from '@mantine/core';
+import { Card, Text, Group, Tooltip, useMantineTheme, Center, Divider } from '@mantine/core';
 
 // Local imports
 import { IconPeriodical, IconEdit } from '@/components/icons';
 import IconText from '@/components/iconText';
 import FrequencyIcon from './frequencyIcon'
 import If from '@/components/if'
+import Img from '@/components/img';
 import PeriodicalDeleteButton from './periodicalDeleteButton';
 //---------------------------------------
 const IMAGE_HEIGHT = 250;
@@ -18,16 +18,13 @@ const IMAGE_WIDTH = 200;
 const PeriodicalCard = ({ libraryId, periodical }) => {
     const { t } = useTranslation();
     const theme = useMantineTheme();
-    const [imgError, setImgError] = useState(false);
 
     const icon = <Center h={IMAGE_HEIGHT}><IconPeriodical width={IMAGE_WIDTH} style={{ color: theme.colors.dark[1] }} /></Center>;
 
     return (
         <Card shadow="sm" padding="lg" radius="md" withBorder>
             <Card.Section>
-                <If condition={periodical.links?.image && !imgError} elseChildren={icon}>
-                    <Image w={IMAGE_WIDTH} radius="sm" src={periodical?.links?.image} onError={() => setImgError(true)} />
-                </If>
+                <Img w={IMAGE_WIDTH} radius="sm" src={periodical?.links?.image} fallback={icon} />
             </Card.Section>
 
             <Group justify="space-between" mt="md" mb="xs">
