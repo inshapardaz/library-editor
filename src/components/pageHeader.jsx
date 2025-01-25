@@ -80,69 +80,87 @@ const PageHeader = ({ title, subTitle, details, imageLink, defaultIcon, breadcru
         return breadcrumbs.map((item, index) => {
             if (item.items) {
                 return (<BreadcrumbsMenu key={`breadcrumb-${index}`} item={item} index={index} />);
-            }
-            return (
-                <Anchor component={Link} to={item.href} key={`breadcrumb-${index}`} underline="hover" c="dimmed">
-                    <Group wrap='nowrap' gap='xs'>
+            } else if (item.href) {
+                return (
+                    <Anchor component={Link} to={item.href} key={`breadcrumb-${index}`} underline="hover" c="dimmed" size='xs'>
+                        <Group wrap='nowrap' gap='xs'>
+                            <If condition={item.icon}>
+                                <Icon name={item.icon} height={16} />
+                            </If>
+                            <Text size='sm'>{item.title}</Text>
+                        </Group>
+                    </Anchor>
+                );
+            } else {
+                return (
+                    <Group wrap='nowrap' gap='xs' key={`breadcrumb-${index}`} underline="hover" c="dimmed" size='xs'>
                         <If condition={item.icon}>
-                            <Icon name={item.icon} l height={16} />
+                            <Icon name={item.icon} height={16} />
                         </If>
-                        {item.title}
+                        <Text size='sm'>{item.title}</Text>
                     </Group>
-                </Anchor>
-            );
+                );
+            }
         })
     }
-    return (<Flex
-        mih={50}
-        m="md"
-        gap="sm"
-        justify="flex-start"
-        align="flex-end"
-        direction="row"
-        wrap="wrap"
-    >
-        <Box visibleFrom='sm'>
-            <Img
-                src={imageLink}
-                h={96}
-                w="auto"
-                radius="md"
-                alt={title}
-                fit="contain"
-                fallback={<Icon name={defaultIcon} height={rem(64)} style={{ color: theme.colors.dark[1] }} />}
-            />
-        </Box>
-        <Stack>
-            <Group>
-                <Title order={2}>{title}</Title>
-            </Group>
-            <If condition={subTitle}>
-                <Title order={4}>{subTitle}</Title>
-            </If>
-        </Stack>
-        <span style={{ flex: '1' }} />
-        <Stack>
-            <If condition={actions}>
-                <Group justify="flex-end">
-                    {actions}
+    return (<Flex m="md" direction="column" gap="sm">
+        <Flex
+            mih={50}
+            gap="sm"
+            justify="flex-start"
+            align="center"
+            direction="row"
+            wrap="wrap"
+        >
+            <Box visibleFrom='sm'>
+                <Img
+                    src={imageLink}
+                    h={96}
+                    w="auto"
+                    radius="md"
+                    alt={title}
+                    fit="contain"
+                    fallback={<Icon name={defaultIcon} height={64} style={{ color: theme.colors.dark[1] }} />}
+                />
+            </Box>
+            <Stack justify="center">
+                <Group>
+                    <Title order={2}>{title}</Title>
                 </Group>
+            </Stack>
+            <If condition={subTitle}>
+                <Stack style={{ alignSelf: 'flex-end' }}>
+                    <Title order={4}>{subTitle}</Title>
+                </Stack>
             </If>
-            <If condition={breadcrumbs}>
+            <span style={{ flex: '1' }} />
+            <Stack>
+                <If condition={actions}>
+                    <Group justify="flex-end">
+                        {actions}
+                    </Group>
+                </If>
+            </Stack>
+        </Flex>
+        <If condition={breadcrumbs || details}>
+            <Divider />
+            <Flex
+                gap="sm"
+                justify="space-between"
+                align="center"
+                direction="row"
+                wrap="nowrap"
+            >
+                <Spoiler showLabel={t('actions.showMore')} hideLabel={t('actions.hide')} >
+                    <Text c="dimmed">{details}</Text>
+                </Spoiler>
                 <Breadcrumbs>
                     {renderBreadcrumb()}
                 </Breadcrumbs>
-            </If>
-        </Stack>
-        <If condition={details}>
-            <Box style={{ width: '100%' }}>
-                <Divider />
-                <Spoiler maxHeight={60} showLabel={t('actions.showMore')} hideLabel={t('actions.hide')}>
-                    <Text c="dimmed">{details}</Text>
-                </Spoiler>
-            </Box>
+            </Flex>
         </If>
-    </Flex>);
+    </Flex>
+    );
 }
 
 PageHeader.propTypes = {

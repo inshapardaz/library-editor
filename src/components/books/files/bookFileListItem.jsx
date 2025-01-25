@@ -7,6 +7,7 @@ import {
     Divider,
     FileButton,
     Group,
+    Stack,
     Text,
     Tooltip,
     useMantineTheme
@@ -53,7 +54,7 @@ const BookFileListItem = ({ t, libraryId, book, content }) => {
             });
     }
 
-    return (<div>
+    return (<Stack>
         <Group mt="md" className={classes.details}>
             <FileImage mimeType={content.mimeType} width={32} style={{ color: theme.colors.dark[2] }} />
             <Text component={Link} to={content.links.download} target="_blank" rel="noreferrer">
@@ -91,7 +92,8 @@ const BookFileListItem = ({ t, libraryId, book, content }) => {
                 <FileDeleteButton content={content} t={t} type='default' />
             </If>
         </Group>
-    </div>);
+        <Divider />
+    </Stack>);
 };
 
 

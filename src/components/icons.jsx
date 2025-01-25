@@ -107,6 +107,7 @@ const iconTheme = {
         reviewer: "user-check",
         status: "status-change",
         image: "photo",
+        noImage: "photo-off",
         user: "user",
         assignAll: "users-group",
         assignMe: "user-filled",
@@ -202,6 +203,7 @@ export const IconCopyright = (props) => getIcon(IconNames.Copyright, props)
 export const IconPages = (props) => getIcon(IconNames.Pages, props)
 export const IconPage = (props) => getIcon(IconNames.Page, props)
 export const IconImage = (props) => getIcon(IconNames.Image, props)
+export const IconNoImage = (props) => getIcon(IconNames.NoImage, props)
 export const IconPublisher = (props) => getIcon(IconNames.Publisher, props)
 export const IconChapters = (props) => getIcon(IconNames.Chapters, props)
 export const IconArrowLeft = (props) => getIcon(IconNames.ArrowLeft, props)

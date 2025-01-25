@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
 // UI library import
-import { Box, Button, Container, Grid, Group, LoadingOverlay, rem, Skeleton, Tooltip } from "@mantine/core";
+import { Box, Button, Container, Grid, Group, LoadingOverlay, rem, Skeleton, Switch, Tooltip } from "@mantine/core";
 import { useFullscreen } from "@mantine/hooks";
 import { notifications } from '@mantine/notifications';
 
@@ -19,10 +19,11 @@ import {
 import { selectedLanguage } from "@/store/slices/uiSlice";
 import { EditingStatus } from '@/models';
 import Error from '@/components/error';
+import If from '@/components/if';
 import PageHeader from "@/components/pageHeader";
 import EditingStatusIcon from "@/components/editingStatusIcon";
 import IconNames from '@/components/iconNames';
-import { IconLeft, IconRight, IconDone, IconFullScreenExit, IconFullScreen } from "@/components/icons";
+import { IconLeft, IconRight, IconDone, IconFullScreenExit, IconFullScreen, IconImage, IconNoImage } from "@/components/icons";
 import Editor, { EditorFormat, DefaultConfiguration } from "@/components/editor";
 import PageImage from "@/components/books/pages/pageImage";
 import PageAssignButton from '@/components/books/pages/pageAssignButton';
@@ -40,6 +41,7 @@ const BookPageEditPage = () => {
     const navigate = useNavigate();
     const [contents, setContents] = useState('')
     const [isBusy, setIsBusy] = useState(false)
+    const [showImge, setShowImage] = useState(false)
     const [image, setImage] = useState();
 
     // Data operations
@@ -174,7 +176,7 @@ const BookPageEditPage = () => {
         {canComplete && (
             <Tooltip label={t("actions.done")}>
                 <Button onClick={onComplete} variant="outline" color="green">
-                    <IconDone />
+                    <IconDone height={20} />
                 </Button>
             </Tooltip>
         )}
@@ -205,23 +207,31 @@ const BookPageEditPage = () => {
                 t={t}
                 type='default' />
         )}
+        <Tooltip key="previous" label={t("page.editor.showImage")}>
+            <Switch size="lg"
+                color="gray"
+                checked={showImge}
+                onChange={(event) => setShowImage(event.currentTarget.checked)}
+                onLabel={<IconImage height={16} stroke={2.5} />}
+                offLabel={<IconNoImage height={16} stroke={2.5} />} />
+        </Tooltip>
         <Button.Group>
             <Tooltip key="previous" label={t("actions.previous")}>
                 <Button variant="default" disabled={!page || !page.links.previous} component={Link}
                     to={`/libraries/${libraryId}/books/${bookId}/pages/${page.sequenceNumber - 1}/contents/edit`}>
-                    {lang.isRtl ? <IconRight /> : <IconLeft />}
+                    {lang.isRtl ? <IconRight height={20} /> : <IconLeft height={20} />}
                 </Button>
             </Tooltip>
             <Tooltip key="next" label={t("actions.next")}>
                 <Button variant="default" disabled={!page || !page.links.next} component={Link}
                     to={`/libraries/${libraryId}/books/${bookId}/pages/${page.sequenceNumber + 1}/contents/edit`}>
-                    {lang.isRtl ? <IconLeft /> : <IconRight />}
+                    {lang.isRtl ? <IconLeft height={20} /> : <IconRight height={20} />}
                 </Button>
             </Tooltip>
         </Button.Group>
         <Tooltip key="fullscreen" label={t(fullscreen ? "actions.fullscreenExit" : "actions.fullscreen")}>
             <Button variant="default" onClick={toggle} >
-                {fullscreen ? <IconFullScreenExit /> : <IconFullScreen />}
+                {fullscreen ? <IconFullScreenExit height={20} /> : <IconFullScreen height={20} />}
             </Button>
         </Tooltip>
     </Group> : null;
@@ -277,10 +287,10 @@ const BookPageEditPage = () => {
             ]}
             actions={actions}
         />
-        <Box style={{ height: `calc(100vh - ${fullscreen ? '130px' : '180px'})`, overflow: 'auto' }} bg="var(--mantine-color-body)" >
+        <Box style={{ height: `calc(100vh - ${fullscreen ? '160px' : '220px'})`, overflow: 'auto', position: 'relative' }} bg="var(--mantine-color-body)" >
             <LoadingOverlay visible={isBusy || isAddingPage || isUpdatingPage || isUpdatingImage} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
             <div className={classes.split}>
-                <div className={classes.left}>
+                <div className={showImge ? classes.left : classes.full}>
                     <Editor defaultValue={contents}
                         configuration={{
                             ...DefaultConfiguration,
@@ -299,10 +309,12 @@ const BookPageEditPage = () => {
                         contentKey={`page-${libraryId}-${bookId}-${pageNumber}`}
                         onSave={onEditorSave} />
                 </div>
-                <div className={classes.drag}></div>
-                <div className={classes.right}>
-                    <PageImage t={t} page={page} image={image} onChange={setImage} />
-                </div>
+                <If condition={showImge}>
+                    <div className={classes.drag}></div>
+                    <div className={classes.right}>
+                        <PageImage t={t} page={page} image={image} onChange={setImage} />
+                    </div>
+                </If>
             </div>
         </Box>
     </Container >);

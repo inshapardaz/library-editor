@@ -130,6 +130,10 @@ const BookPage = () => {
                         <Divider orientation='vertical' />
                     </If>
                     <BookSeriesInfo libraryId={libraryId} book={book} />
+                    <If condition={book?.categories?.length > 0}>
+                        <Divider orientation='vertical' />
+                        <CategoriesList key="book-categories-info" categories={book?.categories} size={24} showIcon={false} />
+                    </If>
                 </Group>
             }
             details={book.description}
@@ -139,7 +143,6 @@ const BookPage = () => {
             ]}
             actions={[
                 (<FavoriteButton key="book-fav-button" book={book} size={24} />),
-                (<CategoriesList key="book-categories-info" categories={book?.categories} size={24} showIcon={false} />),
                 (<span key="book-spacer" style={{ flex: 1 }} />),
                 (<Button key="book-edit" component={Link} to={`/libraries/${libraryId}/books/${book.id}/edit`} variant='default' leftSection={<IconEditBook />} >{t('actions.edit')}</Button>)
             ]} />

@@ -102,6 +102,7 @@ const IconNames = {
     Reviewer: "reviewer",
     Status: "status",
     Image: "image",
+    NoImage: "noImage",
     User: "user",
     AssignAll: "assignAll",
     AssignMe: "assignMe",

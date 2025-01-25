@@ -736,6 +736,7 @@ const en = {
         label: "Page {{sequenceNumber}}",
         editor: {
             title: "Edit chapter contents",
+            showImage: "Show/hide Image",
             unsavedContents:
                 "Unsaved changed found for this chapter. Would you like to continue editing it?",
         },

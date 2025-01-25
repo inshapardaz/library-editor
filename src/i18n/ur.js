@@ -755,6 +755,7 @@ const ur = {
         label: "صفحہ {{sequenceNumber}}",
         editor: {
             title: "مندرجات کی تدوین",
+            showImage: "صفحے کا عکس دکھائیں یا چھپائیں",
             unsavedContents:
                 "غیر محفوظ شدہ مندرجات موجود ہیں۔ وہیں سے تدوین جاری رکھیں؟",
         },

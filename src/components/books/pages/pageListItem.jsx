@@ -44,6 +44,9 @@ const PageListItem = ({ t, libraryId, book, page, index, isSelected = false, onS
                     </Text>
                     <Group mt="md" className={classes.details}>
                         <Stack gap="sm">
+                            <If condition={page.chapterTitle}>
+                                <Text>{page.chapterTitle}</Text>
+                            </If>
                             <Group>
                                 <Text c="dimmed" size="sm">
                                     {t(`editingStatus.${page.status}`)}
@@ -107,6 +110,8 @@ PageListItem.propTypes = {
         writerAccountName: PropTypes.string,
         reviewerAccountId: PropTypes.number,
         reviewerAccountName: PropTypes.string,
+        chapterId: PropTypes.number,
+        chapterTitle: PropTypes.string,
         categories: PropTypes.arrayOf(PropTypes.shape({
             id: PropTypes.number,
             name: PropTypes.string
