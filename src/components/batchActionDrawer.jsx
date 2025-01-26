@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import { useEffect } from "react";
 
 // Ui Library imports
-import { Avatar, Button, Drawer, List, ScrollArea, Stack, Tooltip } from '@mantine/core';
+import { Avatar, Button, Divider, Drawer, List, ScrollArea, Stack, Tooltip } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 // Local imports
@@ -12,11 +12,31 @@ import ProcessStatusIcon from '@/components/processStatusIcon';
 import { error, success } from '@/utils/notifications';
 // -------------------------------------------
 
+const getIconColor = (status) => {
+    switch (status) {
+        case ProcessStatus.Pending:
+            return 'gray';
+        case ProcessStatus.InProcess:
+            return 'blue';
+        case ProcessStatus.CreatingBook:
+        case ProcessStatus.UploadingContents:
+            return 'blue'
+        case ProcessStatus.Completed:
+            return 'green';
+        case ProcessStatus.Failed:
+            return 'red';
+        default:
+            return 'gray';
+    }
+}
 const RequestList = ({ requests, itemTitleFunc, itemDescriptionFunc }) => {
     return (
         <List>
             {requests.map(request => (
-                <List.Item mb="xs" key={request.id} icon={<Avatar size={32}><ProcessStatusIcon status={request.status} /></Avatar>}>
+                <List.Item mb="xs" h={42} key={request.id} icon={
+                    <Avatar size={32}>
+                        <ProcessStatusIcon status={request.status} style={{ color: getIconColor(request.status) }} />
+                    </Avatar>}>
                     {itemTitleFunc ? itemTitleFunc(request.data) : request.id}
                     {itemDescriptionFunc && itemDescriptionFunc(request.data)}
                 </List.Item>))
@@ -174,14 +194,15 @@ const BatchActionDrawer = ({
                 >
                     {title}
                     {children}
+                    <Button type="primary" onClick={onSubmit} disabled={busy}>
+                        {t('actions.ok')}
+                    </Button>
+                    <Divider />
                     <RequestList
                         title={listTitle}
                         requests={requests}
                         itemTitleFunc={itemTitleFunc}
                         itemDescription={itemDescriptionFunc} />
-                    <Button type="primary" onClick={onSubmit} disabled={busy}>
-                        {t('actions.ok')}
-                    </Button>
                 </Stack>
             </Drawer>
         </>);

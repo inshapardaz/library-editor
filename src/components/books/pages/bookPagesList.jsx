@@ -161,7 +161,7 @@ const BookPagesList = ({ libraryId, book, isLoading,
         }))}
         showSearch={false}
         actions={
-            <Group>
+            <Group wrap='nowrap'>
                 <Checkbox
                     onChange={onSelectAll}
                     checked={hasAllSelected}
