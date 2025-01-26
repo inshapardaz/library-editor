@@ -3,6 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 // 3rd party imports
 import Cookies from 'js-cookie'
 
+import enDictionary from '@/i18n/wordLists/en'
+import urDictionary from '@/i18n/wordLists/ur'
 //----------------------------------------
 
 const detectedLanguage = window.localStorage.i18nextLng ?? "ur";
@@ -80,7 +82,6 @@ export const uiSlice = createSlice({
             state.readerLineHeight = action.payload;
             Cookies.set('reader-line-height', action.payload)
         },
-
     },
 });
 
@@ -95,3 +96,14 @@ export const {
     setReaderLineHeight
 } = uiSlice.actions;
 export const selectedLanguage = (state) => languages[state.ui.locale];
+export function autoCompleteList(state) {
+    switch (state.ui.locale) {
+        case 'en':
+            return enDictionary;
+        case 'ur':
+            return urDictionary;
+        default:
+            return [];
+
+    }
+}

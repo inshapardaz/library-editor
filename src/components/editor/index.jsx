@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 // UI library Imports
 
@@ -29,6 +30,7 @@ import EditorNodes from './nodes';
 import DraggableBlockPlugin from './plugins/draggableBlockPlugin';
 import { ToolbarContext } from './plugins/toolbarPlugin/toolbarContext';
 import SpellCheckerPlugin from './plugins/spellCheckerPlugin';
+import AutocompletePlugin from './plugins/autocompletePlugin';
 
 // UI Library Imports
 import { useLocalStorage } from '@mantine/hooks';
@@ -36,6 +38,7 @@ import { useLocalStorage } from '@mantine/hooks';
 // Local Imports
 import { languages } from '@/i18n';
 import classes from './editor.module.css';
+import { autoCompleteList } from "@/store/slices/uiSlice";
 import FloatingTextFormatToolbarPlugin from './plugins/floatingTextFormatToolbarPlugin';
 import FloatingLinkEditorPlugin from './plugins/floatingLinkEditorPlugin';
 //-----------------------------------------
@@ -68,6 +71,7 @@ export const DefaultConfiguration = {
     format: EditorFormat.Raw,
     language: "en",
     placeholder: null,
+    autocompleteEnabled: false,
     toolbar: {
         fonts: null,
         defaultFont: null,
@@ -99,6 +103,7 @@ const Editor = ({ language, defaultValue, onSave = () => { }, onChange = () => {
     const isRtl = useMemo(() => direction == "rtl" ? true : false, [direction]);
     const [floatingAnchorElem, setFloatingAnchorElem] = useState(null);
     const [isLinkEditMode, setIsLinkEditMode] = useState(false);
+    const wordList = useSelector(autoCompleteList)
     const [zoom] = useLocalStorage({
         key: "editor-text-zoom",
         defaultValue: 100
@@ -201,6 +206,7 @@ const Editor = ({ language, defaultValue, onSave = () => { }, onChange = () => {
                     }
                     configuration={configuration.spellchecker}
                 />
+                {configuration.autocompleteEnabled && <AutocompletePlugin wordList={wordList} />}
                 <SavePlugin onSave={onSave} format={configuration.format} />
                 <ControlledValuePlugin
                     value={defaultValue}
@@ -226,6 +232,7 @@ Editor.propTypes = {
         format: PropTypes.string,
         language: PropTypes.string,
         placeholder: PropTypes.string,
+        autocompleteEnabled: PropTypes.bool,
         toolbar: PropTypes.shape({
             fonts: PropTypes.arrayOf(PropTypes.string),
             defaultFont: PropTypes.string,

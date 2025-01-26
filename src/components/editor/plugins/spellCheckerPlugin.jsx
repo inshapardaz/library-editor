@@ -19,6 +19,7 @@ import {
   useGetPunctuationQuery,
   useGetAutoCorrectQuery
 } from "/src/store/slices/tools.api";
+
 //---------------------------------------------
 
 const getReplaceAllRegex = (corrections) => {
