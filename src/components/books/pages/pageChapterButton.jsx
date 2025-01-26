@@ -7,7 +7,7 @@ import { useField } from '@mantine/form';
 import { useUpdateBookPagesMutation } from "@/store/slices/books.api";
 import { IconChapters } from "@/components/icons";
 import BatchActionDrawer from '@/components/batchActionDrawer';
-import ChapterSelect from '@/components/books/chapters/ChapterSelect';
+import ChapterSelect from '@/components/books/chapters/chapterSelect';
 
 // ------------------------------------------------------
 
