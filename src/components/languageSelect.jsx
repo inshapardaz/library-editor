@@ -36,7 +36,7 @@ const LanguageSelect = ({ defaultValue, placeholder, disabled, onChange, ...prop
     return (
         <Combobox {...props}
             store={combobox}
-            withinPortal={false}
+            withinPortal={true}
             onOptionSubmit={(val) => {
                 onChange && onChange(val);
                 combobox.updateSelectedOptionIndex('active');

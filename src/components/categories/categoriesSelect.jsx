@@ -75,7 +75,7 @@ export function CategoriesSelect({ t, libraryId, defaultValue = [], disabled, on
     }, [currentValue, handleValueRemove]);
 
     return (
-        <Combobox {...props} error={error} disabled={disabled} store={combobox} onOptionSubmit={handleValueSelect} withinPortal={false}>
+        <Combobox {...props} error={error} disabled={disabled} store={combobox} onOptionSubmit={handleValueSelect} withinPortal={true}>
             <Combobox.DropdownTarget>
                 <PillsInput onClick={() => combobox.openDropdown()} rightSection={<Combobox.Chevron />}>
                     <Pill.Group>

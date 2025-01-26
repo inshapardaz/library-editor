@@ -5,34 +5,35 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Group, Combobox, useCombobox, Loader, TextInput } from "@mantine/core";
 
 // Local imports
-import { useGetSeriesQuery, useAddSeriesMutation } from '@/store/slices/series.api'
+import { useGetBookChaptersQuery, useAddChapterMutation } from '@/store/slices/books.api'
 import If from '@/components/if';
 import { IconAdd } from '@/components/icons';
 import { error, success } from '@/utils/notifications';
 //------------------------------------
 
-const SeriesSelect = ({ t, libraryId, defaultValue = null, onChange, label, placeholder, disabled, ...props }) => {
+const ChapterSelect = ({ t, libraryId, bookId, defaultValue = null, onChange, label, placeholder, disabled, ...props }) => {
     const [value, setValue] = useState(null);
     const [currentValue, setCurrentValue] = useState(null);
     const combobox = useCombobox({
         onDropdownClose: () => combobox.resetSelectedOption(),
     });
 
-    // create new series
+    // create new chapter
     //-------------------------------------------------
-    const [addSeries, { isLoading: isAdding }] = useAddSeriesMutation();
+    //libraryId, bookId, payload
+    const [addChapter, { isLoading: isAdding }] = useAddChapterMutation();
 
     // Fetach data and set the dropdown
     //-------------------------------------------------
-    const { data: series, error: errorLoading, isFetching } = useGetSeriesQuery({ libraryId, query: value, pageNumber: 1, pageSize: 10 })
+    const { data: chapters, error: errorLoading, isFetching } = useGetBookChaptersQuery({ libraryId, bookId })
 
-    const data = useMemo(() => series?.data ? series.data : [], [series]);
+    const data = useMemo(() => chapters?.data ? chapters.data : [], [chapters]);
 
     const options = useMemo(() => {
         return data
-            .map((series) => (
-                <Combobox.Option value={series.id} key={series.id}>
-                    <span>{series.name}</span>
+            .map((chapter) => (
+                <Combobox.Option value={chapter.id} key={chapter.id}>
+                    <span>{chapter.title}</span>
                 </Combobox.Option>
             ));
     }, [data]);
@@ -46,25 +47,25 @@ const SeriesSelect = ({ t, libraryId, defaultValue = null, onChange, label, plac
         const setSelection = (addedValue) => {
             if (addedValue) {
                 setCurrentValue(addedValue);
-                setValue(addedValue.name);
+                setValue(addedValue.title);
                 onChange(addedValue.id);
                 combobox.closeDropdown();
             }
         }
 
         if (val === '$create') {
-            addSeries({
-                libraryId, payload: {
-                    name: value
+            addChapter({
+                libraryId, bookId, payload: {
+                    title: value
                 }
             }).unwrap()
                 .then((addedValue) => {
                     setSelection(addedValue);
                 })
-                .then(() => success({ message: t("series.actions.add.success") }))
+                .then(() => success({ message: t("chapter.actions.add.success") }))
                 .catch((e) => {
                     console.error(e)
-                    error({ message: t("series.actions.add.error") });
+                    error({ message: t("chapter.actions.add.error") });
                 });
         } else {
             const addedValue = data.find(x => x.id == val);
@@ -72,7 +73,7 @@ const SeriesSelect = ({ t, libraryId, defaultValue = null, onChange, label, plac
                 setSelection(addedValue);
             }
         }
-    }, [onChange, combobox, addSeries, libraryId, value, t, data]);
+    }, [onChange, combobox, addChapter, libraryId, value, t, data]);
 
     //-------------------------------------------------
     useEffect(() => {
@@ -81,13 +82,13 @@ const SeriesSelect = ({ t, libraryId, defaultValue = null, onChange, label, plac
 
             if (selectedValue) {
                 setCurrentValue(selectedValue);
-                setValue(selectedValue.name)
+                setValue(selectedValue.title)
             }
         }
     }, [currentValue, data, defaultValue, value]);
 
     useEffect(() => {
-        if (currentValue && value != currentValue.name) {
+        if (currentValue && value != currentValue.title) {
             setCurrentValue(null)
         }
     }, [value, currentValue]);
@@ -122,12 +123,12 @@ const SeriesSelect = ({ t, libraryId, defaultValue = null, onChange, label, plac
                         {/* When no items found  and no search */}
 
                         <If condition={options.length == 0 && value?.trim().length === 0} >
-                            <Combobox.Empty>{t('series.empty')}</Combobox.Empty>
+                            <Combobox.Empty>{t('chapters.empty.title')}</Combobox.Empty>
                         </If>
                         <If condition={options.length < 1 && value && value.trim().length !== 0 && !currentValue} >
                             <Combobox.Option value="$create"><Group gap="sm" wrap='nowrap'>
                                 <IconAdd height={24} />
-                                <span>{t('series.actions.add.labelWithName', { name: value })}</span>
+                                <span>{t('cahpter.actions.add.label')}</span>
                             </Group>
                             </Combobox.Option>
                         </If>
@@ -138,15 +139,15 @@ const SeriesSelect = ({ t, libraryId, defaultValue = null, onChange, label, plac
     );
 }
 
-SeriesSelect.propTypes = {
+ChapterSelect.propTypes = {
     t: PropTypes.any,
     libraryId: PropTypes.any,
+    bookId: PropTypes.any,
     onChange: PropTypes.func,
     label: PropTypes.any,
     placeholder: PropTypes.any,
-    showAdd: PropTypes.bool,
     disabled: PropTypes.bool,
     defaultValue: PropTypes.number
 };
 
-export default SeriesSelect;
+export default ChapterSelect;

@@ -793,6 +793,7 @@ const en = {
                 error: "Error deleting page.",
             },
             setChapter: {
+                label: "Set Chapter",
                 title_one: "Setting Chapter",
                 title_other: "Setting Chapter for {{count}} pages",
                 message: "Are you sure you want to change chapter for page(s)?",

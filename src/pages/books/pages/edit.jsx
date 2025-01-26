@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
 // UI library import
-import { Box, Button, Container, Grid, Group, LoadingOverlay, rem, Skeleton, Switch, Tooltip } from "@mantine/core";
+import { Box, Button, Container, Group, Loader, LoadingOverlay, Switch, Tooltip } from "@mantine/core";
 import { useFullscreen, useLocalStorage } from "@mantine/hooks";
 
 // Local imports
@@ -27,11 +27,11 @@ import Editor, { EditorFormat, DefaultConfiguration } from "@/components/editor"
 import PageImage from "@/components/books/pages/pageImage";
 import PageAssignButton from '@/components/books/pages/pageAssignButton';
 import PageStatusButton from '@/components/books/pages/pageStatusButton';
+import PageChapterButton from '@/components/books/pages/pageChapterButton';
 import PageOcrButton from "@/components/books/pages/pageOcrButton";
 import { error, success } from '@/utils/notifications';
 import classes from './edit.module.css'
 //-------------------------------
-const PRIMARY_COL_HEIGHT = rem(300);
 
 const BookPageEditPage = () => {
     const { t } = useTranslation();
@@ -175,6 +175,16 @@ const BookPageEditPage = () => {
             />
         )}
         {page && page.links.update && (
+            <PageChapterButton
+                type="default"
+                buttonSize="xs"
+                libraryId={libraryId}
+                bookId={bookId}
+                pages={[page]}
+                t={t}
+            />
+        )}
+        {page && page.links.update && (
             <PageStatusButton
                 type="default"
                 buttonSize="xs"
@@ -220,27 +230,12 @@ const BookPageEditPage = () => {
         </Tooltip>
     </Group> : null;
 
-    const SECONDARY_COL_HEIGHT = `calc(${PRIMARY_COL_HEIGHT} / 2 - var(--mantine-spacing-md) / 2)`;
-
     if (loadingBook || loadingPage) {
-        return (<Container fluid mt="sm">
-            <Grid
-                mih={50}
-            >
-                <Grid.Col span={{ base: 12, md: 4, lg: 3 }}>
-                    <Skeleton height={SECONDARY_COL_HEIGHT} radius="md" />
-                </Grid.Col>
-                <Grid.Col span={{ base: 12, md: 8, lg: 9 }}>
-                    <Skeleton height={SECONDARY_COL_HEIGHT} radius="md" />
-                </Grid.Col>
-                <Grid.Col span={{ base: 12, md: 4, lg: 3 }}>
-                    <Skeleton height={SECONDARY_COL_HEIGHT} radius="md" />
-                </Grid.Col>
-                <Grid.Col span={{ base: 12, md: 8, lg: 9 }}>
-                    <Skeleton height={SECONDARY_COL_HEIGHT} radius="md" />
-                </Grid.Col>
-            </Grid>
-        </Container>);
+        return (
+            <div style={{ position: 'fixed', top: '50%', left: '50%' }}>
+                <Loader />
+            </div>
+        );
     }
 
     if (errorLoadingBook) {
@@ -256,6 +251,7 @@ const BookPageEditPage = () => {
     const title = page ? page.sequenceNumber : t('page.actions.add.title');
 
     return (<Container fluid mt="sm" ref={ref} bg="var(--mantine-color-body)" >
+        <LoadingOverlay visible={isBusy || isAddingPage || isUpdatingPage || isUpdatingImage} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
         <PageHeader title={title} defaultIcon={IconNames.Pages}
             subTitle={
                 <Group visibleFrom='md'>
@@ -272,7 +268,6 @@ const BookPageEditPage = () => {
             actions={actions}
         />
         <Box style={{ height: `calc(100vh - ${fullscreen ? '160px' : '220px'})`, overflow: 'auto', position: 'relative' }} bg="var(--mantine-color-body)" >
-            <LoadingOverlay visible={isBusy || isAddingPage || isUpdatingPage || isUpdatingImage} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
             <div className={classes.split}>
                 <div className={showImge ? classes.left : classes.full}>
                     <Editor defaultValue={contents}

@@ -42,7 +42,7 @@ const CopyrightSelect = ({ t, defaultValue, placeholder, disabled, onChange, ...
         <Combobox {...props}
             disabled={disabled}
             store={combobox}
-            withinPortal={false}
+            withinPortal={true}
             onOptionSubmit={(val) => {
                 onChange && onChange(val);
                 combobox.updateSelectedOptionIndex('active');

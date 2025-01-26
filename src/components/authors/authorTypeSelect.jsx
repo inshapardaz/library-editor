@@ -38,7 +38,7 @@ const AuthorTypeSelect = ({ t, defaultValue, placeholder, onChange, ...props }) 
     return (
         <Combobox {...props}
             store={combobox}
-            withinPortal={false}
+            withinPortal={true}
             onOptionSubmit={(val) => {
                 onChange && onChange(val);
                 combobox.updateSelectedOptionIndex('active');

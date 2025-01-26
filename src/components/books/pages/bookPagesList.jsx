@@ -20,6 +20,7 @@ import PageEditForm from './pageEditForm';
 import PageDeleteButton from './pageDeleteButton';
 import PageAssignButton from './pageAssignButton';
 import PageStatusButton from './pageStatusButton';
+import PageChapterButton from './pageChapterButton';
 import PageOcrButton from './pageOcrButton';
 import EditingStatusFilterMenu from '@/components/editingStatusFilterMenu';
 import SortDirectionToggle from '@/components/sortDirectionToggle';
@@ -174,6 +175,7 @@ const BookPagesList = ({ libraryId, book, isLoading,
                         </Tooltip>
                     </PageEditForm>
                     <PageDeleteButton pages={selectedPages} t={t} type='default' onDeleted={clearSelection} />
+                    <PageChapterButton libraryId={libraryId} bookId={book.id} pages={selectedPages} t={t} type='default' onCompleted={clearSelection} />
                     <PageAssignButton libraryId={libraryId} pages={selectedPages} t={t} type='default' onCompleted={clearSelection} />
                     <PageStatusButton book={book} pages={selectedPages} t={t} type='default' onCompleted={clearSelection} />
                     <PageOcrButton book={book} pages={selectedPages} t={t} type='default' onCompleted={clearSelection} />
