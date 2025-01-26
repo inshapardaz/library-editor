@@ -45,7 +45,7 @@ const PageListItem = ({ t, libraryId, book, page, index, isSelected = false, onS
                     <Group mt="md" className={classes.details}>
                         <Stack gap="sm">
                             <If condition={page.chapterTitle}>
-                                <Text component={Link} to={`/libraries/${libraryId}/books/${book.id}/pages/${page.sequenceNumber}/contents/edit`}>{page.chapterTitle}</Text>
+                                <Text mx="sm" component={Link} to={`/libraries/${libraryId}/books/${book.id}/pages/${page.sequenceNumber}/contents/edit`}>{page.chapterTitle}</Text>
                             </If>
                             <Group>
                                 <Text c="dimmed" size="sm">

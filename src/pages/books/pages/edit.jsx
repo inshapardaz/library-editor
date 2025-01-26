@@ -154,7 +154,6 @@ const BookPageEditPage = () => {
         }
     };
 
-
     //------------ Render ----------------------------
     const actions = page ? <Group justify="flex-end" gap="xs" mb="md">
         {canComplete && (
@@ -211,13 +210,18 @@ const BookPageEditPage = () => {
         </Tooltip>
         <Button.Group>
             <Tooltip key="previous" label={t("actions.previous")}>
-                <Button variant="default" disabled={!page || !page.links.previous} component={Link}
+                <Button variant="default" disabled={!page || !page.links.previous} component={Link} data-disabled={!page || !page.links.previous}
+                    onClick={(event) => !page || !page.links.previous ? event.preventDefault() : null}
                     to={`/libraries/${libraryId}/books/${bookId}/pages/${page.sequenceNumber - 1}/contents/edit`}>
                     {lang.isRtl ? <IconRight height={20} /> : <IconLeft height={20} />}
                 </Button>
             </Tooltip>
+            <Button variant="default">
+                {page.sequenceNumber} / {book.pageCount}
+            </Button>
             <Tooltip key="next" label={t("actions.next")}>
-                <Button variant="default" disabled={!page || !page.links.next} component={Link}
+                <Button variant="default" disabled={!page || !page.links.next} component={Link} data-disabled={!page || !page.links.next}
+                    onClick={(event) => !page || !page.links.next ? event.preventDefault() : null}
                     to={`/libraries/${libraryId}/books/${bookId}/pages/${page.sequenceNumber + 1}/contents/edit`}>
                     {lang.isRtl ? <IconLeft height={20} /> : <IconRight height={20} />}
                 </Button>
