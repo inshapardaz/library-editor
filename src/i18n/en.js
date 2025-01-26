@@ -414,6 +414,8 @@ const en = {
         dateCreated: "Date Created",
         latestBooks: "Latest Additions",
         lastRead: "Recent Reads",
+        beingTyped: "Book in typing",
+        beingProofRead: "Book in proof reading",
         favorites: "Favorites",
         noDescription: "No details...",
         chapters: "Chapters",

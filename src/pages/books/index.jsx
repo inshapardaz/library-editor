@@ -41,6 +41,7 @@ const BooksPage = () => {
         <Grid type="container" breakpoints={{ xs: '100px', sm: '200px', md: '300px', lg: '400px', xl: '500px' }} mx="md">
             <Grid.Col span={{ md: 12, lg: 3, xl: 2 }} style={{ minWidth: rem(200) }}>
                 <BooksSideBar
+                    status={status}
                     selectedCategory={category}
                     favorite={favorite}
                     read={read} />

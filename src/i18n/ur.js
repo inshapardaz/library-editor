@@ -438,6 +438,8 @@ const ur = {
         dateCreated: "تاریخ اندراج",
         latestBooks: "نئی کتب",
         lastRead: "زیر مطالعہ کتب",
+        beingTyped: "زیرِ طبع",
+        beingProofRead: "پروف ریڈنگ",
         favorites: "پسندیدہ",
         noDescription: "تفصیل دستیاب نہیں۔۔۔",
         chapters: "ابواب",

@@ -43,7 +43,7 @@ const LibraryHeader = ({ library }) => {
                 <Group justify="space-between" h="100%" wrap="nowrap">
                     <Group h="100%" gap={0}>
                         <LibrarySwitcher className={classes.link} library={library}>
-                            <NavLink to={`/`} className={classes.link}>
+                            <NavLink to={`/libraries/${library.id}`} className={classes.link}>
                                 <Logo />
                                 <Space w="md" />
                                 <Text visibleFrom="lg" size="sm">
