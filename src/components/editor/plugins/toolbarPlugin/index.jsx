@@ -47,10 +47,10 @@ import {
 } from './toolbarContext';
 import { SAVE_COMMAND } from "../../commands/saveCommand";
 import classes from './toolbar.module.css'
-import { AUTO_CORRECT_COMMAND, PUNCTUATION_CORRECT_COMMAND } from '../../commands/spellCheckCommand';
+import { AUTO_CORRECT_COMMAND, PUNCTUATION_CORRECT_COMMAND, SPELLCHECK_COMMAND } from '../../commands/spellCheckCommand';
 
 // Local imports
-import { IconSave, IconZoomIn, IconZoomOut, IconUndo, IconRedo, IconBold, IconItalic, IconUnderline, IconSubScript, IconStrikethrough, IconSuperScript, IconLink, IconAutoCorrect, IconPunctuation } from "@/components/icons";
+import { IconSave, IconZoomIn, IconZoomOut, IconUndo, IconRedo, IconBold, IconItalic, IconUnderline, IconSubScript, IconStrikethrough, IconSuperScript, IconLink, IconAutoCorrect, IconPunctuation, IconSpellCheck } from "@/components/icons";
 import CheckboxButton from './controls/checkboxButton';
 import AlignFormatDropDown from './alignFormatDropDown';
 import FontDropDown from './fontDropdown';
@@ -387,6 +387,10 @@ const ToolbarPlugin = ({ configuration, setIsLinkEditMode, locale }) => {
         </If>
         <If condition={configuration.spellchecker.enabled}>
           <Button.Group>
+            <CheckboxButton tooltip={t('editor.spellcheck')}
+              size="lg"
+              icon={<IconSpellCheck />}
+              onClick={() => editor.dispatchCommand(SPELLCHECK_COMMAND)} />
             <CheckboxButton tooltip={t('editor.punctuation')}
               size="lg"
               icon={<IconPunctuation />}

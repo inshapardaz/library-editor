@@ -57,7 +57,10 @@ function $search(selection) {
 function useQuery(wordList) {
     return useCallback((searchText) => {
         const server = new AutocompleteServer(wordList);
-        return server.query(searchText);
+        console.time('query');
+        const response = server.query(searchText);
+        console.timeEnd('query');
+        return response;
     }, []);
 }
 
@@ -242,6 +245,7 @@ class AutocompleteServer {
     }
 
     query = (searchText) => {
+        console.log(this.DATABASE.length);
         let isDismissed = false;
 
         const dismiss = () => {
@@ -253,7 +257,7 @@ class AutocompleteServer {
                     return reject('Dismissed');
                 }
                 const searchTextLength = searchText.length;
-                if (searchText === '' || searchTextLength < 2) {
+                if (searchText === '' || searchTextLength < 4) {
                     return resolve(null);
                 }
                 const char0 = searchText.charCodeAt(0);

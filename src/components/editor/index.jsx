@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 
 // Lexical Imports
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
+import { SelectionAlwaysOnDisplay } from "@lexical/react/LexicalSelectionAlwaysOnDisplay";
 import { $convertFromMarkdownString, TRANSFORMERS } from "@lexical/markdown";
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
@@ -29,7 +30,6 @@ import ControlledValuePlugin from "./plugins/controlledValuePlugin";
 import EditorNodes from './nodes';
 import DraggableBlockPlugin from './plugins/draggableBlockPlugin';
 import { ToolbarContext } from './plugins/toolbarPlugin/toolbarContext';
-import SpellCheckerPlugin from './plugins/spellCheckerPlugin';
 import AutocompletePlugin from './plugins/autocompletePlugin';
 
 // UI Library Imports
@@ -41,6 +41,8 @@ import classes from './editor.module.css';
 import { autoCompleteList } from "@/store/slices/uiSlice";
 import FloatingTextFormatToolbarPlugin from './plugins/floatingTextFormatToolbarPlugin';
 import FloatingLinkEditorPlugin from './plugins/floatingLinkEditorPlugin';
+import AutoCorrectPlugin from './plugins/autoCorrectPlugin';
+import SpellCheckerPlugin from './plugins/spellCheckerPlugin';
 //-----------------------------------------
 
 const EMPTY_CONTENT =
@@ -199,6 +201,13 @@ const Editor = ({ language, defaultValue, onSave = () => { }, onChange = () => {
                     />
                 )}
                 <HistoryPlugin />
+                <AutoCorrectPlugin
+                    locale={language}
+                    language={
+                        configuration.spellchecker.language || configuration.language
+                    }
+                    configuration={configuration.spellchecker}
+                />
                 <SpellCheckerPlugin
                     locale={language}
                     language={
@@ -208,6 +217,7 @@ const Editor = ({ language, defaultValue, onSave = () => { }, onChange = () => {
                 />
                 {configuration.autocompleteEnabled && <AutocompletePlugin wordList={wordList} />}
                 <SavePlugin onSave={onSave} format={configuration.format} />
+                <SelectionAlwaysOnDisplay />
                 <ControlledValuePlugin
                     value={defaultValue}
                     onChange={onChange}

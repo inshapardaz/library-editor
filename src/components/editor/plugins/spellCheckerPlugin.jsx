@@ -3,169 +3,82 @@ import { useCallback, useEffect, useState } from 'react';
 
 // Lexical Imports
 import {
-  $getRoot,
+  $getSelection,
+  $isRangeSelection,
+  $isTextNode,
   COMMAND_PRIORITY_LOW,
 } from 'lexical';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 
 // Editor imports
-import { AUTO_CORRECT_COMMAND, SPELLCHECK_COMMAND, PUNCTUATION_CORRECT_COMMAND } from "../commands/spellCheckCommand";
+import { SPELLCHECK_COMMAND } from "../commands/spellCheckCommand";
 
 // Ui Library Imports
-import { Drawer } from '@mantine/core';
+import { Button, Drawer, Text } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 
 // Local Imports
-import {
-  useGetPunctuationQuery,
-  useGetAutoCorrectQuery
-} from "/src/store/slices/tools.api";
-
-//---------------------------------------------
-
-const getReplaceAllRegex = (corrections) => {
-  let retVal = '';
-  corrections.forEach((c) => {
-    retVal += `(${c.incorrectText.trim()})|`;
-  });
-
-  return new RegExp(`\\b${retVal.slice(0, -1)}\\b`, 'giu');
-};
-const correctPunctuations = (punctuationCorrections, text) => {
-  text = text.replace(/  +/g, ' ');
-  punctuationCorrections.forEach((c) => {
-    text = text.replaceAll(c.completeWord ? `${c.incorrectText}\\b` : c.incorrectText, c.correctText);
-  });
-  return text;
-};
-
-const autoCorrectText = (autoCorrections, text) => {
-  const correctionRegex = getReplaceAllRegex(autoCorrections);
-  return text.replaceAll(correctionRegex, (matched) => autoCorrections.find((o) => o.incorrectText === matched)?.correctText.trim());
-};
 
 //---------------------------------------
 const SpellCheckerPlugin = ({ locale, language, configuration = { enabled: false } }) => {
   const [editor] = useLexicalComposerContext();
-  const [open, setOpen] = useState(false);
-
+  const [opened, { open, close }] = useDisclosure(false);
+  const [error, setError] = useState(null);
   const onClose = () => {
-    setOpen(false);
+    close();
   };
 
-  const {
-    data: punctuationList,
-    error: punctuationListError,
-    isFetching: punctuationListLoading,
-  } = useGetPunctuationQuery(
-    { language }
-  );
 
-  const {
-    data: autoCorrectList,
-    error: autoCorrectListError,
-    isFetching: autoCorrectListLoading,
-  } = useGetAutoCorrectQuery(
-    { language }
-  );
-
-  const punctuationCorrectionNode = useCallback((node, corrections) => {
-    if (node.getChildren) {
-      node.getChildren().map((child) => {
-        punctuationCorrectionNode(child, corrections);
-      });
-    }
-
-    if (node.getType() === 'text') {
-      node.setTextContent(correctPunctuations(corrections, node.getTextContent()));
-    }
-
-    return node
-  }, [])
-
-  const punctuationCorrection = useCallback(() => {
+  //----------------SPELL CHECK---------------
+  const findNextError = useCallback(() => {
+    const unicodeWordRegex = /\p{L}+(?:'\p{L}+)?|\p{N}+|[^\p{L}\p{N}\s]+/gu;
     editor.update(() => {
-      var root = $getRoot(editor);
-      var children = root.getChildren();
-      children.forEach((child) => {
-        punctuationCorrectionNode(child, punctuationList);
-      });
+      const selection = $getSelection();
+      if ($isRangeSelection(selection)) {
+        const anchorNode = selection.anchor.getNode();
+        if ($isTextNode(anchorNode)) {
+          const text = anchorNode.getTextContent();
+          const startOffset = selection.anchor.offset;
+          const remainingText = text.slice(startOffset);
+          const match = remainingText.match(unicodeWordRegex);
+          if (match) {
+            const firstWord = match[0]; // Get the first word
+            const wordStart = startOffset + match.index; // Start position of the word
+            const wordEnd = wordStart + firstWord.length; // End position of the word
+
+            selection.setTextNodeRange(anchorNode, wordStart, anchorNode, wordEnd);
+            setError(firstWord);
+          }
+        }
+      }
     });
-  }, [editor, punctuationCorrectionNode, punctuationList]);
+  }, [editor]);
 
   useEffect(() => {
-    if (!configuration.enabled ||
-      punctuationListLoading ||
-      punctuationListError ||
-      autoCorrectListLoading ||
-      autoCorrectListError) {
-      return;
-    }
-
     editor.registerCommand(
       SPELLCHECK_COMMAND,
       () => {
-        setOpen(true);
+        open();
+        findNextError();
       },
       COMMAND_PRIORITY_LOW,
     );
 
-    /* automatic correction */
-    editor.registerCommand(
-      AUTO_CORRECT_COMMAND,
-      () => {
-        autoCorrect();
-      },
-      COMMAND_PRIORITY_LOW,
-    );
 
-    const autoCorrectNode = (node, corrections) => {
-      if (node.getChildren) {
-        node.getChildren().map((child) => {
-          autoCorrectNode(child, corrections);
-        });
-      }
-
-      if (node.getType() === 'text') {
-        node.setTextContent(autoCorrectText(corrections, node.getTextContent()));
-      }
-
-      return node
-    }
-
-    const autoCorrect = () => {
-      editor.update(() => {
-        var root = $getRoot(editor);
-        var children = root.getChildren();
-        children.forEach((child) => {
-          autoCorrectNode(child, autoCorrectList);
-        });
-      });
-    }
-    /* automatic correction ends */
-
-    /* Punctuation correction */
-    editor.registerCommand(
-      PUNCTUATION_CORRECT_COMMAND,
-      () => {
-        punctuationCorrection();
-      },
-      COMMAND_PRIORITY_LOW,
-    );
-
-  }, [autoCorrectList, autoCorrectListError, autoCorrectListLoading, configuration, editor, language, punctuationCorrection, punctuationListError, punctuationListLoading]);
-
-
+  }, [configuration, editor, findNextError, language, open]);
+  //-------------------------------
   return (
     <>
       <Drawer
         title={locale?.resources?.spellchecker}
-        placement="right"
+        position="right"
         onClose={onClose}
-        open={open}
+        opened={opened}
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <Text>
+          {error}
+        </Text>
+        <Button onClick={findNextError}>Next</Button>
       </Drawer>
     </>);
 }
