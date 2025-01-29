@@ -50,7 +50,7 @@ const PageImageEditor = ({ t, image, onChange = () => { }, zoom, isRtl }) => {
     useHotkeys([
         [isRtl ? 'mod+shift+ArrowLeft' : 'mod+shift+ArrowRight', () => checked && onChangeSplitValue(sliderValue + 10)],
         [isRtl ? 'mod+shift+ArrowRight' : 'mod+shift+ArrowLeft', () => checked && onChangeSplitValue(sliderValue - 10)],
-        ['mod+shift+D', () => setChecked(!checked)],
+        ['mod+shift+D', () => onChangeSplit(!checked)],
         ['mod+shift+X', () => dirty && save()]
     ])
     //------------------------------------------------------
