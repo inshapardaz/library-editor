@@ -920,9 +920,29 @@ const en = {
         },
     },
     writing: {
-        title: "Title",
         lastModified: "Modified",
         noDescription: "No details...",
+        title: {
+            label: "Title",
+            placeholder: "Title of article",
+            required: "article title is required",
+        },
+        public: {
+            label: "Public",
+        },
+        authors: {
+            label: "Authors",
+            placeholder: "Select authors of the article",
+            required: "Author is required",
+        },
+        status: {
+            label: "Status",
+            placeholder: "Select article Status",
+        },
+        categories: {
+            label: "Categories",
+            placeholder: "Select categories",
+        },
         actions: {
             addFavorite: {
                 success: 'Writing added to favorites.',
@@ -931,6 +951,25 @@ const en = {
             removeFavorite: {
                 success: 'Writing removed from favorites.',
                 error: 'Error removing writing from favorites.'
+            },
+            add: {
+                label: "Add new article",
+                title: "New Article",
+                success: "Article created successfully.",
+                error: "Error creating article.",
+            },
+            edit: {
+                title: "Editing '{{title}}'",
+                success: "Article saved successfully.",
+                error: "Error saving article",
+            },
+            delete: {
+                label: "Delete article '{{title}}'",
+                title: "Delete article?",
+                message:
+                    "Are you sure you want to delete article '{{title}}'?",
+                success: "Article '{{title}}' deleted successfully.",
+                error: "Error '{{title}}' deleting article.",
             },
         },
         error: {
@@ -956,9 +995,33 @@ const en = {
         },
     },
     poetry: {
-        title: "Title",
         lastModified: "Modified",
         noDescription: "No details...",
+        title: {
+            label: "Title",
+            placeholder: "Title of poetry",
+            required: "Poetry title is required",
+        },
+        description: {
+            label: "Description",
+            placeholder: "Some description of poetry",
+        },
+        public: {
+            label: "Public",
+        },
+        authors: {
+            label: "Authors",
+            placeholder: "Select authors of the poetry",
+            required: "Author is required",
+        },
+        status: {
+            label: "Status",
+            placeholder: "Select poetry Status",
+        },
+        categories: {
+            label: "Categories",
+            placeholder: "Select categories",
+        },
         actions: {
             addFavorite: {
                 success: 'Poetry added to favorites.',
@@ -967,6 +1030,25 @@ const en = {
             removeFavorite: {
                 success: 'Poetry removed from favorites.',
                 error: 'Error removing poetry from favorites.'
+            },
+            add: {
+                label: "Add new poetry",
+                title: "New Poetry",
+                success: "Poetry created successfully.",
+                error: "Error creating poetry.",
+            },
+            edit: {
+                title: "Editing '{{title}}'",
+                success: "poetry saved successfully.",
+                error: "Error saving poetry",
+            },
+            delete: {
+                label: "Delete poetry '{{title}}'",
+                title: "Delete poetry?",
+                message:
+                    "Are you sure you want to delete poetry '{{title}}'?",
+                success: "Poetry '{{title}}' deleted successfully.",
+                error: "Error '{{title}}' deleting poetry.",
             },
         },
         error: {

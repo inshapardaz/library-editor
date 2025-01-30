@@ -871,9 +871,33 @@ const ur = {
         }
     },
     writing: {
-        title: "عنوان",
         lastModified: "تاریخ تدوین",
         noDescription: "تفصیل دستیاب نہیں۔۔۔",
+        title: {
+            label: "عنوان",
+            placeholder: "نصنیف کا نام",
+            required: "نصنیف کا نام ضروری ہے",
+        },
+        description: {
+            label: "تفصیل",
+            placeholder: "نصنیف کے مترلق کچھ تفصیل",
+        },
+        public: {
+            label: "عوامی نصنیف",
+        },
+        authors: {
+            label: "مصنّفین",
+            placeholder: "نصنیف کے مصنّفین کا نام",
+            required: "مصنّف کا نام ضروری ہے۔",
+        },
+        status: {
+            label: "کیفیت",
+            placeholder: "نصنیف کی کیفیت چنیں",
+        },
+        categories: {
+            label: "زمرہ",
+            placeholder: "زمرہ چنیں",
+        },
         actions: {
             addFavorite: {
                 success: 'نصنیف پسندیدہ تصنیفات میں داخل کر دی  گئی ہے۔',
@@ -882,6 +906,24 @@ const ur = {
             removeFavorite: {
                 success: 'نصنیف پسندیدہ تصنیفات سے خارج کر دی گئی ہے۔',
                 error: 'نصنیف پسندیدہ تصنیفات سے نکالی نہیں جا سکی۔'
+            },
+            add: {
+                label: "نئی تصنیف بنائیں",
+                title: "نئی تصنیف",
+                success: "تصنیف کامیابی سے تخلیق کر دی گئی ہے۔",
+                error: "تصنیف تخلیق کرنے میں ناکامی ہوئی۔",
+            },
+            edit: {
+                title: "'{{title}}' کی تدوین",
+                success: "تصنیف میں تبدیلیاں محفوظ ہو گئی ہیں۔",
+                error: "تصنیف میں تبدیلیاں محفوظ نہیں کی جا سکیں۔",
+            },
+            delete: {
+                label: "نصنیف '{{title}}' حذف کریں",
+                title: "نصنیف حذف کریں؟",
+                message: "کیا آپ نصنیف '{{title}}' کو حذف کرنا چاہیں گے؟",
+                success: "نصنیف '{{title}}' حذف کر دی گئی ہے۔",
+                error: "نصنیف '{{title}}' حذف کرنے میں ناکامی ہوئی۔",
             },
         },
         error: {
@@ -907,9 +949,33 @@ const ur = {
         }
     },
     poetry: {
-        title: "عنوان",
         lastModified: "تاریخ تدوین",
         noDescription: "تفصیل دستیاب نہیں۔۔۔",
+        title: {
+            label: "عنوان",
+            placeholder: "شاعری کا نام",
+            required: "شاعری کا نام ضروری ہے",
+        },
+        description: {
+            label: "تفصیل",
+            placeholder: "شاعری کے مترلق کچھ تفصیل",
+        },
+        public: {
+            label: "عوامی شاعری",
+        },
+        authors: {
+            label: "مصنّفین",
+            placeholder: "شاعری کے مصنّفین کا نام",
+            required: "مصنّف کا نام ضروری ہے۔",
+        },
+        status: {
+            label: "کیفیت",
+            placeholder: "شاعری کی کیفیت چنیں",
+        },
+        categories: {
+            label: "زمرہ",
+            placeholder: "زمرہ چنیں",
+        },
         actions: {
             addFavorite: {
                 success: 'شاعری پسندیدہ شاعری میں داخل کر دی  گئی ہے۔',
@@ -918,6 +984,24 @@ const ur = {
             removeFavorite: {
                 success: 'شاعری پسندیدہ شاعری سے خارج کر دی گئی ہے۔',
                 error: 'شاعری پسندیدہ شاعری سے نکالی نہیں جا سکی۔'
+            },
+            add: {
+                label: "نئی شاعری بنائیں",
+                title: "نئی شاعری",
+                success: "شاعری کامیابی سے تخلیق کر دی گئی ہے۔",
+                error: "شاعری تخلیق کرنے میں ناکامی ہوئی۔",
+            },
+            edit: {
+                title: "'{{title}}' کی تدوین",
+                success: "شاعری میں تبدیلیاں محفوظ ہو گئی ہیں۔",
+                error: "شاعری میں تبدیلیاں محفوظ نہیں کی جا سکیں۔",
+            },
+            delete: {
+                label: "شاعری '{{title}}' حذف کریں",
+                title: "شاعری حذف کریں؟",
+                message: "کیا آپ شاعری '{{title}}' کو حذف کرنا چاہیں گے؟",
+                success: "شاعری '{{title}}' حذف کر دی گئی ہے۔",
+                error: "شاعری '{{title}}' حذف کرنے میں ناکامی ہوئی۔",
             },
         },
         error: {

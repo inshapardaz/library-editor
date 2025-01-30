@@ -161,7 +161,7 @@ const DataView = ({
         if (viewType == 'card') {
             content = (
                 <SimpleGrid
-                    cols={{ base: 1, sm: 2, md: 3, lg: 4 }}
+                    cols={cols}
                     spacing={{ base: 10, sm: 'xl' }}
                     verticalSpacing={{ base: 'md', sm: 'xl' }}
                 >

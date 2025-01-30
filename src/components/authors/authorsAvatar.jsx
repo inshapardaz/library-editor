@@ -17,7 +17,7 @@ const AuthorsAvatar = ({ libraryId, authors, size = "sm", showNames = false }) =
         return (<Group>
             {authors.map((author) => (
                 <IconText key={author.id}
-                    icon={<Avatar src={author?.links?.image || icon} />}
+                    icon={<Avatar size={size} src={author?.links?.image || icon} />}
                     text={author.name}
                     size={size}
                     link={`/libraries/${libraryId}/authors/${author.id}`}

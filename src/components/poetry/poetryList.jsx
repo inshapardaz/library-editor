@@ -53,7 +53,7 @@ const PoetryList = ({
     });
 
     let poetrySortOptions = [{
-        label: t('poetry.title'),
+        label: t('poetry.title.label'),
         value: 'title',
         icon: <IconTitle />
     }, {
@@ -72,8 +72,8 @@ const PoetryList = ({
         errorDetail={t('poetries.error.loading.detail')}
         showViewToggle={true}
         viewToggleKey='poetries-list-view'
-        cardRender={poetry => (<PoetryCard libraryId={libraryId} key={poetry.id} poetry={poetry} />)}
-        listItemRender={poetry => (<PoetryListItem libraryId={libraryId} key={poetry.id} poetry={poetry} />)}
+        cardRender={poetry => (<PoetryCard libraryId={libraryId} key={poetry.id} poetry={poetry} t={t} />)}
+        listItemRender={poetry => (<PoetryListItem libraryId={libraryId} key={poetry.id} poetry={poetry} t={t} />)}
         onReload={refetch}
         onPageChanged={(index) => navigate(updateLinkToWritingsPage(location, {
             pageNumber: index,
@@ -101,7 +101,6 @@ const PoetryList = ({
                 }))} />
             </>
         }
-        cols={{ base: 1, xs: 2, sm: 3, md: 4, lg: 4, xl: 6 }}
     />;
 }
 

@@ -2,7 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 
 import axiosBaseQuery from "@/utils/axiosBaseQuery";
 
-import { parseResponse } from "@/utils/parseResponse";
+import { parseResponse, removeLinks } from "@/utils/parseResponse";
 // ----------------------------------------------
 export const articlesApi = createApi({
   reducerPath: "articles",
@@ -90,6 +90,75 @@ export const articlesApi = createApi({
       },
       invalidatesTags: ["Articles", "Article"],
     }),
+    addArticle: builder.mutation({
+      query: ({ libraryId, payload }) => ({
+        url: `/libraries/${libraryId}/articles`,
+        method: "POST",
+        data: removeLinks(payload),
+      }),
+      invalidatesTags: ["Articles"],
+    }),
+    updateArticle: builder.mutation({
+      query: ({ libraryId, articleId, payload }) => ({
+        url: `/libraries/${libraryId}/articles/${articleId}`,
+        method: "PUT",
+        data: removeLinks(payload),
+      }),
+      invalidatesTags: ["Articles"],
+    }),
+    deleteArticle: builder.mutation({
+      query: ({ libraryId, articleId }) => ({
+        url: `/libraries/${libraryId}/articles/${articleId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Articles"],
+    }),
+    updateArticleImage: builder.mutation({
+      query: ({ libraryId, articleId, payload }) => {
+        const formData = new FormData();
+        formData.append("file", payload, payload.fileName);
+        return {
+          url: `/libraries/${libraryId}/articles/${articleId}/image`,
+          method: "PUT",
+          data: formData,
+          formData: true,
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        };
+      },
+      invalidatesTags: ["Articles"],
+    }),
+    assignArticle: builder.mutation({
+      query: ({ article, payload }) => ({
+        url: article.links.assign,
+        method: "POST",
+        data: removeLinks(payload),
+      }),
+      invalidatesTags: ["Article"],
+    }),
+    addArticleContents: builder.mutation({
+      query: ({ libraryId, articleId, language, layout, payload }) => ({
+        url: `/libraries/${libraryId}/articles/${articleId}/contents`,
+        method: "POST",
+        data: {
+          language: language,
+          layout: layout,
+          text: payload,
+        },
+      }),
+    }),
+    updateArticleContents: builder.mutation({
+      query: ({ libraryId, articleId, language, layout, payload }) => ({
+        url: `/libraries/${libraryId}/articles/${articleId}/contents`,
+        method: "PUT",
+        data: {
+          language: language,
+          layout: layout,
+          text: payload,
+        },
+      }),
+    }),
   }),
 });
 
@@ -99,4 +168,11 @@ export const {
   useGetArticleContentsQuery,
   useAddArticleToFavoriteMutation,
   useRemoveArticleFromFavoriteMutation,
+  useAddArticleMutation,
+  useUpdateArticleMutation,
+  useDeleteArticleMutation,
+  useUpdateArticleImageMutation,
+  useAssignArticleMutation,
+  useAddArticleContentsMutation,
+  useUpdateArticleContentsMutation,
 } = articlesApi;

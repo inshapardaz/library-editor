@@ -6,29 +6,45 @@ import { Divider, Group, Stack, Text, useMantineTheme } from '@mantine/core';
 
 // Local Imports
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
-import { IconPoetry } from '@/components/icons';
+import { IconPoetry, IconEdit } from '@/components/icons';
 import FavoriteButton from './favoriteButton';
+import PoetryDeleteButton from './poetryDeleteButton';
 import Img from '@/components/img';
-
+import IconText from '@/components/iconText';
+import If from '@/components/if';
 //-------------------------------------
-const IMAGE_HEIGHT = 150;
-
-const PoetryListItem = ({ libraryId, poetry }) => {
+const PoetryListItem = ({ libraryId, poetry, t }) => {
     const theme = useMantineTheme();
 
-    const icon = <IconPoetry width={IMAGE_HEIGHT} style={{ color: theme.colors.dark[1] }} />;
+    const icon = <IconPoetry width={150} style={{ color: theme.colors.dark[1] }} />;
 
     return (
         <>
-            <Group gap="sm" wrap="nowrap" key={poetry.id}>
-                <Img h={IMAGE_HEIGHT} radius="sm" src={poetry?.links?.image} fallback={icon} />
-                <Stack>
-                    <Group justify="space-between">
-                        <Text component={Link} to={`/libraries/${libraryId}/poetry/${poetry.id}`} truncate="end" fw={500}>{poetry.title}</Text>
-                        <FavoriteButton poetry={poetry} readonly />
-                    </Group>
-                    <AuthorsAvatar libraryId={libraryId} authors={poetry?.authors} />
-                </Stack>
+            <Group gap="sm" wrap="nowrap" key={poetry.id} justify='space-between'>
+                <Group gap="sm" wrap="nowrap" >
+                    <Img w={150} radius="sm" src={poetry?.links?.image} fallback={icon} />
+                    <Stack>
+                        <Group justify="space-between">
+                            <Text component={Link} to={`/libraries/${libraryId}/poetry/${poetry.id}`} truncate="end" fw={500}>{poetry.title}</Text>
+                            <FavoriteButton poetry={poetry} readonly />
+                        </Group>
+                        <AuthorsAvatar libraryId={libraryId} authors={poetry?.authors} />
+                    </Stack>
+                </Group>
+                <Group gap="sm" wrap="nowrap" style={{ alignSelf: 'end' }}>
+                    <If condition={poetry.links.update}>
+                        <IconText
+                            tooltip={t('actions.edit')}
+                            link={`/libraries/${libraryId}/poetry/${poetry.id}/edit`}
+                            icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />} />
+                    </If>
+                    <If condition={poetry.links.update && poetry.links.delete != null}>
+                        <Divider orientation="vertical" />
+                    </If>
+                    <If condition={poetry.links.delete != null}>
+                        <PoetryDeleteButton libraryId={libraryId} poetry={poetry} t={t} />
+                    </If>
+                </Group>
             </Group >
             <Divider />
         </>)
@@ -36,6 +52,7 @@ const PoetryListItem = ({ libraryId, poetry }) => {
 
 PoetryListItem.propTypes = {
     libraryId: PropTypes.string,
+    t: PropTypes.any,
     poetry: PropTypes.shape({
         id: PropTypes.number,
         title: PropTypes.string,
@@ -44,6 +61,8 @@ PoetryListItem.propTypes = {
         pageCount: PropTypes.number,
         chapterCount: PropTypes.number,
         links: PropTypes.shape({
+            update: PropTypes.string,
+            delete: PropTypes.string,
             image: PropTypes.string
         })
     })

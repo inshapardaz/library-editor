@@ -7,7 +7,7 @@ import { Badge, Card, Center, Divider, NavLink, SimpleGrid, Skeleton, useMantine
 
 // Local imports
 import { useGetCategoriesQuery } from '@/store/slices/categories.api';
-import { IconCategory, IconFavorite, IconPoetries } from '@/components/icons';
+import { IconAdd, IconCategory, IconFavorite, IconPoetries } from '@/components/icons';
 
 //----------------------------------------------
 const PoetrySidebar = ({ selectedCategory, favorite, read }) => {
@@ -47,6 +47,15 @@ const PoetrySidebar = ({ selectedCategory, favorite, read }) => {
     }
 
     return (<Card withBorder>
+        <NavLink
+            key="add"
+            component={Link}
+            to={`/libraries/${libraryId}/poetry/add`}
+            active={favorite}
+            label={t('poetry.actions.add.title')}
+            leftSection={<IconAdd style={{ color: theme.colors.blue[9] }} />}
+        />
+        <Divider />
         <NavLink
             key="favorites"
             component={Link}

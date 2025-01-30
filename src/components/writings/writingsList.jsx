@@ -53,7 +53,7 @@ const WritingsList = ({
     });
 
     let writingSortOptions = [{
-        label: t('writing.title'),
+        label: t('writing.title.label'),
         value: 'title',
         icon: <IconTitle />
     }, {
@@ -72,8 +72,8 @@ const WritingsList = ({
         errorDetail={t('writings.error.loading.detail')}
         showViewToggle={true}
         viewToggleKey='writings-list-view'
-        cardRender={writing => (<WritingCard libraryId={libraryId} key={writing.id} writing={writing} />)}
-        listItemRender={writing => (<WritingListItem libraryId={libraryId} key={writing.id} writing={writing} />)}
+        cardRender={writing => (<WritingCard libraryId={libraryId} key={writing.id} writing={writing} t={t} />)}
+        listItemRender={writing => (<WritingListItem libraryId={libraryId} key={writing.id} writing={writing} t={t} />)}
         onReload={refetch}
         onPageChanged={(index) => navigate(updateLinkToWritingsPage(location, {
             pageNumber: index,
@@ -101,7 +101,6 @@ const WritingsList = ({
                 }))} />
             </>
         }
-        cols={{ base: 1, xs: 2, sm: 3, md: 4, lg: 4, xl: 6 }}
     />;
 }
 
