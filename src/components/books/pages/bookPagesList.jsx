@@ -29,6 +29,7 @@ import PageListItem from './pageListItem';
 import PageCard from './pageCard';
 import { BookStatus } from '@/models';
 import { error, success } from '@/utils/notifications';
+import PageAutoChapterUpdate from './pageAutoChapterUpdate';
 //------------------------------------------------------
 
 const ReviewBookStatuses = [BookStatus.ReadyForProofRead, BookStatus.ProofRead]
@@ -176,6 +177,7 @@ const BookPagesList = ({ libraryId, book, isLoading,
                     </PageEditForm>
                     <PageDeleteButton pages={selectedPages} t={t} type='default' onDeleted={clearSelection} />
                     <PageChapterButton libraryId={libraryId} bookId={book.id} pages={selectedPages} t={t} type='default' onCompleted={clearSelection} />
+                    <PageAutoChapterUpdate libraryId={libraryId} bookId={book.id} pages={selectedPages} t={t} type='default' onCompleted={clearSelection} />
                     <PageAssignButton libraryId={libraryId} pages={selectedPages} t={t} type='default' onCompleted={clearSelection} />
                     <PageStatusButton book={book} pages={selectedPages} t={t} type='default' onCompleted={clearSelection} />
                     <PageOcrButton book={book} pages={selectedPages} t={t} type='default' onCompleted={clearSelection} />

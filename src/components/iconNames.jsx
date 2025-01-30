@@ -40,6 +40,7 @@ const IconNames = {
     Page: "page",
     Publisher: "publisher",
     Chapters: "chapters",
+    ChaptersSet: "chaptersSet",
     ArrowLeft: "arrowLeft",
     Calendar: "calendar",
     ReloadAlert: "reloadAlert",

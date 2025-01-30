@@ -45,6 +45,7 @@ const iconTheme = {
         page: "file-text",
         publisher: "book-upload",
         chapters: "versions",
+        chaptersSet: "versions-filled",
         arrowLeft: "arrow-left",
         calendar: "calendar",
         reloadAlert: "refresh-alert",
@@ -209,6 +210,7 @@ export const IconImage = (props) => getIcon(IconNames.Image, props)
 export const IconNoImage = (props) => getIcon(IconNames.NoImage, props)
 export const IconPublisher = (props) => getIcon(IconNames.Publisher, props)
 export const IconChapters = (props) => getIcon(IconNames.Chapters, props)
+export const IconChaptersSet = (props) => getIcon(IconNames.ChaptersSet, props)
 export const IconArrowLeft = (props) => getIcon(IconNames.ArrowLeft, props)
 export const IconCalendar = (props) => getIcon(IconNames.Calendar, props)
 export const IconRefreshAlert = (props) => getIcon(IconNames.ReloadAlert, props)
