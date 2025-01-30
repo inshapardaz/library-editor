@@ -14,7 +14,8 @@ import {
     IconCopyright,
     IconCalendar,
     IconReaderText,
-    IconReaderImage
+    IconReaderImage,
+    IconEdit
 } from '@/components/icons';
 
 import IconText from '@/components/iconText';
@@ -67,13 +68,19 @@ const BookInfo = ({ libraryId, book }) => {
             <Button fullWidth variant='outline' leftSection={<IconReaderImage />} component={Link} to={`/libraries/${libraryId}/books/${book.id}/read`}>{t('book.actions.read.title')}</Button>
         </If>
 
-        <If condition={book.links.delete}>
-            <BookDeleteButton type="button" fullWidth variant='outline' color="red" t={t} book={book} onDeleted={() => navigate(`/libraries/${libraryId}/books/`)} />
+        <Divider />
+        <If condition={book.links.update}>
+            <Button fullWidth variant='outline' leftSection={<IconEdit />} component={Link} to={`/libraries/${libraryId}/books/${book.id}/edit`}>{t('actions.edit')}</Button>
         </If>
 
         <If condition={book.pageCount > 0}>
             <PublishButton fullWidth variant='outline' color="green" libraryId={libraryId} book={book} />
         </If>
+
+        <If condition={book.links.delete}>
+            <BookDeleteButton type="button" fullWidth variant='outline' color="red" t={t} book={book} onDeleted={() => navigate(`/libraries/${libraryId}/books/`)} />
+        </If>
+
 
         <If condition={book && book.pageStatus && book.pageStatus.length > 0}>
             <Divider />
@@ -113,6 +120,7 @@ BookInfo.propTypes = {
             language: PropTypes.string,
         })),
         links: PropTypes.shape({
+            update: PropTypes.string,
             delete: PropTypes.string,
         }),
         pageStatus: PropTypes.arrayOf(PropTypes.shape({

@@ -10,6 +10,7 @@ import { IconBook, IconPages, IconChapters, IconEditBook } from '@/components/ic
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
 import FavoriteButton from '@/components/books/favoriteButton';
 import BookDeleteButton from '@/components/books/bookDeleteButton';
+import BookSeriesInfo from '@/components/series/bookSeriesInfo';
 import IconText from '@/components/iconText';
 import If from '@/components/if';
 import Img from '@/components/img';
@@ -36,6 +37,11 @@ const BookCard = ({ libraryId, book }) => {
 
             <Group justify="space-between" mt="md" mb="xs">
                 <AuthorsAvatar libraryId={libraryId} authors={book?.authors} />
+            </Group>
+            <Group justify="space-between" mt="md" mb="xs">
+                <If condition={book.seriesName}>
+                    <BookSeriesInfo libraryId={libraryId} book={book} iconSize={16} />
+                </If>
             </Group>
 
             <If condition={book?.description} elseChildren={<Text size="sm" fs="italic" c="dimmed" lineClamp={1}>
@@ -86,6 +92,7 @@ BookCard.propTypes = {
         title: PropTypes.string,
         description: PropTypes.string,
         authors: PropTypes.array,
+        seriesName: PropTypes.string,
         pageCount: PropTypes.number,
         chapterCount: PropTypes.number,
         links: PropTypes.shape({

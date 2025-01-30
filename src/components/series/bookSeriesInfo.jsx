@@ -10,7 +10,7 @@ import IconText from '@/components/iconText';
 import { useMantineTheme } from '@mantine/core';
 //-----------------------------------------
 
-const BookSeriesInfo = ({ book }) => {
+const BookSeriesInfo = ({ book, iconSize = 24 }) => {
     const { libraryId } = useParams();
     const { t } = useTranslation();
     const theme = useMantineTheme();
@@ -18,12 +18,12 @@ const BookSeriesInfo = ({ book }) => {
     if (book && book.seriesName) {
         if (book.seriesIndex && book.seriesIndex > 0) {
             return (<IconText size="sm" link={`/libraries/${libraryId}/books?series=${book.seriesId}&sortBy=seriesIndex&sortDirection=ascending`}
-                icon={<IconBooks height={24} style={{ color: theme.colors.dark[2] }} />}
+                icon={<IconBooks height={iconSize} style={{ color: theme.colors.dark[2] }} />}
                 text={t("book.series.seriesAndIndexLabel", { name: book.seriesName, index: book.seriesIndex })}
             />);
         } else {
             return (<IconText size="sm" link={`/libraries/${libraryId}/books?series=${book.seriesId}&sortBy=seriesIndex&sortDirection=ascending`}
-                icon={<IconBooks height={24} style={{ color: theme.colors.dark[2] }} />}
+                icon={<IconBooks height={iconSize} style={{ color: theme.colors.dark[2] }} />}
                 text={t("book.series.indexLabel", { name: book.seriesName })}
             />);
         }
@@ -33,6 +33,7 @@ const BookSeriesInfo = ({ book }) => {
 }
 
 BookSeriesInfo.propTypes = {
+    iconSize: PropTypes.number,
     book: PropTypes.shape({
         seriesId: PropTypes.number,
         seriesIndex: PropTypes.number,

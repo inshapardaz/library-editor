@@ -11,6 +11,7 @@ import { IconBook, IconPages, IconChapters, IconEditBook, IconFiles } from '@/co
 import IconText from '@/components/iconText';
 import FavoriteButton from '@/components/books/favoriteButton';
 import BookDeleteButton from '@/components/books/bookDeleteButton';
+import BookSeriesInfo from '@/components/series/bookSeriesInfo';
 import If from '@/components/if';
 import Img from '@/components/img';
 //-------------------------------------
@@ -40,6 +41,10 @@ const BookListItem = ({ libraryId, book }) => {
                     </Text>)}
                 <AuthorsAvatar libraryId={libraryId} authors={book?.authors} />
                 <Group mt="md">
+                    <If condition={book.seriesName}>
+                        <BookSeriesInfo libraryId={libraryId} book={book} iconSize={16} />
+                        <Divider orientation="vertical" />
+                    </If>
                     <If condition={book.pageCount != null}>
                         <IconText size="sm" icon={<IconPages height={16} style={{ color: theme.colors.dark[2] }} />} text={t('book.pageCount', { count: book.pageCount })} />
                     </If>
@@ -83,6 +88,9 @@ BookListItem.propTypes = {
         pageCount: PropTypes.number,
         chapterCount: PropTypes.number,
         contents: PropTypes.array,
+        seriesId: PropTypes.number,
+        seriesName: PropTypes.string,
+        seriesIndex: PropTypes.number,
         links: PropTypes.shape({
             image: PropTypes.string,
             update: PropTypes.string,
