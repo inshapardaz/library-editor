@@ -18,6 +18,8 @@ import ImageUpload from '@/components/imageUpload';
 import EditingStatusSelect from '@/components/editingStatusSelect';
 import { EditingStatus } from '@/models';
 import { error, success } from '@/utils/notifications';
+import ChapterSelect from '@/components/books/chapters/chapterSelect';
+
 // --------------------------------------
 const PageEditForm = ({ libraryId, bookId, page = null, children }) => {
     const { t } = useTranslation();
@@ -35,6 +37,7 @@ const PageEditForm = ({ libraryId, bookId, page = null, children }) => {
         mode: 'uncontrolled',
         initialValues: {
             sequenceNumber: 0,
+            chapterId: null,
             status: EditingStatus.Available
         },
 
@@ -61,6 +64,7 @@ const PageEditForm = ({ libraryId, bookId, page = null, children }) => {
             const payload = {
                 ...page,
                 title: values.title,
+                chapterId: values.chapterId,
                 status: values.status,
             };
             return updatePage({ page: payload })
@@ -89,6 +93,13 @@ const PageEditForm = ({ libraryId, bookId, page = null, children }) => {
                     label={t("page.sequenceNumber.title")}
                     placeholder={t("page.sequenceNumber.placeholder")}
                     {...form.getInputProps('sequenceNumber')} />
+                <ChapterSelect
+                    key={form.key('chapterId')}
+                    t={t}
+                    libraryId={libraryId}
+                    bookId={bookId}
+                    label={t("page.chapter.label")}
+                    {...form.getInputProps('chapterId')} />
                 <EditingStatusSelect t={t}
                     label={t("page.status.title")}
                     {...form.getInputProps('status')} />
