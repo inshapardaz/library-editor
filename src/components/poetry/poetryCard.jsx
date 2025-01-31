@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Card, Text, Group, useMantineTheme, Center, Divider, rem } from '@mantine/core';
 
 // Local imports
-import { IconPoetry, IconEdit } from '@/components/icons';
+import { IconPoetry, IconEdit, IconReaderText } from '@/components/icons';
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
 import FavoriteButton from './favoriteButton';
 import PoetryDeleteButton from './poetryDeleteButton';
@@ -27,7 +27,7 @@ const PoetryCard = ({ libraryId, poetry, t }) => {
             </Card.Section>
 
             <Group justify="space-between" mt="md" mb="xs" wrap='nowrap'>
-                <Text component={Link} to={`/libraries/${libraryId}/poetry/${poetry.id}`} truncate="end" fw={500}>{poetry.title}</Text>
+                <Text component={Link} to={`/libraries/${libraryId}/poetry/${poetry.id}/contents/edit`} truncate="end" fw={500}>{poetry.title}</Text>
                 <FavoriteButton poetry={poetry} readonly />
             </Group>
 
@@ -35,7 +35,12 @@ const PoetryCard = ({ libraryId, poetry, t }) => {
                 <AuthorsAvatar libraryId={libraryId} authors={poetry?.authors} />
             </Group>
             <Group justify='center'>
+                <IconText
+                    icon={<IconReaderText height={16} style={{ color: theme.colors.dark[2] }} />}
+                    tooltip={t('poetry.actions.read.title')}
+                    link={`/libraries/${libraryId}/poetry/${poetry.id}/`} />
                 <If condition={poetry.links.update}>
+                    <Divider orientation="vertical" />
                     <IconText
                         tooltip={t('actions.edit')}
                         link={`/libraries/${libraryId}/poetry/${poetry.id}/edit`}

@@ -31,7 +31,7 @@ export const PageHeaderSkeleton = () => {
 //----------------------------------
 const BreadcrumbsMenu = ({ index, item }) => {
     const [opened, setOpened] = useState(false);
-    return (<Menu key={`breadcrumb-${index}`} opened={opened} onChange={setOpened} transitionProps={{ transition: 'scale-y', duration: 150 }}>
+    return (<Menu key={item.key ?? `breadcrumb-${index}`} opened={opened} onChange={setOpened} transitionProps={{ transition: 'scale-y', duration: 150 }}>
         <Menu.Target>
             <Anchor underline="hover" c="dimmed">
                 <Group wrap='nowrap' gap='xs'>
@@ -48,7 +48,7 @@ const BreadcrumbsMenu = ({ index, item }) => {
         </Menu.Target>
         <Menu.Dropdown>
             {item.items.map(v => (
-                <Menu.Item key={`breadcrumb-${index}-${v.value}`}
+                <Menu.Item key={item.key ?? `breadcrumb-${index}-${v.href}`}
                     component={Link} to={v.href}
                     disabled={v.selected}
                     leftSection={<Icon name={v.icon} l height={16} />}
@@ -62,6 +62,7 @@ const BreadcrumbsMenu = ({ index, item }) => {
 BreadcrumbsMenu.propTypes = {
     index: PropTypes.number,
     item: PropTypes.shape({
+        key: PropTypes.string,
         title: PropTypes.string,
         icon: PropTypes.string,
         items: PropTypes.arrayOf(PropTypes.shape({
@@ -79,10 +80,10 @@ const PageHeader = ({ title, subTitle, details, imageLink, defaultIcon, breadcru
     const renderBreadcrumb = () => {
         return breadcrumbs.map((item, index) => {
             if (item.items) {
-                return (<BreadcrumbsMenu key={`breadcrumb-${index}`} item={item} index={index} />);
+                return (<BreadcrumbsMenu key={item.key ?? `breadcrumb-${index}`} item={item} index={index} />);
             } else if (item.href) {
                 return (
-                    <Anchor component={Link} to={item.href} key={`breadcrumb-${index}`} underline="hover" c="dimmed" size='xs'>
+                    <Anchor component={Link} to={item.href} key={item.key ?? `breadcrumb-${index}`} underline="hover" c="dimmed" size='xs'>
                         <Group wrap='nowrap' gap='xs'>
                             <If condition={item.icon}>
                                 <Icon name={item.icon} height={16} />
@@ -93,7 +94,7 @@ const PageHeader = ({ title, subTitle, details, imageLink, defaultIcon, breadcru
                 );
             } else {
                 return (
-                    <Group wrap='nowrap' gap='xs' key={`breadcrumb-${index}`} underline="hover" c="dimmed" size='xs'>
+                    <Group wrap='nowrap' gap='xs' key={item.key ?? `breadcrumb-${index}`} underline="hover" c="dimmed" size='xs'>
                         <If condition={item.icon}>
                             <Icon name={item.icon} height={16} />
                         </If>

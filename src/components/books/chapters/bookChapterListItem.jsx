@@ -67,12 +67,10 @@ const BookChapterListItem = ({ t, libraryId, book, chapter, index, isSelected = 
                             </Group>
                         </Stack>
                         <span style={{ flex: 1 }}></span>
-                        <If condition={chapter.links.update}>
-                            <IconText
-                                icon={<IconReaderText height={16} style={{ color: theme.colors.dark[2] }} />}
-                                tooltip={t('issueArticle.actions.read.title')}
-                                link={`/libraries/${libraryId}/books/${book.id}/chapters/${chapter.chapterNumber}`} />
-                        </If>
+                        <IconText
+                            icon={<IconReaderText height={16} style={{ color: theme.colors.dark[2] }} />}
+                            tooltip={t('book.actions.read.title')}
+                            link={`/libraries/${libraryId}/books/${book.id}/chapters/${chapter.chapterNumber}`} />
                         <If condition={chapter.links.update}>
                             <Divider orientation='vertical' />
                             <ChapterEditForm libraryId={libraryId} bookId={book.id} chapter={chapter}>

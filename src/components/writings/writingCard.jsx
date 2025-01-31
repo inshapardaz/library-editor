@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Card, Text, Group, useMantineTheme, Center, Divider, rem } from '@mantine/core';
 
 // Local imports
-import { IconWriting, IconEdit } from '@/components/icons';
+import { IconWriting, IconEdit, IconReaderText } from '@/components/icons';
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
 import FavoriteButton from './favoriteButton';
 import IconText from '@/components/iconText';
@@ -27,7 +27,7 @@ const WritingCard = ({ libraryId, writing, t }) => {
             </Card.Section>
 
             <Group justify="space-between" mt="md" mb="xs">
-                <Text component={Link} to={`/libraries/${libraryId}/writings/${writing.id}`} truncate="end" fw={500}>{writing.title}</Text>
+                <Text component={Link} to={`/libraries/${libraryId}/writings/${writing.id}/contents/edit`} truncate="end" fw={500}>{writing.title}</Text>
                 <FavoriteButton article={writing} readonly />
             </Group>
 
@@ -35,11 +35,18 @@ const WritingCard = ({ libraryId, writing, t }) => {
                 <AuthorsAvatar libraryId={libraryId} authors={writing?.authors} />
             </Group>
             <Group justify='center'>
+                <IconText
+                    icon={<IconReaderText height={16} style={{ color: theme.colors.dark[2] }} />}
+                    tooltip={t('writing.actions.read.title')}
+                    link={`/libraries/${libraryId}/writings/${writing.id}/`} />
                 <If condition={writing.links.update}>
-                    <IconText
-                        tooltip={t('actions.edit')}
-                        link={`/libraries/${libraryId}/writings/${writing.id}/edit`}
-                        icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />} />
+                    <>
+                        <Divider orientation="vertical" />
+                        <IconText
+                            tooltip={t('actions.edit')}
+                            link={`/libraries/${libraryId}/writings/${writing.id}/edit`}
+                            icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />} />
+                    </>
                 </If>
                 <If condition={writing.links.delete != null}>
                     <>

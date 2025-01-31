@@ -971,12 +971,21 @@ const en = {
                 success: "Article '{{title}}' deleted successfully.",
                 error: "Error '{{title}}' deleting article.",
             },
+            read: {
+                title: "Read article",
+            },
         },
         error: {
             loading: {
                 title: "Error loading writing",
                 detail: "Unexpected error occured loading writing. Please retry again."
             }
+        },
+        editor: {
+            title: "Edit article contents",
+            newContents: "New article contents being created.",
+            unsavedContents:
+                "Unsaved changed found for this article. Would you like to continue editing it?",
         },
     },
     poetries: {
@@ -1050,12 +1059,21 @@ const en = {
                 success: "Poetry '{{title}}' deleted successfully.",
                 error: "Error '{{title}}' deleting poetry.",
             },
+            read: {
+                title: "Read poetry",
+            },
         },
         error: {
             loading: {
                 title: "Error loading poetry",
                 detail: "Unexpected error occured loading poetry. Please retry again."
             }
+        },
+        editor: {
+            title: "Edit poetry contents",
+            newContents: "New poetry contents being created.",
+            unsavedContents:
+                "Unsaved changed found for this poetry. Would you like to continue editing it?",
         },
     },
     series: {

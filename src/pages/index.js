@@ -36,6 +36,7 @@ import BookProcessPage from "./books/process";
 import LibraryEditPage from "./libraries/edit";
 import PoetryEditPage from "./poetry/edit";
 import WritingEditPage from "./writings/edit";
+import WritingContentEditPage from "./writings/contentEdit";
 
 const Pages = {
     HomePage,
@@ -73,7 +74,8 @@ const Pages = {
     BookProcessPage,
     LibraryEditPage,
     PoetryEditPage,
-    WritingEditPage
+    WritingEditPage,
+    WritingContentEditPage
 };
 
 export default Pages;

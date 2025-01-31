@@ -6,7 +6,7 @@ import { Divider, Group, Stack, Text, useMantineTheme } from '@mantine/core';
 
 // Local Imports
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
-import { IconWriting, IconEdit } from '@/components/icons';
+import { IconWriting, IconEdit, IconReaderText } from '@/components/icons';
 import FavoriteButton from './favoriteButton';
 import If from '@/components/if';
 import Img from '@/components/img';
@@ -25,14 +25,19 @@ const WritingListItem = ({ libraryId, writing, t }) => {
                     <Img w={150} radius="sm" src={writing?.links?.image} fallback={icon} />
                     <Stack>
                         <Group justify="space-between">
-                            <Text component={Link} to={`/libraries/${libraryId}/writings/${writing.id}`} truncate="end" fw={500}>{writing.title}</Text>
+                            <Text component={Link} to={`/libraries/${libraryId}/writings/${writing.id}/contents/edit`} truncate="end" fw={500}>{writing.title}</Text>
                             <FavoriteButton article={writing} readonly />
                         </Group>
                         <AuthorsAvatar libraryId={libraryId} authors={writing?.authors} />
                     </Stack>
                 </Group>
                 <Group gap="sm" wrap="nowrap" style={{ alignSelf: 'end' }}>
+                    <IconText
+                        icon={<IconReaderText height={16} style={{ color: theme.colors.dark[2] }} />}
+                        tooltip={t('writing.actions.read.title')}
+                        link={`/libraries/${libraryId}/writings/${writing.id}/`} />
                     <If condition={writing.links.update}>
+                        <Divider orientation="vertical" />
                         <IconText
                             tooltip={t('actions.edit')}
                             link={`/libraries/${libraryId}/writings/${writing.id}/edit`}

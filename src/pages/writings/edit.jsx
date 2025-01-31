@@ -134,7 +134,7 @@ const WritingEditPage = () => {
                 .unwrap()
                 .then(() => uploadImage(articleId))
                 .then(() => success({ message: t("writing.actions.edit.success") }))
-                .then(() => navigate(`/libraries/${libraryId}/writings/${articleId}`))
+                .then(() => navigate(`/libraries/${libraryId}/writings/${articleId}/contents/edit`))
                 .catch(() => error({ message: t("writing.actions.edit.error") }));
         } else {
             let response = null;
@@ -143,7 +143,7 @@ const WritingEditPage = () => {
                 .then((r) => (response = r))
                 .then(() => uploadImage(response.id))
                 .then(() => success({ message: t("writing.actions.add.success") }))
-                .then(() => navigate(`/libraries/${libraryId}/writings/${response.id}`))
+                .then(() => navigate(`/libraries/${libraryId}/writings/${response.id}/contents/edit`))
                 .catch(() => error({ message: t("writing.actions.add.error") }));
         }
     };

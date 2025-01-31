@@ -6,7 +6,7 @@ import { Divider, Group, Stack, Text, useMantineTheme } from '@mantine/core';
 
 // Local Imports
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
-import { IconPoetry, IconEdit } from '@/components/icons';
+import { IconPoetry, IconEdit, IconReaderText } from '@/components/icons';
 import FavoriteButton from './favoriteButton';
 import PoetryDeleteButton from './poetryDeleteButton';
 import Img from '@/components/img';
@@ -25,14 +25,19 @@ const PoetryListItem = ({ libraryId, poetry, t }) => {
                     <Img w={150} radius="sm" src={poetry?.links?.image} fallback={icon} />
                     <Stack>
                         <Group justify="space-between">
-                            <Text component={Link} to={`/libraries/${libraryId}/poetry/${poetry.id}`} truncate="end" fw={500}>{poetry.title}</Text>
+                            <Text component={Link} to={`/libraries/${libraryId}/poetry/${poetry.id}/contents/edit`} truncate="end" fw={500}>{poetry.title}</Text>
                             <FavoriteButton poetry={poetry} readonly />
                         </Group>
                         <AuthorsAvatar libraryId={libraryId} authors={poetry?.authors} />
                     </Stack>
                 </Group>
                 <Group gap="sm" wrap="nowrap" style={{ alignSelf: 'end' }}>
+                    <IconText
+                        icon={<IconReaderText height={16} style={{ color: theme.colors.dark[2] }} />}
+                        tooltip={t('poetry.actions.read.title')}
+                        link={`/libraries/${libraryId}/poetry/${poetry.id}/`} />
                     <If condition={poetry.links.update}>
+                        <Divider orientation="vertical" />
                         <IconText
                             tooltip={t('actions.edit')}
                             link={`/libraries/${libraryId}/poetry/${poetry.id}/edit`}

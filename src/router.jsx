@@ -40,6 +40,7 @@ const Router = () => {
                         <Route path="/libraries/:libraryId/periodicals/:periodicalId/edit" element={<Pages.EditPeriodicalPage />} />
                         <Route path="/libraries/:libraryId/periodicals/:periodicalId" element={<Pages.PeriodicalPage />} />
                         <Route path="/libraries/:libraryId/periodicals" element={<Pages.PeriodicalsPage />} />
+                        <Route path="/libraries/:libraryId/writings/:articleId/contents/edit" element={<Pages.WritingContentEditPage />} />
                         <Route path="/libraries/:libraryId/writings/:articleId/edit" element={<Pages.WritingEditPage />} />
                         <Route path="/libraries/:libraryId/writings/add" element={<Pages.WritingEditPage />} />
                         <Route path="/libraries/:libraryId/writings" element={<Pages.WritingsPage />} />
