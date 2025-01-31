@@ -1027,6 +1027,11 @@ const ur = {
             newContents: "شاعری کے نئے مندرجات تخلیق کی جا رہی ہیں۔",
             unsavedContents:
                 "غیر محفوظ شدہ مندرجات موجود ہیں۔ تدوین جاری رکھیں؟",
+            layouts: {
+                normal: "عام",
+                singleColumnPoetry: "ایک کالم",
+                twoColumnPoetry: "دو کالم"
+            }
         },
     },
     author: {

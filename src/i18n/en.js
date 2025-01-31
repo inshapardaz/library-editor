@@ -1074,6 +1074,11 @@ const en = {
             newContents: "New poetry contents being created.",
             unsavedContents:
                 "Unsaved changed found for this poetry. Would you like to continue editing it?",
+            layouts: {
+                normal: "Normal",
+                singleColumnPoetry: "Single Column",
+                twoColumnPoetry: "Two Column"
+            }
         },
     },
     series: {

@@ -26,6 +26,7 @@ import EditingStatusIcon from "@/components/editingStatusIcon";
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
 import Editor, { EditorFormat, DefaultConfiguration } from "@/components/editor";
 import { error, success } from '@/utils/notifications';
+import PoetrytLayoutSelect from "@/components/poetry/poetryLayoutSelect";
 //------------------------------------------
 const getLanguage = (article, language) => {
     if (language) {
@@ -43,13 +44,14 @@ const getLanguage = (article, language) => {
 }
 
 //------------------------------------------
-const WritingContentEditPage = () => {
+const PoetryContentEditPage = () => {
     const { t } = useTranslation();
     const { ref, toggle, fullscreen } = useFullscreen();
     const { libraryId, articleId } = useParams();
     const [searchParams] = useSearchParams();
     const langParameter = searchParams.get("language");
     const [contents, setContents] = useState('')
+    const [layout, setLayout] = useState('normal')
 
     const [updateArticle, { isLoading: isUpdatingArticle }] = useUpdateArticleMutation();
     const [addArticleContents, { isLoading: isAddingArticleContents }] = useAddArticleContentsMutation();
@@ -89,21 +91,23 @@ const WritingContentEditPage = () => {
     useEffect(() => {
         if (articleContent?.text) {
             setContents(articleContent.text);
+            setLayout(articleContent.layout);
         } else {
+            setLayout('normal');
             setContents(null);
         }
     }, [articleContent]);
 
     const onEditorSave = (content) => {
         if (isNewContent) {
-            return addArticleContents({ libraryId, articleId, language, layout: 'normal', payload: content })
+            return addArticleContents({ libraryId, articleId, language, layout, payload: content })
                 .then(refetchContent)
-                .then(() => success({ message: t("writing.actions.edit.success") }))
-                .catch(() => error({ message: t("writing.actions.edit.error") }));
+                .then(() => success({ message: t("poetry.actions.edit.success") }))
+                .catch(() => error({ message: t("poetry.actions.edit.error") }));
         } else if (articleContent) {
-            return updateArticleContents({ libraryId, articleId, language, layout: 'normal', payload: content })
-                .then(() => success({ message: t("writing.actions.add.success") }))
-                .catch(() => error({ message: t("writing.actions.add.error") }));
+            return updateArticleContents({ libraryId, articleId, language, layout, payload: content })
+                .then(() => success({ message: t("poetry.actions.add.success") }))
+                .catch(() => error({ message: t("poetry.actions.add.error") }));
         }
     };
 
@@ -115,8 +119,8 @@ const WritingContentEditPage = () => {
             };
             return updateArticle({ chapter: payload })
                 .unwrap()
-                .then(() => success({ message: t("writing.actions.edit.success") }))
-                .catch(() => error({ message: t("writing.actions.edit.error") }));
+                .then(() => success({ message: t("poetry.actions.edit.success") }))
+                .catch(() => error({ message: t("poetry.actions.edit.error") }));
         }
     };
 
@@ -124,14 +128,16 @@ const WritingContentEditPage = () => {
 
     if (isErrorLoadingArticle || (!isNewContent && isErrorLoadingContent)) {
         return (<Container fluid mt="sm">
-            <Error title={t('writing.error.loading.title')}
-                detail={t('writing.error.loading.detail')}
+            <Error title={t('poetry.error.loading.title')}
+                detail={t('poetry.error.loading.detail')}
                 onRetry={() => { refetch() && refetchContent() }} />
         </Container>)
     }
 
     const title = article?.title;
     const actions = article ? <Group justify="flex-end" gap="xs" mb="md">
+        <PoetrytLayoutSelect t={t} defaultValue={layout}
+            onChange={setLayout} />
         {showCompleteButton && (
             <Tooltip label={t("actions.done")}>
                 <Button onClick={onComplete} variant="outline" color="green">
@@ -175,13 +181,13 @@ const WritingContentEditPage = () => {
             }
             breadcrumbs={[
                 { title: t('header.home'), href: `/libraries/${libraryId}`, icon: IconNames.Home },
-                { title: t('header.writings'), href: `/libraries/${libraryId}/writings`, icon: IconNames.Writings },
-                { title: article?.title, href: `/libraries/${libraryId}/writings/${article?.id}`, icon: IconNames.Writing },
+                { title: t('header.poetry'), href: `/libraries/${libraryId}/poetry`, icon: IconNames.Poetry },
+                { title: article?.title, href: `/libraries/${libraryId}/poetry/${article?.id}`, icon: IconNames.Poetry },
                 {
                     title: t(`languages.${language}`), icon: IconNames.Language, items: Object.values(languages).map(l => ({
                         key: `lang-${l.key}`,
                         title: t(`languages.${l.key}`),
-                        href: `/libraries/${libraryId}/writings/${articleId}/contents/edit?language=${l.key}`,
+                        href: `/libraries/${libraryId}/poetry/${articleId}/contents/edit?language=${l.key}`,
                         icon: IconNames.Language,
                         selected: l.key == language
                     }))
@@ -190,7 +196,7 @@ const WritingContentEditPage = () => {
             actions={actions}
         />
         <If condition={isNewContent}>
-            <Alert variant="light" color="yellow" withCloseButton title={t('writing.editor.newContents')} icon={<IconAdd />} />
+            <Alert variant="light" color="yellow" withCloseButton title={t('poetry.editor.newContents')} icon={<IconAdd />} />
         </If>
         <Box style={{ height: '100%', overflow: 'auto' }} >
             <LoadingOverlay visible={isLoadingArticle || isLoadingContent || isUpdatingArticle || isAddingArticleContents || isUpdatingArticleContents} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
@@ -221,4 +227,4 @@ const WritingContentEditPage = () => {
     </Container>);
 }
 
-export default WritingContentEditPage;
+export default PoetryContentEditPage;

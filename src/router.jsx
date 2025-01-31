@@ -40,7 +40,6 @@ const Router = () => {
                         <Route path="/libraries/:libraryId/periodicals/:periodicalId/edit" element={<Pages.EditPeriodicalPage />} />
                         <Route path="/libraries/:libraryId/periodicals/:periodicalId" element={<Pages.PeriodicalPage />} />
                         <Route path="/libraries/:libraryId/periodicals" element={<Pages.PeriodicalsPage />} />
-                        <Route path="/libraries/:libraryId/writings/:articleId/contents/edit" element={<Pages.WritingContentEditPage />} />
                         <Route path="/libraries/:libraryId/writings/:articleId/edit" element={<Pages.WritingEditPage />} />
                         <Route path="/libraries/:libraryId/writings/add" element={<Pages.WritingEditPage />} />
                         <Route path="/libraries/:libraryId/writings" element={<Pages.WritingsPage />} />
@@ -62,6 +61,8 @@ const Router = () => {
                     <Route path="/libraries/:libraryId/books/:bookId/read" element={<Pages.BookReaderPage />} />
                     <Route path="/libraries/:libraryId/books/:bookId/ebook" element={<Pages.EBookReaderPage />} />
                     <Route path="/libraries/:libraryId/books/:bookId/files/:fileId/process" element={<Pages.BookProcessPage />} />
+                    <Route path="/libraries/:libraryId/writings/:articleId/contents/edit" element={<Pages.WritingContentEditPage />} />
+                    <Route path="/libraries/:libraryId/poetry/:articleId/contents/edit" element={<Pages.PoetryContentEditPage />} />
                     <Route path="/libraries/:libraryId/writings/:articleId" element={<Pages.WritingPage />} />
                     <Route path="/libraries/:libraryId/books/:bookId/chapters/:chapterNumber/contents/edit" element={<Pages.ChapterEditorPage />} />
                     <Route path="/libraries/:libraryId/books/:bookId/pages/:pageNumber/contents/edit" element={<Pages.BookPageEditPage />} />
