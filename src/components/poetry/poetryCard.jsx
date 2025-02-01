@@ -2,20 +2,23 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 // Ui Library import
-import { Card, Text, Group, useMantineTheme, Center, Divider, rem } from '@mantine/core';
+import { Card, Text, Group, useMantineTheme, Center, Divider, rem, Checkbox } from '@mantine/core';
 
 // Local imports
 import { IconPoetry, IconEdit, IconReaderText } from '@/components/icons';
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
 import FavoriteButton from './favoriteButton';
+import PoetryAssignButton from './poetryAssignButton';
 import PoetryDeleteButton from './poetryDeleteButton';
+import PoetryEditForm from './poetryEditForm';
 import IconText from '@/components/iconText';
+import EditingStatusIcon from '@/components/editingStatusIcon';
 import If from '@/components/if';
 import Img from '@/components/img';
 //---------------------------------------
 const IMAGE_HEIGHT = 450;
 
-const PoetryCard = ({ libraryId, poetry, t }) => {
+const PoetryCard = ({ libraryId, poetry, t, isSelected = false, onSelectChanged = () => { } }) => {
     const theme = useMantineTheme();
 
     const icon = <Center h={IMAGE_HEIGHT} ><IconPoetry width={rem(150)} style={{ color: theme.colors.dark[1] }} /></Center>;
@@ -27,7 +30,13 @@ const PoetryCard = ({ libraryId, poetry, t }) => {
             </Card.Section>
 
             <Group justify="space-between" mt="md" mb="xs" wrap='nowrap'>
-                <Text component={Link} to={`/libraries/${libraryId}/poetry/${poetry.id}/contents/edit`} truncate="end" fw={500}>{poetry.title}</Text>
+                <Group>
+                    <Checkbox checked={isSelected}
+                        onChange={e => onSelectChanged(e.currentTarget.checked)} />
+                    <EditingStatusIcon editingStatus={poetry.status} width={24} style={{ color: theme.colors.dark[2] }} />
+                    <Text component={Link} to={`/libraries/${libraryId}/poetry/${poetry.id}/contents/edit`} truncate="end" fw={500}>{poetry.title}</Text>
+                </Group>
+
                 <FavoriteButton poetry={poetry} readonly />
             </Group>
 
@@ -41,10 +50,14 @@ const PoetryCard = ({ libraryId, poetry, t }) => {
                     link={`/libraries/${libraryId}/poetry/${poetry.id}/`} />
                 <If condition={poetry.links.update}>
                     <Divider orientation="vertical" />
-                    <IconText
-                        tooltip={t('actions.edit')}
-                        link={`/libraries/${libraryId}/poetry/${poetry.id}/edit`}
-                        icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />} />
+                    <PoetryAssignButton t={t} libraryId={libraryId}
+                        articles={[poetry]} type="transparent" />
+                    <Divider orientation="vertical" />
+                    <PoetryEditForm libraryId={libraryId} article={poetry} >
+                        <IconText
+                            tooltip={t('actions.edit')}
+                            icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />} />
+                    </PoetryEditForm>
                 </If>
                 <If condition={poetry.links.delete != null}>
                     <>
@@ -60,13 +73,16 @@ const PoetryCard = ({ libraryId, poetry, t }) => {
 PoetryCard.propTypes = {
     libraryId: PropTypes.string,
     t: PropTypes.any,
+    isSelected: PropTypes.bool,
+    onSelectChanged: PropTypes.func,
     poetry: PropTypes.shape({
         id: PropTypes.number,
         title: PropTypes.string,
-        description: PropTypes.string,
+        type: PropTypes.string,
+        isPublic: PropTypes.bool,
         authors: PropTypes.array,
-        pageCount: PropTypes.number,
-        chapterCount: PropTypes.number,
+        categories: PropTypes.array,
+        status: PropTypes.string,
         links: PropTypes.shape({
             update: PropTypes.string,
             delete: PropTypes.string,

@@ -1,209 +1,230 @@
-import PropTypes from 'prop-types';
 import { useEffect, useMemo, useState } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
 
-// UI Library Imports
-import { Box, Button, Card, Center, Container, Grid, Group, LoadingOverlay, Stack, Switch, TextInput, useMantineTheme } from "@mantine/core";
-import { useForm, isNotEmpty } from '@mantine/form';
+// Ui library Imports
+import { Alert, Box, Button, Container, Divider, Group, LoadingOverlay, Tooltip } from "@mantine/core";
+import { useFullscreen } from "@mantine/hooks";
 
-// Local imports
+// Local Imports
 import {
     useGetArticleQuery,
-    useAddArticleMutation,
+    useGetArticleContentsQuery,
     useUpdateArticleMutation,
-    useUpdateArticleImageMutation
-}
-    from '@/store/slices/articles.api';
-import { EditingStatus } from '@/models';
+    useAddArticleContentsMutation,
+    useUpdateArticleContentsMutation
+} from "@/store/slices/articles.api";
 
-import AuthorsSelect from '@/components/authors/authorsSelect';
-import CategoriesSelect from '@/components/categories/categoriesSelect';
+import { languages } from '@/store/slices/uiSlice';
 import PageHeader from "@/components/pageHeader";
-import Error from '@/components/error';
-import EditingStatusSelect from '@/components/editingStatusSelect';
-import { IconPoetry } from '@/components/icons';
-import ImageUpload from '@/components/imageUpload';
-import { error, success } from '@/utils/notifications';
 import IconNames from '@/components/iconNames';
-//---------------------------------
+import { IconAdd, IconFullScreenExit, IconFullScreen, IconDone } from "@/components/icons";
+import Error from '@/components/error';
+import If from '@/components/if';
+import { EditingStatus } from '@/models';
+import EditingStatusIcon from "@/components/editingStatusIcon";
+import AuthorsAvatar from '@/components/authors/authorsAvatar';
+import Editor, { EditorFormat, DefaultConfiguration } from "@/components/editor";
+import { error, success } from '@/utils/notifications';
+import PoetrytLayoutSelect from "@/components/poetry/poetryLayoutSelect";
+//------------------------------------------
+const getLanguage = (article, language) => {
+    if (language) {
+        if (article && article.contents) {
+            var foundContent = article.contents.find(d => d.language === language);
+            if (foundContent?.language) {
+                return foundContent?.language;
+            }
+        }
 
-const PoetryForm = ({ libraryId, article = null, onSubmit, onCancel }) => {
+        return language;
+    }
+
+    return 'ur';
+}
+
+//------------------------------------------
+const PoetryContentEditPage = () => {
     const { t } = useTranslation();
-    const [loaded, setLoaded] = useState(false);
-    const form = useForm({
-        mode: 'uncontrolled',
-        initialValues: {
-            title: '',
-            type: 'Poetry',
-            isPublic: false,
-            authors: [],
-            categories: [],
-            status: EditingStatus.Available
-        },
+    const { ref, toggle, fullscreen } = useFullscreen();
+    const { libraryId, articleId } = useParams();
+    const [searchParams] = useSearchParams();
+    const langParameter = searchParams.get("language");
+    const [contents, setContents] = useState('')
+    const [layout, setLayout] = useState('normal')
 
-        validate: {
-            title: isNotEmpty(t("poetry.title.required")),
-            authors: value => value.length < 1 ? (t("poetry.authors.required")) : null,
-        },
+    const [updateArticle, { isLoading: isUpdatingArticle }] = useUpdateArticleMutation();
+    const [addArticleContents, { isLoading: isAddingArticleContents }] = useAddArticleContentsMutation();
+    const [updateArticleContents, { isLoading: isUpdatingArticleContents }] = useUpdateArticleContentsMutation();
+
+    const {
+        refetch,
+        data: article,
+        isError: isErrorLoadingArticle,
+        isFetching: isLoadingArticle,
+    } = useGetArticleQuery({
+        libraryId, articleId
     });
 
-    useEffect(() => {
-        if (!loaded && article != null) {
-            form.initialize(article);
-            setLoaded(true);
-        }
-    }, [article, form, loaded]);
+    const language = useMemo(() => getLanguage(article, langParameter), [article, langParameter])
+    const {
+        refetch: refetchContent,
+        currentData: articleContent,
+        error: articleContentError,
+        isError: isErrorLoadingContent,
+        isFetching: isLoadingContent,
+    } = useGetArticleContentsQuery({
+        libraryId,
+        articleId,
+        language: language
+    }, {
+        skip: isLoadingArticle || isErrorLoadingArticle || !libraryId || articleId === null || language == null
+    });
 
-    return (
-        <form onSubmit={form.onSubmit((values) => onSubmit(values))}>
-            <Stack gap="md">
-                <TextInput key={form.key('title')}
-                    label={t("poetry.title.label")}
-                    placeholder={t("poetry.title.placeholder")}
-                    {...form.getInputProps('title')}
-                />
 
-                <AuthorsSelect t={t} libraryId={libraryId}
-                    label={t("poetry.authors.label")}
-                    placeholder={t("poetry.authors.placeholder")}
-                    {...form.getInputProps('authors')} />
-                <CategoriesSelect t={t}
-                    libraryId={libraryId}
-                    label={t("poetry.categories.label")}
-                    placeholder={t("poetry.categories.placeholder")}
-                    {...form.getInputProps('categories')} />
+    const showCompleteButton =
+        article &&
+        (article.status === EditingStatus.Typing ||
+            article.status === EditingStatus.InReview);
 
-                <Switch
-                    label={t("poetry.public.label")}
-                    key={form.key('isPublic')}
-                    {...form.getInputProps('isPublic', { type: 'checkbox' })}
-                />
-
-                <EditingStatusSelect t={t}
-                    label={t("poetry.status.label")}
-                    {...form.getInputProps('status')} />
-
-                <Group justify="flex-end" mt="md">
-                    <Button type="submit">{t('actions.save')}</Button>
-                    <Button variant='light' onClick={onCancel}>{t('actions.cancel')}</Button>
-                </Group>
-            </Stack>
-        </form>
-    );
-}
-
-PoetryForm.propTypes = {
-    libraryId: PropTypes.any,
-    onSubmit: PropTypes.func,
-    onCancel: PropTypes.func,
-    article: PropTypes.shape({
-        id: PropTypes.number,
-        name: PropTypes.string,
-        type: PropTypes.string,
-        links: PropTypes.shape({
-            image: PropTypes.string
-        })
-    })
-};
-
-//---------------------------------
-
-const PoetryEditPage = () => {
-    const navigate = useNavigate();
-    const theme = useMantineTheme();
-    const { t } = useTranslation();
-    const { libraryId, articleId } = useParams();
-    const isEditing = useMemo(() => articleId != null, [articleId]);
-    const [image, setImage] = useState(null);
-    const [add, { isLoading: isAdding }] = useAddArticleMutation();
-    const [update, { isLoading: isUpdating }] = useUpdateArticleMutation();
-    const [updateImage, { isLoading: isUpdatingImage }] = useUpdateArticleImageMutation();
-
-    const { data: article, refetch, error: errorLoading, isFetching } = useGetArticleQuery({ libraryId, articleId }, { skip: !libraryId || !articleId });
 
     useEffect(() => {
-        if (article && !article?.links?.update) {
-            navigate('/403')
-        }
-    }, [article, navigate]);
-
-    const onSubmit = async (_article) => {
-        if (isEditing) {
-            update({ libraryId, articleId, payload: _article })
-                .unwrap()
-                .then(() => uploadImage(articleId))
-                .then(() => success({ message: t("poetry.actions.edit.success") }))
-                .then(() => navigate(`/libraries/${libraryId}/poetry/${articleId}`))
-                .catch(() => error({ message: t("poetry.actions.edit.error") }));
+        if (articleContent?.text) {
+            setContents(articleContent.text);
+            setLayout(articleContent.layout);
         } else {
-            let response = null;
-            add({ libraryId, payload: _article })
-                .unwrap()
-                .then((r) => (response = r))
-                .then(() => uploadImage(response.id))
+            setLayout('normal');
+            setContents(null);
+        }
+    }, [articleContent]);
+
+    const onEditorSave = (content) => {
+        if (isNewContent) {
+            return addArticleContents({ libraryId, articleId, language, layout, payload: content })
+                .then(refetchContent)
+                .then(() => success({ message: t("poetry.actions.edit.success") }))
+                .catch(() => error({ message: t("poetry.actions.edit.error") }));
+        } else if (articleContent) {
+            return updateArticleContents({ libraryId, articleId, language, layout, payload: content })
                 .then(() => success({ message: t("poetry.actions.add.success") }))
-                .then(() => navigate(`/libraries/${libraryId}/poetry/${response.id}`))
                 .catch(() => error({ message: t("poetry.actions.add.error") }));
         }
     };
 
-    const uploadImage = async (newArticleId) => {
-        if (image) {
-            await updateImage({ libraryId, articleId: newArticleId, payload: image }).unwrap();
+    const onComplete = () => {
+        if (article.status === EditingStatus.Typing || article.status === EditingStatus.InReview) {
+            const payload = {
+                ...article,
+                status: article.status === EditingStatus.Typing ? EditingStatus.Typed : EditingStatus.Completed,
+            };
+            return updateArticle({ chapter: payload })
+                .unwrap()
+                .then(() => success({ message: t("poetry.actions.edit.success") }))
+                .catch(() => error({ message: t("poetry.actions.edit.error") }));
         }
     };
 
-    const icon = <Center h={450}><IconPoetry width={250} style={{ color: theme.colors.dark[1] }} /></Center>;
+    const isNewContent = useMemo(() => article && articleContentError?.status === 404, [article, articleContentError?.status]);
 
-    const title = article ? article.title : t("poetry.actions.add.title");
-
-    if (errorLoading) {
+    if (isErrorLoadingArticle || (!isNewContent && isErrorLoadingContent)) {
         return (<Container fluid mt="sm">
             <Error title={t('poetry.error.loading.title')}
                 detail={t('poetry.error.loading.detail')}
-                onRetry={refetch} />
+                onRetry={() => { refetch() && refetchContent() }} />
         </Container>)
-    };
-
-    let breadcrumbs = [
-        { title: t('header.home'), href: `/libraries/${libraryId}`, icon: IconNames.Home },
-        { title: t('header.poetry'), href: `/libraries/${libraryId}/poetry`, icon: IconNames.Poetry }
-    ];
-
-    if (isEditing) {
-        breadcrumbs.push({ title: title, href: `/libraries/${libraryId}/poetry/${articleId}`, icon: IconNames.Poetry });
-        breadcrumbs.push({ title: t('actions.edit'), icon: IconNames.Edit });
-    } else {
-        breadcrumbs.push({ title: title, icon: IconNames.Add });
     }
 
-    return (<Container fluid mt="sm">
-        <PageHeader title={title} breadcrumbs={breadcrumbs} />
-        <Container size="responsive">
-            <Box pos="relative">
-                <LoadingOverlay visible={isFetching || isAdding || isUpdating || isUpdatingImage} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
-                <Grid
-                    mih={50}
-                >
-                    <Grid.Col span="content">
-                        <ImageUpload
-                            t={t}
-                            src={article?.links?.image}
-                            alt={article?.title}
-                            fallback={icon}
-                            onChange={setImage}
-                        />
-                    </Grid.Col>
-                    <Grid.Col span="auto" >
-                        <Card withBorder maw={600}>
-                            <PoetryForm libraryId={libraryId} article={article} onSubmit={onSubmit} onCancel={() => navigate(-1)} />
-                        </Card>
-                    </Grid.Col>
-                </Grid>
-            </Box>
-        </Container>
-    </Container >);
+    const title = article?.title;
+    const actions = article ? <Group justify="flex-end" gap="xs" mb="md">
+        <PoetrytLayoutSelect t={t} defaultValue={layout}
+            onChange={setLayout} />
+        {showCompleteButton && (
+            <Tooltip label={t("actions.done")}>
+                <Button onClick={onComplete} variant="outline" color="green">
+                    <IconDone />
+                </Button>
+            </Tooltip>
+        )}
+        {/* {chapter && chapter.links.assign && (
+            <ChapterAssignButton
+                type="default"
+                libraryId={libraryId}
+                chapters={[chapter]}
+                t={t}
+                showDetails={false}
+            />
+        )}
+        {chapter && chapter.links.update && (
+            <ChapterStatusButton
+                type="default"
+                libraryId={libraryId}
+                chapters={[chapter]}
+                t={t}
+            />
+        )} */}
+
+        <Tooltip key="fullscreen" label={t(fullscreen ? "actions.fullscreenExit" : "actions.fullscreen")}>
+            <Button variant="default" onClick={toggle} >
+                {fullscreen ? <IconFullScreenExit /> : <IconFullScreen />}
+            </Button>
+        </Tooltip>
+    </Group> : null;
+
+    return (<Container fluid mt="sm" bg="var(--mantine-color-body)" ref={ref}>
+        <PageHeader title={title} defaultIcon={IconNames.Chapters}
+            subTitle={
+                <Group visibleFrom='md'>
+                    <EditingStatusIcon editingStatus={article?.status} showText t={t} />
+                    <Divider orientation="vertical" />
+                    <AuthorsAvatar libraryId={libraryId} authors={article?.authors ?? []} />
+                </Group>
+            }
+            breadcrumbs={[
+                { title: t('header.home'), href: `/libraries/${libraryId}`, icon: IconNames.Home },
+                { title: t('header.poetry'), href: `/libraries/${libraryId}/poetry`, icon: IconNames.Poetry },
+                { title: article?.title, href: `/libraries/${libraryId}/poetry/${article?.id}`, icon: IconNames.Poetry },
+                {
+                    title: t(`languages.${language}`), icon: IconNames.Language, items: Object.values(languages).map(l => ({
+                        key: `lang-${l.key}`,
+                        title: t(`languages.${l.key}`),
+                        href: `/libraries/${libraryId}/poetry/${articleId}/contents/edit?language=${l.key}`,
+                        icon: IconNames.Language,
+                        selected: l.key == language
+                    }))
+                },
+            ]}
+            actions={actions}
+        />
+        <If condition={isNewContent}>
+            <Alert variant="light" color="yellow" withCloseButton title={t('poetry.editor.newContents')} icon={<IconAdd />} />
+        </If>
+        <Box style={{ height: '100%', overflow: 'auto' }} >
+            <LoadingOverlay visible={isLoadingArticle || isLoadingContent || isUpdatingArticle || isAddingArticleContents || isUpdatingArticleContents} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
+            <div style={{ height: `calc(100vh - ${fullscreen ? '160px' : '220px'})`, position: 'relative' }}>
+                <Editor defaultValue={contents}
+                    configuration={{
+                        ...DefaultConfiguration,
+                        richText: true,
+                        format: EditorFormat.Markdown,
+                        toolbar: {
+                            ...DefaultConfiguration.toolbar,
+                            showFontFormat: false,
+                            showSave: true,
+                            showZoom: true,
+                            showViewFont: true,
+                            showExtraFormat: false
+                        },
+                        spellchecker: {
+                            enabled: true,
+                            language: language,
+                        },
+                    }}
+                    language={language}
+                    contentKey={`article-${libraryId}-${articleId}-${language}`}
+                    onSave={onEditorSave} />
+            </div>
+        </Box>
+    </Container>);
 }
 
-export default PoetryEditPage;
+export default PoetryContentEditPage;

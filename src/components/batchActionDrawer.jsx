@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import { useEffect } from "react";
 
 // Ui Library imports
-import { Avatar, Button, Divider, Drawer, List, ScrollArea, Stack, Tooltip } from '@mantine/core';
+import { Avatar, Button, Divider, Drawer, List, ScrollArea, Stack, Text, Tooltip } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 // Local imports
@@ -37,8 +37,8 @@ const RequestList = ({ requests, itemTitleFunc, itemDescriptionFunc }) => {
                     <Avatar size={32}>
                         <ProcessStatusIcon status={request.status} style={{ color: getIconColor(request.status) }} />
                     </Avatar>}>
-                    {itemTitleFunc ? itemTitleFunc(request.data) : request.id}
-                    {itemDescriptionFunc && itemDescriptionFunc(request.data)}
+                    <Text truncate="end">{itemTitleFunc ? itemTitleFunc(request.data) : request.id}</Text>
+                    {itemDescriptionFunc && <Text>{itemDescriptionFunc(request.data)}</Text>}
                 </List.Item>))
             }
         </List >);
@@ -64,7 +64,7 @@ const BatchActionDrawer = ({
     buttonSize,
     disabled,
     sliderTitle,
-    placement = 'right',
+    position = 'right',
     size = 'sm',
     // Called when ok button pressed. If returns false or null, it will do nothing.
     // Return payload for requests and it will call mutation with it
@@ -91,7 +91,7 @@ const BatchActionDrawer = ({
     // - onProgress : callback called for each item when its progress status for request is changed. Parameter is request object with updated status
     mutation,
     t,
-    children
+    children,
 }) => {
     const [opened, { open, close }] = useDisclosure(false);
     const [requests, setRequests] = useState([]);
@@ -181,7 +181,7 @@ const BatchActionDrawer = ({
             </Tooltip>
             <Drawer
                 title={sliderTitle}
-                placement={placement}
+                position={position}
                 opened={opened}
                 onClose={onCloseDrawer}
                 size={size}
@@ -216,7 +216,7 @@ BatchActionDrawer.propTypes = {
     buttonSize: PropTypes.string,
     disabled: PropTypes.bool,
     sliderTitle: PropTypes.string,
-    placement: PropTypes.string,
+    position: PropTypes.string,
     size: PropTypes.string,
     onOkFunc: PropTypes.func,
     onShow: PropTypes.func,

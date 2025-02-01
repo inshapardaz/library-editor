@@ -898,6 +898,11 @@ const ur = {
             label: "زمرہ",
             placeholder: "زمرہ چنیں",
         },
+        user: {
+            label: "صارف",
+            placeholder: "نصنیف کا صارف چنیں",
+            required: "نصنیف کا صارف ضروری ہے",
+        },
         actions: {
             addFavorite: {
                 success: 'نصنیف پسندیدہ تصنیفات میں داخل کر دی  گئی ہے۔',
@@ -927,6 +932,22 @@ const ur = {
             },
             read: {
                 title: "تصنیف پڑھیں",
+            },
+            updateStatus: {
+                label: "تصنیف کی کیفیت تبدیل کریں",
+                title: "تصنیف کی کیفیت",
+                success: "تصنیفات کی کیفیت محفوظ کر دی گئی ہے۔",
+                error: "تصنیفات کی کیفیت محفوظ نہیں کی جا سکی۔",
+            },
+            assign: {
+                label: "تفویض کریں",
+                title_one: "تصنیف تفویض کریں",
+                title_other: "{{count}}تصنیفات تفویض کریں",
+                message: "تصنیفات '{{ chapterNumber }}' تفویض کریں۔",
+                success_one: "تصنیف تفویض کر دیا گیا ہے۔",
+                success_other: "{{count}} تصنیفات تفویض کر دیے گئے۔",
+                error_one: "تصنیف نفویض نہیں کیا جا سکا۔",
+                error_other: "{{count}} تصنیفات تفویض نہیں کیے جا سکے۔",
             },
         },
         error: {
@@ -985,6 +1006,11 @@ const ur = {
             label: "زمرہ",
             placeholder: "زمرہ چنیں",
         },
+        user: {
+            label: "صارف",
+            placeholder: "شاعری کا صارف چنیں",
+            required: "شاعری کا صارف ضروری ہے",
+        },
         actions: {
             addFavorite: {
                 success: 'شاعری پسندیدہ شاعری میں داخل کر دی  گئی ہے۔',
@@ -1014,6 +1040,22 @@ const ur = {
             },
             read: {
                 title: "شاعری پڑھیں",
+            },
+            updateStatus: {
+                label: "شاعری کی کیفیت تبدیل کریں",
+                title: "شاعری کی کیفیت",
+                success: "شاعری کی کیفیت محفوظ کر دی گئی ہے۔",
+                error: "شاعری کی کیفیت محفوظ نہیں کی جا سکی۔",
+            },
+            assign: {
+                label: "تفویض کریں",
+                title_one: "شاعری تفویض کریں",
+                title_other: "{{count}}شاعری تفویض کریں",
+                message: "شاعری '{{ chapterNumber }}' تفویض کریں۔",
+                success_one: "شاعری تفویض کر دیا گیا ہے۔",
+                success_other: "{{count}} شاعری تفویض کر دیے گئے۔",
+                error_one: "شاعری نفویض نہیں کیا جا سکا۔",
+                error_other: "{{count}} شاعری تفویض نہیں کیے جا سکے۔",
             },
         },
         error: {

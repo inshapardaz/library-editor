@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 // Ui Library import
-import { Card, Text, Group, useMantineTheme, Center, Divider, rem } from '@mantine/core';
+import { Card, Text, Group, useMantineTheme, Center, Divider, rem, Checkbox } from '@mantine/core';
 
 // Local imports
 import { IconWriting, IconEdit, IconReaderText } from '@/components/icons';
@@ -12,10 +12,13 @@ import IconText from '@/components/iconText';
 import If from '@/components/if';
 import Img from '@/components/img';
 import WritingDeleteButton from './writingDeleteButton';
+import WritingEditForm from './writingEditForm';
+import WritingAssignButton from './writingAssignButton';
+import EditingStatusIcon from '@/components/editingStatusIcon';
 //---------------------------------------
 const IMAGE_HEIGHT = 450;
 
-const WritingCard = ({ libraryId, writing, t }) => {
+const WritingCard = ({ libraryId, writing, t, isSelected = false, onSelectChanged = () => { } }) => {
     const theme = useMantineTheme();
 
     const icon = <Center h={IMAGE_HEIGHT}><IconWriting width={rem(150)} style={{ color: theme.colors.dark[1] }} /></Center>;
@@ -27,7 +30,12 @@ const WritingCard = ({ libraryId, writing, t }) => {
             </Card.Section>
 
             <Group justify="space-between" mt="md" mb="xs">
-                <Text component={Link} to={`/libraries/${libraryId}/writings/${writing.id}/contents/edit`} truncate="end" fw={500}>{writing.title}</Text>
+                <Group>
+                    <Checkbox checked={isSelected}
+                        onChange={e => onSelectChanged(e.currentTarget.checked)} />
+                    <EditingStatusIcon editingStatus={writing.status} width={24} style={{ color: theme.colors.dark[2] }} />
+                    <Text component={Link} to={`/libraries/${libraryId}/writings/${writing.id}/contents/edit`} truncate="end" fw={500}>{writing.title}</Text>
+                </Group>
                 <FavoriteButton article={writing} readonly />
             </Group>
 
@@ -42,10 +50,14 @@ const WritingCard = ({ libraryId, writing, t }) => {
                 <If condition={writing.links.update}>
                     <>
                         <Divider orientation="vertical" />
-                        <IconText
-                            tooltip={t('actions.edit')}
-                            link={`/libraries/${libraryId}/writings/${writing.id}/edit`}
-                            icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />} />
+                        <WritingAssignButton t={t} libraryId={libraryId}
+                            articles={[writing]} type="transparent" />
+                        <Divider orientation="vertical" />
+                        <WritingEditForm libraryId={libraryId} article={writing} >
+                            <IconText
+                                tooltip={t('actions.edit')}
+                                icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />} />
+                        </WritingEditForm>
                     </>
                 </If>
                 <If condition={writing.links.delete != null}>
@@ -62,13 +74,16 @@ const WritingCard = ({ libraryId, writing, t }) => {
 WritingCard.propTypes = {
     libraryId: PropTypes.string,
     t: PropTypes.any,
+    isSelected: PropTypes.bool,
+    onSelectChanged: PropTypes.func,
     writing: PropTypes.shape({
         id: PropTypes.number,
         title: PropTypes.string,
-        description: PropTypes.string,
+        type: PropTypes.string,
+        isPublic: PropTypes.bool,
         authors: PropTypes.array,
-        pageCount: PropTypes.number,
-        chapterCount: PropTypes.number,
+        categories: PropTypes.array,
+        status: PropTypes.string,
         links: PropTypes.shape({
             update: PropTypes.string,
             delete: PropTypes.string,

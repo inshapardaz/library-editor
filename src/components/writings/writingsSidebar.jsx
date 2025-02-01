@@ -8,6 +8,7 @@ import { Badge, Card, Center, Divider, NavLink, SimpleGrid, Skeleton, useMantine
 // Local imports
 import { useGetCategoriesQuery } from '@/store/slices/categories.api';
 import { IconCategory, IconAdd, IconFavorite, IconWriting, IconWritings } from '@/components/icons';
+import WritingEditForm from './writingEditForm';
 
 //----------------------------------------------
 const WritingsSideBar = ({ selectedCategory, favorite, read }) => {
@@ -47,14 +48,14 @@ const WritingsSideBar = ({ selectedCategory, favorite, read }) => {
     }
 
     return (<Card withBorder>
-        <NavLink
-            key="add"
-            component={Link}
-            to={`/libraries/${libraryId}/writings/add`}
-            active={favorite}
-            label={t('writing.actions.add.title')}
-            leftSection={<IconAdd style={{ color: theme.colors.blue[9] }} />}
-        />
+        <WritingEditForm libraryId={libraryId} >
+            <NavLink
+                key="add"
+                active={favorite}
+                label={t('writing.actions.add.title')}
+                leftSection={<IconAdd style={{ color: theme.colors.blue[9] }} />}
+            />
+        </WritingEditForm>
         <Divider />
         <NavLink
             key="favorites"

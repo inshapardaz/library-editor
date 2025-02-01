@@ -3,6 +3,8 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import axiosBaseQuery from "@/utils/axiosBaseQuery";
 
 import { parseResponse, removeLinks } from "@/utils/parseResponse";
+import { processMultipleRequests } from '@/utils';
+
 // ----------------------------------------------
 export const articlesApi = createApi({
   reducerPath: "articles",
@@ -106,6 +108,25 @@ export const articlesApi = createApi({
       }),
       invalidatesTags: ["Articles"],
     }),
+    updateArticles: builder.mutation({
+      async queryFn(
+        { requests, payload, onProgress },
+        _queryApi,
+        _extraOptions,
+        baseQuery
+      ) {
+        return processMultipleRequests({
+          baseQuery,
+          method: "PUT",
+          url: (request) => request.data.links.update,
+          requests,
+          payload,
+          onProgress,
+        });
+      },
+      transformResponse: (response) => parseResponse(response),
+      invalidatesTags: (result, error) => (error ? [] : ["Article", "Articles"]),
+    }),
     deleteArticle: builder.mutation({
       query: ({ libraryId, articleId }) => ({
         url: `/libraries/${libraryId}/articles/${articleId}`,
@@ -136,6 +157,27 @@ export const articlesApi = createApi({
         data: removeLinks(payload),
       }),
       invalidatesTags: ["Article"],
+    }),
+    assignArticles: builder.mutation({
+      async queryFn(
+        { requests, payload, onProgress },
+        _queryApi,
+        _extraOptions,
+        baseQuery
+      ) {
+        return processMultipleRequests({
+          baseQuery,
+          method: "POST",
+          url: (request, payload) =>
+            payload.accountId === "me"
+              ? request.data.links.assign_to_me
+              : request.data.links.assign,
+          requests,
+          payload,
+          onProgress,
+        });
+      },
+      invalidatesTags: (result, error) => (error ? [] : ["Article", "Articles"]),
     }),
     addArticleContents: builder.mutation({
       query: ({ libraryId, articleId, language, layout, payload }) => ({
@@ -170,9 +212,11 @@ export const {
   useRemoveArticleFromFavoriteMutation,
   useAddArticleMutation,
   useUpdateArticleMutation,
+  useUpdateArticlesMutation,
   useDeleteArticleMutation,
   useUpdateArticleImageMutation,
   useAssignArticleMutation,
+  useAssignArticlesMutation,
   useAddArticleContentsMutation,
   useUpdateArticleContentsMutation,
 } = articlesApi;

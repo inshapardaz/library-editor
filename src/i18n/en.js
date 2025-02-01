@@ -634,7 +634,7 @@ const en = {
                 error_other: "Error deleting {{ count }}} chapters.",
             },
             updateStatus: {
-                label: "Set cahpter status",
+                label: "Set chapter status",
                 title: "Updating Status",
                 success: "Chapter status updated successfully.",
                 error: "Error saving chapter statuses.",
@@ -943,6 +943,11 @@ const en = {
             label: "Categories",
             placeholder: "Select categories",
         },
+        user: {
+            label: "User",
+            placeholder: "Select user",
+            required: "User is required",
+        },
         actions: {
             addFavorite: {
                 success: 'Writing added to favorites.',
@@ -973,6 +978,23 @@ const en = {
             },
             read: {
                 title: "Read article",
+            },
+            updateStatus: {
+                label: "Set article status",
+                title: "Updating Article",
+                success: "Article status updated successfully.",
+                error: "Error saving article statuses.",
+            },
+            assign: {
+                label: "Assign Article",
+                title_one: "Assign Article {{count}}",
+                title_other: "Assign articles {{count}}",
+                message_one: "Assign article?",
+                message_other: "Assign articles '{{ count }}'?",
+                success_one: "Article assigned successfully.",
+                success_other: "{{count}} articles assigned successfully.",
+                error_one: "Error assigning article.",
+                error_other: "Error assigning {{count}} articles.",
             },
         },
         error: {
@@ -1031,6 +1053,11 @@ const en = {
             label: "Categories",
             placeholder: "Select categories",
         },
+        user: {
+            label: "User",
+            placeholder: "Select user",
+            required: "User is required",
+        },
         actions: {
             addFavorite: {
                 success: 'Poetry added to favorites.',
@@ -1061,6 +1088,23 @@ const en = {
             },
             read: {
                 title: "Read poetry",
+            },
+            updateStatus: {
+                label: "Set poetry status",
+                title: "Updating Status",
+                success: "Poetry status updated successfully.",
+                error: "Error saving poetry statuses.",
+            },
+            assign: {
+                label: "Assign Poetry",
+                title_one: "Assign Poetry {{count}}",
+                title_other: "Assign poetries {{count}}",
+                message_one: "Assign poetry?",
+                message_other: "Assign poetries '{{ count }}'?",
+                success_one: "Poetry assigned successfully.",
+                success_other: "{{count}} poetries assigned successfully.",
+                error_one: "Error assigning poetry.",
+                error_other: "Error assigning {{count}} poetries.",
             },
         },
         error: {

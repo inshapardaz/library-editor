@@ -34,10 +34,8 @@ import BookPageEditPage from "./books/pages/edit";
 import BookUploadPage from "./books/upload";
 import BookProcessPage from "./books/process";
 import LibraryEditPage from "./libraries/edit";
-import PoetryEditPage from "./poetry/edit";
-import WritingEditPage from "./writings/edit";
-import WritingContentEditPage from "./writings/contentEdit";
-import PoetryContentEditPage from "./poetry/contentEdit";
+import WritingContentEditPage from "./writings/edit";
+import PoetryContentEditPage from "./poetry/edit";
 
 const Pages = {
     HomePage,
@@ -74,8 +72,6 @@ const Pages = {
     BookUploadPage,
     BookProcessPage,
     LibraryEditPage,
-    PoetryEditPage,
-    WritingEditPage,
     WritingContentEditPage,
     PoetryContentEditPage
 };
