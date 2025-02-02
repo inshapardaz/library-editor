@@ -15,7 +15,8 @@ import IssueArticlesList from "@/components/periodicals//issues/articles/issueAr
 import PageHeader from "@/components/pageHeader";
 import Error from '@/components/error';
 import Img from '@/components/img';
-import IssueInfo from "../../../components/periodicals/issues/issueInfo";
+import IssueInfo from "@/components/periodicals/issues/issueInfo";
+import IssueFilesList from "@/components/periodicals/issues/files/issueFilesList";
 
 // -----------------------------------------
 const PRIMARY_COL_HEIGHT = rem(300);
@@ -123,7 +124,7 @@ const IssuePage = () => {
                             </Tabs.Panel>
 
                             <Tabs.Panel value="pages">
-                                {/* <BookPagesList libraryId={libraryId} book={book} isLoading={loadingBook}
+                                {/* <BookPagesList libraryId={libraryId} issue={issue} isLoading={isFetchingIssue}
                             writerAssignmentFilter={writerAssignmentFilter}
                             reviewerAssignmentFilter={reviewerAssignmentFilter}
                             sortDirection={sortDirection}
@@ -134,7 +135,7 @@ const IssuePage = () => {
                             </Tabs.Panel>
 
                             <Tabs.Panel value="files">
-                                {/* <BookFilesList libraryId={libraryId} book={book} isLoading={loadingBook} /> */}
+                                <IssueFilesList libraryId={libraryId} issue={issue} isLoading={isFetchingIssue} />
                             </Tabs.Panel>
                         </Tabs>
                     </Card>

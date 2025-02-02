@@ -1327,6 +1327,10 @@ const en = {
             empty: {
                 title: "No file found",
             },
+            upload: {
+                title: "Drag images here or click to select files",
+                message: "Attach as many files as you like, each file should not exceed 300mb",
+            }
         },
         pages: {
             title: "Pages",
@@ -1378,6 +1382,24 @@ const en = {
                     "Do you want to make the first page of this file to be the issue image?",
                 success: "Issue image set successfully",
                 error: "Unable to set issue image",
+            },
+            applySplitToAll: {
+                title: "Apply split to all pages.",
+            },
+            applySplitToAllBelow: {
+                title: "Apply split to all pages after the current one.",
+            },
+            processAndSave: {
+                title: "Process split and save pages",
+            },
+            publish: {
+                title: "Publish Issue",
+                message:
+                    "Are you sure you want to publish issue '{{title}}'? It will merge text in all pages and save into articles. It will overwrite all article contents.",
+                busyMessage: "Publishing issue....",
+                updateIssueStatus: "Mark issue as published?",
+                success: "Issue published successfully.",
+                error: "Error publishing issue.",
             },
         },
     },
