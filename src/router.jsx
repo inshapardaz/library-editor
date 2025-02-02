@@ -32,6 +32,7 @@ const Router = () => {
                         <Route path="/libraries/:libraryId/periodicals/:periodicalId/issues/add" element={<Pages.EditIssuePage />} />
                         <Route path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber/issues/:issueNumber/edit" element={<Pages.EditIssuePage />} />
                         <Route path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber/issues/:issueNumber/articles/add" element={<Pages.EditIssueArticlePage />} />
+                        <Route path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber/issues/:issueNumber/articles/:articleNumber/contents/edit" element={<Pages.IssueArticleContentEditPage />} />
                         <Route path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber/issues/:issueNumber/articles/:articleNumber/edit" element={<Pages.EditIssueArticlePage />} />
                         <Route path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber/issues/:issueNumber/articles/:articleNumber" element={<Pages.IssueArticlePage />} />
                         <Route path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber/issues/:issueNumber" element={<Pages.IssuePage />} />

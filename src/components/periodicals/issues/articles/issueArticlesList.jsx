@@ -1,35 +1,31 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
-import cx from 'clsx';
 
 // Ui Library Imports
-import { Center, Divider, Group, Loader, LoadingOverlay, rem, Skeleton, Space, Stack, Text, Title, useMantineTheme } from '@mantine/core';
-import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
+import { Button, Center, Checkbox, Group, Text, Tooltip } from '@mantine/core';
 
 // Local imports
 import { useGetIssueArticlesQuery, useUpdateIssueArticleSequenceMutation } from '@/store/slices/issueArticles.api';
-import { IconEdit, IconReaderText, IconGripVertical } from '@/components/icons';
-import AuthorsAvatar from '@/components/authors/authorsAvatar';
-import IconText from '@/components/iconText';
-import Error from '@/components/error';
-import If from '@/components/if';
-import classes from './issueArticlesList.module.css';
-import IssueArticleDeleteButton from './issueArticleDeleteButton';
+import DataView from '@/components/dataView';
 import { error, success } from '@/utils/notifications';
-//------------------------------
-
-const PRIMARY_COL_HEIGHT = rem(300);
+import IssueArticleListItem from './issueArticleListItem';
+import { IconAdd } from '@/components/icons';
+import IssueArticleAssignButton from './issueArticleAssignButton';
 //------------------------------
 
 const IssueArticlesList = ({
     libraryId,
     periodicalId = null,
     volumeNumber = null,
-    issueNumber = null
+    issueNumber = null,
+    issue
 }) => {
     const { t } = useTranslation();
-    const theme = useMantineTheme();
+
+    const [selection, setSelection] = useState([]);
+    const [selectedArticles, setSelectedArticles] = useState([]);
 
     const {
         refetch,
@@ -46,19 +42,47 @@ const IssueArticlesList = ({
     const [updateIssueArticleSequence, { isLoading: isUpdatingSequence }] =
         useUpdateIssueArticleSequenceMutation();
 
-    if (isFetching) {
-        return (<Skeleton height={PRIMARY_COL_HEIGHT} radius="md" />);
-    }
-    if (isError) {
-        return (<Error title={t('issues.error.loading.title')}
-            detail={t('issues.error.loading.detail')}
-            onRetry={refetch} />)
-    }
-
 
     if (!articles || !articles.data || articles.data.length < 1) {
         return (<Center h={100}><Text>{t('issue.articleCount', { count: 0 })}</Text></Center>);
     }
+
+    //--- Selection ------------------------------------
+    const onSelectChanged = (selectedArticle, checked) => {
+        const newSelection = [...selection];
+
+        if (checked) {
+            newSelection.push(selectedArticle.id);
+        } else {
+            const currentIndex = selection.indexOf(selectedArticle.id);
+            newSelection.splice(currentIndex, 1);
+        }
+
+        setSelection(newSelection);
+        setSelectedArticles(
+            articles.data.filter((p) => newSelection.includes(p.id))
+        );
+    };
+
+    const clearSelection = () => {
+        setSelection([]);
+        setSelectedArticles([]);
+    }
+
+    const onSelectAll = () => {
+        if (articles.data.length > 0 && selection.length === articles.data.length) {
+            clearSelection();
+        } else {
+            setSelection(articles.data.map((p) => p.id));
+            setSelectedArticles(articles.data);
+        }
+    };
+
+    const hasAllSelected = selection.length === articles?.data.length;
+    const hasPartialSelection =
+        selection.length > 0 && selection.length < articles?.data.length;
+
+    //------------------------------------------------------
 
     const onOrderChanged = ({ destination, source }) => {
         const fromIndex = source.index;
@@ -87,69 +111,101 @@ const IssueArticlesList = ({
         }
     }
 
-    const items = articles.data.map((article, index) => (
-        <Draggable key={article.id} index={index} draggableId={`${article.id}`}>
-            {(provided, snapshot) => (
-                <div
-                    className={cx(classes.item, { [classes.itemDragging]: snapshot.isDragging })}
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                >
-                    <div {...provided.dragHandleProps} className={classes.dragHandle}>
-                        <IconGripVertical size={18} stroke={1.5} />
-                    </div>
-                    <Text className={classes.symbol}>{article.sequenceNumber}</Text>
-                    <Group mt="md" className={classes.details}>
-                        <div>
-                            <Text component={Link} to={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/articles/${article.sequenceNumber}/contents/edit`}>
-                                {article.title}
-                            </Text>
-                            <Text c="dimmed" size="sm">
-                                {t(`editingStatus.${article.status}`)}
-                            </Text>
-                        </div>
-                        <AuthorsAvatar libraryId={libraryId} authors={article?.authors} />
-                        <span style={{ flex: 1 }}></span>
-                        <If condition={article.links.update} >
-                            <IconText
-                                icon={<IconReaderText height={16} style={{ color: theme.colors.dark[2] }} />}
-                                tooltip={t('issueArticle.actions.read.title')}
-                                link={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/articles/${article.sequenceNumber}`}
-                            />
-                        </If>
-                        <If condition={article.links.update} >
-                            <Divider orientation='vertical' />
-                            <IconText
-                                icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />}
-                                tooltip={t('actions.edit')}
-                                link={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/articles/${article.sequenceNumber}/edit`}
-                            />
-                        </If>
-                        <If condition={article.links.delete} >
-                            <Divider orientation='vertical' />
-                            <IssueArticleDeleteButton t={t} issueArticle={article} />
-                        </If>
-                    </Group>
-                </div>
-            )}
-        </Draggable>
-    ));
+    // const items = articles.data.map((article, index) => (
+    //     <Draggable key={article.id} index={index} draggableId={`${article.id}`}>
+    //         {(provided, snapshot) => (
+    //             <div
+    //                 className={cx(classes.item, { [classes.itemDragging]: snapshot.isDragging })}
+    //                 ref={provided.innerRef}
+    //                 {...provided.draggableProps}
+    //             >
+    //                 <div {...provided.dragHandleProps} className={classes.dragHandle}>
+    //                     <IconGripVertical size={18} stroke={1.5} />
+    //                 </div>
+    //                 <Text className={classes.symbol}>{article.sequenceNumber}</Text>
+    //                 <Group mt="md" className={classes.details}>
+    //                     <div>
+    //                         <Text component={Link} to={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/articles/${article.sequenceNumber}/contents/edit`}>
+    //                             {article.title}
+    //                         </Text>
+    //                         <Text c="dimmed" size="sm">
+    //                             {t(`editingStatus.${article.status}`)}
+    //                         </Text>
+    //                     </div>
+    //                     <AuthorsAvatar libraryId={libraryId} authors={article?.authors} />
+    //                     <span style={{ flex: 1 }}></span>
+    //                     <If condition={article.links.update} >
+    //                         <IconText
+    //                             icon={<IconReaderText height={16} style={{ color: theme.colors.dark[2] }} />}
+    //                             tooltip={t('issueArticle.actions.read.title')}
+    //                             link={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/articles/${article.sequenceNumber}`}
+    //                         />
+    //                     </If>
+    //                     <If condition={article.links.update} >
+    //                         <Divider orientation='vertical' />
+    //                         <IconText
+    //                             icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />}
+    //                             tooltip={t('actions.edit')}
+    //                             link={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/articles/${article.sequenceNumber}/edit`}
+    //                         />
+    //                     </If>
+    //                     <If condition={article.links.delete} >
+    //                         <Divider orientation='vertical' />
+    //                         <IssueArticleDeleteButton t={t} issueArticle={article} />
+    //                     </If>
+    //                 </Group>
+    //             </div>
+    //         )}
+    //     </Draggable>
+    // ));
 
-    return (<Stack>
-        <Title order={3}>{t('issue.articles.title')}</Title>
-        <Space h="md" />
-        <LoadingOverlay visible={isUpdatingSequence} loaderProps={{ children: <Center h={100}><Loader size={30} /></Center> }} />
-        <DragDropContext onDragEnd={onOrderChanged}>
-            <Droppable droppableId="issue-article-dnd-list" direction="vertical">
-                {(provided) => (
-                    <div {...provided.droppableProps} ref={provided.innerRef}>
-                        {items}
-                        {provided.placeholder}
-                    </div>
-                )}
-            </Droppable>
-        </DragDropContext>
-    </Stack>);
+    return (<DataView
+        emptyText={t('issue.articleCount', { count: 0 })}
+        dataSource={articles}
+        isFetching={Boolean(isFetching | isUpdatingSequence)}
+        isError={isError}
+        draggable
+        droppableId="draggable-issue-articles"
+        onOrderChanged={onOrderChanged}
+        errorTitle={t('book.error.loading.title')}
+        errorDetail={t('book.error.loading.detail')}
+        showViewToggle={false}
+        defaultViewType="list"
+        viewToggleKey="book-chapter-list"
+        showPagination={false}
+        onReload={refetch}
+        listItemRender={(article, index) => <IssueArticleListItem t={t}
+            libraryId={libraryId}
+            periodicalId={periodicalId}
+            issue={issue}
+            article={article}
+            key={article.id}
+            index={index}
+            isSelected={selection.indexOf(
+                article.id
+            ) >= 0}
+            onSelectChanged={(checked) => onSelectChanged(article, checked)} />}
+        showSearch={false} article
+        actions={
+            <Group>
+                <Checkbox
+                    onChange={onSelectAll}
+                    checked={hasAllSelected}
+                    indeterminate={hasPartialSelection} />
+                <Button.Group>
+                    <Tooltip label={t('issueArticle.actions.add.label')}>
+                        <Button key="issue-add-article" component={Link} to={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}/articles/add`} variant='default' ><IconAdd height={24} /></Button>
+                    </Tooltip>
+                    <IssueArticleAssignButton libraryId={libraryId} articles={selectedArticles} t={t} type='default' onCompleted={clearSelection} />
+                    {/* 
+                    <ChapterDeleteButton chapters={selectedChapters} t={t} type='default' onDeleted={clearSelection} />
+                    <ChapterStatusButton chapters={selectedChapters} t={t} type='default' onCompleted={clearSelection} />*/}
+                </Button.Group>
+            </Group >
+        }
+        cols={{ base: 1, xs: 2, sm: 2, md: 3, lg: 3, xl: 4 }}
+
+    />);
 }
 
 IssueArticlesList.propTypes = {
@@ -158,6 +214,7 @@ IssueArticlesList.propTypes = {
     volumeNumber: PropTypes.string,
     issueNumber: PropTypes.string,
     showTitle: PropTypes.bool,
+    issue: PropTypes.any,
 }
 
 export default IssueArticlesList;

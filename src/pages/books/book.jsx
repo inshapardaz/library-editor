@@ -166,7 +166,7 @@ const BookPage = () => {
                         <BookSeriesInfo libraryId={libraryId} book={book} />
                     </Stack>
                     <Space h="md" />
-                    <BookInfo libraryId={libraryId} book={book} isLoading={{ loadingBook }} />
+                    <BookInfo libraryId={libraryId} book={book} isLoading={loadingBook} />
                 </Grid.Col>
                 <Grid.Col span="auto">
                     <Card withBorder>

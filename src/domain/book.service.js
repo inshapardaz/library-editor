@@ -19,7 +19,7 @@ const updateChapterContent = ({ chapterContent, language, payload }) => {
 };
 
 const addIssueArticleContent = ({ article, language, payload }) => {
-    return axiosPrivate.post(article.links.add_content, payload, {
+    return axiosPrivate.post(`${article.links.add_content}?language=${language}`, payload, {
         headers: {
             "Content-Type": "application/json",
             "Content-Language": language || "en-US",
@@ -28,7 +28,7 @@ const addIssueArticleContent = ({ article, language, payload }) => {
 };
 
 const updateIssueArticleContent = ({ articleContent, language, payload }) => {
-    return axiosPrivate.put(articleContent.links.update, payload, {
+    return axiosPrivate.put(`${articleContent.links.update}?language=${language}`, payload, {
         headers: {
             "Content-Type": "application/json",
             "Content-Language": language || "en-US",

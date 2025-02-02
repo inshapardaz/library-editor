@@ -17,9 +17,9 @@ import { useAddIssueArticleMutation, useUpdateIssueArticleMutation }
 import PageHeader from "@/components/pageHeader";
 import Error from '@/components/error';
 import { IconPeriodical } from '@/components/icons';
-import PublishStatusSelect from '@/components/publishStatusSelect';
+import EditingStatusSelect from '@/components/editingStatusSelect';
 import AuthorsSelect from '@/components/authors/authorsSelect';
-import { BookStatus } from '@/models';
+import { EditingStatus } from '@/models';
 import { error, success } from '@/utils/notifications';
 
 //---------------------------------
@@ -56,7 +56,7 @@ const IssueArticleForm = ({ libraryId, article = null, onSubmit, onCancel }) => 
         initialValues: {
             title: '',
             authors: [],
-            status: BookStatus.AvailableForTyping
+            status: EditingStatus.Available
         },
 
         validate: {
@@ -85,7 +85,7 @@ const IssueArticleForm = ({ libraryId, article = null, onSubmit, onCancel }) => 
                 placeholder={t("issueArticle.authors.placeholder")}
                 {...form.getInputProps('authors')} />
 
-            <PublishStatusSelect t={t}
+            <EditingStatusSelect t={t}
                 label={t("issueArticle.status.label")}
                 {...form.getInputProps('status')}
             />

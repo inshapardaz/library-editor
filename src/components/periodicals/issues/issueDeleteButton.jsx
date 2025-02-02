@@ -7,12 +7,12 @@ import { useDeleteIssueMutation } from '@/store/slices/issues.api';
 import DeleteButton from "@/components/deleteButton";
 //---------------------------------
 
-const IssueDeleteButton = ({ libraryId, issue, frequency, t, onDeleted }) => {
+const IssueDeleteButton = ({ libraryId, issue, frequency, t, onDeleted, ...props }) => {
 
     const [deleteIssue, { isLoading: isDeleting }] = useDeleteIssueMutation();
     const title = moment(issue.issueDate).format(getDateFormatFromFrequency(frequency));
 
-    return (<DeleteButton
+    return (<DeleteButton {...props}
         title={t("issue.actions.delete.title")}
         message={t("issue.actions.delete.message", { name: title })}
         tooltip={t('issue.actions.delete.label', { name: title })}

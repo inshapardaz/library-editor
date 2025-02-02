@@ -61,6 +61,18 @@ export const issueArticlesApi = createApi({
             transformResponse: (response) => parseResponse(response),
             providesTags: ["IssueArticles"],
         }),
+        getIssueArticle: builder.query({
+            query: ({ libraryId,
+                periodicalId,
+                volumeNumber,
+                issueNumber,
+                articleNumber }) => ({
+                    url: `/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/articles/${articleNumber}`,
+                    method: "get",
+                }),
+            transformResponse: (response) => parseResponse(response),
+            providesTags: ["IssueArticle"],
+        }),
         addIssueArticle: builder.mutation({
             query: ({
                 libraryId,
@@ -81,14 +93,14 @@ export const issueArticlesApi = createApi({
                 method: "PUT",
                 data: removeLinks(payload),
             }),
-            invalidatesTags: ["Article", "IssueArticles"],
+            invalidatesTags: ["IssueArticle", "IssueArticles"],
         }),
         deleteIssueArticle: builder.mutation({
             query: ({ issueArticle }) => ({
                 url: issueArticle.links.delete,
                 method: "DELETE",
             }),
-            invalidatesTags: ["IssueArticles"],
+            invalidatesTags: ["IssueArticle", "IssueArticles"],
         }),
         deleteIssueArticles: builder.mutation({
             async queryFn(
@@ -107,7 +119,7 @@ export const issueArticlesApi = createApi({
                 });
             },
             invalidatesTags: (result, error) =>
-                error ? [] : ["IssueArticles"],
+                error ? [] : ["IssueArticle", "IssueArticles"],
         }),
         updateIssueArticles: builder.mutation({
             async queryFn(
@@ -128,7 +140,7 @@ export const issueArticlesApi = createApi({
             invalidatesTags: (result, error) =>
                 error ? [] : ["IssueArticles"],
         }),
-        assignIssueArticle: builder.mutation({
+        assignIssueArticles: builder.mutation({
             async queryFn(
                 { requests, payload, onProgress },
                 _queryApi,
@@ -161,16 +173,31 @@ export const issueArticlesApi = createApi({
             }),
             invalidatesTags: ["IssueArticles"],
         }),
+        getIssueArticleContent: builder.query({
+            query: ({ libraryId,
+                periodicalId,
+                volumeNumber,
+                issueNumber,
+                articleNumber,
+                language }) => ({
+                    url: `/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/articles/${articleNumber}/contents?language=${language}`,
+                    method: "get",
+                }),
+            transformResponse: (response) => parseResponse(response),
+            providesTags: ["IssueArticleContent"],
+        }),
     }),
 });
 
 export const {
     useGetIssueArticlesQuery,
+    useGetIssueArticleQuery,
     useAddIssueArticleMutation,
     useUpdateIssueArticleMutation,
     useUpdateIssueArticlesMutation,
     useDeleteIssueArticleMutation,
     useDeleteIssueArticlesMutation,
-    useAssignIssueArticleMutation,
+    useAssignIssueArticlesMutation,
     useUpdateIssueArticleSequenceMutation,
+    useGetIssueArticleContentQuery,
 } = issueArticlesApi;

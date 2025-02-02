@@ -25,7 +25,7 @@ const IssueListItem = ({ libraryId, issue, frequency }) => {
 
     return (<>
         <Group gap="sm" wrap="nowrap">
-            <Img w={IMAGE_WIDTH} radius="sm" src={issue?.links?.image} elseChildren={icon} />
+            <Img w={IMAGE_WIDTH} radius="sm" src={issue?.links?.image} fallback={icon} />
             <Stack>
                 <Group justify="space-between">
                     <Text component={Link} to={`/libraries/${libraryId}/periodicals/${issue.periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}`} truncate="end" fw={500}>{title}</Text>

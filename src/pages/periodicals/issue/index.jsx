@@ -1,20 +1,21 @@
 import { useTranslation } from "react-i18next";
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import moment from "moment";
 
 // UI Library Import
-import { Button, Card, Center, Divider, Group, rem, Skeleton, Text, useMantineTheme } from "@mantine/core";
-import moment from "moment";
+import { Card, Center, Container, Grid, rem, Skeleton, Space, Stack, Tabs, Text, useMantineTheme } from "@mantine/core";
 
 // Local Import
 import { useGetPeriodicalByIdQuery } from '@/store/slices/periodicals.api';
 import { useGetIssueQuery } from "@/store/slices/issues.api";
-import { IconVolumeNumber, IconIssueNumber, IconPages, IconIssueArticle, IconAdd } from '@/components/icons';
+import { IconIssue, IconPages, IconIssueArticle, IconFiles } from '@/components/icons';
 import IconNames from '@/components/iconNames';
 import { getDateFormatFromFrequency } from '@/utils';
 import IssueArticlesList from "@/components/periodicals//issues/articles/issueArticlesList";
 import PageHeader from "@/components/pageHeader";
-import IconText from '@/components/iconText';
 import Error from '@/components/error';
+import Img from '@/components/img';
+import IssueInfo from "../../../components/periodicals/issues/issueInfo";
 
 // -----------------------------------------
 const PRIMARY_COL_HEIGHT = rem(300);
@@ -22,6 +23,10 @@ const PRIMARY_COL_HEIGHT = rem(300);
 const IssuePage = () => {
     const { t } = useTranslation();
     const theme = useMantineTheme();
+
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const section = searchParams.get("section") ?? "articles";
     const { libraryId, periodicalId, volumeNumber, issueNumber } = useParams();
 
     const {
@@ -45,6 +50,10 @@ const IssuePage = () => {
         issueNumber,
     });
 
+    const onChange = (key) => {
+        navigate(`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/?section=${key}`);
+    };
+
     if (isFetchingPeriodical || isFetchingIssue) {
         return (<Skeleton height={PRIMARY_COL_HEIGHT} radius="md" />);
     }
@@ -58,46 +67,80 @@ const IssuePage = () => {
     }
 
     const title = moment(issue.issueDate).format(getDateFormatFromFrequency(periodical?.frequency));
+    const icon = <Center h={450}><IconIssue width={250} style={{ color: theme.colors.dark[1] }} /></Center>;
 
 
     return (<>
         <PageHeader title={`${periodical?.title} - ${title}`}
-            imageLink={issue.links?.image}
-            defaultIcon={IconNames.Periodical}
-            subTitle={
-                <Group>
-                    <IconText icon={<IconVolumeNumber style={{ color: theme.colors.dark[2] }} />}
-                        text={t('issue.volumeNumber.title', { volumeNumber: issue.volumeNumber })}
-                        link={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}`} />
-                    <Divider orientation="vertical" />
-                    <IconText icon={<IconIssueNumber style={{ color: theme.colors.dark[2] }} />}
-                        text={t('issue.issueNumber.title', { issueNumber: issue.issueNumber })} />
-                    <Divider orientation="vertical" />
-                    <IconText icon={<IconPages style={{ color: theme.colors.dark[2] }} />}
-                        text={t('issue.pageCount', { count: issue.pageCount })} />
-                    <Divider orientation="vertical" />
-                    <IconText icon={<IconIssueArticle style={{ color: theme.colors.dark[2] }} />}
-                        text={t('issue.articleCount', { count: issue.articleCount })} />
-                </Group>
-            }
             details={periodical.description}
             breadcrumbs={[
                 { title: t('header.home'), href: `/libraries/${libraryId}`, icon: IconNames.Home },
                 { title: t('header.periodicals'), href: `/libraries/${libraryId}/periodicals`, icon: IconNames.Periodical },
                 { title: periodical?.title, href: `/libraries/${libraryId}/periodicals/${periodicalId}`, icon: IconNames.Periodical },
-            ]} actions={[
-                (<Button key="issue-edit" component={Link} to={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}/edit`} variant='default' leftSection={<IconAdd />} >{t('actions.edit')}</Button>),
-                (<Button key="issue-add-article" component={Link} to={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}/articles/add`} variant='default' leftSection={<IconAdd />} >{t('issueArticle.actions.add.label')}</Button>)
             ]} />
-        <Card withBorder m="sm">
-            <IssueArticlesList
-                libraryId={libraryId}
-                periodicalId={periodicalId}
-                volumeNumber={volumeNumber}
-                issueNumber={issueNumber}
-                showSearch
-                showTitle={false} />
-        </Card>
+        <Container size="responsive">
+            <Grid mih={50}>
+                <Grid.Col span="content">
+                    <Img
+                        src={issue?.links?.image}
+                        h={rem(400)}
+                        w="auto"
+                        radius="md"
+                        alt={title}
+                        fit='contain'
+                        fallback={icon}
+                    />
+                    <Stack hiddenFrom='md'>
+                        <Space h="md" />
+                    </Stack>
+                    <Space h="md" />
+                    <IssueInfo libraryId={libraryId} periodical={periodical} issue={issue} isLoading={isFetchingPeriodical || isFetchingIssue} />
+                </Grid.Col>
+                <Grid.Col span="auto">
+                    <Card withBorder>
+                        <Tabs value={section} onChange={onChange}>
+                            <Tabs.List>
+                                <Tabs.Tab value="articles" leftSection={<IconIssueArticle style={{ color: theme.colors.dark[3] }} />}>
+                                    {t('issue.articles.title')}
+                                </Tabs.Tab>
+                                <Tabs.Tab value="pages" leftSection={<IconPages style={{ color: theme.colors.dark[3] }} />}>
+                                    {t('issue.pages.title')}
+                                </Tabs.Tab>
+                                <Tabs.Tab value="files" leftSection={<IconFiles style={{ color: theme.colors.dark[3] }} />}>
+                                    {t('issue.files.title')}
+                                </Tabs.Tab>
+                            </Tabs.List>
+
+                            <Tabs.Panel value="articles">
+                                <IssueArticlesList
+                                    libraryId={libraryId}
+                                    periodicalId={periodicalId}
+                                    volumeNumber={volumeNumber}
+                                    issueNumber={issueNumber}
+                                    issue={issue}
+                                    showSearch
+                                    showTitle={false} />
+                            </Tabs.Panel>
+
+                            <Tabs.Panel value="pages">
+                                {/* <BookPagesList libraryId={libraryId} book={book} isLoading={loadingBook}
+                            writerAssignmentFilter={writerAssignmentFilter}
+                            reviewerAssignmentFilter={reviewerAssignmentFilter}
+                            sortDirection={sortDirection}
+                            status={status}
+                            pageNumber={pageNumber}
+                            pageSize={pageSize}
+                        /> */}
+                            </Tabs.Panel>
+
+                            <Tabs.Panel value="files">
+                                {/* <BookFilesList libraryId={libraryId} book={book} isLoading={loadingBook} /> */}
+                            </Tabs.Panel>
+                        </Tabs>
+                    </Card>
+                </Grid.Col>
+            </Grid>
+        </Container>
     </>)
 }
 

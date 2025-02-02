@@ -75,7 +75,7 @@ PeriodicalListItem.propTypes = {
         description: PropTypes.string,
         language: PropTypes.string,
         issueCount: PropTypes.number,
-        frequency: PropTypes.number,
+        frequency: PropTypes.any,
         links: PropTypes.shape({
             image: PropTypes.string,
             update: PropTypes.string,
