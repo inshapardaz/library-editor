@@ -78,6 +78,7 @@ IssueListItem.propTypes = {
         periodicalName: PropTypes.string,
         pageCount: PropTypes.number,
         articleCount: PropTypes.number,
+        contents: PropTypes.array,
         links: PropTypes.shape({
             image: PropTypes.string,
             update: PropTypes.string,

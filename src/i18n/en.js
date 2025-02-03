@@ -1376,6 +1376,27 @@ const en = {
             downloadFile: {
                 title: "Download file",
             },
+            loadFileImages: {
+                title: "Load File Images",
+                progress: "Loading pages {{completed}} of {{total}}",
+                selectOtherFile: "Select other file",
+                page: "Page {{current}} of {{total}}",
+                loadSavedSetting: "Load previously saved settings",
+                messages: {
+                    downloadingFile: "Downloading file...",
+                    loadingPages:
+                        "Parsing pages from pdf. It might take some time. Please keep this window open and in focus.",
+                    savingPages:
+                        "Saving pages. It might take some time. Please keep this window open and in focus.",
+                    loaded: "All pages loaded successfully.",
+                    failedLoading: "Failed to load all pages.",
+                    selectImage: "Please select an image",
+                    errorFileType:
+                        "Only PDF cannot be processed. Other file types are not supported",
+                    errorLoadingSavedSettings:
+                        "Error loading saved settings. Saved settings are removed.",
+                },
+            },
             setFirstPageAsImage: {
                 title: "Set first page of file as issue image.",
                 message:
@@ -1402,6 +1423,12 @@ const en = {
                 error: "Error publishing issue.",
             },
         },
+        error: {
+            loading: {
+                title: "Error loading book",
+                detail: "Unexpected error occured loading book. Please retry again."
+            },
+        }
     },
     issueArticles: {
         title: "Writings",

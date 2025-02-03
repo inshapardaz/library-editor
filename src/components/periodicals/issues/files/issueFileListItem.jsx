@@ -75,7 +75,7 @@ const IssueFileListItem = ({ t, libraryId, issue, content }) => {
                 <IconText
                     icon={<IconProcessDocument height={16} style={{ color: theme.colors.dark[2] }} />}
                     tooltip={t('issue.actions.processAndSave.title')}
-                    link={`/libraries/${libraryId}/books/${issue.id}/files/${content.id}/process`} />
+                    link={`/libraries/${libraryId}/periodicals/${issue.periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}/files/${content.id}/process`} />
 
             </If>
             <If condition={content.links.delete}>
@@ -89,10 +89,13 @@ const IssueFileListItem = ({ t, libraryId, issue, content }) => {
 
 
 IssueFileListItem.propTypes = {
-    libraryId: PropTypes.string,
+    libraryId: PropTypes.any,
     t: PropTypes.any,
     issue: PropTypes.shape({
         id: PropTypes.number,
+        volumeNumber: PropTypes.number,
+        issueNumber: PropTypes.number,
+        periodicalId: PropTypes.any,
     }),
     index: PropTypes.number,
     content: PropTypes.shape({

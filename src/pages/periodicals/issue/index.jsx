@@ -135,7 +135,7 @@ const IssuePage = () => {
                             </Tabs.Panel>
 
                             <Tabs.Panel value="files">
-                                <IssueFilesList libraryId={libraryId} issue={issue} isLoading={isFetchingIssue} />
+                                <IssueFilesList libraryId={libraryId} periodicalId={periodicalId} issue={issue} isLoading={isFetchingIssue} />
                             </Tabs.Panel>
                         </Tabs>
                     </Card>
