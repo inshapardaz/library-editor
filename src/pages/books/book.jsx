@@ -22,7 +22,7 @@ import {
 // Local imports
 import { useGetBookQuery } from '@/store/slices/books.api';
 import BookChaptersList from '@/components/books/chapters/bookChaptersList';
-import BookPagesList from '@/components/books/pages/bookPagesList';
+import BookPagesList from '@/components/books/pages/pagesList';
 import BookSeriesInfo from '@/components/series/bookSeriesInfo';
 import FavoriteButton from '@/components/books/favoriteButton';
 import AuthorsAvatar from '@/components/authors/authorsAvatar';

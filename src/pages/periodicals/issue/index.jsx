@@ -11,12 +11,13 @@ import { useGetIssueQuery } from "@/store/slices/issues.api";
 import { IconIssue, IconPages, IconIssueArticle, IconFiles } from '@/components/icons';
 import IconNames from '@/components/iconNames';
 import { getDateFormatFromFrequency } from '@/utils';
-import IssueArticlesList from "@/components/periodicals//issues/articles/issueArticlesList";
+import IssueArticlesList from "@/components/periodicals/issues/articles/issueArticlesList";
 import PageHeader from "@/components/pageHeader";
 import Error from '@/components/error';
 import Img from '@/components/img';
 import IssueInfo from "@/components/periodicals/issues/issueInfo";
 import IssueFilesList from "@/components/periodicals/issues/files/issueFilesList";
+import IssuePagesList from "@/components/periodicals/issues/pages/pagesList";
 
 // -----------------------------------------
 const PRIMARY_COL_HEIGHT = rem(300);
@@ -28,6 +29,12 @@ const IssuePage = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const section = searchParams.get("section") ?? "articles";
+    const writerAssignmentFilter = searchParams.get("writerAssignmentFilter");
+    const reviewerAssignmentFilter = searchParams.get("reviewerAssignmentFilter");
+    const sortDirection = searchParams.get("sortDirection") ?? "ascending";
+    const pageNumber = parseInt(searchParams.get("pageNumber") ?? "1");
+    const pageSize = parseInt(searchParams.get("pageSize") ?? "12");
+    const status = searchParams.get("status");
     const { libraryId, periodicalId, volumeNumber, issueNumber } = useParams();
 
     const {
@@ -124,14 +131,14 @@ const IssuePage = () => {
                             </Tabs.Panel>
 
                             <Tabs.Panel value="pages">
-                                {/* <BookPagesList libraryId={libraryId} issue={issue} isLoading={isFetchingIssue}
-                            writerAssignmentFilter={writerAssignmentFilter}
-                            reviewerAssignmentFilter={reviewerAssignmentFilter}
-                            sortDirection={sortDirection}
-                            status={status}
-                            pageNumber={pageNumber}
-                            pageSize={pageSize}
-                        /> */}
+                                <IssuePagesList libraryId={libraryId} issue={issue} isLoading={isFetchingIssue}
+                                    writerAssignmentFilter={writerAssignmentFilter}
+                                    reviewerAssignmentFilter={reviewerAssignmentFilter}
+                                    sortDirection={sortDirection}
+                                    status={status}
+                                    pageNumber={pageNumber}
+                                    pageSize={pageSize}
+                                />
                             </Tabs.Panel>
 
                             <Tabs.Panel value="files">

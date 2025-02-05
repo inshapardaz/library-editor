@@ -138,7 +138,7 @@ export const issueArticlesApi = createApi({
                 });
             },
             invalidatesTags: (result, error) =>
-                error ? [] : ["IssueArticles"],
+                error ? [] : ["IssueArticle", "IssueArticles"],
         }),
         assignIssueArticles: builder.mutation({
             async queryFn(

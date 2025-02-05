@@ -1,195 +1,241 @@
-import PropTypes from 'prop-types';
 import { useEffect, useMemo, useState } from "react";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-// UI Library Imports
-import { Box, Button, Card, Center, Container, Grid, Group, LoadingOverlay, rem, Skeleton, TextInput, useMantineTheme } from "@mantine/core";
-import { useForm, isNotEmpty } from '@mantine/form';
+// Ui library Imports
+import { Alert, Box, Button, Container, Divider, Group, LoadingOverlay, Tooltip } from "@mantine/core";
+import { useFullscreen } from "@mantine/hooks";
 
-// Local imports
+// Local Imports
 import {
-    useGetArticleQuery,
-}
-    from '@/store/slices/issues.api';
-import { useAddIssueArticleMutation, useUpdateIssueArticleMutation }
-    from '@/store/slices/issueArticles.api';
+    useGetIssueArticleQuery,
+    useGetIssueArticleContentQuery,
+    useUpdateIssueArticleMutation,
+} from "@/store/slices/issueArticles.api";
+
+import { useGetPeriodicalByIdQuery } from '@/store/slices/periodicals.api';
+import { useGetIssueQuery } from "@/store/slices/issues.api";
+import {
+    addIssueArticleContent,
+    updateIssueArticleContent
+} from '@/domain/book.service'
+
+import { selectedLanguage } from '@/store/slices/uiSlice';
 import PageHeader from "@/components/pageHeader";
+import IconNames from '@/components/iconNames';
+import { IconAdd, IconFullScreenExit, IconFullScreen, IconDone, IconRight, IconLeft } from "@/components/icons";
 import Error from '@/components/error';
-import { IconPeriodical } from '@/components/icons';
-import EditingStatusSelect from '@/components/editingStatusSelect';
-import AuthorsSelect from '@/components/authors/authorsSelect';
+import If from '@/components/if';
 import { EditingStatus } from '@/models';
+import EditingStatusIcon from "@/components/editingStatusIcon";
+import AuthorsAvatar from '@/components/authors/authorsAvatar';
+import Editor, { EditorFormat, DefaultConfiguration } from "@/components/editor";
 import { error, success } from '@/utils/notifications';
+//------------------------------------------
+const getLanguage = (article, language) => {
+    if (language) {
+        if (article && article.contents) {
+            var foundContent = article.contents.find(d => d.language === language);
+            if (foundContent?.language) {
+                return foundContent?.language;
+            }
+        }
 
-//---------------------------------
+        return language;
+    }
 
-
-const PageLoading = () => {
-    const PRIMARY_COL_HEIGHT = rem(300);
-    const SECONDARY_COL_HEIGHT = `calc(${PRIMARY_COL_HEIGHT} / 2 - var(--mantine-spacing-md) / 2)`;
-    return (<Container fluid mt="sm">
-        <Grid mih={50}>
-            <Grid.Col span={{ base: 12, md: 4, lg: 3 }}>
-                <Skeleton height={SECONDARY_COL_HEIGHT} radius="md" />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 8, lg: 9 }}>
-                <Skeleton height={SECONDARY_COL_HEIGHT} radius="md" />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 4, lg: 3 }}>
-                <Skeleton height={SECONDARY_COL_HEIGHT} radius="md" />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 8, lg: 9 }}>
-                <Skeleton height={SECONDARY_COL_HEIGHT} radius="md" />
-            </Grid.Col>
-        </Grid>
-    </Container>);
+    return 'ur';
 }
-//---------------------------------
 
-
-const IssueArticleForm = ({ libraryId, article = null, onSubmit, onCancel }) => {
+//------------------------------------------
+const IssueArticleContentEditPage = () => {
     const { t } = useTranslation();
-    const [loaded, setLoaded] = useState(false);
-    const form = useForm({
-        mode: 'uncontrolled',
-        initialValues: {
-            title: '',
-            authors: [],
-            status: EditingStatus.Available
-        },
+    const { ref, toggle, fullscreen } = useFullscreen();
+    const { libraryId, periodicalId, volumeNumber, issueNumber, articleNumber } = useParams();
+    const [searchParams] = useSearchParams();
+    const langParameter = searchParams.get("language");
+    const lang = useSelector(selectedLanguage)
+    const [isSaving, setIsSaving] = useState(false)
+    const [contents, setContents] = useState('')
 
-        validate: {
-            title: isNotEmpty(t("issueArticle.title.required")),
-            authors: value => value.length < 1 ? (t("issueArticle.authors.required")) : null
-        },
+    const [update, { isLoading: isUpdating }] = useUpdateIssueArticleMutation();
+
+    const {
+        data: periodical,
+        isError: isPeriodicalError,
+        isFetching: isLoadingPeriodical,
+    } = useGetPeriodicalByIdQuery({
+        libraryId,
+        periodicalId
     });
 
-    useEffect(() => {
-        if (!loaded && article != null) {
-            form.initialize(article);
-            setLoaded(true);
-        }
-    }, [article, form, loaded]);
+    const {
+        refetch: refreshIssue,
+        data: issue,
+        isError: isErrorLoadingIssue,
+        isFetching: isLoadingIssue,
+    } = useGetIssueQuery({
+        libraryId, periodicalId, volumeNumber, issueNumber
+    }, { skip: isPeriodicalError });
 
-    return (
-        <form onSubmit={form.onSubmit((values) => onSubmit(values))}>
-            <TextInput key={form.key('title')}
-                label={t("issueArticle.title.label")}
-                placeholder={t("issueArticle.title.placeholder")}
-                {...form.getInputProps('title')}
-            />
+    const {
+        refetch,
+        data: article,
+        isError: isErrorLoadingArticle,
+        isFetching: isLoadingArticle,
+    } = useGetIssueArticleQuery({
+        libraryId, periodicalId, volumeNumber, issueNumber, articleNumber
+    }, { skip: isErrorLoadingIssue });
 
-            <AuthorsSelect t={t} libraryId={libraryId}
-                label={t("issueArticle.authors.label")}
-                placeholder={t("issueArticle.authors.placeholder")}
-                {...form.getInputProps('authors')} />
+    const language = useMemo(() => getLanguage(article, langParameter), [article, langParameter])
+    const {
+        refetch: refetchContent,
+        currentData: articleContent,
+        error: articleContentError,
+        isError: isErrorLoadingContent,
+        isFetching: isLoadingContent,
+    } = useGetIssueArticleContentQuery({
+        libraryId, periodicalId, volumeNumber, issueNumber, articleNumber, language: language
+    }, {
+        skip: isLoadingArticle || isErrorLoadingArticle || !libraryId || !articleNumber || !language
+    });
 
-            <EditingStatusSelect t={t}
-                label={t("issueArticle.status.label")}
-                {...form.getInputProps('status')}
-            />
+    const showCompleteButton =
+        article &&
+        (article.status === EditingStatus.Typing ||
+            article.status === EditingStatus.InReview);
 
-            <Group justify="flex-end" mt="md">
-                <Button type="submit">{t('actions.save')}</Button>
-                <Button variant='light' onClick={onCancel}>{t('actions.cancel')}</Button>
-            </Group>
-        </form>
-    );
-}
-
-IssueArticleForm.propTypes = {
-    libraryId: PropTypes.any,
-    onSubmit: PropTypes.func,
-    onCancel: PropTypes.func,
-    article: PropTypes.shape({
-        title: PropTypes.string,
-        authors: PropTypes.array,
-        status: PropTypes.string,
-        links: PropTypes.shape({
-            image: PropTypes.string,
-            update: PropTypes.string,
-            edit: PropTypes.string
-        })
-    })
-};
-
-//---------------------------------
-
-const EditIssueArticlePage = () => {
-    const navigate = useNavigate();
-    const theme = useMantineTheme();
-    const { t } = useTranslation();
-    const { libraryId, periodicalId, volumeNumber, issueNumber, articleNumber } = useParams();
-    const isEditing = useMemo(() => articleNumber != null, [articleNumber]);
-    const { data: article, refetch: refetchArticle, error: errorArticle, isFetching: isFetchingArticle } =
-        useGetArticleQuery({ libraryId, periodicalId, volumeNumber, issueNumber, articleNumber },
-            { skip: !libraryId || !periodicalId || !volumeNumber || !issueNumber || !articleNumber });
-    const [addIssueArticle, { isLoading: isAddingIssueArticle }] = useAddIssueArticleMutation();
-    const [updateIssueArticle, { isLoading: isUpdatingIssueArticle }] = useUpdateIssueArticleMutation();
 
     useEffect(() => {
-        if (article && !article?.links?.update) {
-            navigate('/403')
-        }
-    }, [article, navigate]);
-
-    const onSubmit = async (values) => {
-        if (isEditing) {
-            updateIssueArticle({ url: values.links.update, payload: values })
-                .unwrap()
-                .then(() => success({ message: t("issueArticle.actions.edit.success") }))
-                .then(() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}`))
-                .catch(() => error({ message: t("issueArticle.actions.edit.error") }));
+        if (articleContent?.text) {
+            setContents(articleContent.text);
         } else {
-            addIssueArticle({
-                libraryId,
-                periodicalId,
-                volumeNumber,
-                issueNumber,
-                payload: values
-            })
-                .unwrap()
-                .then(() => success({ message: t("issueArticle.actions.add.success") }))
-                .then(() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}`))
-                .catch(() => error({ message: t("issueArticle.actions.add.error") }));
+            setContents(null);
+        }
+    }, [articleContent]);
+
+    const onEditorSave = (content) => {
+        if (isNewContent) {
+            setIsSaving(true)
+            return addIssueArticleContent({ article, language, payload: content })
+                .then(refetchContent)
+                .then(() => success({ message: t("writing.actions.edit.success") }))
+                .catch(() => error({ message: t("writing.actions.edit.error") }))
+                .finally(() => setIsSaving(false));
+        } else if (articleContent) {
+            setIsSaving(true)
+            return updateIssueArticleContent({ articleContent, language, payload: content })
+                .then(() => success({ message: t("writing.actions.add.success") }))
+                .catch(() => error({ message: t("writing.actions.add.error") }))
+                .finally(() => setIsSaving(false));
         }
     };
 
-    const icon = <Center h={450}><IconPeriodical width={250} style={{ color: theme.colors.dark[1] }} /></Center>;
-
-    const title = article ? article.title : t("issueArticle.actions.add.label");
-
-    if (isFetchingArticle) return <PageLoading />;
-    if (errorArticle) {
-        return (<Container fluid mt="sm">
-            <Error title={t('issueArticle.error.loading.title')} //Add these translations
-                detail={t('issueArticle.error.loading.detail')}
-                onRetry={refetchArticle} />
-        </Container>)
+    const onComplete = () => {
+        if (article.status === EditingStatus.Typing || article.status === EditingStatus.InReview) {
+            const payload = {
+                ...article,
+                status: article.status === EditingStatus.Typing ? EditingStatus.Typed : EditingStatus.Completed,
+            };
+            return update({ url: article.links.update, payload })
+                .unwrap()
+                .then(() => success({ message: t("writing.actions.edit.success") }))
+                .catch((e) => {
+                    console.error(e)
+                    return error({ message: t("writing.actions.edit.error") });
+                });
+        }
     };
 
-    return (<Container fluid mt="sm">
-        <PageHeader title={title}>
-        </PageHeader>
-        <Container size="responsive">
-            <Box pos="relative">
-                <LoadingOverlay visible={isAddingIssueArticle || isUpdatingIssueArticle} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
-                <Grid
-                    mih={50}
-                >
-                    <Grid.Col span="content">
-                        {icon}
-                    </Grid.Col>
-                    <Grid.Col span="auto" >
-                        <Card withBorder maw={600}>
-                            <IssueArticleForm article={article} libraryId={libraryId} onSubmit={onSubmit} onCancel={() => navigate(-1)} />
-                        </Card>
-                    </Grid.Col>
-                </Grid>
-            </Box>
-        </Container>
-    </Container >);
+    const isNewContent = useMemo(() => article && articleContentError?.status === 404, [article, articleContentError?.status]);
+
+    if (isPeriodicalError || isErrorLoadingIssue || isErrorLoadingArticle || (!isNewContent && isErrorLoadingContent)) {
+        return (<Container fluid mt="sm">
+            <Error title={t('writing.error.loading.title')}
+                detail={t('writing.error.loading.detail')}
+                onRetry={() => { refreshIssue() && refetch() && refetchContent() }} />
+        </Container>)
+    }
+
+    const title = article?.title;
+    const actions = article ? <Group justify="flex-end" gap="xs" mb="md">
+        {showCompleteButton && (
+            <Tooltip label={t("actions.done")}>
+                <Button onClick={onComplete} variant="outline" color="green">
+                    <IconDone />
+                </Button>
+            </Tooltip>
+        )}
+        <Tooltip key="previous" label={t("actions.previous")}>
+            <Button variant="default" disabled={!article || !article.links.previous} component={Link}
+                to={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/articles/${article.sequenceNumber - 1}/contents/edit`}>
+                {lang.isRtl ? <IconRight /> : <IconLeft />}
+            </Button>
+        </Tooltip>
+        <Tooltip key="next" label={t("actions.next")}>
+            <Button variant="default" disabled={!article || !article.links.next} component={Link}
+                to={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/articles/${article.sequenceNumber + 1}/contents/edit`}>
+                {lang.isRtl ? <IconLeft /> : <IconRight />}
+            </Button>
+        </Tooltip>
+
+        <Tooltip key="fullscreen" label={t(fullscreen ? "actions.fullscreenExit" : "actions.fullscreen")}>
+            <Button variant="default" onClick={toggle} >
+                {fullscreen ? <IconFullScreenExit /> : <IconFullScreen />}
+            </Button>
+        </Tooltip>
+    </Group> : null;
+
+    return (<Container fluid mt="sm" bg="var(--mantine-color-body)" ref={ref}>
+        <PageHeader title={title} defaultIcon={IconNames.Chapters}
+            subTitle={
+                <Group visibleFrom='md'>
+                    <EditingStatusIcon editingStatus={article?.status} showText t={t} />
+                    <Divider orientation="vertical" />
+                    <AuthorsAvatar libraryId={libraryId} authors={article?.authors ?? []} />
+                </Group>
+            }
+            breadcrumbs={[
+                { title: t('header.home'), href: `/libraries/${libraryId}`, icon: IconNames.Home },
+                { title: t('header.periodicals'), href: `/libraries/${libraryId}/periodicals`, icon: IconNames.Periodicals },
+                { title: periodical?.title, href: `/libraries/${libraryId}/periodicals/${periodicalId}`, icon: IconNames.Periodical },
+                { title: t('issue.volumeNumber.title', { volumeNumber: issue?.volumeNumber }), href: `/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}`, icon: IconNames.VolumeNumber },
+                { title: t('issue.issueNumber.title', { issueNumber: issue?.issueNumber }), href: `/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}`, icon: IconNames.IssueNumber },
+                { title: article?.title, icon: IconNames.IssueArticle },
+            ]}
+            actions={actions}
+        />
+        <If condition={isNewContent}>
+            <Alert variant="light" color="yellow" withCloseButton title={t('writing.editor.newContents')} icon={<IconAdd />} />
+        </If>
+        <Box style={{ height: '100%', overflow: 'auto' }} >
+            <LoadingOverlay visible={isLoadingPeriodical || isLoadingIssue || isLoadingArticle || isLoadingContent || isUpdating || isSaving} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
+            <div style={{ height: `calc(100vh - ${fullscreen ? '160px' : '220px'})`, position: 'relative' }}>
+                <Editor defaultValue={contents}
+                    configuration={{
+                        ...DefaultConfiguration,
+                        richText: true,
+                        format: EditorFormat.Markdown,
+                        toolbar: {
+                            ...DefaultConfiguration.toolbar,
+                            showFontFormat: false,
+                            showSave: true,
+                            showZoom: true,
+                            showViewFont: true,
+                            showExtraFormat: false
+                        },
+                        spellchecker: {
+                            enabled: true,
+                            language: language,
+                        },
+                    }}
+                    language={language}
+                    contentKey={`article-${libraryId}-${periodicalId}-${volumeNumber}-${issueNumber}-${articleNumber}-${language}`}
+                    onSave={onEditorSave} />
+            </div>
+        </Box>
+    </Container>);
 }
 
-export default EditIssueArticlePage;
+export default IssueArticleContentEditPage;

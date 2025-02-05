@@ -712,6 +712,11 @@ const en = {
                 message:
                     "Set Chapter of first page of every chapter. Using this option will automatically set the chapters for remaining pages. This will overwrite any page chapter already set. Would you like to continue?",
             },
+            autoFillArticle: {
+                title: "Auto fill page article",
+                message:
+                    "Set Article of first page of every article. Using this option will automatically set the articles for remaining pages. This will overwrite any page article already set. Would you like to continue?",
+            },
         },
     },
     page: {
@@ -729,6 +734,11 @@ const en = {
             label: "Chapter",
             required: "Chapter is required.",
             placeholder: "Select chapter",
+        },
+        article: {
+            label: "Article",
+            required: "Article is required.",
+            placeholder: "Select article",
         },
         user: {
             label: "User",
@@ -755,7 +765,7 @@ const en = {
                 error: "Error saving page.",
             },
             assign: {
-                title: "Assign pages?",
+                title: "Assign pages",
                 message: "Assign page(s)?",
                 success_one: "Page assigned successfully.",
                 success_other: "{{count}} pages assigned successfully.",
@@ -799,6 +809,14 @@ const en = {
                 title_one: "Setting Chapter",
                 title_other: "Setting Chapter for {{count}} pages",
                 message: "Are you sure you want to change chapter for page(s)?",
+                success: "Pages updated successfully.",
+                error: "Error updating pages.",
+            },
+            setArticle: {
+                label: "Set article",
+                title_one: "Setting article",
+                title_other: "Setting article for {{count}} pages",
+                message: "Are you sure you want to change article for page(s)?",
                 success: "Pages updated successfully.",
                 error: "Error updating pages.",
             },
@@ -1492,6 +1510,7 @@ const en = {
         status: {
             label: "Status",
             placeholder: "Select writing status",
+            required: "Select status",
         },
         categories: {
             label: "Categories",

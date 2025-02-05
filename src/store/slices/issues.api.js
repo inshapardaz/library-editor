@@ -206,14 +206,14 @@ export const issuesApi = createApi({
             query: ({
                 url,
                 status = "Typing",
-                assignment = null,
+                writerAssignmentFilter = null,
                 reviewerAssignmentFilter = null,
                 pageNumber = 1,
                 pageSize = 12,
                 sortDirection = "ascending",
             }) => {
                 let queryVal = `?pageNumber=${pageNumber}&pageSize=${pageSize}${status ? `&status=${status}` : ""
-                    }${assignment ? `&assignmentFilter=${assignment}` : ""}${reviewerAssignmentFilter
+                    }${writerAssignmentFilter ? `&writerAssignmentFilter=${writerAssignmentFilter}` : ""}${reviewerAssignmentFilter
                         ? `&reviewerAssignmentFilter=${reviewerAssignmentFilter}`
                         : ""
                     }${sortDirection != "ascending"
@@ -268,7 +268,7 @@ export const issuesApi = createApi({
                 data: removeLinks(payload),
             }),
             transformResponse: (response) => parseResponse(response),
-            invalidatesTags: ["IssuePages"],
+            invalidatesTags: ["IssuePage", "IssuePages"],
         }),
         updateIssuePage: builder.mutation({
             query: ({ page }) => ({
@@ -277,7 +277,7 @@ export const issuesApi = createApi({
                 data: removeLinks(page),
             }),
             transformResponse: (response) => parseResponse(response),
-            invalidatesTags: ["IssuePages"],
+            invalidatesTags: ["IssuePage", "IssuePages"],
         }),
         updateIssuePages: builder.mutation({
             async queryFn(
@@ -296,14 +296,14 @@ export const issuesApi = createApi({
                 });
             },
             transformResponse: (response) => parseResponse(response),
-            invalidatesTags: (result, error) => (error ? [] : ["IssuePages"]),
+            invalidatesTags: (result, error) => (error ? [] : ["IssuePage", "IssuePages"]),
         }),
         deleteIssuePage: builder.mutation({
             query: ({ page }) => ({
                 url: page.links.delete,
                 method: "DELETE",
             }),
-            invalidatesTags: ["IssuePages"],
+            invalidatesTags: ["IssuePage", "IssuePages"],
         }),
         deleteIssuePages: builder.mutation({
             async queryFn(
@@ -321,7 +321,7 @@ export const issuesApi = createApi({
                     onProgress,
                 });
             },
-            invalidatesTags: (result, error) => (error ? [] : ["IssuePages"]),
+            invalidatesTags: (result, error) => (error ? [] : ["IssuePage", "IssuePages"]),
         }),
         assignIssuePage: builder.mutation({
             query: ({ page, payload }) => ({

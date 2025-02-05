@@ -28,8 +28,7 @@ import EditPeriodicalPage from "./periodicals/edit";
 import IssuePage from "./periodicals/issue";
 import IssueArticlePage from "./periodicals/issue/article";
 import EditIssuePage from "./periodicals/issue/edit";
-import EditIssueArticlePage from "./periodicals/issue/article/edit";
-import IssueArticleContentEditPage from "./periodicals/issue/article/editContents";
+import IssueArticleContentEditPage from "./periodicals/issue/article/edit";
 import CorrectionsPage from "./tools/correctionsPage";
 import BookPageEditPage from "./books/pages/edit";
 import BookUploadPage from "./books/upload";
@@ -69,7 +68,6 @@ const Pages = {
     EditIssuePage,
     IssueArticlePage,
     IssueArticleContentEditPage,
-    EditIssueArticlePage,
     CorrectionsPage,
     BookPageEditPage,
     BookUploadPage,

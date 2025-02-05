@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 
 // Ui Library Imports
-import { Button, Center, Checkbox, Group, Text, Tooltip } from '@mantine/core';
+import { Button, Checkbox, Group, Tooltip } from '@mantine/core';
 
 // Local imports
 import { useGetIssueArticlesQuery, useUpdateIssueArticleSequenceMutation } from '@/store/slices/issueArticles.api';
@@ -13,6 +12,8 @@ import { error, success } from '@/utils/notifications';
 import IssueArticleListItem from './issueArticleListItem';
 import { IconAdd } from '@/components/icons';
 import IssueArticleAssignButton from './issueArticleAssignButton';
+import IssueArticleEditForm from './issueArticleEditForm';
+import IssueArticleStatusButton from './issueArticleStatusButton';
 //------------------------------
 
 const IssueArticlesList = ({
@@ -41,11 +42,6 @@ const IssueArticlesList = ({
 
     const [updateIssueArticleSequence, { isLoading: isUpdatingSequence }] =
         useUpdateIssueArticleSequenceMutation();
-
-
-    if (!articles || !articles.data || articles.data.length < 1) {
-        return (<Center h={100}><Text>{t('issue.articleCount', { count: 0 })}</Text></Center>);
-    }
 
     //--- Selection ------------------------------------
     const onSelectChanged = (selectedArticle, checked) => {
@@ -111,54 +107,6 @@ const IssueArticlesList = ({
         }
     }
 
-    // const items = articles.data.map((article, index) => (
-    //     <Draggable key={article.id} index={index} draggableId={`${article.id}`}>
-    //         {(provided, snapshot) => (
-    //             <div
-    //                 className={cx(classes.item, { [classes.itemDragging]: snapshot.isDragging })}
-    //                 ref={provided.innerRef}
-    //                 {...provided.draggableProps}
-    //             >
-    //                 <div {...provided.dragHandleProps} className={classes.dragHandle}>
-    //                     <IconGripVertical size={18} stroke={1.5} />
-    //                 </div>
-    //                 <Text className={classes.symbol}>{article.sequenceNumber}</Text>
-    //                 <Group mt="md" className={classes.details}>
-    //                     <div>
-    //                         <Text component={Link} to={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/articles/${article.sequenceNumber}/contents/edit`}>
-    //                             {article.title}
-    //                         </Text>
-    //                         <Text c="dimmed" size="sm">
-    //                             {t(`editingStatus.${article.status}`)}
-    //                         </Text>
-    //                     </div>
-    //                     <AuthorsAvatar libraryId={libraryId} authors={article?.authors} />
-    //                     <span style={{ flex: 1 }}></span>
-    //                     <If condition={article.links.update} >
-    //                         <IconText
-    //                             icon={<IconReaderText height={16} style={{ color: theme.colors.dark[2] }} />}
-    //                             tooltip={t('issueArticle.actions.read.title')}
-    //                             link={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/articles/${article.sequenceNumber}`}
-    //                         />
-    //                     </If>
-    //                     <If condition={article.links.update} >
-    //                         <Divider orientation='vertical' />
-    //                         <IconText
-    //                             icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />}
-    //                             tooltip={t('actions.edit')}
-    //                             link={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/articles/${article.sequenceNumber}/edit`}
-    //                         />
-    //                     </If>
-    //                     <If condition={article.links.delete} >
-    //                         <Divider orientation='vertical' />
-    //                         <IssueArticleDeleteButton t={t} issueArticle={article} />
-    //                     </If>
-    //                 </Group>
-    //             </div>
-    //         )}
-    //     </Draggable>
-    // ));
-
     return (<DataView
         emptyText={t('issue.articleCount', { count: 0 })}
         dataSource={articles}
@@ -167,11 +115,11 @@ const IssueArticlesList = ({
         draggable
         droppableId="draggable-issue-articles"
         onOrderChanged={onOrderChanged}
-        errorTitle={t('book.error.loading.title')}
-        errorDetail={t('book.error.loading.detail')}
+        errorTitle={t('issueArticles.error.loading.title')}
+        errorDetail={t('issueArticles.error.loading.detail')}
         showViewToggle={false}
         defaultViewType="list"
-        viewToggleKey="book-chapter-list"
+        viewToggleKey="issue-articles-list"
         showPagination={false}
         onReload={refetch}
         listItemRender={(article, index) => <IssueArticleListItem t={t}
@@ -193,13 +141,18 @@ const IssueArticlesList = ({
                     checked={hasAllSelected}
                     indeterminate={hasPartialSelection} />
                 <Button.Group>
-                    <Tooltip label={t('issueArticle.actions.add.label')}>
-                        <Button key="issue-add-article" component={Link} to={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}/articles/add`} variant='default' ><IconAdd height={24} /></Button>
-                    </Tooltip>
+                    <IssueArticleEditForm libraryId={libraryId} issue={issue} >
+                        <Tooltip label={t('issueArticle.actions.add.label')}>
+                            <Button variant='default'>
+                                <IconAdd />
+                            </Button>
+                        </Tooltip>
+                    </IssueArticleEditForm>
                     <IssueArticleAssignButton libraryId={libraryId} articles={selectedArticles} t={t} type='default' onCompleted={clearSelection} />
                     {/* 
                     <ChapterDeleteButton chapters={selectedChapters} t={t} type='default' onDeleted={clearSelection} />
-                    <ChapterStatusButton chapters={selectedChapters} t={t} type='default' onCompleted={clearSelection} />*/}
+                    */}
+                    <IssueArticleStatusButton articles={selectedArticles} t={t} type='default' onCompleted={clearSelection} />
                 </Button.Group>
             </Group >
         }

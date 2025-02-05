@@ -368,6 +368,41 @@ export const updateLinkToIssuePage = (
         searchParams.set("sortDirection", sortDirection);
     }
 
+    console.log(`${location.pathname}?${searchParams.toString()}`)
+    return `${location.pathname}?${searchParams.toString()}`;
+};
+
+export const updateLinkToIssuePagesPage = (
+    location,
+    {
+        pageNumber,
+        pageSize,
+        statusFilter,
+        writerAssignmentFilter,
+        reviewerAssignmentFilter,
+        sortDirection,
+    }
+) => {
+    var searchParams = new URLSearchParams(location.search);
+    if (pageNumber) {
+        searchParams.set("pageNumber", pageNumber);
+    }
+    if (pageSize) {
+        searchParams.set("pageSize", pageSize);
+    }
+    if (statusFilter) {
+        searchParams.set("status", statusFilter);
+    }
+    if (writerAssignmentFilter) {
+        searchParams.set("writerAssignmentFilter", writerAssignmentFilter);
+    }
+    if (reviewerAssignmentFilter) {
+        searchParams.set("reviewerAssignmentFilter", reviewerAssignmentFilter);
+    }
+    if (sortDirection) {
+        searchParams.set("sortDirection", sortDirection);
+    }
+
     return `${location.pathname}?${searchParams.toString()}`;
 };
 
