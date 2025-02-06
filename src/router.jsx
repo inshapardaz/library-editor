@@ -61,6 +61,7 @@ const Router = () => {
                     <Route path="/libraries/:libraryId/writings/:articleId" element={<Pages.WritingPage />} />
                     <Route path="/libraries/:libraryId/books/:bookId/chapters/:chapterNumber/contents/edit" element={<Pages.ChapterEditorPage />} />
                     <Route path="/libraries/:libraryId/books/:bookId/pages/:pageNumber/contents/edit" element={<Pages.BookPageEditPage />} />
+                    <Route path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber/issues/:issueNumber/pages/:pageNumber/contents/edit" element={<Pages.IssuePageEditPage />} />
                     <Route path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber/issues/:issueNumber/files/:fileId/process" element={<Pages.IssueProcessPage />} />
                 </Route>
             </Routes>

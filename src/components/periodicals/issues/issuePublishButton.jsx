@@ -15,7 +15,7 @@ import { success, error } from '@/utils/notifications';
 
 //---------------------------------------
 
-const PublishButton = ({ issue, onPublished = () => { }, ...props }) => {
+const IssuePublishButton = ({ issue, onPublished = () => { }, ...props }) => {
     const { t } = useTranslation();
     const [opened, { open, close }] = useDisclosure(false);
     const [updateStatus, setUpdateStatus] = useState(false);
@@ -27,7 +27,7 @@ const PublishButton = ({ issue, onPublished = () => { }, ...props }) => {
     const onPublish = async () => {
         try {
 
-            await publish({ book: issue })
+            await publish({ issue })
                 .unwrap();
 
             if (updateStatus) {
@@ -75,7 +75,7 @@ const PublishButton = ({ issue, onPublished = () => { }, ...props }) => {
     );
 }
 
-PublishButton.propTypes = {
+IssuePublishButton.propTypes = {
     libraryId: PropTypes.any,
     issue: PropTypes.shape({
         id: PropTypes.number,
@@ -92,4 +92,4 @@ PublishButton.propTypes = {
 };
 
 
-export default PublishButton;
+export default IssuePublishButton;

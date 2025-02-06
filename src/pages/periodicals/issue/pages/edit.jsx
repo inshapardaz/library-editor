@@ -9,12 +9,12 @@ import { useFullscreen, useLocalStorage } from "@mantine/hooks";
 
 // Local imports
 import {
-    useGetBookQuery,
-    useGetBookPageQuery,
-    useAddBookPageMutation,
-    useUpdateBookPageMutation,
-    useUpdateBookPageImageMutation,
-} from '@/store/slices/books.api';
+    useGetIssueQuery,
+    useGetIssuePageQuery,
+    useAddIssuePageMutation,
+    useUpdateIssuePageMutation,
+    useUpdateIssuePageImageMutation
+} from '@/store/slices/issues.api';
 import { selectedLanguage } from "@/store/slices/uiSlice";
 import { EditingStatus } from '@/models';
 import Error from '@/components/error';
@@ -25,18 +25,18 @@ import IconNames from '@/components/iconNames';
 import { IconLeft, IconRight, IconDone, IconFullScreenExit, IconFullScreen, IconImage, IconNoImage } from "@/components/icons";
 import Editor, { EditorFormat, DefaultConfiguration } from "@/components/editor";
 import PageImage from "@/components/books/pages/pageImage";
-import PageAssignButton from '@/components/books/pages/pageAssignButton';
-import PageStatusButton from '@/components/books/pages/pageStatusButton';
-import PageChapterButton from '@/components/books/pages/pageChapterButton';
-import PageOcrButton from "@/components/books/pages/pageOcrButton";
+import IssuePageAssignButton from '@/components/periodicals/issues/pages/pageAssignButton';
+import IssuePageStatusButton from '@/components/periodicals/issues/pages/pageStatusButton';
+import IssuePageOcrButton from "@/components/periodicals/issues/pages/pageOcrButton";
 import { error, success } from '@/utils/notifications';
 import classes from './edit.module.css'
+import IssuePageArticleButton from "@/components/periodicals/issues/pages/pageArticleButton";
 //-------------------------------
 
-const BookPageEditPage = () => {
+const IssuePageEditPage = () => {
     const { t } = useTranslation();
     const { ref, toggle, fullscreen } = useFullscreen();
-    const { libraryId, bookId, pageNumber } = useParams();
+    const { libraryId, periodicalId, volumeNumber, issueNumber, pageNumber } = useParams();
     const lang = useSelector(selectedLanguage);
     const navigate = useNavigate();
     const [contents, setContents] = useState('')
@@ -47,32 +47,38 @@ const BookPageEditPage = () => {
         defaultValue: true
     });
     // Data operations
-    const [addBookPage, { isLoading: isAddingPage }] = useAddBookPageMutation();
-    const [updateBookPage, { isLoading: isUpdatingPage }] = useUpdateBookPageMutation();
-    const [updateBookPageImage, { isLoading: isUpdatingImage }] = useUpdateBookPageImageMutation();
+    const [addPage, { isLoading: isAddingPage }] = useAddIssuePageMutation();
+    const [updatePage, { isLoading: isUpdatingPage }] = useUpdateIssuePageMutation();
+    const [updatePageImage, { isLoading: isUpdatingImage }] = useUpdateIssuePageImageMutation();
 
     const {
-        data: book,
-        error: errorLoadingBook,
-        isFetching: loadingBook,
-        refetch: refetchBook
-    } = useGetBookQuery({
+        data: issue,
+        error: errorLoadingIssue,
+        isFetching: loadingIssue,
+        refetch: refetchIssue
+    } = useGetIssueQuery({
         libraryId,
-        bookId
+        periodicalId,
+        volumeNumber,
+        issueNumber
     });
 
-    const language = useMemo(() => book?.language ?? lang?.key ?? 'en', [book?.language, lang?.key]);
+    const language = useMemo(() => issue?.language ?? lang?.key ?? 'en', [issue?.language, lang?.key]);
 
     const {
         currentData: page,
         error: pageError,
         isFetching: loadingPage,
         refetch: refetchPage
-    } = useGetBookPageQuery(
-        { libraryId, bookId, pageNumber, language },
-        { skip: !book || !pageNumber || !language }
+    } = useGetIssuePageQuery({
+        libraryId,
+        periodicalId,
+        volumeNumber,
+        issueNumber,
+        pageNumber
+    },
+        { skip: !issue || !pageNumber || !language }
     );
-
 
     // ----------------------------------------
     const isNewContent = useMemo(() => page && pageError?.status === 404, [page, pageError?.status]);
@@ -87,7 +93,7 @@ const BookPageEditPage = () => {
 
     const uploadImage = async (_page) => {
         if (image) {
-            await updateBookPageImage({
+            await updatePageImage({
                 page: _page,
                 payload: image,
             }).unwrap();
@@ -98,11 +104,17 @@ const BookPageEditPage = () => {
         if (isNewContent) {
             setIsBusy(true)
             let newPage = null;
-            return addBookPage({
+            return addPage({
                 libraryId,
-                bookId,
+                periodicalId,
+                volumeNumber,
+                issueNumber,
+                pageNumber,
                 payload: {
-                    bookId,
+                    periodicalId,
+                    volumeNumber,
+                    issueNumber,
+                    pageNumber,
                     text: _content,
                 },
             }).unwrap()
@@ -112,24 +124,16 @@ const BookPageEditPage = () => {
                 })
                 .then(() => setImage(null))
                 .then(() => success({ message: t("page.actions.edit.success") }))
-                .then(() => navigate(
-                    `/libraries/${libraryId}/books/${bookId}/pages/${newPage.sequenceNumber}/edit`
-                ))
+                .then(() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issue.issueNumber}/pages/${newPage.sequenceNumber}/edit`))
                 .catch(() => error({ message: t("page.actions.edit.error") }))
                 .finally(() => setIsBusy(false));
         } else if (page) {
             setIsBusy(true)
             const payload = {
-                bookId: page.bookId,
-                chapterId: page.chapterId,
-                reviewerAccountId: page.reviewerAccountId,
-                reviewerAssignTimeStamp: page.reviewerAssignTimeStamp,
-                sequenceNumber: page.sequenceNumber,
-                status: page.status,
+                ...page,
                 text: _content,
-                links: page.links,
             };
-            return updateBookPage({ page: payload })
+            return updatePage({ page: payload })
                 .unwrap()
                 .then(uploadImage)
                 .then(() => setImage(null))
@@ -147,7 +151,7 @@ const BookPageEditPage = () => {
                 ...page,
                 status: page.status === EditingStatus.Typing ? EditingStatus.Typed : EditingStatus.Completed,
             };
-            return updateBookPage({ page: payload })
+            return updatePage({ page: payload })
                 .unwrap()
                 .then(() => success({ message: t("page.actions.edit.success") }))
                 .catch(() => error({ message: t("page.actions.edit.error") }));
@@ -164,7 +168,7 @@ const BookPageEditPage = () => {
             </Tooltip>
         )}
         {page && page.links.assign && (
-            <PageAssignButton
+            <IssuePageAssignButton
                 type="default"
                 libraryId={libraryId}
                 pages={[page]}
@@ -173,16 +177,16 @@ const BookPageEditPage = () => {
             />
         )}
         {page && page.links.update && (
-            <PageChapterButton
+            <IssuePageArticleButton
                 type="default"
                 libraryId={libraryId}
-                bookId={bookId}
+                issue={issue}
                 pages={[page]}
                 t={t}
             />
         )}
         {page && page.links.update && (
-            <PageStatusButton
+            <IssuePageStatusButton
                 type="default"
                 libraryId={libraryId}
                 pages={[page]}
@@ -190,8 +194,7 @@ const BookPageEditPage = () => {
             />
         )}
         {page && page.links.update && (
-            <PageOcrButton
-                book={book}
+            <IssuePageOcrButton
                 pages={[page]}
                 t={t}
                 type='default' />
@@ -208,17 +211,17 @@ const BookPageEditPage = () => {
             <Tooltip key="previous" label={t("actions.previous")}>
                 <Button variant="default" disabled={!page || !page.links.previous} component={Link} data-disabled={!page || !page.links.previous}
                     onClick={(event) => !page || !page.links.previous ? event.preventDefault() : null}
-                    to={`/libraries/${libraryId}/books/${bookId}/pages/${page.sequenceNumber - 1}/contents/edit`}>
+                    to={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/pages/${page.sequenceNumber - 1}/contents/edit`}>
                     {lang.isRtl ? <IconRight height={20} /> : <IconLeft height={20} />}
                 </Button>
             </Tooltip>
             <Button variant="default">
-                {page.sequenceNumber} / {book.pageCount}
+                {page.sequenceNumber} / {issue.pageCount}
             </Button>
             <Tooltip key="next" label={t("actions.next")}>
                 <Button variant="default" disabled={!page || !page.links.next} component={Link} data-disabled={!page || !page.links.next}
                     onClick={(event) => !page || !page.links.next ? event.preventDefault() : null}
-                    to={`/libraries/${libraryId}/books/${bookId}/pages/${page.sequenceNumber + 1}/contents/edit`}>
+                    to={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}/pages/${page.sequenceNumber + 1}/contents/edit`}>
                     {lang.isRtl ? <IconLeft height={20} /> : <IconRight height={20} />}
                 </Button>
             </Tooltip>
@@ -230,7 +233,7 @@ const BookPageEditPage = () => {
         </Tooltip>
     </Group> : null;
 
-    if (loadingBook || loadingPage) {
+    if (loadingIssue || loadingPage) {
         return (
             <div style={{ position: 'fixed', top: '50%', left: '50%' }}>
                 <Loader />
@@ -238,12 +241,12 @@ const BookPageEditPage = () => {
         );
     }
 
-    if (errorLoadingBook) {
+    if (errorLoadingIssue) {
         return (<Container fluid mt="sm">
             <Error title={t('page.error.loading.title')}
                 detail={t('page.error.loading.detail')}
                 onRetry={() => {
-                    refetchBook();
+                    refetchIssue();
                     refetchPage();
                 }} />
         </Container>)
@@ -260,10 +263,13 @@ const BookPageEditPage = () => {
             }
             breadcrumbs={[
                 { title: t('header.home'), href: `/libraries/${libraryId}`, icon: IconNames.Home },
-                { title: t('header.books'), href: `/libraries/${libraryId}/books`, icon: IconNames.Books },
-                { title: book.title, href: `/libraries/${libraryId}/books/${bookId}`, icon: IconNames.Book },
-                { title: t('book.pages'), href: `/libraries/${libraryId}/books/${bookId}?section=pages`, icon: IconNames.Pages },
-                { title: `${title}`, icon: IconNames.Page }
+                { title: t('header.periodicals'), href: `/libraries/${libraryId}/periodicals`, icon: IconNames.Periodicals },
+                { title: issue.periodicalName, href: `/libraries/${libraryId}/periodicals/${periodicalId}`, icon: IconNames.Periodical },
+                { title: t('issue.volumeNumber.title', { volumeNumber: issue?.volumeNumber }), href: `/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}`, icon: IconNames.VolumeNumber },
+                { title: t('issue.issueNumber.title', { issueNumber: issue?.issueNumber }), href: `/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}`, icon: IconNames.IssueNumber },
+                { title: t('pages.title'), href: `/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}?section=pages`, icon: IconNames.Pages },
+                { title: `${page.sequenceNumber}`, icon: IconNames.Pages },
+                { title: t('actions.edit'), icon: IconNames.Edit },
             ]}
             actions={actions}
         />
@@ -289,7 +295,7 @@ const BookPageEditPage = () => {
                             },
                         }}
                         language={language}
-                        contentKey={`page-${libraryId}-${bookId}-${pageNumber}`}
+                        contentKey={`page-${libraryId}-${issue.id}-${pageNumber}`}
                         onSave={onEditorSave} />
                 </div>
                 <If condition={showImge}>
@@ -303,4 +309,4 @@ const BookPageEditPage = () => {
     </Container >);
 }
 
-export default BookPageEditPage;
+export default IssuePageEditPage;

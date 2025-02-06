@@ -17,7 +17,7 @@ import {
 import IconText from '@/components/iconText';
 import If from '@/components/if';
 import { getStatusColor } from '@/models/editingStatus';
-import PublishButton from './publishButton';
+import IssuePublishButton from './issuePublishButton';
 import { getBookStatusText, BookStatusIcon } from '@/components/books/bookStatusIcon';
 import IssueDeleteButton from './issueDeleteButton';
 import EditingStatusIcon from '@/components/editingStatusIcon';
@@ -57,7 +57,7 @@ const IssueInfo = ({ libraryId, periodical, issue }) => {
         </If>
 
         <If condition={issue.pageCount > 0}>
-            <PublishButton fullWidth variant='outline' color="green" issue={issue} />
+            <IssuePublishButton fullWidth variant='outline' color="green" issue={issue} />
         </If>
 
         <If condition={issue.links.delete}>
