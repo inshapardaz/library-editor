@@ -1,6 +1,6 @@
 import cx from 'clsx';
 import PropTypes from 'prop-types';
-import { Box, Text, Group, Divider, Stack } from '@mantine/core';
+import { Box, Group, Divider, Stack } from '@mantine/core';
 import classes from './tableOfContents.module.css';
 import { Link } from 'react-router-dom';
 
@@ -27,7 +27,7 @@ const TableOfContents = ({ title, subTitle, image, links, selectedKey, onSelecte
         <div>
             <Group mb="md" justify="space-between">
                 <Stack>
-                    <Text>{title}</Text>
+                    {title}
                     {subTitle}
                 </Stack>
                 {image}
@@ -47,7 +47,7 @@ TableOfContents.propTypes = {
         order: PropTypes.number,
     })),
     onSelected: PropTypes.func,
-    title: PropTypes.string,
+    title: PropTypes.any,
     subTitle: PropTypes.any,
     image: PropTypes.any,
     selectedKey: PropTypes.any
