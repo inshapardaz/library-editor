@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from 'react-router-dom';
 
 // UI Library Imports
-import { useMantineTheme, Stack, Button, Divider } from "@mantine/core";
+import { useMantineTheme, Stack, Button, Divider, Text, Group, Tooltip, Progress } from "@mantine/core";
 
 // Local Imports
 import {
@@ -16,9 +16,11 @@ import {
 
 import IconText from '@/components/iconText';
 import If from '@/components/if';
-// import PublishButton from './publishButton';
+import { getStatusColor } from '@/models/editingStatus';
+import PublishButton from './publishButton';
 import { getBookStatusText, BookStatusIcon } from '@/components/books/bookStatusIcon';
 import IssueDeleteButton from './issueDeleteButton';
+import EditingStatusIcon from '@/components/editingStatusIcon';
 
 //------------------------------------------------------
 
@@ -53,32 +55,31 @@ const IssueInfo = ({ libraryId, periodical, issue }) => {
             <Button fullWidth variant='outline' leftSection={<IconEdit />} component={Link}
                 to={`/libraries/${libraryId}/periodicals/${periodical.id}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}/edit`}>{t('actions.edit')}</Button>
         </If>
-        {/* 
+
         <If condition={issue.pageCount > 0}>
-            <PublishButton fullWidth variant='outline' color="green" libraryId={libraryId} book={book} />
-        </If> */}
+            <PublishButton fullWidth variant='outline' color="green" issue={issue} />
+        </If>
 
         <If condition={issue.links.delete}>
             <IssueDeleteButton type="button" fullWidth variant='outline' color="red" t={t} issue={issue} frequency={periodical?.frequency} onDeleted={() => navigate(`/libraries/${libraryId}/books/`)} />
         </If>
 
 
-        {/* Page status api not available
-         <If condition={book && book.pageStatus && book.pageStatus.length > 0}>
+        <If condition={issue && issue.pageStatus && issue.pageStatus.length > 0}>
             <Divider />
             <Text>{t('book.pagesStatus')}</Text>
             <Stack gap="sm">
-                {book.pageStatus?.map(s =>
-                (<Group key={s.status} component={Link} to={`/libraries/${libraryId}/books/${book.id}/?section=pages&status=${s.status}`}>
-                    <EditingStatusIcon editingStatus={s.status} t={t} style={{ color: theme.colors.dark[2] }} />
-                    <Tooltip label={`${t(`editingStatus.${s.status}`)} : ${s.count}`}>
-                        <Progress size="lg" value={s.percentage} color={getStatusColor(s.status)} style={{ flex: 1 }} />
-                    </Tooltip>
-                </Group>
-                )
+                {issue.pageStatus?.map(s =>
+                (
+                    <Tooltip key={s.status} label={`${t(`editingStatus.${s.status}`)} : ${s.count}`}>
+                        <Group component={Link} to={`/libraries/${libraryId}/periodicals/${periodical.id}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}?section=pages&status=${s.status}`}>
+                            <EditingStatusIcon editingStatus={s.status} t={t} style={{ color: theme.colors.dark[2] }} />
+                            <Progress size="lg" value={s.percentage} color={getStatusColor(s.status)} style={{ flex: 1 }} />
+                        </Group>
+                    </Tooltip>)
                 )}
             </Stack>
-        </If> */}
+        </If>
     </Stack>);
 };
 
@@ -110,11 +111,11 @@ IssueInfo.propTypes = {
             mimeType: PropTypes.string,
             language: PropTypes.string,
         })),
-        // pageStatus: PropTypes.arrayOf(PropTypes.shape({
-        //     status: PropTypes.string,
-        //     count: PropTypes.number,
-        //     percentage: PropTypes.number,
-        // }))
+        pageStatus: PropTypes.arrayOf(PropTypes.shape({
+            status: PropTypes.string,
+            count: PropTypes.number,
+            percentage: PropTypes.number,
+        }))
     })
 };
 

@@ -1295,6 +1295,7 @@ const en = {
         pageCount_zero: "No pages",
         pageCount_one: "1 page",
         pageCount_other: "{{count}} pages",
+        pagesStatus: "Pages Progess",
         volumeNumber: {
             title: "Volume Number {{volumeNumber}}",
             label: "Volume Number",
@@ -1434,7 +1435,7 @@ const en = {
             publish: {
                 title: "Publish Issue",
                 message:
-                    "Are you sure you want to publish issue '{{title}}'? It will merge text in all pages and save into articles. It will overwrite all article contents.",
+                    "Are you sure you want to publish issue? It will merge text in all pages and save into articles. It will overwrite all article contents.",
                 busyMessage: "Publishing issue....",
                 updateIssueStatus: "Mark issue as published?",
                 success: "Issue published successfully.",

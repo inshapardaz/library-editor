@@ -45,8 +45,8 @@ const PageListItem = ({ t, libraryId, issue, page, index, isSelected = false, on
                     </Text>
                     <Group mt="md" className={classes.details}>
                         <Stack gap="sm">
-                            <If condition={page.chapterTitle}>
-                                <Text mx="sm" component={Link} to={`/libraries/${libraryId}/periodicals/${issue.periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}/pages/${page.sequenceNumber}/contents/edit`}>{page.chapterTitle}</Text>
+                            <If condition={page.articleName}>
+                                <Text mx="sm" component={Link} to={`/libraries/${libraryId}/periodicals/${issue.periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}/pages/${page.sequenceNumber}/contents/edit`}>{page.articleName}</Text>
                             </If>
                             <Group>
                                 <Text c="dimmed" size="sm">
@@ -117,8 +117,8 @@ PageListItem.propTypes = {
         writerAccountName: PropTypes.string,
         reviewerAccountId: PropTypes.number,
         reviewerAccountName: PropTypes.string,
-        chapterId: PropTypes.number,
-        chapterTitle: PropTypes.string,
+        articleId: PropTypes.number,
+        articleName: PropTypes.string,
         categories: PropTypes.arrayOf(PropTypes.shape({
             id: PropTypes.number,
             name: PropTypes.string

@@ -118,15 +118,15 @@ const IssuePagesList = ({ libraryId, issue, isLoading,
     const hasPartialSelection = selection.length > 0 && selection.length < pages?.data.length;
 
     return <DataView
-        emptyText={t('pages.empty.title')}
+        emptyText={t('page.empty.title')}
         dataSource={pages}
         isFetching={Boolean(isLoading | loadingPages | isUpdatingSequence)}
         isError={errorLoadingPages}
         draggable
         droppableId="draggable-books-pages"
         onOrderChanged={onOrderChanged}
-        errorTitle={t('pages.error.loading.title')}
-        errorDetail={t('pages.error.loading.detail')}
+        errorTitle={t('page.error.loading.title')}
+        errorDetail={t('page.error.loading.detail')}
         showViewToggle={true}
         viewToggleKey="book-page-list"
         cardRender={(page, index) => <PageCard t={t}

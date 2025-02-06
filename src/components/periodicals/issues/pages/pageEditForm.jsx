@@ -63,7 +63,6 @@ const PageEditForm = ({ libraryId, issue, page = null, children }) => {
         if (page) {
             const payload = {
                 ...page,
-                title: values.title,
                 articleId: values.articleId,
                 status: values.status,
             };
@@ -100,14 +99,14 @@ const PageEditForm = ({ libraryId, issue, page = null, children }) => {
                     placeholder={t("page.sequenceNumber.placeholder")}
                     {...form.getInputProps('sequenceNumber')} />
                 <IssueArticleSelect
-                    key={form.key('chapterId')}
+                    key={form.key('articleId')}
                     t={t}
                     libraryId={libraryId}
                     periodicalId={issue.periodicalId}
                     volumeNumber={issue.volumeNumber}
                     issueNumber={issue.issueNumber}
-                    label={t("page.chapter.label")}
-                    {...form.getInputProps('chapterId')} />
+                    label={t("page.article.label")}
+                    {...form.getInputProps('articleId')} />
                 <EditingStatusSelect t={t}
                     label={t("page.status.title")}
                     {...form.getInputProps('status')} />

@@ -155,7 +155,7 @@ const EditIssuePage = () => {
 
     const onSubmit = async (issue) => {
         if (isEditing) {
-            updateIssue({ libraryId, periodicalId, volumeNumber: issue.volumeNumber, issueNumber: issue.issueNumber, payload: issue })
+            updateIssue({ issue, payload: issue })
                 .unwrap()
                 .then(() => uploadImage(periodicalId, issue.volumeNumber, issue.issueNumber))
                 .then(() => success({ message: t("issue.actions.edit.success") }))

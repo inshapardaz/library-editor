@@ -14,8 +14,8 @@ const IssuePageAutoArticleUpdate = ({ pages, t, type, showIcon = true, onComplet
     const onOk = async () => {
         var c = null;
         return (page) => {
-            if (page.chapterId) {
-                c = page.chapterId;
+            if (page.articleId) {
+                c = page.articleId;
             } else if (c) {
                 if (page && page.links && page.links.update) {
                     return ({ ...page, articleId: c });
@@ -54,7 +54,7 @@ IssuePageAutoArticleUpdate.propTypes = {
         PropTypes.shape({
             id: PropTypes.number,
             title: PropTypes.string,
-            chapterId: PropTypes.number,
+            articleId: PropTypes.number,
             sequenceNumber: PropTypes.number,
             links: PropTypes.shape({
                 delete: PropTypes.string,

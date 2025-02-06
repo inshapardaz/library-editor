@@ -122,13 +122,10 @@ export const issuesApi = createApi({
         }),
         updateIssue: builder.mutation({
             query: ({
-                libraryId,
-                periodicalId,
-                volumeNumber,
-                issueNumber,
+                issue,
                 payload,
             }) => ({
-                url: `/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}`,
+                url: issue.links.update,
                 method: "PUT",
                 data: removeLinks(payload),
             }),
@@ -157,6 +154,13 @@ export const issuesApi = createApi({
                 method: "DELETE",
             }),
             invalidatesTags: ["Issues"],
+        }),
+        publishIssue: builder.mutation({
+            query: ({ issue }) => ({
+                url: issue.links.publish,
+                method: "POST",
+            }),
+            invalidatesTags: ["Issues", "Issue"],
         }),
         addIssueContent: builder.mutation({
             query: ({ issue, payload, language }) => {
@@ -436,6 +440,7 @@ export const {
     useUpdateIssueMutation,
     useUpdateIssueImageMutation,
     useDeleteIssueMutation,
+    usePublishIssueMutation,
     useAddIssueContentMutation,
     useUpdateIssueContentMutation,
     useDeleteIssueContentMutation,
