@@ -13,6 +13,7 @@ import { error, success } from '@/utils/notifications';
 
 const ChapterSelect = ({ t, libraryId, bookId, defaultValue = null, onChange, label, placeholder, disabled, ...props }) => {
     const [value, setValue] = useState(null);
+    const [search, setSearch] = useState('');
     const [currentValue, setCurrentValue] = useState(null);
     const combobox = useCombobox({
         onDropdownClose: () => combobox.resetSelectedOption(),
@@ -31,12 +32,13 @@ const ChapterSelect = ({ t, libraryId, bookId, defaultValue = null, onChange, la
 
     const options = useMemo(() => {
         return data
+            .filter((item) => item.title.toLowerCase().includes(search.toLowerCase().trim()))
             .map((chapter) => (
                 <Combobox.Option value={chapter.id} key={chapter.id}>
                     <span>{chapter.title}</span>
                 </Combobox.Option>
             ));
-    }, [data]);
+    }, [data, search]);
 
     //-------------------------------------------------
 
@@ -102,6 +104,7 @@ const ChapterSelect = ({ t, libraryId, bookId, defaultValue = null, onChange, la
                     value={value || ''}
                     onChange={(event) => {
                         setValue(event.currentTarget.value);
+                        setSearch(event.currentTarget.value);
                         combobox.updateSelectedOptionIndex();
                         combobox.openDropdown();
                     }}
@@ -128,7 +131,7 @@ const ChapterSelect = ({ t, libraryId, bookId, defaultValue = null, onChange, la
                         <If condition={options.length < 1 && value && value.trim().length !== 0 && !currentValue} >
                             <Combobox.Option value="$create"><Group gap="sm" wrap='nowrap'>
                                 <IconAdd height={24} />
-                                <span>{t('cahpter.actions.add.label')}</span>
+                                <span>{t('chapter.actions.add.label')}</span>
                             </Group>
                             </Combobox.Option>
                         </If>

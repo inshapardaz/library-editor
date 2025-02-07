@@ -86,7 +86,8 @@ const ChapterEditorPage = () => {
     );
 
     // ----------------------------------------
-    const isNewContent = useMemo(() => chapterContent && chapterContentError?.status === 404, [chapterContent, chapterContentError?.status]);
+
+    const isNewContent = useMemo(() => !chapterContent && chapterContentError?.status === 404, [chapterContent, chapterContentError?.status]);
 
     useEffect(() => {
         if (chapterContent?.text) {
@@ -98,6 +99,7 @@ const ChapterEditorPage = () => {
 
     const onEditorSave = (content) => {
         if (isNewContent) {
+            console.log('saving new content')
             setIsBusy(true)
             return addChapterContent({ chapter, language, payload: content })
                 .then(() => success({ message: t("book.actions.edit.success") }))
