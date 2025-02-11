@@ -847,6 +847,9 @@ const en = {
                 success: "Page moved successfully.",
                 error: "Error moving page.",
             },
+            darkenImage: {
+                label: "Darken Image",
+            }
         },
         error: {
             loading: {

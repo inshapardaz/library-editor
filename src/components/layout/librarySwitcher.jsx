@@ -36,7 +36,7 @@ const LibrarySwitcher = ({ className, library, onClick = () => { }, children }) 
 
 
     if (errorLoadingLibraries) {
-        return <Button click={refetchLibraries}
+        return <Button onClick={refetchLibraries}
             leftSection={<IconRefreshAlert style={{ color: 'var(--mantine-color-red-9)' }} />}
         />
     }

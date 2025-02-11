@@ -2,11 +2,12 @@ import PropTypes from 'prop-types';
 import { useMemo } from 'react';
 
 // UI Library Import
-import { Button, Center, FileButton, Group, Stack, Tooltip, useMantineTheme } from '@mantine/core';
+import { Button, Center, FileButton, Group, Stack, Switch, Tooltip, useMantineColorScheme, useMantineTheme } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 
 // Local imports
 import { IconZoomIn, IconZoomOut, IconPage, IconUpload } from '@/components/icons';
+import If from '@/components/if';
 import Img from '@/components/img';
 
 //----------------------------
@@ -16,6 +17,11 @@ const ZOOM_STEP = 10;
 
 const PageImage = ({ page, t, image, onChange = () => { } }) => {
     const theme = useMantineTheme();
+    const { colorScheme } = useMantineColorScheme();
+    const [darkenImage, setDarkenImage] = useLocalStorage({
+        key: "page-editor-darken-image",
+        defaultValue: false
+    })
     const [zoom, setZoom] = useLocalStorage({
         key: "page-editor-image-zoom",
         defaultValue: 100
@@ -73,6 +79,14 @@ const PageImage = ({ page, t, image, onChange = () => { } }) => {
                     </Button>
                 </Tooltip>}
             </FileButton>
+            <span style={{ flex: '1' }} />
+            <If condition={colorScheme === 'dark'}>
+                <Switch size="md"
+                    label={t('page.actions.darkenImage.label')}
+                    checked={darkenImage}
+                    onChange={(event) => setDarkenImage(event.currentTarget.checked)}
+                />
+            </If>
             <Button.Group>
                 <Tooltip label={t("actions.zoonIn")}>
                     <Button variant="default" size="xs" onClick={zoomIn} >
@@ -99,7 +113,11 @@ const PageImage = ({ page, t, image, onChange = () => { } }) => {
                 height="auto"
                 width="auto"
                 fit={null}
-                style={{ transform: `scale(${zoom / 100})`, transformOrigin: 'top' }}
+                style={{
+                    transform: `scale(${zoom / 100})`,
+                    transformOrigin: 'top',
+                    filter: `invert(${darkenImage && colorScheme === 'dark' ? '90%' : '0'})`
+                }}
             />
         </div>
     </Stack>)

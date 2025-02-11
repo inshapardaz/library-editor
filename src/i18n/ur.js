@@ -865,6 +865,9 @@ const ur = {
                 success: "صفحہ ترتیب دے دیا گیا ہے",
                 error: "صفحے کی ترتیب میں ناکامی۔",
             },
+            darkenImage: {
+                label: "عکس تاریک کریں",
+            }
         },
         error: {
             loading: {
