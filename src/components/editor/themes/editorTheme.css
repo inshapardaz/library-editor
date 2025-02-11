@@ -10,32 +10,43 @@
 }
 .editorTheme__quote {
   margin: 0;
-  margin-left: 20px;
-  margin-bottom: 10px;
-  font-size: 15px;
-  color: rgb(101, 103, 107);
-  border-left-color: rgb(206, 208, 212);
+  margin-left: var(--mantine-spacing-md);
+  margin-bottom: var(--mantine-spacing-md);
+  color: var(--mantine-color-dimmed);
+  border-left-color: var(--mantine-primary-color-filled);
   border-left-width: 4px;
   border-left-style: solid;
-  padding-left: 16px;
+  padding-left: var(--mantine-spacing-md);
 }
 .editorTheme__h1 {
-  font-size: 24px;
-  color: rgb(5, 5, 5);
-  font-weight: 400;
-  margin: 0;
+  font-size: var(--mantine-h1-font-size);
+  line-height: var(--mantine-h1-line-height);
+  font-weight: var(--mantine-h1-font-weight);
 }
 .editorTheme__h2 {
-  font-size: 15px;
-  color: rgb(101, 103, 107);
-  font-weight: 700;
-  margin: 0;
-  text-transform: uppercase;
+  font-size: var(--mantine-h2-font-size);
+  line-height: var(--mantine-h2-line-height);
+  font-weight: var(--mantine-h2-font-weight);
 }
 .editorTheme__h3 {
-  font-size: 12px;
-  margin: 0;
-  text-transform: uppercase;
+  font-size: var(--mantine-h3-font-size);
+  line-height: var(--mantine-h3-line-height);
+  font-weight: var(--mantine-h3-font-weight);
+}
+.editorTheme__h4 {
+  font-size: var(--mantine-h4-font-size);
+  line-height: var(--mantine-h4-line-height);
+  font-weight: var(--mantine-h4-font-weight);
+}
+.editorTheme__h5 {
+  font-size: var(--mantine-h5-font-size);
+  line-height: var(--mantine-h5-line-height);
+  font-weight: var(--mantine-h5-font-weight);
+}
+.editorTheme__h6 {
+  font-size: var(--mantine-h6-font-size);
+  line-height: var(--mantine-h6-line-height);
+  font-weight: var(--mantine-h6-font-weight);
 }
 .editorTheme__indent {
   --lexical-indent-base-value: 40px;
@@ -74,7 +85,7 @@
   border-bottom: 1px solid rgba(88, 144, 255, 0.3);
 }
 .editorTheme__link {
-  color: rgb(33, 111, 219);
+  color: var(--mantine-color-anchor);
   text-decoration: none;
 }
 .editorTheme__link:hover {
@@ -306,7 +317,7 @@
   list-style-position: inside;
 }
 .editorTheme__listItem {
-  margin: 0 32px;
+  margin: 0 var(--mantine-spacing-md);
 }
 .editorTheme__listItemChecked,
 .editorTheme__listItemUnchecked {

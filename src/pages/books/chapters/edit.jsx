@@ -101,14 +101,14 @@ const ChapterEditorPage = () => {
         if (isNewContent) {
             setIsBusy(true)
             return addChapterContent({ chapter, language, payload: content })
-                .then(() => success({ message: t("book.actions.edit.success") }))
-                .catch(() => error({ message: t("book.actions.edit.error") }))
+                .then(() => success({ message: t("chapter.actions.add.success") }))
+                .catch(() => error({ message: t("chapter.actions.add.error") }))
                 .finally(() => setIsBusy(false));
         } else if (chapterContent) {
             setIsBusy(true)
             return updateChapterContent({ chapterContent, language, payload: content })
-                .then(() => success({ message: t("book.actions.add.success") }))
-                .catch(() => error({ message: t("book.actions.add.error") }))
+                .then(() => success({ message: t("chapter.actions.edit.success") }))
+                .catch(() => error({ message: t("chapter.actions.edit.error") }))
                 .finally(() => setIsBusy(false));
         }
     };
