@@ -368,7 +368,6 @@ export const updateLinkToIssuePage = (
         searchParams.set("sortDirection", sortDirection);
     }
 
-    console.log(`${location.pathname}?${searchParams.toString()}`)
     return `${location.pathname}?${searchParams.toString()}`;
 };
 

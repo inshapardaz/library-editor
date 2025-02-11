@@ -75,11 +75,6 @@ const ChapterEditorPage = () => {
     });
 
     const language = book?.language ?? lang?.key ?? 'en';
-    console.log({
-        language,
-        bookLanguage: book?.language,
-        uiLanguage: lang?.key
-    })
 
     const {
         currentData: chapterContent,

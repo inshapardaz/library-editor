@@ -32,7 +32,6 @@ const getReplaceAllRegex = (corrections) => {
 const correctPunctuations = (punctuationCorrections, text) => {
   text = text.replace(/  +/g, ' ');
   punctuationCorrections.forEach((c) => {
-    console.log(`replacing ${c.incorrectText} with ${c.correctText}`)
     text = text.replaceAll(c.completeWord ? `${c.incorrectText}\\b` : c.incorrectText, c.correctText);
   });
   return text;

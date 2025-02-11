@@ -51,7 +51,6 @@ const theme = {
   },
   image: 'editor-image',
   indent: 'editorTheme__indent',
-  inlineImage: 'inline-editor-image',
   link: 'editorTheme__link',
   list: {
     listitem: 'editorTheme__listItem',

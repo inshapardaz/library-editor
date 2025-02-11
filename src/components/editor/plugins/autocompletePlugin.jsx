@@ -245,7 +245,6 @@ class AutocompleteServer {
     }
 
     query = (searchText) => {
-        console.log(this.DATABASE.length);
         let isDismissed = false;
 
         const dismiss = () => {

@@ -1,10 +1,9 @@
-import { $isImageNode, ImageNode } from "../nodes/imageNode/imageNode";
-import { $createInlineImageNode, $isInlineImageNode } from "../nodes/inlineImageNode/inlineImageNode";
+import { $createImageNode, $isImageNode, ImageNode } from "../nodes/imageNode/imageNode";
 
 export const IMAGE = {
     dependencies: [ImageNode],
     export: (node) => {
-        if (!$isImageNode(node) && !$isInlineImageNode(node)) {
+        if (!$isImageNode(node)) {
             return null;
         }
 
@@ -14,7 +13,7 @@ export const IMAGE = {
     regExp: /!(?:\[([^[]*)\])(?:\(([^(]+)\))$/,
     replace: (textNode, match) => {
         const [, altText, src] = match;
-        const imageNode = $createInlineImageNode({
+        const imageNode = $createImageNode({
             altText,
             maxWidth: 800,
             src,

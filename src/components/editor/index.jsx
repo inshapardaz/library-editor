@@ -32,7 +32,6 @@ import EditorNodes from './nodes';
 import DraggableBlockPlugin from './plugins/draggableBlockPlugin';
 import { ToolbarContext } from './plugins/toolbarPlugin/toolbarContext';
 import AutocompletePlugin from './plugins/autocompletePlugin';
-import InlineImagePlugin from './plugins/inlineImagePlugin';
 
 // UI Library Imports
 import { useLocalStorage } from '@mantine/hooks';
@@ -205,7 +204,6 @@ const Editor = ({ language, defaultValue, onSave = () => { }, onChange = () => {
                 )}
                 <HistoryPlugin />
                 <ImagesPlugin />
-                <InlineImagePlugin />
                 <AutoCorrectPlugin
                     locale={language}
                     language={
