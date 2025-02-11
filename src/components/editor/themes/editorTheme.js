@@ -49,6 +49,7 @@ const theme = {
     h5: 'editorTheme__h5',
     h6: 'editorTheme__h6',
   },
+  autocomplete: 'editorTheme__autocomplete',
   image: 'editor-image',
   indent: 'editorTheme__indent',
   link: 'editorTheme__link',

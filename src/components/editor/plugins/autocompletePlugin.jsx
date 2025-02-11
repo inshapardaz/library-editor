@@ -25,7 +25,7 @@ import {
 import { addSwipeRightListener } from '../utils/swipe';
 
 const HISTORY_MERGE = { tag: 'history-merge' };
-
+const MIN_SEARCH_LENGTH = 2;
 export const uuid = Math.random()
     .toString(36)
     .replace(/[^a-z]+/g, '')
@@ -256,7 +256,7 @@ class AutocompleteServer {
                     return reject('Dismissed');
                 }
                 const searchTextLength = searchText.length;
-                if (searchText === '' || searchTextLength < 4) {
+                if (searchText === '' || searchTextLength < MIN_SEARCH_LENGTH) {
                     return resolve(null);
                 }
                 const char0 = searchText.charCodeAt(0);

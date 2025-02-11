@@ -74,6 +74,10 @@
   font-size: 0.8em;
   vertical-align: super;
 }
+.editorTheme__autocomplete {
+  color: var(--mantine-color-dimmed);
+  font-style: italic;
+}
 .editorTheme__textCode {
   background-color: rgb(240, 242, 245);
   padding: 1px 0.25rem;
