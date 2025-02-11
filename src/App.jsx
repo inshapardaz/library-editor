@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Helmet, HelmetProvider } from 'react-helmet-async';
+// import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 
 // UI libraries
@@ -37,24 +37,24 @@ function App() {
   const currentLocal = lang ? lang.locale : 'en';
   return (
     <>
-      <HelmetProvider>
+      {/* <HelmetProvider>
         <Helmet htmlAttributes={{ lang: currentLocal }}>
           <title>{t('app')}</title>
-        </Helmet>
-        <DirectionProvider >
-          <MantineProvider>
-            <DatesProvider settings={{ locale: currentLocal }}>
-              <Notifications limit={5} position="bottom-right" />
-              <ModalsProvider labels={{ confirm: t('actions.yes'), cancel: t('actions.no') }}>
-                <If condition={userLoadStatus === 'loading'}
-                  elseChildren={<Router />}>
-                  <div style={{ position: 'fixed', top: '50%', left: '50%' }}><Loader /></div>
-                </If>
-              </ModalsProvider>
-            </DatesProvider>
-          </MantineProvider>
-        </DirectionProvider>
-      </HelmetProvider>
+        </Helmet> */}
+      <DirectionProvider >
+        <MantineProvider>
+          <DatesProvider settings={{ locale: currentLocal }}>
+            <Notifications limit={5} position="bottom-right" />
+            <ModalsProvider labels={{ confirm: t('actions.yes'), cancel: t('actions.no') }}>
+              <If condition={userLoadStatus === 'loading'}
+                elseChildren={<Router />}>
+                <div style={{ position: 'fixed', top: '50%', left: '50%' }}><Loader /></div>
+              </If>
+            </ModalsProvider>
+          </DatesProvider>
+        </MantineProvider>
+      </DirectionProvider>
+      {/* </HelmetProvider> */}
     </>
   )
 }

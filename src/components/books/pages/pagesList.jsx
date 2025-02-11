@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -67,6 +67,16 @@ const BookPagesList = ({ libraryId, book, isLoading,
     const [updateBookPageSequence, { isLoading: isUpdatingSequence }] =
         useUpdateBookPageSequenceMutation();
 
+    useEffect(() => {
+        clearSelection();
+    }, [
+        book,
+        writerAssignmentFilter,
+        reviewerAssignmentFilter,
+        sortDirection,
+        status,
+        pageNumber,
+        pageSize]);
     const onOrderChanged = ({ destination, source }) => {
         if (!source || !destination) return;
         const fromIndex = source.index + 1;

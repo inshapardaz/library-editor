@@ -161,7 +161,8 @@ const iconTheme = {
         settingApplyDown: "settings-down",
         settingApplyAll: "settings-check",
         splitVertical: "minus-vertical",
-        help: "help"
+        help: "help",
+        insert: 'plus'
     }
 };
 //-------------------------------------
@@ -330,6 +331,7 @@ export const IconSettingApplyDown = (props) => getIcon(IconNames.SettingApplyDow
 export const IconSettingApplyAll = (props) => getIcon(IconNames.SettingApplyAll, props)
 export const IconSplitVertical = (props) => getIcon(IconNames.SplitVertical, props)
 export const IconHelp = (props) => getIcon(IconNames.Help, props)
+export const IconInsert = (props) => getIcon(IconNames.Insert, props)
 
 export const Icon = ({ name, ...rest }) => <IconifyIcon icon={getIconName(name)} {...rest} />
 

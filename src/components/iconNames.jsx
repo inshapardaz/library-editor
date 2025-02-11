@@ -156,7 +156,8 @@ const IconNames = {
     SettingApplyDown: "settingApplyDown",
     SettingApplyAll: "settingApplyAll",
     SplitVertical: "splitVertical",
-    Help: "help"
+    Help: "help",
+    Insert: "insert",
 };
 
 export default IconNames;

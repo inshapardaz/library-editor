@@ -25,12 +25,14 @@ import ToolbarPlugin from './plugins/toolbarPlugin';
 import SavePlugin from "./plugins/savePlugin";
 import AutoLinkPlugin from "./plugins/autoLink.Plugin";
 import LinkPlugin from "./plugins/link.Plugin";
+import ImagesPlugin from "./plugins/imagesPlugin";
 import HorizontalRulePlugin from "./plugins/horizontalRulePlugin";
 import ControlledValuePlugin from "./plugins/controlledValuePlugin";
 import EditorNodes from './nodes';
 import DraggableBlockPlugin from './plugins/draggableBlockPlugin';
 import { ToolbarContext } from './plugins/toolbarPlugin/toolbarContext';
 import AutocompletePlugin from './plugins/autocompletePlugin';
+import InlineImagePlugin from './plugins/inlineImagePlugin';
 
 // UI Library Imports
 import { useLocalStorage } from '@mantine/hooks';
@@ -43,6 +45,7 @@ import FloatingTextFormatToolbarPlugin from './plugins/floatingTextFormatToolbar
 import FloatingLinkEditorPlugin from './plugins/floatingLinkEditorPlugin';
 import AutoCorrectPlugin from './plugins/autoCorrectPlugin';
 import SpellCheckerPlugin from './plugins/spellCheckerPlugin';
+import { IMAGE } from './transformers/markdownImageTransformer';
 //-----------------------------------------
 
 const EMPTY_CONTENT =
@@ -132,7 +135,7 @@ const Editor = ({ language, defaultValue, onSave = () => { }, onChange = () => {
         namespace: "TextEditor",
         editorState: () => {
             return configuration.format === EditorFormat.Markdown && editorState
-                ? $convertFromMarkdownString(editorState ?? "", TRANSFORMERS)
+                ? $convertFromMarkdownString(editorState ?? "", [...TRANSFORMERS, IMAGE])
                 : editorState;
         },
         nodes: [...EditorNodes],
@@ -201,6 +204,8 @@ const Editor = ({ language, defaultValue, onSave = () => { }, onChange = () => {
                     />
                 )}
                 <HistoryPlugin />
+                <ImagesPlugin />
+                <InlineImagePlugin />
                 <AutoCorrectPlugin
                     locale={language}
                     language={
@@ -225,7 +230,7 @@ const Editor = ({ language, defaultValue, onSave = () => { }, onChange = () => {
                     isRichtext={configuration.richText}
                 />
                 {configuration.format == EditorFormat.Markdown && (
-                    <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
+                    <MarkdownShortcutPlugin transformers={[...TRANSFORMERS, IMAGE]} />
                 )}
             </LexicalComposer>
         </ToolbarContext>

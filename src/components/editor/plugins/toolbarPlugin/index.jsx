@@ -41,6 +41,7 @@ import { useLocalStorage } from '@mantine/hooks';
 import { sanitizeUrl } from "../../utils/url";
 import { getSelectedNode } from "../../utils/getSelectedNode";
 import BlockFormatDropDown from "./blockFormatDropDown";
+import InsertDropdown from "./insertDropdown";
 import {
   BlockTypeToBlockName,
   useToolbarState,
@@ -384,6 +385,12 @@ const ToolbarPlugin = ({ configuration, setIsLinkEditMode, locale }) => {
             checked={toolbarState.isLink}
             onClick={insertLink} />
 
+        </If>
+        <If condition={configuration.toolbar.showInsert}>
+          <InsertDropdown
+            disabled={!isEditable}
+            editor={editor}
+          />
         </If>
         <If condition={configuration.spellchecker.enabled}>
           <Button.Group>

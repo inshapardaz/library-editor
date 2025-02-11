@@ -15,10 +15,8 @@ const PageAutoChapterUpdate = ({ pages, t, type, showIcon = true, onCompleted = 
         var c = null;
         return (page) => {
             if (page.chapterId) {
-                console.log('page.chapterId', page.chapterId)
                 c = page.chapterId;
             } else if (c) {
-                console.log('else if (c)')
                 if (page && page.links && page.links.update) {
                     console.log(c)
                     return ({ ...page, chapterId: c });

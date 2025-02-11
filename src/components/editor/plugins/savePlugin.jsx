@@ -11,6 +11,7 @@ import { useHotkeys } from '@mantine/hooks';
 
 // Editor Imports
 import { SAVE_COMMAND } from "../commands/saveCommand";
+import { IMAGE } from '../transformers/markdownImageTransformer';
 // ------------------------------------------------------
 function SavePlugin({ format, onSave }) {
   const [editor] = useLexicalComposerContext();
@@ -18,7 +19,7 @@ function SavePlugin({ format, onSave }) {
   const saveCallback = useCallback(() => {
     if (format === "markdown") {
       editor.update(() => {
-        const markdown = $convertToMarkdownString(TRANSFORMERS);
+        const markdown = $convertToMarkdownString([...TRANSFORMERS, IMAGE]);
         if (onSave) {
           onSave(markdown);
         }

@@ -10,7 +10,7 @@ const addChapterContent = ({ chapter, language, payload }) => {
 };
 
 const updateChapterContent = ({ chapterContent, language, payload }) => {
-    return axiosPrivate.put(chapterContent.links.update, payload, {
+    return axiosPrivate.put(`${chapterContent.links.update}?language=${language}`, payload, {
         headers: {
             "Content-Type": "application/json",
             "Content-Language": language || "en-US",

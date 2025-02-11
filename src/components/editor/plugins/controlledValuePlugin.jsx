@@ -10,6 +10,7 @@ import {
   $convertToMarkdownString,
   TRANSFORMERS,
 } from "@lexical/markdown";
+import { IMAGE } from '../transformers/markdownImageTransformer';
 
 //---------------------------------------
 const useAdoptPlaintextValue = (value, isRichText, format) => {
@@ -20,7 +21,7 @@ const useAdoptPlaintextValue = (value, isRichText, format) => {
       if (isRichText) {
         editor.update(() => {
           if (format === "markdown") {
-            $convertFromMarkdownString(value, TRANSFORMERS);
+            $convertFromMarkdownString(value, [...TRANSFORMERS, IMAGE]);
           } else {
             const editorState = editor.parseEditorState(value);
             editor.setEditorState(editorState);
@@ -52,7 +53,7 @@ const ControlledValuePlugin = ({
   const handleChange = (editorState, editor) => {
     editorState.read(() => {
       if (format === "markdown") {
-        const markdown = $convertToMarkdownString(TRANSFORMERS);
+        const markdown = $convertToMarkdownString([...TRANSFORMERS, IMAGE]);
         if (onChange) {
           onChange(markdown);
         }

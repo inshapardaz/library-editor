@@ -1627,6 +1627,37 @@ const en = {
         punctuation: "Punctuation",
         autoCorrect: "Auto Correct",
         tools: "Tools",
+        insertImageLink: {
+            title: "Insert Image URL"
+        },
+        embedImageLink: {
+            title: "Embed Image"
+        },
+        insertImage: {
+            title: "Insert Image",
+            url: {
+                title: "Insert Image URL",
+                placeholder: "Provide a URL to image..."
+            },
+            caption: {
+                placeholder: "Enter a caption...",
+                title: "Show Caption",
+                add: "Add Caption"
+            },
+            imageUpload: {
+                title: "Image Upload"
+            },
+            altText: {
+                title: "Descriptive alternative text",
+                placeholder: "Enter alternative text...",
+            },
+            position: {
+                title: "Position",
+                left: "Left",
+                right: "Right",
+                fullWidth: "Full Width"
+            }
+        }
     },
     corrections: {
         title: "Corrections",

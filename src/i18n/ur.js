@@ -1718,6 +1718,33 @@ const ur = {
         punctuation: "املا",
         autoCorrect: "خودکار تصحیح",
         tools: "آلات",
+        insertImageLink: {
+            title: "تصویر کا ربط شامل کریں"
+        },
+        embedImageLink: {
+            title: "تصویر شامل کریں"
+        },
+        insertImage: {
+            title: "تصویر فائل شامل کریں",
+            caption: {
+                placeholder: "عنوان دیجئے۔۔۔",
+                title: "عنوان دلکھائیے",
+                add: "عنوان دیجئے"
+            },
+            imageUpload: {
+                title: "تصویر اہلوڈ"
+            },
+            altText: {
+                title: "تفصیل",
+                placeholder: "تفصیل مہیا کیجئے۔۔۔",
+            },
+            position: {
+                title: "جگہ",
+                left: "بائیں",
+                right: "دائیں",
+                fullWidth: "تمام چوڑائی"
+            }
+        }
     },
     corrections: {
         title: "تصحیحات",

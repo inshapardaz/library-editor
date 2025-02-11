@@ -75,6 +75,11 @@ const ChapterEditorPage = () => {
     });
 
     const language = book?.language ?? lang?.key ?? 'en';
+    console.log({
+        language,
+        bookLanguage: book?.language,
+        uiLanguage: lang?.key
+    })
 
     const {
         currentData: chapterContent,
@@ -99,7 +104,6 @@ const ChapterEditorPage = () => {
 
     const onEditorSave = (content) => {
         if (isNewContent) {
-            console.log('saving new content')
             setIsBusy(true)
             return addChapterContent({ chapter, language, payload: content })
                 .then(() => success({ message: t("book.actions.edit.success") }))
@@ -254,7 +258,7 @@ const ChapterEditorPage = () => {
                             showSave: true,
                             showZoom: true,
                             showViewFont: true,
-                            showExtraFormat: false
+                            showExtraFormat: false,
                         },
                         spellchecker: {
                             enabled: true,
