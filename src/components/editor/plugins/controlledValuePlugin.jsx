@@ -8,9 +8,8 @@ import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import {
   $convertFromMarkdownString,
   $convertToMarkdownString,
-  TRANSFORMERS,
 } from "@lexical/markdown";
-import { IMAGE } from '../transformers/markdownImageTransformer';
+import MarkdownTransformers from '../transformers';
 
 //---------------------------------------
 const useAdoptPlaintextValue = (value, isRichText, format) => {
@@ -21,7 +20,7 @@ const useAdoptPlaintextValue = (value, isRichText, format) => {
       if (isRichText) {
         editor.update(() => {
           if (format === "markdown") {
-            $convertFromMarkdownString(value, [...TRANSFORMERS, IMAGE]);
+            $convertFromMarkdownString(value, MarkdownTransformers);
           } else {
             const editorState = editor.parseEditorState(value);
             editor.setEditorState(editorState);
@@ -53,7 +52,7 @@ const ControlledValuePlugin = ({
   const handleChange = (editorState, editor) => {
     editorState.read(() => {
       if (format === "markdown") {
-        const markdown = $convertToMarkdownString([...TRANSFORMERS, IMAGE]);
+        const markdown = $convertToMarkdownString(MarkdownTransformers);
         if (onChange) {
           onChange(markdown);
         }

@@ -162,7 +162,8 @@ const iconTheme = {
         settingApplyAll: "settings-check",
         splitVertical: "minus-vertical",
         help: "help",
-        insert: 'plus'
+        insert: 'plus',
+        horizontalRule: 'page-break'
     }
 };
 //-------------------------------------
@@ -332,6 +333,7 @@ export const IconSettingApplyAll = (props) => getIcon(IconNames.SettingApplyAll,
 export const IconSplitVertical = (props) => getIcon(IconNames.SplitVertical, props)
 export const IconHelp = (props) => getIcon(IconNames.Help, props)
 export const IconInsert = (props) => getIcon(IconNames.Insert, props)
+export const IconHorizontalRule = (props) => getIcon(IconNames.HorizontalRule, props)
 
 export const Icon = ({ name, ...rest }) => <IconifyIcon icon={getIconName(name)} {...rest} />
 

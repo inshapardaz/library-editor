@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { useEffect, useCallback } from "react";
 
 // Lexical Imports
-import { $convertToMarkdownString, TRANSFORMERS } from "@lexical/markdown";
+import { $convertToMarkdownString } from "@lexical/markdown";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { COMMAND_PRIORITY_LOW } from "lexical";
 
@@ -11,7 +11,7 @@ import { useHotkeys } from '@mantine/hooks';
 
 // Editor Imports
 import { SAVE_COMMAND } from "../commands/saveCommand";
-import { IMAGE } from '../transformers/markdownImageTransformer';
+import MarkdownTransformers from '../transformers';
 // ------------------------------------------------------
 function SavePlugin({ format, onSave }) {
   const [editor] = useLexicalComposerContext();
@@ -19,7 +19,7 @@ function SavePlugin({ format, onSave }) {
   const saveCallback = useCallback(() => {
     if (format === "markdown") {
       editor.update(() => {
-        const markdown = $convertToMarkdownString([...TRANSFORMERS, IMAGE]);
+        const markdown = $convertToMarkdownString(MarkdownTransformers);
         if (onSave) {
           onSave(markdown);
         }

@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 // Lexical Imports
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { SelectionAlwaysOnDisplay } from "@lexical/react/LexicalSelectionAlwaysOnDisplay";
-import { $convertFromMarkdownString, TRANSFORMERS } from "@lexical/markdown";
+import { $convertFromMarkdownString } from "@lexical/markdown";
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 
@@ -44,7 +44,7 @@ import FloatingTextFormatToolbarPlugin from './plugins/floatingTextFormatToolbar
 import FloatingLinkEditorPlugin from './plugins/floatingLinkEditorPlugin';
 import AutoCorrectPlugin from './plugins/autoCorrectPlugin';
 import SpellCheckerPlugin from './plugins/spellCheckerPlugin';
-import { IMAGE } from './transformers/markdownImageTransformer';
+import MarkdownTransformers from './transformers';
 //-----------------------------------------
 
 const EMPTY_CONTENT =
@@ -134,7 +134,7 @@ const Editor = ({ language, defaultValue, onSave = () => { }, onChange = () => {
         namespace: "TextEditor",
         editorState: () => {
             return configuration.format === EditorFormat.Markdown && editorState
-                ? $convertFromMarkdownString(editorState ?? "", [...TRANSFORMERS, IMAGE])
+                ? $convertFromMarkdownString(editorState ?? "", MarkdownTransformers)
                 : editorState;
         },
         nodes: [...EditorNodes],
@@ -228,7 +228,7 @@ const Editor = ({ language, defaultValue, onSave = () => { }, onChange = () => {
                     isRichtext={configuration.richText}
                 />
                 {configuration.format == EditorFormat.Markdown && (
-                    <MarkdownShortcutPlugin transformers={[...TRANSFORMERS, IMAGE]} />
+                    <MarkdownShortcutPlugin transformers={MarkdownTransformers} />
                 )}
             </LexicalComposer>
         </ToolbarContext>

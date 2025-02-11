@@ -7,9 +7,10 @@ import { Button, Menu, Text } from "@mantine/core";
 
 // Local Insert
 
-import { IconInsert, IconImage, IconChevronUp } from '@/components/icons';
+import { IconHorizontalRule, IconInsert, IconImage, IconChevronUp } from '@/components/icons';
 import { useDisclosure } from '@mantine/hooks';
 import { InsertImageDialog } from '../imagesPlugin';
+import { INSERT_HORIZONTAL_RULE_COMMAND } from '../../nodes/horizontalRuleNode';
 
 //-----------------------------
 
@@ -34,6 +35,9 @@ const InsertDropdown = ({
                 </Button>
             </Menu.Target>
             <Menu.Dropdown>
+                <Menu.Item leftSection={<IconHorizontalRule />} onClick={() => editor.dispatchCommand(INSERT_HORIZONTAL_RULE_COMMAND, undefined)}>
+                    {t('editor.horizontalRule')}
+                </Menu.Item>
                 <Menu.Item leftSection={<IconImage />} onClick={openImageInsert}>
                     {t('editor.insertImage.title')}
                 </Menu.Item>

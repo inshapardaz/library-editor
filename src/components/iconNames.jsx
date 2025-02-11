@@ -158,6 +158,7 @@ const IconNames = {
     SplitVertical: "splitVertical",
     Help: "help",
     Insert: "insert",
+    HorizontalRule: "horizontalRule",
 };
 
 export default IconNames;

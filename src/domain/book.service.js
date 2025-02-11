@@ -1,7 +1,7 @@
 import { axiosPrivate } from "@/utils/axios.helpers";
 
 const addChapterContent = ({ chapter, language, payload }) => {
-    return axiosPrivate.post(chapter.links.add_content, payload, {
+    return axiosPrivate.post(`${chapter.links.add_content}?language=${language}`, payload, {
         headers: {
             "Content-Type": "application/json",
             "Content-Language": language || "en-US",

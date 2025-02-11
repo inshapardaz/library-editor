@@ -247,6 +247,7 @@ const ChapterEditorPage = () => {
                         ...DefaultConfiguration,
                         richText: true,
                         format: EditorFormat.Markdown,
+                        autocompleteEnabled: true,
                         toolbar: {
                             ...DefaultConfiguration.toolbar,
                             showFontFormat: false,
