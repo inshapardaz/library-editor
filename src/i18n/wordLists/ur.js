@@ -47887,4 +47887,8 @@ const WORDLIST = [
     'یے',
 ];
 
+// const inserts = (WORDLIST.map(word => `('ur', '${word}')`).join(', \n'));
+// const insertQuery = `INSERT INTO CommonWord (\`Language\`, \`Word\`) VALUES ${inserts}`;
+// console.log(insertQuery);
+
 export default WORDLIST;

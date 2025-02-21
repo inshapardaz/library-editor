@@ -3,11 +3,11 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 // Ui Library Imports
-import { Group, Menu, Space, Text } from "@mantine/core";
+import { Divider, Group, Menu, Space, Text } from "@mantine/core";
 
 // Local Imports
 import classes from './appHeader.module.css';
-import { IconAutoCorrect, IconPunctuation, IconChevronDown, IconTools } from "@/components/icons";
+import { IconAutoCorrect, IconPunctuation, IconChevronDown, IconTools, IconWords } from "@/components/icons";
 //-----------------------------------
 
 const ToolsMenu = () => {
@@ -58,6 +58,16 @@ const ToolsMenu = () => {
                     to='/tools/language/autocorrect'
                 >
                     {t('editor.autoCorrect')}
+                </Menu.Item>
+                <Divider />
+                <Menu.Item
+                    leftSection={
+                        <IconWords size={16} stroke={1.5} />
+                    }
+                    component={Link}
+                    to='/tools/language/words'
+                >
+                    {t('commonWords.title')}
                 </Menu.Item>
             </Menu.Dropdown>
         </Menu>

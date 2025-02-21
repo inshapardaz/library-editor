@@ -28,7 +28,8 @@ const DeleteButton = ({ title, message, tooltip, icon, successMessage, errorMess
                     .then(() => {
                         success({ message: successMessage })
                     })
-                    .catch(() => {
+                    .catch((e) => {
+                        console.error(e)
                         error({ message: errorMessage })
                     });
             },

@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 
 // UI library Imports
 
@@ -39,7 +38,6 @@ import { useLocalStorage } from '@mantine/hooks';
 // Local Imports
 import { languages } from '@/i18n';
 import classes from './editor.module.css';
-import { autoCompleteList } from "@/store/slices/uiSlice";
 import FloatingTextFormatToolbarPlugin from './plugins/floatingTextFormatToolbarPlugin';
 import FloatingLinkEditorPlugin from './plugins/floatingLinkEditorPlugin';
 import AutoCorrectPlugin from './plugins/autoCorrectPlugin';
@@ -107,7 +105,6 @@ const Editor = ({ language, defaultValue, onSave = () => { }, onChange = () => {
     const isRtl = useMemo(() => direction == "rtl" ? true : false, [direction]);
     const [floatingAnchorElem, setFloatingAnchorElem] = useState(null);
     const [isLinkEditMode, setIsLinkEditMode] = useState(false);
-    const wordList = useSelector(autoCompleteList)
     const [zoom] = useLocalStorage({
         key: "editor-text-zoom",
         defaultValue: 100
@@ -218,7 +215,9 @@ const Editor = ({ language, defaultValue, onSave = () => { }, onChange = () => {
                     }
                     configuration={configuration.spellchecker}
                 />
-                {configuration.autocompleteEnabled && <AutocompletePlugin wordList={wordList} />}
+                {configuration.autocompleteEnabled && <AutocompletePlugin language={
+                    configuration.spellchecker.language || configuration.language
+                } />}
                 <SavePlugin onSave={onSave} format={configuration.format} />
                 <SelectionAlwaysOnDisplay />
                 <ControlledValuePlugin

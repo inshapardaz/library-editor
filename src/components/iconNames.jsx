@@ -159,6 +159,7 @@ const IconNames = {
     Help: "help",
     Insert: "insert",
     HorizontalRule: "horizontalRule",
+    Words: 'words'
 };
 
 export default IconNames;

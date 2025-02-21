@@ -68,6 +68,67 @@ export const toolsApi = createApi({
       }),
       invalidatesTags: ["AutoCorrect"],
     }),
+    //Common Words
+    getCommonWordsList: builder.query({
+      query: ({ language }) => {
+        return {
+          url: `/tools/${language}/words/list`,
+          method: "get",
+        };
+      },
+      providesTags: ["WordList"],
+    }),
+    getCommonWords: builder.query({
+      query: ({ language, query, pageNumber, pageSize }) => {
+        let queryVal = query ? `&query=${query}` : "";
+
+        return {
+          url: `/tools/${language}/words?pageNumber=${pageNumber}&pageSize=${pageSize}${queryVal}`,
+          method: "get",
+        };
+      },
+      transformResponse: (response) => parseResponse(response),
+      providesTags: ["WordList", "CommonWord", "CommonWords"],
+    }),
+    getCommonWord: builder.query({
+      query: ({ language, id }) => {
+        return {
+          url: `/tools/${language}/words/${id}`,
+          method: "get",
+        };
+      },
+      transformResponse: (response) => parseResponse(response),
+      providesTags: ["WordList", "CommonWord"],
+    }),
+    addCommonWord: builder.mutation({
+      query: ({ language, word }) => ({
+        url: `/tools/${language}/words`,
+        method: "POST",
+        data: {
+          word
+        },
+      }),
+      transformResponse: (response) => parseResponse(response),
+      invalidatesTags: ["WordList", "CommonWord", "CommonWords"],
+    }),
+
+    updateCommonWord: builder.mutation({
+      query: ({ word }) => ({
+        url: word.links.update,
+        method: "PUT",
+        data: removeLinks(word),
+      }),
+      transformResponse: (response) => parseResponse(response),
+      invalidatesTags: ["WordList", "CommonWord", "CommonWords"],
+    }),
+
+    deleteCommonWord: builder.mutation({
+      query: ({ word }) => ({
+        url: word.links.delete,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["WordList", "CommonWord", "CommonWords"],
+    }),
   }),
 });
 
@@ -78,4 +139,11 @@ export const {
   useAddCorrectionMutation,
   useUpdateCorrectionMutation,
   useDeleteCorrectionMutation,
+  //Common Words
+  useGetCommonWordsListQuery,
+  useGetCommonWordsQuery,
+  useGetCommonWordQuery,
+  useAddCommonWordMutation,
+  useUpdateCommonWordMutation,
+  useDeleteCommonWordMutation,
 } = toolsApi;

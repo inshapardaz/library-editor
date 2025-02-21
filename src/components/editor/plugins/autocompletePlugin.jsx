@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
+// Lexical imports
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { $isAtNodeEnd } from '@lexical/selection';
 import { mergeRegister } from '@lexical/utils';
@@ -15,21 +17,22 @@ import {
     KEY_ARROW_RIGHT_COMMAND,
     KEY_TAB_COMMAND,
 } from 'lexical';
-import { useCallback, useEffect } from 'react';
 
+// Lexical local imports
 import { useToolbarState } from './toolbarPlugin/toolbarContext';
 import {
     $createAutocompleteNode,
     AutocompleteNode,
 } from '../nodes/autocompleteNode';
 import { addSwipeRightListener } from '../utils/swipe';
+import { uuid } from '../utils/uuid';
 
+// Local Imports
+import { useGetCommonWordsListQuery } from "@/store/slices/tools.api";
+import LanguageService from '@/domain/language.service';
+
+//----------------------------------------------
 const HISTORY_MERGE = { tag: 'history-merge' };
-const MIN_SEARCH_LENGTH = 2;
-export const uuid = Math.random()
-    .toString(36)
-    .replace(/[^a-z]+/g, '')
-    .substr(0, 5);
 
 function $search(selection) {
     if (!$isRangeSelection(selection) || !selection.isCollapsed()) {
@@ -54,16 +57,6 @@ function $search(selection) {
     return [true, word.reverse().join('')];
 }
 
-function useQuery(wordList) {
-    return useCallback((searchText) => {
-        const server = new AutocompleteServer(wordList);
-        console.time('query');
-        const response = server.query(searchText);
-        console.timeEnd('query');
-        return response;
-    }, []);
-}
-
 function formatSuggestionText(suggestion) {
     const userAgentData = window.navigator.userAgentData;
     const isMobile =
@@ -74,9 +67,19 @@ function formatSuggestionText(suggestion) {
     return `${suggestion} ${isMobile ? '(SWIPE \u2B95)' : '(TAB)'}`;
 }
 
-export default function AutocompletePlugin({ wordList }) {
+export default function AutocompletePlugin({ language }) {
+    const [languageServer, setLanguageServer] = useState(new LanguageService({}));
+    const {
+        data: words
+    } = useGetCommonWordsListQuery({
+        language: language
+    });
+
+    useEffect(() => {
+        setLanguageServer(new LanguageService({ wordList: words }));
+    }, [words]);
+
     const [editor] = useLexicalComposerContext();
-    const query = useQuery(wordList);
     const { toolbarState } = useToolbarState();
 
     useEffect(() => {
@@ -152,7 +155,7 @@ export default function AutocompletePlugin({ wordList }) {
                     return;
                 }
                 $clearSuggestion();
-                searchPromise = query(match);
+                searchPromise = languageServer ? languageServer.autoComplete(match) : Promise.resolve();
                 searchPromise.promise
                     .then((newSuggestion) => {
                         if (searchPromise !== null) {
@@ -228,63 +231,11 @@ export default function AutocompletePlugin({ wordList }) {
                 : []),
             unmountSuggestion,
         );
-    }, [editor, query, toolbarState.fontSize]);
+    }, [editor, languageServer, toolbarState.fontSize]);
 
     return null;
 }
 
 AutocompletePlugin.propTypes = {
-    wordList: PropTypes.any
+    language: PropTypes.string
 };
-
-
-class AutocompleteServer {
-    LATENCY = 200;
-    constructor(wordList) {
-        this.DATABASE = wordList
-    }
-
-    query = (searchText) => {
-        let isDismissed = false;
-
-        const dismiss = () => {
-            isDismissed = true;
-        };
-        const promise = new Promise((resolve, reject) => {
-            setTimeout(() => {
-                if (isDismissed) {
-                    return reject('Dismissed');
-                }
-                const searchTextLength = searchText.length;
-                if (searchText === '' || searchTextLength < MIN_SEARCH_LENGTH) {
-                    return resolve(null);
-                }
-                const char0 = searchText.charCodeAt(0);
-                const isCapitalized = char0 >= 65 && char0 <= 90;
-                const caseInsensitiveSearchText = isCapitalized
-                    ? String.fromCharCode(char0 + 32) + searchText.substring(1)
-                    : searchText;
-                const match = this.DATABASE.find(
-                    (dictionaryWord) =>
-                        dictionaryWord.startsWith(caseInsensitiveSearchText) ?? null,
-                );
-                if (match === undefined) {
-                    return resolve(null);
-                }
-                const matchCapitalized = isCapitalized
-                    ? String.fromCharCode(match.charCodeAt(0) - 32) + match.substring(1)
-                    : match;
-                const autocompleteChunk = matchCapitalized.substring(searchTextLength);
-                if (autocompleteChunk === '') {
-                    return resolve(null);
-                }
-                return resolve(autocompleteChunk);
-            }, this.LATENCY);
-        });
-
-        return {
-            dismiss,
-            promise,
-        };
-    };
-}

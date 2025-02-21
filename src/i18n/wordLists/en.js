@@ -2242,4 +2242,9 @@ const WORDLIST = [
     'configurations',
 ];
 
+
+// const inserts = (WORDLIST.map(word => `('en', '${word}')`).join(', \n'));
+// const insertQuery = `INSERT INTO nawishta.commonwords (\`Language\`, \`Word\`) VALUES ${inserts}`;
+// console.log(insertQuery);
+
 export default WORDLIST;

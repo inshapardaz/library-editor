@@ -7,7 +7,7 @@ import { $applyNodeReplacement, createEditor, DecoratorNode } from 'lexical';
 import classes from './imageNode.module.css'
 //------------------------------------
 
-// eslint-disable-next-line react-refresh/only-export-components
+
 const ImageComponent = React.lazy(() => import('./imageComponent'));
 
 function isGoogleDocCheckboxImg(img) {
@@ -165,6 +165,14 @@ export class ImageNode extends DecoratorNode {
 
     getAltText() {
         return this.__altText;
+    }
+
+    getWidth() {
+        return this.__width;
+    }
+
+    getHeight() {
+        return this.__height;
     }
 
     decorate() {

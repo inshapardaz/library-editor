@@ -38,7 +38,7 @@ import WritingContentEditPage from "./writings/edit";
 import PoetryContentEditPage from "./poetry/edit";
 import IssueProcessPage from "./periodicals/issue/process";
 import IssuePageEditPage from "./periodicals/issue/pages/edit";
-
+import CommonWordPage from './tools/commonWordsPage'
 const Pages = {
     HomePage,
     Error403Page,
@@ -77,7 +77,8 @@ const Pages = {
     WritingContentEditPage,
     PoetryContentEditPage,
     IssueProcessPage,
-    IssuePageEditPage
+    IssuePageEditPage,
+    CommonWordPage
 };
 
 export default Pages;

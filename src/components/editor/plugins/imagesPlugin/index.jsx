@@ -25,7 +25,8 @@ import {
 } from 'lexical';
 
 // UI Library Imports
-import { Button, FileButton, Modal, Stack, TextInput } from '@mantine/core';
+import { Button, Group, Modal, rem, Stack, Text, TextInput } from '@mantine/core';
+import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 
 // Local Imports
 import {
@@ -33,7 +34,10 @@ import {
     $isImageNode,
     ImageNode,
 } from '../../nodes/imageNode/imageNode';
-
+import { error } from '@/utils/notifications';
+import { IconUplaodDocument, IconUploadAccept, IconUploadReject } from '@/components/icons';
+import If from '@/components/if'
+//----------------------------------------
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const INSERT_IMAGE_COMMAND = createCommand('INSERT_IMAGE_COMMAND');
@@ -89,7 +93,8 @@ export function InsertImageUploadedDialogBody({ opened, onClick, onClose }) {
 
     const isDisabled = src === '';
 
-    const loadImage = (file) => {
+    const loadImage = (files) => {
+        const file = files[0];
         const reader = new FileReader();
         reader.onload = function () {
             if (typeof reader.result === 'string') {
@@ -113,9 +118,42 @@ export function InsertImageUploadedDialogBody({ opened, onClick, onClose }) {
     return (
         <Modal opened={opened} onClose={onClose}>
             <Stack>
-                <FileButton onChange={loadImage} accept="image/png, image/jpeg" >
-                    {(props) => <Button variant='default' {...props}>{t('editor.insertImage.imageUpload.title')}</Button>}
-                </FileButton>
+                <Dropzone
+                    accept={IMAGE_MIME_TYPE} onDrop={loadImage}
+                    onReject={() => error({ message: t("editor.insertImage.imageUpload.invalidFileTypeError") })}
+                    maxSize={3 * 1024 ** 2}
+                >
+                    <If condition={src === ''} elseChildren={<img src={src} width="100%" />}>
+                        <Group justify="center" gap="xl" mih={220} style={{ pointerEvents: 'none' }}>
+                            <Dropzone.Accept>
+                                <IconUploadAccept width={rem(52)} height={rem(52)}
+                                    style={{ color: 'var(--mantine-color-blue-6)' }}
+                                    stroke={1.5}
+                                />
+                            </Dropzone.Accept>
+                            <Dropzone.Reject>
+                                <IconUploadReject width={rem(52)} height={rem(52)}
+                                    style={{ color: 'var(--mantine-color-red-6)' }}
+                                    stroke={1.5}
+                                />
+                            </Dropzone.Reject>
+                            <Dropzone.Idle>
+                                <IconUplaodDocument width={rem(52)} height={rem(52)}
+                                    style={{ color: 'var(--mantine-color-dimmed)' }}
+                                    stroke={1.5}
+                                />
+                            </Dropzone.Idle>
+                            <div>
+                                <Text size="xl" inline>
+                                    {t("editor.insertImage.imageUpload.title")}
+                                </Text>
+                                <Text size="sm" c="dimmed" inline mt={7}>
+                                    {t("editor.insertImage.imageUpload.message")}
+                                </Text>
+                            </div>
+                        </Group>
+                    </If>
+                </Dropzone >
                 <TextInput
                     label={t('editor.insertImage.altText.title')}
                     placeholder={t('editor.insertImage.altText.placeholder')}
@@ -125,7 +163,7 @@ export function InsertImageUploadedDialogBody({ opened, onClick, onClose }) {
                 <Button
                     disabled={isDisabled}
                     onClick={() => onClick({ altText, src })}>
-                    Confirm
+                    {t('actions.ok')}
                 </Button>
             </Stack>
         </Modal>

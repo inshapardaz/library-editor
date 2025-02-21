@@ -1,7 +1,7 @@
 
 import { TextNode } from 'lexical';
 
-import { uuid as UUID } from '../plugins/autocompletePlugin';
+import { uuid as UUID } from '../utils/uuid';
 
 export class AutocompleteNode extends TextNode {
 

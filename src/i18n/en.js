@@ -477,7 +477,7 @@ const en = {
             },
             addFile: {
                 title: "Upload file",
-                success: "File uploadedsuccessfully.",
+                success: "File uploaded successfully.",
                 error: "Error uploading file.",
                 invalidFileTypeError: "Unacceptable file type. You can upload PDF or Word Documents"
             },
@@ -1648,7 +1648,9 @@ const en = {
                 add: "Add Caption"
             },
             imageUpload: {
-                title: "Image Upload"
+                title: "Image Upload",
+                message: "Drag images here or click to select files",
+                invalidFileTypeError: "Unacceptable file type. You can upload Images"
             },
             altText: {
                 title: "Descriptive alternative text",
@@ -1659,7 +1661,7 @@ const en = {
                 left: "Left",
                 right: "Right",
                 fullWidth: "Full Width"
-            }
+            },
         }
     },
     corrections: {
@@ -1712,6 +1714,49 @@ const en = {
                     "Are you sure you want to delete correction '{{title}}'?",
                 success: "Correction '{{title}}' deleted successfully.",
                 error: "Error deleting correction '{{title}}'.",
+            },
+        }
+    },
+    commonWords: {
+        title: "Common Words",
+        language: {
+            label: "Language",
+            placeholder: "Select language for correction",
+            required: "Language is required",
+        },
+        word: {
+            label: "Word",
+            placeholder: "Provide word...",
+            required: "Word is required"
+        },
+        error: {
+            loading: {
+                title: "Error",
+                subTitle: "Unable to load words.",
+            },
+        },
+        empty: {
+            label: "No word found.",
+        },
+        actions: {
+            add: {
+                label: "New word",
+                title: "New word",
+                success: "Word created successfully.",
+                error: "Error creating word.",
+            },
+            edit: {
+                title: "Editing '{{title}}'",
+                success: "Word saved successfully.",
+                error: "Error saving word",
+            },
+            delete: {
+                label: "Delete word '{{title}}'",
+                title: "Delete word?",
+                message:
+                    "Are you sure you want to delete word '{{title}}'?",
+                success: "Word '{{title}}' deleted successfully.",
+                error: "Error deleting word '{{title}}'.",
             },
         }
     }

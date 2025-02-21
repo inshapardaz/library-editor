@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 // Lexical Imports
 import {
@@ -18,34 +18,12 @@ import {
   useGetPunctuationQuery,
   useGetAutoCorrectQuery,
 } from "/src/store/slices/tools.api";
-
-//---------------------------------------------
-
-const getReplaceAllRegex = (corrections) => {
-  let retVal = '';
-  corrections.forEach((c) => {
-    retVal += `(${c.incorrectText.trim()})|`;
-  });
-
-  return new RegExp(`\\b${retVal.slice(0, -1)}\\b`, 'giu');
-};
-const correctPunctuations = (punctuationCorrections, text) => {
-  text = text.replace(/  +/g, ' ');
-  punctuationCorrections.forEach((c) => {
-    text = text.replaceAll(c.completeWord ? `${c.incorrectText}\\b` : c.incorrectText, c.correctText);
-  });
-  return text;
-};
-
-const autoCorrectText = (autoCorrections, text) => {
-  const correctionRegex = getReplaceAllRegex(autoCorrections);
-  return text.replaceAll(correctionRegex, (matched) => autoCorrections.find((o) => o.incorrectText === matched)?.correctText.trim());
-};
+import LanguageService from '@/domain/language.service';
 
 //---------------------------------------
 const AutoCorrectPlugin = ({ language, configuration = { enabled: false } }) => {
   const [editor] = useLexicalComposerContext();
-
+  const [languageServer, setLanguageServer] = useState(new LanguageService({}));
   const {
     data: punctuationList,
     error: punctuationListError,
@@ -62,6 +40,10 @@ const AutoCorrectPlugin = ({ language, configuration = { enabled: false } }) => 
     { language }
   );
 
+  useEffect(() => {
+    setLanguageServer(new LanguageService({ language, autoCorrectList, punctuationList }));
+  }, [autoCorrectList, language, punctuationList]);
+
   const punctuationCorrectionNode = useCallback((node, corrections) => {
     if (node.getChildren) {
       node.getChildren().map((child) => {
@@ -70,11 +52,11 @@ const AutoCorrectPlugin = ({ language, configuration = { enabled: false } }) => 
     }
 
     if (node.getType() === 'text') {
-      node.setTextContent(correctPunctuations(corrections, node.getTextContent()));
+      node.setTextContent(languageServer.correctPunctuations(node.getTextContent()));
     }
 
     return node
-  }, [])
+  }, [languageServer])
 
   const punctuationCorrection = useCallback(() => {
     editor.update(() => {
@@ -105,14 +87,16 @@ const AutoCorrectPlugin = ({ language, configuration = { enabled: false } }) => 
     );
 
     const autoCorrectNode = (node, corrections) => {
-      if (node.getChildren) {
-        node.getChildren().map((child) => {
-          autoCorrectNode(child, corrections);
-        });
-      }
+      if (languageServer) {
+        if (node.getChildren) {
+          node.getChildren().map((child) => {
+            autoCorrectNode(child, corrections);
+          });
+        }
 
-      if (node.getType() === 'text') {
-        node.setTextContent(autoCorrectText(corrections, node.getTextContent()));
+        if (node.getType() === 'text') {
+          node.setTextContent(languageServer.autoCorrect(node.getTextContent()));
+        }
       }
 
       return node
@@ -139,7 +123,7 @@ const AutoCorrectPlugin = ({ language, configuration = { enabled: false } }) => 
     );
     /* Punctuation correction ends */
 
-  }, [autoCorrectList, autoCorrectListError, autoCorrectListLoading, configuration, editor, language, punctuationCorrection, punctuationListError, punctuationListLoading]);
+  }, [autoCorrectList, autoCorrectListError, autoCorrectListLoading, configuration, editor, language, languageServer, punctuationCorrection, punctuationListError, punctuationListLoading]);
 
   //-------------------------------
   return null;
