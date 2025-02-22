@@ -78,15 +78,12 @@ const BookPagesList = ({ libraryId, book, isLoading,
         pageNumber,
         pageSize]);
     const onOrderChanged = ({ destination, source }) => {
-        console.log('onOrderChanged', destination, source);
         if (!source || !destination) return;
-        const fromIndex = source.index + 1;
-        const toIndex = destination.index + 1;
+        const fromIndex = source.index;
+        const toIndex = destination.index;
         if (fromIndex !== toIndex) {
-            console.log('order changed', fromIndex, toIndex);
             const page = pages.data.find((p) => p.sequenceNumber === fromIndex);
             if (page) {
-                console.log('page found', page)
                 return updateBookPageSequence({
                     page,
                     payload: { sequenceNumber: toIndex },
@@ -147,22 +144,22 @@ const BookPagesList = ({ libraryId, book, isLoading,
         errorDetail={t('pages.error.loading.detail')}
         showViewToggle={true}
         viewToggleKey="book-page-list"
-        cardRender={(page, index) => <PageCard t={t}
+        cardRender={page => <PageCard t={t}
             libraryId={libraryId}
             book={book}
             key={page.sequenceNumber}
-            index={index}
+            index={page.sequenceNumber}
             page={page}
             isSelected={selection.indexOf(
                 page.sequenceNumber
             ) >= 0}
             onSelectChanged={(checked) => onSelectChanged(page, checked)} />}
         onReload={refetch}
-        listItemRender={(page, index) => <PageListItem t={t}
+        listItemRender={page => <PageListItem t={t}
             libraryId={libraryId}
             book={book}
             key={page.sequenceNumber}
-            index={index}
+            index={page.sequenceNumber}
             page={page}
             isSelected={selection.indexOf(
                 page.sequenceNumber

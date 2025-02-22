@@ -67,8 +67,8 @@ const IssuePagesList = ({ libraryId, issue, isLoading,
 
     const onOrderChanged = ({ destination, source }) => {
         if (!source || !destination) return;
-        const fromIndex = source.index + 1;
-        const toIndex = destination.index + 1;
+        const fromIndex = source.index;
+        const toIndex = destination.index;
         if (fromIndex !== toIndex) {
             const page = pages.data.find((p) => p.sequenceNumber === fromIndex);
             if (page) {
@@ -129,22 +129,22 @@ const IssuePagesList = ({ libraryId, issue, isLoading,
         errorDetail={t('page.error.loading.detail')}
         showViewToggle={true}
         viewToggleKey="book-page-list"
-        cardRender={(page, index) => <PageCard t={t}
+        cardRender={page => <PageCard t={t}
             libraryId={libraryId}
             issue={issue}
             key={page.sequenceNumber}
-            index={index}
+            index={page.sequenceNumber}
             page={page}
             isSelected={selection.indexOf(
                 page.sequenceNumber
             ) >= 0}
             onSelectChanged={(checked) => onSelectChanged(page, checked)} />}
         onReload={refetch}
-        listItemRender={(page, index) => <PageListItem t={t}
+        listItemRender={page => <PageListItem t={t}
             libraryId={libraryId}
             issue={issue}
             key={page.sequenceNumber}
-            index={index}
+            index={page.sequenceNumber}
             page={page}
             isSelected={selection.indexOf(
                 page.sequenceNumber
