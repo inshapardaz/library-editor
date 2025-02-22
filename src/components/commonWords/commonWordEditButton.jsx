@@ -85,7 +85,6 @@ const CommonWordEditButton = ({ createNew, showLabel, language, word = null, t, 
                     error({ message: t('commonWords.actions.add.error') })
                 })
         } else {
-            console.log(values)
             update({ word: values })
                 .then(() => success({ message: t('commonWords.actions.edit.success') }))
                 .then(onCompleted)

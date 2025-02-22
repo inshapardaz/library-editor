@@ -78,19 +78,25 @@ const BookPagesList = ({ libraryId, book, isLoading,
         pageNumber,
         pageSize]);
     const onOrderChanged = ({ destination, source }) => {
+        console.log('onOrderChanged', destination, source);
         if (!source || !destination) return;
         const fromIndex = source.index + 1;
         const toIndex = destination.index + 1;
         if (fromIndex !== toIndex) {
+            console.log('order changed', fromIndex, toIndex);
             const page = pages.data.find((p) => p.sequenceNumber === fromIndex);
             if (page) {
+                console.log('page found', page)
                 return updateBookPageSequence({
                     page,
                     payload: { sequenceNumber: toIndex },
                 })
                     .unwrap()
                     .then(() => success({ message: t("page.actions.sequence.success") }))
-                    .catch(() => error({ message: t("page.actions.sequence.error") }));
+                    .catch((e) => {
+                        console.error(e);
+                        return error({ message: t("page.actions.sequence.error") });
+                    });
             }
         }
     }

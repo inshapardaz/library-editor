@@ -47,14 +47,6 @@ class LanguageService {
         });
 
         this.regexMap.map(({ regex, replacement }) => {
-            const match = text.match(regex)
-            if (match) {
-                console.log({
-                    regex,
-                    match,
-                    replacement
-                })
-            }
             text = text.replace(regex, replacement);
         });
 
@@ -62,7 +54,6 @@ class LanguageService {
     }
 
     correctPunctuations = (text) => {
-        console.log('correcting punctuation')
         if (this.punctuationList) {
             text = text.replace(/  +/g, ' ');
             this.punctuationList.forEach((c) => {
