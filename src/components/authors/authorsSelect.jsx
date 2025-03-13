@@ -59,7 +59,7 @@ const AuthorsSelect = ({ t, libraryId, defaultValue = [], disabled, onChange, sh
 
     // Fetach data and set the dropdown
     //-------------------------------------------------
-    const { data: authors, isFetching } = useGetAuthorsQuery({ libraryId, search, pageNumber: 1, pageSize: 10 })
+    const { data: authors, isFetching } = useGetAuthorsQuery({ libraryId, query: search, pageNumber: 1, pageSize: 10 })
 
     const data = useMemo(() => authors?.data ? authors.data : [], [authors]);
 
