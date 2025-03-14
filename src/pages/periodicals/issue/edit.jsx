@@ -163,13 +163,18 @@ const EditIssuePage = () => {
                 .catch(() => error({ message: t("issue.actions.edit.error") }));
         } else {
             let response = null;
-            addIssue({ libraryId, periodicalId, volumeNumber: issue.volumeNumber, issueNumber: issue.issueNumber, payload: issue })
+            addIssue({ libraryId, periodicalId, payload: issue })
                 .unwrap()
                 .then((r) => (response = r))
                 .then(() => uploadImage(response.volumeNumber, response.issueNumber))
                 .then(() => success({ message: t("issue.actions.add.success") }))
-                .then(() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}/issues/${response.id}`))
-                .catch(() => error({ message: t("issue.actions.add.error") }));
+                .then(() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}`))
+                .catch((e) => {
+                    if (e.status === 409) {
+                        return error({ message: t("issue.actions.add.duplicate") });
+                    }
+                    return error({ message: t("issue.actions.add.error") });
+                });
         }
     };
 

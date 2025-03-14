@@ -1370,6 +1370,7 @@ const en = {
                 title: "New issue",
                 success: "Issue created successfully.",
                 error: "Error creating issue.",
+                duplicate: "Issue already exist."
             },
             edit: {
                 title: "Editing '{{name}}'",

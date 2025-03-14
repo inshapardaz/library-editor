@@ -48,8 +48,8 @@ const PeriodicalsList = ({
         dataSource={periodicals}
         isFetching={isFetching}
         isError={isError}
-        errorTitle={t('periodicals.error.loading.title')}
-        errorDetail={t('periodicals.error.loading.detail')}
+        errorTitle={t('periodicals.errors.loading.title')}
+        errorDetail={t('periodicals.errors.loading.subTitle')}
         showViewToggle={true}
         viewToggleKey='periodicals-list-view'
         cardRender={periodical => (<PeriodicalCard libraryId={libraryId} key={periodical.id} periodical={periodical} />)}

@@ -109,11 +109,9 @@ export const issuesApi = createApi({
             query: ({
                 libraryId,
                 periodicalId,
-                volumeNumber,
-                issueNumber,
                 payload,
             }) => ({
-                url: `/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${volumeNumber}/issues/${issueNumber}`,
+                url: `/libraries/${libraryId}/periodicals/${periodicalId}/issues`,
                 method: "POST",
                 data: removeLinks(payload),
             }),
