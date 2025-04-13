@@ -1,149 +1,134 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
+import cx from 'clsx';
 
-// 3rd Party Libraries
-import { Badge, Card, Checkbox, Space, Tag, Typography } from "antd";
-import { Draggable } from "react-beautiful-dnd";
+// Ui Library Imports
+import { Draggable } from "@hello-pangea/dnd";
+import { Card, Center, Checkbox, Flex, Group, Text, useMantineTheme } from "@mantine/core";
 
-// Local Import
-import "./styles.scss";
-import { FaRegKeyboard, FaGlasses, FaGripLines } from "/src/icons";
-import { pagePlaceholderImage, setDefaultPageImage } from "/src/util";
-import useUnsavedChanges from '/src/hooks/useUnsavedChanges';
-import PageSequenceEditor from "./pageSequenceEditor";
-import PageDeleteButton from "./pageDeleteButton";
-import PageAssignButton from "./pageAssignButton";
-import PageStatusButton from "./pageStatusButton";
-import PageChapterButton from './pageChapterButton';
+// Local imports
+import { IconEdit, IconReaderText, IconWriter, IconReviewer, IconGripVertical, IconImage } from '@/components/icons'
+import IconText from '@/components/iconText';
+import classes from './items.module.css';
+import If from '@/components/if';
+import Img from "@/components/img";
+import PageEditForm from './pageEditForm';
+import PageDeleteButton from './pageDeleteButton';
+import EditingStatusIcon from '@/components/editingStatusIcon';
 
-// ------------------------------------------------------
+//-------------------------------------------
+const IMAGE_HEIGHT = 450;
+const IMAGE_WIDTH = 175;
 
-const PageCard = ({
-    libraryId,
-    book,
-    page,
-    t,
-    selected = false,
-    onSelectChanged = () => { },
-}) => {
-    let description = page.chapterTitle ? (
-        <Typography.Text>{page.chapterTitle}</Typography.Text>
-    ) : null;
+const PageCard = ({ t, libraryId, book, page, index, isSelected = false, onSelectChanged = () => { } }) => {
+    const theme = useMantineTheme();
+    const icon = <Center h={IMAGE_HEIGHT}><IconImage width={IMAGE_WIDTH} style={{ color: theme.colors.dark[1] }} /></Center>;
 
-    const { hasUnsavedChanges } = useUnsavedChanges(`page-${libraryId}-${book.id}-${page.sequenceNumber}`);
-
-    const unsavedStatus = () => {
-        if (hasUnsavedChanges())
-            return (<Badge status="processing" title={t('chapter.status.unsavedChanges')} />);
-
-        return null;
-    }
-
-    const title = (
-        <Link
-            to={`/libraries/${libraryId}/books/${book.id}/pages/${page.sequenceNumber}/edit`}
-        >
-            <Typography.Text>
-                {unsavedStatus()}
-                {t("page.label", { sequenceNumber: page.sequenceNumber })}
-                {description ? " - " : null}
-                {description}
-            </Typography.Text>
-        </Link>
-    );
-
-    let assignment = [];
-
-    if (page) {
-        if (page.reviewerAccountId) {
-            assignment.push(
-                <Tag icon={<FaRegKeyboard />} closable={false}>
-                    {page.reviewerAccountName}
-                </Tag>
-            );
-        }
-        if (page.writerAccountId) {
-            assignment.push(
-                <Tag icon={<FaGlasses />} closable={false}>
-                    {page.writerAccountName}
-                </Tag>
-            );
-        }
-    }
-
-    const cover = (
-        <img
-            src={page.links.image || pagePlaceholderImage}
-            onError={setDefaultPageImage}
-            className="page__image"
-            alt={page.sequenceNumber}
-        />
-    );
 
     return (
-        <Draggable
-            draggableId={`page-${page.sequenceNumber}-draggable`}
-            index={page.sequenceNumber - 1}
-        >
-            {(provided) => (
-                <Card
-                    cover={cover}
-                    actions={[
-                        page && page.links.update && (
-                            <PageSequenceEditor page={page} t={t} type="text" />
-                        ),
-                        page && page.links.update && (
-                            <PageStatusButton
-                                pages={[page]}
-                                t={t}
-                                type="text"
-                            />
-                        ),
-                        page && page.links.update && (<PageChapterButton
-                            libraryId={libraryId}
-                            book={book}
-                            pages={[page]}
-                            t={t}
-                            type="text"
-                        />),
-                        page && page.links.assign && (
-                            <PageAssignButton
-                                libraryId={libraryId}
-                                pages={[page]}
-                                t={t}
-                                type="text"
-                            />
-                        ),
-                        page && page.links.delete && (
-                            <PageDeleteButton
-                                pages={[page]}
-                                t={t}
-                                type="text"
-                            />
-                        ),
-                    ]}
+        <Draggable key={page.sequenceNumber} index={index} draggableId={`${page.sequenceNumber}`}>
+            {(provided, snapshot) => (
+                <Card shadow="sm" padding="lg" radius="md" withBorder className={cx(classes.item, { [classes.itemDragging]: snapshot.isDragging })}
                     ref={provided.innerRef}
-                    {...provided.draggableProps}
-                >
-                    <Card.Meta
-                        title={title}
-                        avatar={
-                            <Space>
-                                <div {...provided.dragHandleProps}>
-                                    <FaGripLines />
+                    {...provided.draggableProps}>
+                    <Card.Section>
+                        <Img h={IMAGE_HEIGHT} w="auto" radius="sm" src={page?.links?.image} fallback={icon} {...provided.dragHandleProps} className={classes.dragHandle} />
+                    </Card.Section>
+
+                    <Card.Section style={{ width: '100%' }}>
+                        <Flex gap="sm" my="md">
+                            <>
+                                <div {...provided.dragHandleProps} className={classes.dragHandleCard}>
+                                    <IconGripVertical size={18} stroke={1.5} />
                                 </div>
-                                <Checkbox
-                                    checked={selected}
-                                    onChange={() => onSelectChanged(page)}
-                                />
-                            </Space>
-                        }
-                        description={assignment}
-                    />
-                </Card>
-            )}
-        </Draggable>
-    );
+                                <Checkbox className={classes.selectionCard} checked={isSelected}
+                                    onChange={e => onSelectChanged(e.currentTarget.checked)} />
+                                <EditingStatusIcon editingStatus={page.status} width={24} style={{ color: theme.colors.dark[2] }} />
+                            </>
+                            <Text component={Link} to={`/libraries/${libraryId}/books/${book.id}/pages/${page.sequenceNumber}/contents/edit`} fw={500}>
+                                {page.sequenceNumber}
+                            </Text>
+                            <If condition={page.writerAccountId}>
+                                <IconText tooltip={page.writerAccountName} size="sm"
+                                    icon={<IconWriter style={{ color: theme.colors.dark[2] }} />} />
+                            </If>
+                            <If condition={page.reviewerAccountId}>
+                                <IconText tooltip={page.reviewerAccountName} size="sm"
+                                    icon={<IconReviewer style={{ color: theme.colors.dark[2] }} />} />
+                            </If>
+                        </Flex>
+                    </Card.Section>
+                    <Card.Section>
+                        <Group mb="md" justify='flex-start'>
+                            <If condition={page.links.update}>
+                                <IconText
+                                    icon={<IconReaderText height={16} style={{ color: theme.colors.dark[2] }} />}
+                                    tooltip={t('issueArticle.actions.read.title')}
+                                    link={`/libraries/${libraryId}/books/${book.id}/pages/${page.sequenceNumber}`} />
+                            </If>
+                            <If condition={page.links.update}>
+                                <PageEditForm libraryId={libraryId} bookId={book.id} page={page}>
+                                    <IconText
+                                        icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />}
+                                        tooltip={t('actions.edit')} />
+                                </PageEditForm>
+                            </If>
+                            <If condition={page.links.delete}>
+                                <PageDeleteButton pages={[page]} t={t} type='subtle' />
+                            </If>
+                        </Group>
+                    </Card.Section>
+                </Card>)
+            }
+        </Draggable >
+    )
+};
+
+PageCard.propTypes = {
+    libraryId: PropTypes.string,
+    t: PropTypes.any,
+    book: PropTypes.shape({
+        id: PropTypes.number,
+    }),
+    index: PropTypes.number,
+    isSelected: PropTypes.bool,
+    onSelectChanged: PropTypes.func,
+    page: PropTypes.shape({
+        sequenceNumber: PropTypes.number,
+        status: PropTypes.string,
+        description: PropTypes.string,
+        writerAccountId: PropTypes.number,
+        writerAccountName: PropTypes.string,
+        reviewerAccountId: PropTypes.number,
+        reviewerAccountName: PropTypes.string,
+        categories: PropTypes.arrayOf(PropTypes.shape({
+            id: PropTypes.number,
+            name: PropTypes.string
+        })),
+        links: PropTypes.shape({
+            update: PropTypes.string,
+            delete: PropTypes.string,
+            image: PropTypes.string,
+        }),
+        publisher: PropTypes.string,
+        language: PropTypes.string,
+        isPublic: PropTypes.bool,
+        copyrights: PropTypes.string,
+        pageCount: PropTypes.number,
+        pageStatus: PropTypes.arrayOf(PropTypes.shape({
+            status: PropTypes.string,
+            count: PropTypes.number,
+            percentage: PropTypes.number
+        })),
+    }),
+    isLoading: PropTypes.object,
+    writerAssignmentFilter: PropTypes.string,
+    reviewerAssignmentFilter: PropTypes.string,
+    sortBy: PropTypes.string,
+    sortDirection: PropTypes.string,
+    status: PropTypes.string,
+    pageNumber: PropTypes.number,
+    pageSize: PropTypes.number,
 };
 
 export default PageCard;

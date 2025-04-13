@@ -1,218 +1,208 @@
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
-// 3rd party libraries
+// UI Library Import
+import { Button, Card, Center, Container, Grid, Group, LoadingOverlay, SimpleGrid, Switch, Textarea, TextInput, useMantineTheme } from "@mantine/core";
 
-import { Button, Col, Form, Input, Row, App, Space, Spin, Upload, Switch, Select } from "antd";
-import { FaFeatherAlt } from "/src/icons";
-import ImgCrop from "antd-img-crop";
+// Local Impoprt
+import PageHeader from "@/components/pageHeader";
+import IconNames from '@/components/iconNames';
+import { IconLibrary } from '@/components/icons';
+import { isEmail, isNotEmpty, useForm } from "@mantine/form";
 
-// Local imports
-import { useGetLibraryQuery, useAddLibraryMutation, useUpdateLibraryMutation, useUpdateLibraryImageMutation } from "/src/store/slices/librariesSlice";
-import { libraryPlaceholderImage, setDefaultBookImage } from "/src/util";
-import ContentsContainer from "/src/components/layout/contentContainer";
-import PageHeader from "/src/components/layout/pageHeader";
-import LanguageSelect from "/src/components/languageSelect";
-import Error from "/src/components/common/error";
-import Loading from "/src/components/common/loader";
-
-// ----------------------------------------------
-const { Dragger } = Upload;
-// ----------------------------------------------
-
-const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 14 } };
-const buttonItemLayout = { wrapperCol: { span: 14, offset: 4 } };
-
+import {
+    useAddLibraryMutation,
+    useUpdateLibraryImageMutation,
+    useUpdateLibraryMutation,
+    useGetLibraryQuery
+} from "@/store/slices/libraries.api";
+import ImageUpload from '@/components/imageUpload';
+import Error from '@/components/error';
+import LanguageSelect from '@/components/languageSelect';
+import FilestoreTypeSelect from '@/components/filestoreTypeSelect';
+import { error, success } from '@/utils/notifications';
+//---------------------------------------
 const LibraryEditPage = () => {
-    const { message } = App.useApp();
-    const navigate = useNavigate();
-    const { t } = useTranslation();
     const { libraryId } = useParams();
-    const [addLibrary, { isLoading: isAdding }] = useAddLibraryMutation();
-    const [updateLibrary, { isLoading: isUpdating }] = useUpdateLibraryMutation();
-    const [updateLibraryImage, { isLoading: isUpdatingImage }] = useUpdateLibraryImageMutation();
-    const { data: library, error, isFetching } = useGetLibraryQuery({ libraryId }, { skip: !libraryId });
-    const [previewImage, setPreviewImage] = useState(null);
-    const [fileList, setFileList] = useState([]);
+    const { t } = useTranslation();
+    const navigate = useNavigate();
+    const theme = useMantineTheme();
+    const [loaded, setLoaded] = useState(false);
+    const [image, setImage] = useState(null);
+    const isEditing = useMemo(() => libraryId != null, [libraryId]);
+
+    const [add, { isLoading: isAdding }] = useAddLibraryMutation();
+    const [update, { isLoading: isUpdating }] = useUpdateLibraryMutation();
+    const [updateImage, { isLoading: isUpdatingImage }] = useUpdateLibraryImageMutation();
+    const { data: library, refetch, error: errorLoading, isFetching } = useGetLibraryQuery({ libraryId }, { skip: !libraryId });
+
+    // ------------------------- Form --------------------------------
+    const form = useForm({
+        mode: 'uncontrolled',
+        validateInputOnBlur: true,
+        initialValues: {
+            name: '',
+            description: '',
+            language: '',
+            ownerEmail: '',
+            supportsPeriodicals: false,
+            public: false,
+            fileStoreType: '',
+            fileStoreSource: '',
+        },
+
+        validate: {
+            name: isNotEmpty(t("library.name.required")),
+            ownerEmail: (value) => isNotEmpty('library.email.required')(value) && isEmail(t("library.email.error"))(value),
+            language: isNotEmpty(t("library.language.required")),
+            fileStoreType: isNotEmpty(t("book.language.required")),
+            fileStoreSource: isNotEmpty(t("book.language.required")),
+        }
+    });
+
+    //----------------------------------------------------------------------
 
     useEffect(() => {
-        if (library && !library.links.update) {
-            navigate('/403');
-        }
-    }, [library]);
 
-    const onSubmit = async (library) => {
-        if (libraryId) {
-            updateLibrary({ libraryId, library })
-                .unwrap()
-                .then((res) => library = res)
-                .then(() => uploadImage(library))
-                .then(() => navigate(`/libraries/${library.id}`))
-                .then(() => message.success(t("library.actions.edit.success")))
-                .catch(() => message.error(t("library.actions.edit.error")));
+        if (!loaded && library != null) {
+            if (!library?.links?.update) {
+                navigate('/403')
+            } else {
+                form.initialize(library);
+                setLoaded(true);
+            }
+        }
+    }, [form, library, loaded, navigate]);
+
+    const onSubmit = async (_library) => {
+        if (isEditing) {
+            try {
+                const response = await update({ libraryId, payload: _library })
+                    .unwrap();
+                await uploadImage(response);
+                success({ message: t("library.actions.edit.success") })
+
+                navigate(`/libraries/${libraryId}`)
+            }
+            catch (e) {
+                console.error(e)
+                error({ message: t("library.actions.edit.error") })
+            }
         } else {
-            addLibrary({ library })
-                .unwrap()
-                .then((res) => library = res)
-                .then(() => uploadImage(library))
-                .then(() => navigate(`/libraries/${library.id}`))
-                .then(() => message.success(t("library.actions.add.success")))
-                .catch(() => message.error(t("library.actions.add.error")));
+            try {
+                const response = await add({ libraryId, payload: _library })
+                    .unwrap();
+
+                await uploadImage(response)
+                success({ message: t("library.actions.add.success") });
+                navigate(`/libraries/${response.id}`);
+            }
+            catch (e) {
+                console.error(e);
+                error({ message: t("library.actions.add.error") });
+            }
         }
     };
 
-    const uploadImage = async (library) => {
-        if (fileList && fileList.length > 0) {
-            await updateLibraryImage({ library, payload: fileList[0] }).unwrap();
+    const uploadImage = async (_library) => {
+        if (image) {
+            await updateImage({ library: _library, payload: image }).unwrap();
         }
     };
 
-    const onImageChange = (file) => {
-        const isImage = ["image/png", "image/jpeg"].includes(file.type);
-        if (!isImage) {
-            message.error(t("errors.imageRequired"));
-            return;
-        }
-        setFileList([file]);
-        const fileReader = new FileReader();
-        fileReader.addEventListener("load", () => {
-            setPreviewImage(fileReader.result);
-        });
-        fileReader.readAsDataURL(file);
-        return false;
+    //-------------------------- Render -------------------------------
+
+    const icon = <Center h={450}><IconLibrary width={250} style={{ color: theme.colors.dark[1] }} /></Center>;
+
+    if (errorLoading) {
+        return (<Container fluid mt="sm">
+            <Error title={t('library.error.loading.title')}
+                detail={t('library.error.loading.detail')}
+                onRetry={refetch} />
+        </Container>)
     };
 
-    const getCoverSrc = () => {
-        if (previewImage) {
-            return previewImage;
-        } else if (library && library.links.image) {
-            return library.links.image;
-        }
-
-        return libraryPlaceholderImage;
-    };
-    const title = library ? library.name : t("library.actions.add.label");
-
-    if (isFetching) return <Loading />;
-    if (error) return <Error t={t} />;
-
-    return (
-        <>
-            <PageHeader title={title} icon={<FaFeatherAlt style={{ width: 36, height: 36 }} />} />
-            <ContentsContainer>
-                <Row gutter={16}>
-                    <Col l={4} md={6} xs={24}>
-                        <ImgCrop modalTitle={t("actions.resizeImage")}>
-                            <Dragger fileList={fileList} beforeUpload={onImageChange} showUploadList={false}>
-                                <img src={getCoverSrc()} height="300" alt={library && library.name} onError={setDefaultBookImage} />
-                            </Dragger>
-                        </ImgCrop>
-                    </Col>
-                    <Col l={20} md={18} xs={24}>
-                        <Spin spinning={isFetching || isAdding || isUpdating || isUpdatingImage}>
-                            <Form name="library" onFinish={onSubmit} {...formItemLayout} layout="horizontal" initialValues={library}>
-                                <Form.Item
-                                    name="ownerEmail"
+    return (<>
+        <Container fluid mt="sm">
+            <PageHeader
+                title={library ? t('library.actions.edit.title', { title: library?.name }) : t('library.actions.add.title')}
+                defaultIcon={IconNames.Library} />
+            <LoadingOverlay visible={isFetching || isAdding || isUpdating || isUpdatingImage} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
+            <Grid
+                mih={50}
+            >
+                <Grid.Col span="content">
+                    <ImageUpload
+                        t={t}
+                        src={library?.links?.image}
+                        alt={library?.title}
+                        fallback={icon}
+                        onChange={setImage}
+                    />
+                </Grid.Col>
+                <Grid.Col span="auto" >
+                    <Card withBorder >
+                        <form onSubmit={form.onSubmit((values) => onSubmit(values))}>
+                            <SimpleGrid >
+                                <TextInput key={form.key('ownerEmail')} disabled={isEditing}
                                     label={t("library.email.label")}
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: t("library.email.required"),
-                                        },
-                                        {
-                                            type: 'email',
-                                            message: t('library.email.error'),
-                                        },
-                                    ]}
-                                >
-                                    <Input placeholder={t("library.email.placeholder")} />
-                                </Form.Item>
-                                <Form.Item
-                                    name="name"
+                                    placeholder={t("library.email.placeholder")}
+                                    {...form.getInputProps('ownerEmail')}
+                                />
+
+                                <TextInput key={form.key('name')}
                                     label={t("library.name.label")}
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: t("library.name.required"),
-                                        },
-                                    ]}
-                                >
-                                    <Input placeholder={t("library.name.placeholder")} />
-                                </Form.Item>
-                                <Form.Item name="description" label={t("library.description.label")}>
-                                    <Input.TextArea rows={4} />
-                                </Form.Item>
-                                <Form.Item
-                                    name="language"
+                                    placeholder={t("library.name.placeholder")}
+                                    {...form.getInputProps('name')}
+                                />
+
+                                <Textarea key={form.key('description')}
+                                    label={t("library.description.label")}
+                                    placeholder={t("library.description.placeholder")}
+                                    {...form.getInputProps('description')} />
+
+
+                                <LanguageSelect key={form.key('language')}
                                     label={t("library.language.label")}
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: t("library.language.required"),
-                                        },
-                                    ]}
-                                >
-                                    <LanguageSelect placeholder={t("library.language.placeholder")} />
-                                </Form.Item>
-                                <Form.Item name="public" valuePropName="checked" label={t("library.isPublic.label")}>
-                                    <Switch />
-                                </Form.Item>
-                                <Form.Item name="supportsPeriodicals" valuePropName="checked" label={t("library.supportPeriodicals.label")}>
-                                    <Switch />
-                                </Form.Item>
-                                <Form.Item
-                                    name="fileStoreType"
+                                    {...form.getInputProps('language')}
+                                />
+
+                                <Switch
+                                    label={t("library.supportsPeriodicals.label")}
+                                    key={form.key('supportsPeriodicals')}
+                                    {...form.getInputProps('supportsPeriodicals', { type: 'checkbox' })}
+                                />
+
+                                <Switch
+                                    label={t("library.public.label")}
+                                    key={form.key('public')}
+                                    {...form.getInputProps('public', { type: 'checkbox' })}
+                                />
+
+                                <FilestoreTypeSelect key={form.key('fileStoreType')}
                                     label={t("library.fileStoreType.label")}
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: t("library.fileStoreType.required"),
-                                        },
-                                    ]}
-                                >
-                                    <Select placeholder={t("library.fileStoreType.placeholder")}>
-                                        <Select.Option value="Database">{t("library.fileStoreType.database")}</Select.Option>
-                                        <Select.Option value="AzureBlobStorage">{t("library.fileStoreType.azurebolbstorage")}</Select.Option>
-                                        <Select.Option value="S3Storage">{t("library.fileStoreType.s3storage")}</Select.Option>
-                                        <Select.Option value="FileSystem">{t("library.fileStoreType.filesystem")}</Select.Option>
-                                    </Select>
-                                </Form.Item>
-                                <Form.Item
-                                    name="fileStoreSource"
+                                    {...form.getInputProps('fileStoreType')}
+                                />
+
+                                <TextInput key={form.key('fileStoreSource')} dir="ltr"
                                     label={t("library.fileStoreSource.label")}
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: t("library.fileStoreSource.required"),
-                                        },
-                                    ]}
-                                >
-                                    <Input placeholder={t("library.fileStoreSource.placeholder")} />
-                                </Form.Item>
-                                <Form.Item
-                                    name="databaseConnection"
-                                    label={t("library.databaseConnection.label")}
-                                >
-                                    <Input placeholder={t("library.databaseConnection.placeholder")} />
-                                </Form.Item>
-                                <Form.Item {...buttonItemLayout}>
-                                    <Space direction="horizontal" size="middle" style={{ width: "100%" }}>
-                                        <Button type="primary" htmlType="submit" size="large" block>
-                                            {t("actions.save")}
-                                        </Button>
-                                        <Button size="large" onClick={() => navigate(-1)} block>
-                                            {t("actions.cancel")}
-                                        </Button>
-                                    </Space>
-                                </Form.Item>
-                            </Form>
-                        </Spin>
-                    </Col>
-                </Row>
-            </ContentsContainer>
-        </>
-    );
-};
+                                    placeholder={t("library.fileStoreSource.placeholder")}
+                                    {...form.getInputProps('fileStoreSource')}
+                                />
+                            </SimpleGrid>
+
+                            <Group justify="flex-end" mt="md">
+                                <Button type="submit">{t('actions.save')}</Button>
+                                <Button variant='light' onClick={() => navigate(-1)}>{t('actions.cancel')}</Button>
+                            </Group>
+                        </form>
+                    </Card>
+                </Grid.Col>
+            </Grid>
+        </Container >
+    </>
+    )
+}
 
 export default LibraryEditPage;

@@ -1,32 +1,41 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 
 // Local imports
-import {
-    FaFile,
-    FaFileSignature,
-    FaFileAlt,
-    FaCheck,
-    FaGlasses,
-    FaRegFile,
-} from "/src/icons";
+import { EditingStatus } from '@/models';
+import IconText from './iconText';
+import { IconAvailableForTyping, IconBeingTyped, IconReadyForProofRead, IconProofRead, IconTick } from '@/components/icons';
+// -------------------------------------------------
 
-// ------------------------------------------------------
-
-const EditingStatusIcon = ({ status, style, render = true }) => {
-    switch (status) {
-        case "Available":
-            return render ? <FaFile style={style} /> : FaFile;
-        case "Typing":
-            return render ? <FaFileSignature style={style} /> : FaFileSignature;
-        case "Typed":
-            return render ? <FaFileAlt style={style} /> : FaFileAlt;
-        case "InReview":
-            return render ? <FaGlasses style={style} /> : FaGlasses;
-        case "Completed":
-            return render ? <FaCheck style={style} /> : FaCheck;
-        default:
-            return render ? <FaRegFile style={style} /> : FaRegFile;
+const EditingStatusIcon = ({ editingStatus, t, showText = false, ...props }) => {
+    let icon = null;
+    switch (editingStatus) {
+        case EditingStatus.Available:
+            icon = (<IconAvailableForTyping {...props} />);
+            break;
+        case EditingStatus.Typing:
+            icon = (<IconBeingTyped {...props} />);
+            break;
+        case EditingStatus.Typed:
+            icon = (<IconReadyForProofRead {...props} />);
+            break;
+        case EditingStatus.InReview:
+            icon = (<IconProofRead {...props} />);
+            break;
+        case EditingStatus.Completed:
+            icon = (<IconTick {...props} />);
+            break;
     }
+    if (showText) {
+        return (<IconText icon={icon} text={t(`editingStatus.${editingStatus}`)} />);
+    }
+
+    return icon;
+};
+
+EditingStatusIcon.propTypes = {
+    editingStatus: PropTypes.string,
+    showText: PropTypes.bool,
+    t: PropTypes.any,
 };
 
 export default EditingStatusIcon;

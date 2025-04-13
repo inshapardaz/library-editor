@@ -1,50 +1,60 @@
-import React, { useMemo, useState } from "react";
-import { useLocalStorage } from "usehooks-ts";
+import PropTypes from 'prop-types';
+import { useMemo } from 'react';
 
-// 3rd party libraries
-import { App, Button, Flex, Upload } from "antd";
+// UI Library Import
+import { Button, Center, FileButton, Group, Stack, Switch, Tooltip, useMantineColorScheme, useMantineTheme } from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
 
 // Local imports
-import { FaFileUpload, MdOutlineZoomIn, MdOutlineZoomOut } from "/src/icons";
-import { pagePlaceholderImage, setDefaultPageImage } from "/src/util";
+import { IconZoomIn, IconZoomOut, IconPage, IconUpload } from '@/components/icons';
+import If from '@/components/if';
+import Img from '@/components/img';
 
-// -----------------------------------------
+//----------------------------
 const MIN_ZOOM = 10;
 const MAX_ZOOM = 200;
 const ZOOM_STEP = 10;
-const PageImage = ({ page, t, fileList, setFileList }) => {
-    const { message } = App.useApp();
-    const [previewImage, setPreviewImage] = useState(null);
-    const [zoom, setZoom] = useLocalStorage('page-image-zoom', 100);
 
-    const onImageChange = (file) => {
-        const isImage = ["image/png", "image/jpeg"].includes(file.type);
-        if (!isImage) {
-            message.error(t("errors.imageRequired"));
-            return;
-        }
-        setFileList([file]);
-        const fileReader = new FileReader();
-        fileReader.addEventListener("load", () => {
-            setPreviewImage(fileReader.result);
-        });
-        fileReader.readAsDataURL(file);
-        return false;
-    };
+const PageImage = ({ page, t, image, onChange = () => { } }) => {
+    const theme = useMantineTheme();
+    const { colorScheme } = useMantineColorScheme();
+    const [darkenImage, setDarkenImage] = useLocalStorage({
+        key: "page-editor-darken-image",
+        defaultValue: false
+    })
+    const [zoom, setZoom] = useLocalStorage({
+        key: "page-editor-image-zoom",
+        defaultValue: 100
+    });
 
-    const getCoverSrc = () => {
-        if (previewImage) {
-            return previewImage;
+    const icon = <Center h={450}><IconPage width={250} style={{ color: theme.colors.dark[1] }} /></Center>;
+
+    const getImage = () => {
+        if (image) {
+            return image;
         } else if (page && page.links.image) {
             return page.links.image;
         }
 
-        return pagePlaceholderImage;
+        return null;
     };
 
-    //const canZoom = useMemo(() => getCoverSrc() !== pagePlaceholderImage, [getCoverSrc]);
+    const setImage = (file) => {
+        const fileReader = new FileReader();
+        fileReader.addEventListener("load", () => {
+            onChange(fileReader.result);
+        });
+        fileReader.readAsDataURL(file);
+    }
+
+    //----------- Zoom functions ------------------------
+
     const canZoomIn = useMemo(() => zoom < MAX_ZOOM, [zoom]);
     const canZoomOut = useMemo(() => zoom > MIN_ZOOM, [zoom]);
+
+    const resetZoom = () => {
+        setZoom(100);
+    }
 
     const zoomIn = () => {
         if (canZoomIn) {
@@ -58,33 +68,70 @@ const PageImage = ({ page, t, fileList, setFileList }) => {
         }
     }
 
-    return (<>
-        <Flex vertical>
-            <Flex wrap="wrap" gap="small" >
-                <Upload fileList={fileList} beforeUpload={onImageChange} showUploadList={false}>
-                    <Button icon={<FaFileUpload />} type="text">
-                        {t('page.actions.uploadImage.label')}
+    //----------- Render ------------------------
+
+    return (<Stack>
+        <Group>
+            <FileButton onChange={setImage} accept="image/png,image/jpeg">
+                {(props) => <Tooltip label={t("page.actions.uploadImage.label")}>
+                    <Button {...props} variant="default" size="xs" >
+                        <IconUpload />
                     </Button>
-                </Upload>
-                <Button icon={<MdOutlineZoomIn />} disabled={!canZoomIn} type="text" onClick={zoomIn}>
-                    {t('actions.zoonIn')}
-                </Button>
-                <Button icon={<MdOutlineZoomOut />} disabled={!canZoomOut} type="text" onClick={zoomOut}>
-                    {t('actions.zoonOut')}
-                </Button>
-            </Flex>
-            <div style={{ overflow: 'auto', flex: 1 }}>
-                <img
-                    src={getCoverSrc()}
-                    height="300"
-                    className="ant-upload-drag-icon"
-                    alt={page && page.title}
-                    onError={setDefaultPageImage}
-                    style={{ width: `${zoom}%`, height: 'auto' }}
+                </Tooltip>}
+            </FileButton>
+            <span style={{ flex: '1' }} />
+            <If condition={colorScheme === 'dark'}>
+                <Switch size="md"
+                    label={t('page.actions.darkenImage.label')}
+                    checked={darkenImage}
+                    onChange={(event) => setDarkenImage(event.currentTarget.checked)}
                 />
-            </div>
-        </Flex>
-    </>);
+            </If>
+            <Button.Group>
+                <Tooltip label={t("actions.zoonIn")}>
+                    <Button variant="default" size="xs" onClick={zoomIn} >
+                        <IconZoomIn />
+                    </Button>
+                </Tooltip>
+                <Tooltip label={t("actions.zoonReset")}>
+                    <Button variant="default" size="xs" onClick={resetZoom} >
+                        {`${zoom}%`}
+                    </Button>
+                </Tooltip>
+                <Tooltip label={t("actions.zoonOut")}>
+                    <Button variant="default" size="xs" onClick={zoomOut} >
+                        <IconZoomOut />
+                    </Button>
+                </Tooltip>
+            </Button.Group>
+        </Group>
+        <div style={{ overflow: 'auto', position: 'relative' }}>
+            <Img
+                src={getImage()}
+                radius="0"
+                fallback={icon}
+                height="auto"
+                width="auto"
+                fit={null}
+                style={{
+                    transform: `scale(${zoom / 100})`,
+                    transformOrigin: 'top',
+                    filter: `invert(${darkenImage && colorScheme === 'dark' ? '90%' : '0'})`
+                }}
+            />
+        </div>
+    </Stack>)
 }
+
+PageImage.propTypes = {
+    t: PropTypes.any,
+    page: PropTypes.shape({
+        links: PropTypes.shape({
+            image: PropTypes.string
+        })
+    }),
+    image: PropTypes.string,
+    onChange: PropTypes.func,
+};
 
 export default PageImage;

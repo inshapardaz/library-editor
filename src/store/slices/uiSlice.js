@@ -1,59 +1,109 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 // 3rd party imports
-import { theme } from "antd";
-import urPK from "antd/locale/ur_PK";
-import enGB from "antd/locale/en_GB";
-import moment from "moment";
+import Cookies from 'js-cookie'
 
+import enDictionary from '@/i18n/wordLists/en'
+import urDictionary from '@/i18n/wordLists/ur'
 //----------------------------------------
 
-const initialState = {
-    mode: window.localStorage.uiMode ?? "light",
-    locale: window.localStorage.i18nextLng ?? "ur",
-};
+const detectedLanguage = window.localStorage.i18nextLng ?? "ur";
 
 export const languages = {
     en: {
-        key: "en",
+        key: `en`,
         locale: "en_GB",
         name: "English",
         dir: "ltr",
         isRtl: false,
-        flag: "gb",
-        antdLocale: enGB.default,
     },
     ur: {
-        key: "ur",
+        key: `ur`,
         locale: "ur_PK",
         name: "اردو",
         dir: "rtl",
-        isRtl: true,
-        flag: "pk",
-        antdLocale: urPK.default,
+        isRtl: true
     },
 };
+
+const lang = languages[detectedLanguage];
+if (lang) {
+    document.querySelector("html").setAttribute("dir", lang.dir);
+    document.querySelector("html").setAttribute("lang", lang.locale);
+    document.querySelector("body").setAttribute("dir", lang.dir);
+}
 
 export const uiSlice = createSlice({
     name: "ui",
     initialState: {
         mode: window.localStorage.uiMode ?? "light",
-        locale: window.localStorage.i18nextLng ?? "ur",
+        locale: detectedLanguage,
+        readerFont: Cookies.get('reader-font') ?? 'AdobeArabic',
+        readerFontSize: parseInt(Cookies.get('reader-font-size'), 10) ?? 16,
+        readerTheme: Cookies.get('reader-theme') ?? 'White',
+        readerView: Cookies.get('reader-view') ?? 'scroll',
+        readerLineHeight: Cookies.get('reader-line-height') ?? '1.5',
     },
     reducers: {
         toggleUiMode: (state) => {
             state.mode = state.mode === "light" ? "dark" : "light";
             window.localStorage.setItem("uiMode", state.mode);
         },
+        setUiMode: (state, action) => {
+            window.localStorage.setItem("uiMode", action.payload);
+        },
         setLocale: (state, action) => {
             state.locale = action.payload;
-            moment.locale(state.locale);
             window.localStorage.i18nextLng = action.payload;
+            const lang = languages[action.payload];
+            if (lang) {
+                document.querySelector("html").setAttribute("dir", lang.dir);
+                document.querySelector("html").setAttribute("lang", lang.locale);
+                document.querySelector("body").setAttribute("dir", lang.dir);
+            }
+        },
+        setReaderFont: (state, action) => {
+            state.readerFont = action.payload;
+            Cookies.set('reader-font', action.payload)
+        },
+        setReaderFontSize: (state, action) => {
+            state.readerFontSize = action.payload;
+            Cookies.set('reader-font-size', action.payload)
+        },
+        setReaderTheme: (state, action) => {
+            state.readerTheme = action.payload;
+            Cookies.set('reader-theme', action.payload)
+        },
+        setReaderView: (state, action) => {
+            state.readerView = action.payload;
+            Cookies.set('reader-view', action.payload)
+        },
+        setReaderLineHeight: (state, action) => {
+            state.readerLineHeight = action.payload;
+            Cookies.set('reader-line-height', action.payload)
         },
     },
 });
 
-export const themeAlgorithm = (state) =>
-    state.ui.mode === "dark" ? theme.darkAlgorithm : theme.defaultAlgorithm;
+export const {
+    toggleUiMode,
+    setLocale,
+    setUiMode,
+    setReaderFont,
+    setReaderFontSize,
+    setReaderTheme,
+    setReaderView,
+    setReaderLineHeight
+} = uiSlice.actions;
 export const selectedLanguage = (state) => languages[state.ui.locale];
-export const { toggleUiMode, setLocale } = uiSlice.actions;
+export function autoCompleteList(state) {
+    switch (state.ui.locale) {
+        case 'en':
+            return enDictionary;
+        case 'ur':
+            return urDictionary;
+        default:
+            return [];
+
+    }
+}

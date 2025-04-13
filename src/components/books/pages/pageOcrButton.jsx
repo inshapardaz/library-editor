@@ -1,108 +1,99 @@
-import React from "react";
-import { useLocalStorage } from "usehooks-ts";
+import PropTypes from 'prop-types';
 
-
-// Third party libraries
-import {
-    Form,
-    Switch,
-    Input,
-    Space,
-    Collapse,
-} from "antd";
+// UI Library Imprort
+import { useField } from '@mantine/form';
 
 // Local imports
-import {
-    MdImageSearch,
-} from "/src/icons";
-import { useOcrBookPagesMutation } from "/src/store/slices/booksSlice";
-import BatchActionDrawer from "/src/components/batchActionDrawer";
+import { useOcrBookPagesMutation } from "@/store/slices/books.api";
+import { IconOcrDocument } from "@/components/icons";
+import BatchActionDrawer from '@/components/batchActionDrawer';
+import { Divider, Switch, Text, TextInput } from '@mantine/core';
+import { useState } from 'react';
 
 // ------------------------------------------------------
 
-const PageOcrButton = ({ pages, t, type }) => {
-    const [form] = Form.useForm();
-    const [key, setKey] = useLocalStorage("ocr.key");
-
-    const data = { key, storeApiKey: key != null };
+const PageOcrButton = ({ pages = [], t, type, showIcon = true, onCompleted = () => { } }) => {
     const [ocrBookPages, { isLoading: isBusy }] = useOcrBookPagesMutation();
+    const [saveKey, setSaveKey] = useState(true);
     const count = pages ? pages.length : 0;
 
+    const keyField = useField({
+        initialValue: localStorage.getItem('ocrKey') ?? '',
+        validate: (value) => (value && value != '' ? null : t("page.actions.ocr.key.required"))
+    });
 
     const onOk = async () => {
-        try {
-            let values = await form.validateFields();
-            setKey(values.key);
+        await keyField.validate();
+        let value = keyField.getValue();
+
+        if (saveKey) {
+            if (value) {
+                localStorage.setItem('ocrKey', value);
+            }
+        } else {
+            localStorage.removeItem('ocrKey');
+        }
+
+        if (value && value != '') {
             return (page) => {
                 if (page && page.links && page.links.ocr) {
-                    return { key: values.key };
+                    return { key: value };
                 }
                 return null;
             }
         }
-        catch {
-            return false;
-        }
+
+        return false;
     };
 
-    const onShow = () => form.resetFields();
+    return (<>
+        <BatchActionDrawer t={t}
+            tooltip={t('page.actions.ocr.title', { count })}
+            buttonType={type}
+            disabled={count === 0}
+            icon={showIcon && <IconOcrDocument />}
+            sliderTitle={t("page.actions.ocr.title", { count })}
+            onOkFunc={onOk}
+            busy={isBusy}
+            listTitle={t("page.actions.ocr.message")}
+            items={pages}
+            itemTitleFunc={page => page.sequenceNumber}
+            mutation={ocrBookPages}
+            successMessage={t("page.actions.ocr.success", { count })}
+            errorMessage={t("page.actions.ocr.error", { count })}
+            onSuccess={onCompleted}
+            onClose={() => keyField.reset()}
+        >
+            <TextInput {...keyField.getInputProps()}
+                label={t('page.actions.ocr.key.label')}
+                description={t('page.actions.ocr.key.description')}
+            />
 
-    return (
-        <>
-            <BatchActionDrawer t={t}
-                tooltip={t("page.actions.updateStatus.title")}
-                buttonType={type}
-                size='large'
-                disabled={count === 0}
-                icon={<MdImageSearch />}
-                sliderTitle={t("page.actions.updateStatus.title")}
-                onOk={onOk}
-                closable={!isBusy}
-                onShow={onShow}
-                items={pages}
-                itemTitle={page => page.sequenceNumber}
-                mutation={ocrBookPages}
-                successMessage={t("page.actions.setChapter.success", { count })}
-                errorMessage={t("page.actions.setChapter.error", { count })}
-            >
-                <Form form={form} layout="vertical" initialValues={data}>
-                    <Space>
-                        {t("page.actions.ocr.message")}
-                    </Space>
-                    <Collapse
-                        items={[
-                            {
-                                key: '1',
-                                label: t("page.actions.ocr.key.label"),
-                                children: (<>
-                                    <Form.Item
-                                        label={t("page.actions.ocr.key.label")}
-                                        name="key"
-                                        help={t("page.actions.ocr.key.description")}
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: t("page.actions.ocr.key.required"),
-                                            },
-                                        ]}
-                                    >
-                                        <Input.TextArea rows={2} />
-                                    </Form.Item>
-                                    <Form.Item
-                                        label={t("page.actions.ocr.saveKey.label")}
-                                        name="storeApiKey"
-                                        help={t("page.actions.ocr.saveKey.description")}
-                                    >
-                                        <Switch />
-                                    </Form.Item>
-                                </>)
-                            },
-                        ]}
-                    />
-                </Form>
-            </BatchActionDrawer>
-        </>
-    );
+            <Switch checked={saveKey} onChange={(event) => setSaveKey(event.currentTarget.checked)}
+                label={t('page.actions.ocr.saveKey.label')}
+            />
+
+            <Text>{t('page.actions.ocr.saveKey.description')}</Text>
+            <Divider />
+        </BatchActionDrawer>
+    </>);
+};
+
+PageOcrButton.propTypes = {
+    t: PropTypes.any,
+    libraryId: PropTypes.string,
+    type: PropTypes.string,
+    showIcon: PropTypes.bool,
+    pages: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.number,
+            title: PropTypes.string,
+            links: PropTypes.shape({
+                delete: PropTypes.string,
+            }),
+        })),
+    isLoading: PropTypes.object,
+    onCompleted: PropTypes.func
 };
 
 export default PageOcrButton;

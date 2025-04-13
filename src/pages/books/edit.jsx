@@ -1,212 +1,124 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
-// 3rd party libraries
-
-import { Button, Col, Form, Input, InputNumber, Row, App, Space, Spin, Switch, Upload } from "antd";
-import { ImBooks } from "/src/icons";
-import ImgCrop from "antd-img-crop";
+// UI Library Imports
+import { Box, Card, Center, Container, Grid, LoadingOverlay, rem, Skeleton, useMantineTheme } from "@mantine/core";
 
 // Local imports
-import { useGetBookQuery, useAddBookMutation, useUpdateBookMutation, useUpdateBookImageMutation } from "/src/store/slices/booksSlice";
-import { bookPlaceholderImage, setDefaultBookImage } from "/src/util";
-import ContentsContainer from "/src/components/layout/contentContainer";
-import PageHeader from "/src/components/layout/pageHeader";
-import Error from "/src/components/common/error";
-import Loading from "/src/components/common/loader";
-import AuthorsSelect from "/src/components/author/authorsSelect";
-import SeriesSelect from "/src/components/series/seriesSelect";
-import CategoriesSelect from "/src/components/categories/categoriesSelect";
-import LanguageSelect from "/src/components/languageSelect";
-import CopyrightSelect from "/src/components/copyrightSelect";
-import PublishStatusSelect from "/src/components/publishStatusSelect";
+import { useGetBookQuery, useAddBookMutation, useUpdateBookMutation, useUpdateBookImageMutation } from '@/store/slices/books.api';
+import PageHeader from "@/components/pageHeader";
+import Error from '@/components/error';
+import { IconBook } from '@/components/icons';
+import ImageUpload from '@/components/imageUpload';
+import BookForm from '@/components/books/bookForm';
+import { error, success } from '@/utils/notifications';
+//---------------------------------
+const PageLoading = () => {
+    const PRIMARY_COL_HEIGHT = rem(300);
+    const SECONDARY_COL_HEIGHT = `calc(${PRIMARY_COL_HEIGHT} / 2 - var(--mantine-spacing-md) / 2)`;
+    return (<Container fluid mt="sm">
+        <Grid mih={50}>
+            <Grid.Col span={{ base: 12, md: 4, lg: 3 }}>
+                <Skeleton height={SECONDARY_COL_HEIGHT} radius="md" />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 8, lg: 9 }}>
+                <Skeleton height={SECONDARY_COL_HEIGHT} radius="md" />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 4, lg: 3 }}>
+                <Skeleton height={SECONDARY_COL_HEIGHT} radius="md" />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 8, lg: 9 }}>
+                <Skeleton height={SECONDARY_COL_HEIGHT} radius="md" />
+            </Grid.Col>
+        </Grid>
+    </Container>);
+}
 
-// ----------------------------------------------
-const { Dragger } = Upload;
-// ----------------------------------------------
-
-const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 14 } };
-const buttonItemLayout = { wrapperCol: { span: 14, offset: 4 } };
-
-const BookEditPage = () => {
-    const { message } = App.useApp();
+const EditBookPage = () => {
     const navigate = useNavigate();
+    const theme = useMantineTheme();
     const { t } = useTranslation();
     const { libraryId, bookId } = useParams();
+    const isEditing = useMemo(() => bookId != null, [bookId]);
+    const [image, setImage] = useState(null);
     const [addBook, { isLoading: isAdding }] = useAddBookMutation();
     const [updateBook, { isLoading: isUpdating }] = useUpdateBookMutation();
     const [updateBookImage, { isLoading: isUpdatingImage }] = useUpdateBookImageMutation();
 
-    const { data: book, error, isFetching } = useGetBookQuery({ libraryId, bookId }, { skip: !libraryId || !bookId });
-    const [previewImage, setPreviewImage] = useState(null);
-    const [fileList, setFileList] = useState([]);
+    const { data: book, refetch, error: errorLoading, isFetching } = useGetBookQuery({ libraryId, bookId }, { skip: !libraryId || !bookId });
 
     useEffect(() => {
         if (book && !book?.links?.update) {
             navigate('/403')
         }
-    }, [book]);
+    }, [book, navigate]);
 
     const onSubmit = async (book) => {
-        if (bookId) {
+        if (isEditing) {
             updateBook({ libraryId, bookId, payload: book })
                 .unwrap()
                 .then(() => uploadImage(bookId))
+                .then(() => success({ message: t("book.actions.edit.success") }))
                 .then(() => navigate(`/libraries/${libraryId}/books/${bookId}`))
-                .then(() => message.success(t("book.actions.edit.success")))
-                .catch(() => message.error(t("book.actions.edit.error")));
+                .catch(() => error({ message: t("book.actions.edit.error") }));
         } else {
             let response = null;
             addBook({ libraryId, payload: book })
                 .unwrap()
                 .then((r) => (response = r))
                 .then(() => uploadImage(response.id))
+                .then(() => success({ message: t("book.actions.add.success") }))
                 .then(() => navigate(`/libraries/${libraryId}/books/${response.id}`))
-                .then(() => message.success(t("book.actions.add.success")))
-                .catch(() => message.error(t("book.actions.add.error")));
+                .catch(() => error({ message: t("book.actions.add.error") }));
         }
     };
 
     const uploadImage = async (newBookId) => {
-        if (fileList && fileList.length > 0) {
-            await updateBookImage({ libraryId, bookId: newBookId, payload: fileList[0] }).unwrap();
+        if (image) {
+            await updateBookImage({ libraryId, bookId: newBookId, payload: image }).unwrap();
         }
     };
 
-    const onImageChange = (file) => {
-        const isImage = ["image/png", "image/jpeg"].includes(file.type);
-        if (!isImage) {
-            message.error(t("errors.imageRequired"));
-            return;
-        }
-        setFileList([file]);
-        const fileReader = new FileReader();
-        fileReader.addEventListener("load", () => {
-            setPreviewImage(fileReader.result);
-        });
-        fileReader.readAsDataURL(file);
-        return false;
-    };
-
-    const getCoverSrc = () => {
-        if (previewImage) {
-            return previewImage;
-        } else if (book && book.links.image) {
-            return book.links.image;
-        }
-
-        return bookPlaceholderImage;
-    };
+    const icon = <Center h={450}><IconBook width={250} style={{ color: theme.colors.dark[1] }} /></Center>;
 
     const title = book ? book.title : t("book.actions.add.title");
-    if (isFetching) return <Loading />;
-    if (error) return <Error t={t} />;
-    return (
-        <>
-            <PageHeader title={title} icon={<ImBooks style={{ width: 36, height: 36 }} />} />
-            <ContentsContainer>
-                <Spin spinning={isFetching || isAdding || isUpdating || isUpdatingImage}>
-                    <Row gutter={16}>
-                        <Col l={4} md={6} xs={24}>
-                            <Col l={4} md={6} xs={24}>
-                                <ImgCrop aspect={262 / 400} rotationSlider modalTitle={t("actions.resizeImage")}>
-                                    <Dragger fileList={fileList} beforeUpload={onImageChange} showUploadList={false}>
-                                        <img src={getCoverSrc()} height="300" className="ant-upload-drag-icon" alt={book && book.title} onError={setDefaultBookImage} />
-                                    </Dragger>
-                                </ImgCrop>
-                            </Col>
-                        </Col>
-                        <Col l={20} md={18} xs={24}>
-                            <Form name="login" onFinish={onSubmit} {...formItemLayout} layout="horizontal" initialValues={book}>
-                                <Form.Item
-                                    name="title"
-                                    label={t("book.title.label")}
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: t("book.title.required"),
-                                        },
-                                    ]}
-                                >
-                                    <Input placeholder={t("book.title.placeholder")} autoFocus />
-                                </Form.Item>
-                                <Form.Item name="description" label={t("book.description.label")}>
-                                    <Input.TextArea rows={4} />
-                                </Form.Item>
-                                <Form.Item name="isPublic" valuePropName="checked" label={t("book.public.label")}>
-                                    <Switch />
-                                </Form.Item>
-                                <Form.Item
-                                    name="authors"
-                                    label={t("book.authors.label")}
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: t("book.authors.required"),
-                                        },
-                                    ]}
-                                >
-                                    <AuthorsSelect placeholder={t("book.authors.placeholder")} t={t} libraryId={libraryId} showAdd />
-                                </Form.Item>
-                                <Form.Item name="categories" label={t("book.categories.label")}>
-                                    <CategoriesSelect libraryId={libraryId} placeholder={t("book.categories.placeholder")} />
-                                </Form.Item>
-                                <Form.Item
-                                    name="language"
-                                    label={t("book.language.label")}
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: t("book.language.required"),
-                                        },
-                                    ]}
-                                >
-                                    <LanguageSelect placeholder={t("book.language.placeholder")} />
-                                </Form.Item>
-                                <Form.Item name="yearPublished" label={t("book.yearPublished.label")}>
-                                    <InputNumber min={1} />
-                                </Form.Item>
-                                <Form.Item name="publisher" label={t("book.publisher.label")}>
-                                    <Input placeholder={t("book.publisher.placeholder")} />
-                                </Form.Item>
-                                <Form.Item name="copyrights" label={t("book.copyrights.label")}>
-                                    <CopyrightSelect t={t} />
-                                </Form.Item>
-                                <Form.Item label={t("book.series.label")}>
-                                    <Space.Compact>
-                                        <Form.Item name="seriesId" noStyle>
-                                            <SeriesSelect placeholder={t("book.series.placeholder")} t={t} libraryId={libraryId} label={book && book.seriesName} />
-                                        </Form.Item>
-                                        <Form.Item name="seriesIndex" noStyle>
-                                            <InputNumber min={1} style={{ width: "50%" }} />
-                                        </Form.Item>
-                                    </Space.Compact>
-                                </Form.Item>
-                                <Form.Item name="source" label={t("book.source.label")}>
-                                    <Input placeholder={t("book.source.placeholder")} />
-                                </Form.Item>
-                                <Form.Item name="status" label={t("book.status.label")} placeholder={t("book.status.placeholder")}>
-                                    <PublishStatusSelect t={t} />
-                                </Form.Item>
+    if (isFetching) return <PageLoading />;
+    if (errorLoading) {
+        return (<Container fluid mt="sm">
+            <Error title={t('book.error.loading.title')}
+                detail={t('book.error.loading.detail')}
+                onRetry={refetch} />
+        </Container>)
+    };
 
-                                <Form.Item {...buttonItemLayout}>
-                                    <Space direction="horizontal" size="middle" style={{ width: "100%" }}>
-                                        <Button type="primary" htmlType="submit" size="large" block>
-                                            {t("actions.save")}
-                                        </Button>
-                                        <Button size="large" onClick={() => navigate(-1)} block>
-                                            {t("actions.cancel")}
-                                        </Button>
-                                    </Space>
-                                </Form.Item>
-                            </Form>
-                        </Col>
-                    </Row>
-                </Spin>
-            </ContentsContainer>
-        </>
-    );
-};
+    return (<Container fluid mt="sm">
+        <PageHeader title={title}>
+        </PageHeader>
+        <Container size="responsive">
+            <Box pos="relative">
+                <LoadingOverlay visible={isFetching || isAdding || isUpdating || isUpdatingImage} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
+                <Grid
+                    mih={50}
+                >
+                    <Grid.Col span="content">
+                        <ImageUpload
+                            t={t}
+                            src={book?.links?.image}
+                            alt={book?.title}
+                            fallback={icon}
+                            onChange={setImage}
+                        />
+                    </Grid.Col>
+                    <Grid.Col span="auto" >
+                        <Card withBorder maw={600}>
+                            <BookForm libraryId={libraryId} book={book} onSubmit={onSubmit} onCancel={() => navigate(-1)} />
+                        </Card>
+                    </Grid.Col>
+                </Grid>
+            </Box>
+        </Container>
+    </Container >);
+}
 
-export default BookEditPage;
+export default EditBookPage;

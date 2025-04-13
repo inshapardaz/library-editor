@@ -1,113 +1,156 @@
-import React, { useRef, useState } from 'react';
+import PropTypes from 'prop-types';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
-// 3rd party libraries
-import { Button, Divider, Empty, Input, Select, Space, Tooltip } from "antd";
+// Ui Library Import
+import { Group, Combobox, useCombobox, Loader, TextInput } from "@mantine/core";
 
-// local imports
-import { FaUser, FaPlus } from "/src/icons";
-import { useGetBookChaptersQuery, useAddChapterMutation } from "/src/store/slices/booksSlice";
+// Local imports
+import { useGetBookChaptersQuery, useAddChapterMutation } from '@/store/slices/books.api'
+import If from '@/components/if';
+import { IconAdd } from '@/components/icons';
+import { error, success } from '@/utils/notifications';
+//------------------------------------
 
-// -------------------------------------------------
-
-const ChapterSelect = ({
-    libraryId,
-    book,
-    label,
-    value,
-    onChange,
-    placeholder,
-    t,
-    showAdd
-}) => {
-    const [name, setName] = useState('');
-    const inputRef = useRef(null);
-    const onNameChange = (event) => {
-        setName(event.target.value);
-    };
-
-    const [addChapter, { isLoading: isAdding }] = useAddChapterMutation();
-    const {
-        data: chapters,
-        error,
-        isFetching,
-    } = useGetBookChaptersQuery({
-        libraryId,
-        bookId: book.id,
-        pageNumber: 1,
-        pageSize: 10,
+const ChapterSelect = ({ t, libraryId, bookId, defaultValue = null, onChange, label, placeholder, disabled, ...props }) => {
+    const [value, setValue] = useState(null);
+    const [search, setSearch] = useState('');
+    const [currentValue, setCurrentValue] = useState(null);
+    const combobox = useCombobox({
+        onDropdownClose: () => combobox.resetSelectedOption(),
     });
 
-    const addNewChapter = (e) => {
-        addChapter({
-            libraryId, bookId: book.id, payload: {
-                title: name
+    // create new chapter
+    //-------------------------------------------------
+    //libraryId, bookId, payload
+    const [addChapter, { isLoading: isAdding }] = useAddChapterMutation();
+
+    // Fetach data and set the dropdown
+    //-------------------------------------------------
+    const { data: chapters, error: errorLoading, isFetching } = useGetBookChaptersQuery({ libraryId, bookId })
+
+    const data = useMemo(() => chapters?.data ? chapters.data : [], [chapters]);
+
+    const options = useMemo(() => {
+        return data
+            .filter((item) => item.title.toLowerCase().includes(search.toLowerCase().trim()))
+            .map((chapter) => (
+                <Combobox.Option value={chapter.id} key={chapter.id}>
+                    <span>{chapter.title}</span>
+                </Combobox.Option>
+            ));
+    }, [data, search]);
+
+    //-------------------------------------------------
+
+    // Adding new value
+    const handleValueSelect = useCallback((val) => {
+        setValue('');
+
+        const setSelection = (addedValue) => {
+            if (addedValue) {
+                setCurrentValue(addedValue);
+                setValue(addedValue.title);
+                onChange(addedValue.id);
+                combobox.closeDropdown();
             }
-        })
-            .unwrap()
-            .then(() => {
-                setName('');
-            });
-        e.preventDefault();
-    }
+        }
 
-    const renderDropDown = (menu) => {
-        if (!showAdd)
-            return menu;
-        return (
-            <>
-                {menu}
-                <Divider
-                    style={{
-                        margin: '8px 0',
-                    }}
-                />
-                <Space.Compact
-                    style={{
-                        width: '100%',
-                    }}
-                >
-                    <Input
-                        placeholder={t('chapter.title.label')}
-                        ref={inputRef}
-                        value={name}
-                        onChange={onNameChange}
-                        onKeyDown={(e) => e.stopPropagation()}
-                        disabled={isAdding}
-                    />
-                    <Tooltip title={t('chapter.actions.add.label')} >
-                        <Button type="text" icon={<FaPlus />} onClick={addNewChapter} disabled={isAdding || !name} />
-                    </Tooltip>
-                </Space.Compact>
-            </>
-        )
-    }
+        if (val === '$create') {
+            addChapter({
+                libraryId, bookId, payload: {
+                    title: value
+                }
+            }).unwrap()
+                .then((addedValue) => {
+                    setSelection(addedValue);
+                })
+                .then(() => success({ message: t("chapter.actions.add.success") }))
+                .catch((e) => {
+                    console.error(e)
+                    error({ message: t("chapter.actions.add.error") });
+                });
+        } else {
+            const addedValue = data.find(x => x.id == val);
+            if (addedValue) {
+                setSelection(addedValue);
+            }
+        }
+    }, [onChange, combobox, addChapter, libraryId, value, t, data]);
 
-    const onChangeHandler = (v) => onChange(v);
+    //-------------------------------------------------
+    useEffect(() => {
+        if (value == null && defaultValue != null && currentValue?.id != defaultValue) {
+            const selectedValue = data?.find(x => x.id === defaultValue)
+
+            if (selectedValue) {
+                setCurrentValue(selectedValue);
+                setValue(selectedValue.title)
+            }
+        }
+    }, [currentValue, data, defaultValue, value]);
+
+    useEffect(() => {
+        if (currentValue && value != currentValue.title) {
+            setCurrentValue(null)
+        }
+    }, [value, currentValue]);
 
     return (
-        <Select
-            loading={isFetching}
-            error={error}
-            defaultValue={{ value, label }}
-            defaultActiveFirstOption={false}
-            onChange={onChangeHandler}
-            placeholder={placeholder}
-            dropdownRender={renderDropDown}
-            notFoundContent={
-                <Empty
-                    image={<FaUser size="2em" />}
-                    description={t("chapters.empty.title")}
+        <Combobox {...props} disabled={disabled} error={errorLoading} store={combobox} onOptionSubmit={handleValueSelect} withinPortal={true}>
+            <Combobox.Target>
+                <TextInput disabled={disabled}
+                    label={label}
+                    placeholder={placeholder}
+                    value={value || ''}
+                    onChange={(event) => {
+                        setValue(event.currentTarget.value);
+                        setSearch(event.currentTarget.value);
+                        combobox.updateSelectedOptionIndex();
+                        combobox.openDropdown();
+                    }}
+                    onClick={() => combobox.openDropdown()}
+                    onFocus={() => combobox.openDropdown()}
+                    onBlur={() => combobox.closeDropdown()}
+                    rightSection={<Combobox.Chevron />}
                 />
-            }
-        >
-            {chapters &&
-                chapters.data.map((chapter) => (
-                    <Select.Option key={chapter.id} value={chapter.id}>
-                        {chapter.title}
-                    </Select.Option>
-                ))}
-        </Select>
+            </Combobox.Target>
+
+            <Combobox.Dropdown>
+                <Combobox.Options>
+                    <If condition={!isFetching && !isAdding} elseChildren={<Loader />}>
+                        {/* When items found from sewrver  */}
+                        <If condition={options.length > 0}>
+                            {options}
+                        </If>
+
+                        {/* When no items found  and no search */}
+
+                        <If condition={options.length == 0 && value?.trim().length === 0} >
+                            <Combobox.Empty>{t('chapters.empty.title')}</Combobox.Empty>
+                        </If>
+                        <If condition={options.length < 1 && value && value.trim().length !== 0 && !currentValue} >
+                            <Combobox.Option value="$create"><Group gap="sm" wrap='nowrap'>
+                                <IconAdd height={24} />
+                                <span>{t('chapter.actions.add.label')}</span>
+                            </Group>
+                            </Combobox.Option>
+                        </If>
+                    </If>
+                </Combobox.Options>
+            </Combobox.Dropdown>
+        </Combobox>
     );
+}
+
+ChapterSelect.propTypes = {
+    t: PropTypes.any,
+    libraryId: PropTypes.any,
+    bookId: PropTypes.any,
+    onChange: PropTypes.func,
+    label: PropTypes.any,
+    placeholder: PropTypes.any,
+    disabled: PropTypes.bool,
+    defaultValue: PropTypes.number
 };
 
 export default ChapterSelect;

@@ -1,96 +1,84 @@
-import React from "react";
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
-// Third party libraries
-import { Form, Space } from "antd";
+// UI Library Imprort
+import { useField } from '@mantine/form';
 
 // Local imports
-import { FaUserAlt } from "/src/icons";
-import { useAssignBookPagesMutation } from "/src/store/slices/booksSlice";
-import UserSelect from "/src/components/userSelect";
-import BatchActionDrawer from "/src/components/batchActionDrawer";
+import { useAssignBookPagesMutation } from "@/store/slices/books.api";
+import { IconAssign } from "@/components/icons";
+import BatchActionDrawer from '@/components/batchActionDrawer';
+import UserSelect from '@/components/userSelect';
 
 // ------------------------------------------------------
 
-const PageAssignButton = ({ libraryId, pages, t, type, showDetails = false, showIcon = true }) => {
-    const [form] = Form.useForm();
-    const [assignBookPages, { isLoading: isAssigning }] =
-        useAssignBookPagesMutation();
+const PageAssignButton = ({ libraryId, pages = [], t, type, showIcon = true, onCompleted = () => { } }) => {
+    const [assignPages, { isLoading: isAssigning }] = useAssignBookPagesMutation();
+    const user = useSelector(state => state.auth.user)
     const count = pages ? pages.length : 0;
 
+    const idField = useField({
+        initialValue: '',
+        validate: (value) => (value && value != '' ? null : t("page.user.required"))
+    });
+
     const onOk = async () => {
-        try {
-
-            let values = await form.validateFields();
-            return {
-                accountId: values.id === "none" ? null : values.id,
-            };
+        await idField.validate();
+        let value = idField.getValue();
+        if (value && value != '') {
+            return value === "none" ? {
+                unassign: true
+            } :
+                {
+                    accountId: value === "me" ? user.id : value,
+                };
         }
-        catch {
-            return false;
-        }
+
+        return false;
     };
 
-    const onShow = () => {
-        form.resetFields();
-    };
+    return (<>
+        <BatchActionDrawer t={t}
+            tooltip={t('page.actions.assign.title')}
+            buttonType={type}
+            disabled={count === 0}
+            icon={showIcon && <IconAssign />}
+            sliderTitle={t("page.actions.assign.title", { count })}
+            onOkFunc={onOk}
+            busy={isAssigning}
+            listTitle={t("page.actions.assign.message")}
+            items={pages}
+            itemTitleFunc={page => page.sequenceNumber}
+            mutation={assignPages}
+            successMessage={t("page.actions.assign.success", { count })}
+            errorMessage={t("page.actions.assign.error", { count })}
+            onSuccess={onCompleted}
+            onClose={() => idField.reset()}
+        >
+            <UserSelect {...idField.getInputProps()}
+                t={t}
+                libraryId={libraryId}
+                addMeOption
+                label={t("page.user.label")} />
+        </BatchActionDrawer>
+    </>);
+};
 
-    const hasAllPagesGotLink = true;
-    // pages && pages.data && pages.data.every((p) => p.links.assign_to_me);
-
-    let data = {
-        id: "",
-        name: "",
-    };
-
-    return (
-        <>
-            <BatchActionDrawer t={t}
-                tooltip={t('page.actions.assign.title')}
-                buttonType={type}
-                disabled={count === 0}
-                title={showDetails && t('page.actions.assign.title')}
-                icon={showIcon && <FaUserAlt />}
-                sliderTitle={t("page.actions.assign.title")}
-                onOk={onOk}
-                closable={!isAssigning}
-                onShow={onShow}
-                listTitle={t("chapters.title")}
-                items={pages}
-                itemTitle={page => page.sequenceNumber}
-                mutation={assignBookPages}
-                successMessage={t("page.actions.assign.success", { count })}
-                errorMessage={t("page.actions.assign.error", { count })}
-            >
-                <Form form={form} layout="vertical" initialValues={data}>
-                    <Space>
-                        {t("page.actions.assign.message", {
-                            sequenceNumber: pages
-                                ? pages.map((p) => p.sequenceNumber).join(",")
-                                : 0,
-                        })}
-                    </Space>
-                    <Form.Item
-                        name="id"
-                        label={t("page.user.label")}
-                        rules={[
-                            {
-                                required: true,
-                                message: t("page.user.required"),
-                            },
-                        ]}
-                    >
-                        <UserSelect
-                            libraryId={libraryId}
-                            t={t}
-                            placeholder={t("page.user.placeholder")}
-                            label={data.name}
-                            addMeOption={hasAllPagesGotLink}
-                        />
-                    </Form.Item>
-                </Form>
-            </BatchActionDrawer>
-        </>
-    );
+PageAssignButton.propTypes = {
+    t: PropTypes.any,
+    libraryId: PropTypes.string,
+    type: PropTypes.string,
+    showIcon: PropTypes.bool,
+    pages: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.number,
+            title: PropTypes.string,
+            links: PropTypes.shape({
+                delete: PropTypes.string,
+            }),
+        })),
+    isLoading: PropTypes.object,
+    onCompleted: PropTypes.func
 };
 
 export default PageAssignButton;

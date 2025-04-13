@@ -1,0 +1,41 @@
+.scrollReader {
+    
+    padding: 10px;
+    display: grid;
+    height: calc(-120px + 100vh);
+}
+
+.scrollReaderShowNavigation {
+    grid-template-columns: 50px 1fr 50px;
+    
+    @media only screen and (max-width: 800px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.scrollReaderNoNavigation {
+    grid-template-columns: 1fr;
+}
+
+.navButton {
+    align-self: center; 
+    padding: 4px;
+
+    @media only screen and (max-width: 800px) {
+        display: none;
+    }
+}
+
+.header {
+    font-size: 150%;
+    font-weight: bold;
+}
+.readerWrapper {
+    padding: var(--mantine-spacing-md);
+    overflow-y: scroll;
+}
+.readerContainer {
+    text-align: justify;
+    max-width: 600px;
+    margin: 0 auto;
+}

@@ -1,173 +1,219 @@
-import React from 'react';
-import { useTranslation } from "react-i18next";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import PropTypes from 'prop-types';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-// 3rd party libraries
-import { Button, Col, Row, Space, Tabs } from "antd";
-import { FiEdit } from "/src/icons";
-import { FaRegClone, FaRegFileAlt, FaRegFileWord } from "/src/icons";
-import { ImBooks } from "/src/icons";
+// UI library imports
+import {
+    Button,
+    Card,
+    Center,
+    Container,
+    Divider,
+    Grid,
+    Group,
+    Skeleton,
+    Space,
+    Stack,
+    Tabs,
+    rem,
+    useMantineTheme
+} from '@mantine/core';
 
 // Local imports
-import { useGetBookQuery } from "/src/store/slices/booksSlice";
-import ContentsContainer from "/src/components/layout/contentContainer";
-import PageHeader from "/src/components/layout/pageHeader";
-import BookInfo from "/src/components/books/bookInfo";
-import ChaptersList from "/src/components/books/chapters/chaptersList";
-import PagesList from "/src/components/books/pages/pagesList";
-import FilesList from "/src/components/books/files/filesList";
-import Error from "/src/components/common/error";
-import Loading from "/src/components/common/loader";
-import BookDeleteButton from "/src/components/books/bookDeleteButton";
-import AuthorAvatar from "/src/components/author/authorAvatar";
-import BookPublishButton from "/src/components/books/bookPublishButton";
-// ----------------------------------------------
+import { useGetBookQuery } from '@/store/slices/books.api';
+import BookChaptersList from '@/components/books/chapters/bookChaptersList';
+import BookPagesList from '@/components/books/pages/pagesList';
+import BookSeriesInfo from '@/components/series/bookSeriesInfo';
+import FavoriteButton from '@/components/books/favoriteButton';
+import AuthorsAvatar from '@/components/authors/authorsAvatar';
+import CategoriesList from '@/components/categories/categoriesList';
+import BookInfo from '@/components/books/bookInfo';
+import PageHeader from "@/components/pageHeader";
+import Error from '@/components/error';
+import If from '@/components/if';
+import Img from '@/components/img';
+import { IconBook, IconEditBook, IconPages, IconChapters, IconFiles } from '@/components/icons';
+import IconNames from '@/components/iconNames'
+import BookFilesList from '@/components/books/files/bookFilesList';
+import { BookStatus, PageStatus } from '@/models';
+//------------------------------------------------------
+
+const getFilterFromBookStatus = (book) => {
+    switch (book?.status) {
+        case BookStatus.AvailableForTyping:
+            return PageStatus.AvailableForTyping;
+        case BookStatus.BeingTyped:
+            return PageStatus.Typing;
+        case BookStatus.ReadyForProofRead:
+            return PageStatus.Typed;
+        case BookStatus.ProofRead:
+            return PageStatus.InReview;
+        case BookStatus.Published:
+        default:
+            return PageStatus.All;
+    }
+};
+
+//------------------------------------------------------
+
+const PRIMARY_COL_HEIGHT = rem(300);
 
 const BookPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const { libraryId, bookId } = useParams();
     const [searchParams] = useSearchParams();
     const section = searchParams.get("section") ?? "chapters";
-    const { libraryId, bookId } = useParams();
+    const writerAssignmentFilter = searchParams.get("writerAssignmentFilter");
+    const reviewerAssignmentFilter = searchParams.get("reviewerAssignmentFilter");
+    const sortDirection = searchParams.get("sortDirection") ?? "ascending";
+    const pageNumber = parseInt(searchParams.get("pageNumber") ?? "1");
+    const pageSize = parseInt(searchParams.get("pageSize") ?? "12");
+
+    const theme = useMantineTheme();
+
     const {
         data: book,
-        error,
-        isFetching,
-    } = useGetBookQuery({ libraryId, bookId }, { skip: !libraryId || !bookId });
+        error: errorLoadingBook,
+        isFetching: loadingBook,
+        refetch
+    } = useGetBookQuery({
+        libraryId,
+        bookId
+    });
 
-    if (isFetching) return <Loading />;
-    if (error) return <Error t={t} />;
+    const status = searchParams.get("status") ?? getFilterFromBookStatus(book);
+    const SECONDARY_COL_HEIGHT = `calc(${PRIMARY_COL_HEIGHT} / 2 - var(--mantine-spacing-md) / 2)`;
 
-    const tabs = [
-        {
-            key: "chapters",
-            label: (
-                <Space gutter={2}>
-                    <FaRegClone />
-                    {t("book.chapters.title")}
-                </Space>
-            ),
-            children: (
-                <ChaptersList
-                    libraryId={libraryId}
-                    bookId={bookId}
-                    t={t}
-                    size="large"
-                />
-            ),
-        },
-        {
-            key: "pages",
-            label: (
-                <Space gutter={2}>
-                    <FaRegFileAlt />
-                    {t("pages.title")}
-                </Space>
-            ),
-            children: (
-                <PagesList
-                    libraryId={libraryId}
-                    book={book}
-                    t={t}
-                    size="large"
-                />
-            ),
-        },
-        {
-            key: "files",
-            label: (
-                <Space gutter={2}>
-                    <FaRegFileWord />
-                    {t("book.files.title")}
-                </Space>
-            ),
-            children: (
-                <FilesList
-                    libraryId={libraryId}
-                    book={book}
-                    t={t}
-                    size="large"
-                />
-            ),
-        },
-    ];
+
+    if (loadingBook) {
+        return (<Container fluid mt="sm">
+            <Grid
+                mih={50}
+            >
+                <Grid.Col span={{ base: 12, md: 4, lg: 3 }}>
+                    <Skeleton height={SECONDARY_COL_HEIGHT} radius="md" />
+                </Grid.Col>
+                <Grid.Col span={{ base: 12, md: 8, lg: 9 }}>
+                    <Skeleton height={SECONDARY_COL_HEIGHT} radius="md" />
+                </Grid.Col>
+                <Grid.Col span={{ base: 12, md: 4, lg: 3 }}>
+                    <Skeleton height={SECONDARY_COL_HEIGHT} radius="md" />
+                </Grid.Col>
+                <Grid.Col span={{ base: 12, md: 8, lg: 9 }}>
+                    <Skeleton height={SECONDARY_COL_HEIGHT} radius="md" />
+                </Grid.Col>
+            </Grid>
+        </Container>);
+    }
+
+    if (errorLoadingBook) {
+        return (<Container fluid mt="sm">
+            <Error title={t('book.error.loading.title')}
+                detail={t('book.error.loading.detail')}
+                onRetry={refetch} />
+        </Container>)
+    }
 
     const onChange = (key) => {
         navigate(`/libraries/${libraryId}/books/${book.id}/?section=${key}`);
     };
 
-    return (
-        <>
-            <PageHeader
-                title={book.title}
-                subTitle={
-                    <Space>
-                        {book &&
-                            book.authors.map((author) => (
-                                <AuthorAvatar
-                                    key={author.id}
-                                    libraryId={libraryId}
-                                    author={author}
-                                    t={t}
-                                    showName={true}
+    const icon = <Center h={450}><IconBook width={250} style={{ color: theme.colors.dark[1] }} /></Center>;
+
+    return (<Container fluid mt="sm">
+        <PageHeader title={book.title}
+            subTitle={
+                <Group visibleFrom='md'>
+                    <AuthorsAvatar libraryId={libraryId} authors={book?.authors} showNames />
+                    <If condition={book?.seriesName}>
+                        <Divider orientation='vertical' />
+                    </If>
+                    <BookSeriesInfo libraryId={libraryId} book={book} />
+                    <If condition={book?.categories?.length > 0}>
+                        <Divider orientation='vertical' />
+                        <CategoriesList key="book-categories-info" categories={book?.categories} size={24} showIcon={false} />
+                    </If>
+                </Group>
+            }
+            details={book.description}
+            breadcrumbs={[
+                { title: t('header.home'), href: `/libraries/${libraryId}`, icon: IconNames.Home },
+                { title: t('header.books'), href: `/libraries/${libraryId}/books`, icon: IconNames.Books },
+            ]}
+            actions={[
+                (<FavoriteButton key="book-fav-button" book={book} size={24} />),
+                (<span key="book-spacer" style={{ flex: 1 }} />),
+                (<Button key="book-edit" component={Link} to={`/libraries/${libraryId}/books/${book.id}/edit`} variant='default' leftSection={<IconEditBook />} >{t('actions.edit')}</Button>)
+            ]} />
+        <Container size="responsive">
+            <Grid
+                mih={50}
+            >
+                <Grid.Col span="content">
+                    <Img
+                        src={book?.links?.image}
+                        h={rem(400)}
+                        w="auto"
+                        radius="md"
+                        alt={book?.title}
+                        fit='contain'
+                        fallback={icon}
+                    />
+                    <Stack hiddenFrom='md'>
+                        <Space h="md" />
+                        <AuthorsAvatar libraryId={libraryId} authors={book?.authors} showNames />
+                        <BookSeriesInfo libraryId={libraryId} book={book} />
+                    </Stack>
+                    <Space h="md" />
+                    <BookInfo libraryId={libraryId} book={book} isLoading={loadingBook} />
+                </Grid.Col>
+                <Grid.Col span="auto">
+                    <Card withBorder>
+                        <Tabs value={section} onChange={onChange}>
+                            <Tabs.List>
+                                <Tabs.Tab value="chapters" leftSection={<IconChapters style={{ color: theme.colors.dark[3] }} />}>
+                                    {t('book.chapters')}
+                                </Tabs.Tab>
+                                <Tabs.Tab value="pages" leftSection={<IconPages style={{ color: theme.colors.dark[3] }} />}>
+                                    {t('book.pages')}
+                                </Tabs.Tab>
+                                <Tabs.Tab value="files" leftSection={<IconFiles style={{ color: theme.colors.dark[3] }} />}>
+                                    {t('book.files.title')}
+                                </Tabs.Tab>
+                            </Tabs.List>
+
+                            <Tabs.Panel value="chapters">
+                                <BookChaptersList libraryId={libraryId} book={book} isLoading={loadingBook} />
+                            </Tabs.Panel>
+
+                            <Tabs.Panel value="pages">
+                                <BookPagesList libraryId={libraryId} book={book} isLoading={loadingBook}
+                                    writerAssignmentFilter={writerAssignmentFilter}
+                                    reviewerAssignmentFilter={reviewerAssignmentFilter}
+                                    sortDirection={sortDirection}
+                                    status={status}
+                                    pageNumber={pageNumber}
+                                    pageSize={pageSize}
                                 />
-                            ))}
-                    </Space>
-                }
-                icon={<ImBooks style={{ width: 36, height: 36 }} />}
-                actions={[
-                    <Button.Group key="button-group">
-                        <Button
-                            key="edit-button"
-                            block
-                            icon={<FiEdit />}
-                            onClick={() =>
-                                navigate(
-                                    `/libraries/${libraryId}/books/${book.id}/edit`
-                                )
-                            }
-                        >
-                            {t("actions.edit")}
-                        </Button>
-                        <BookPublishButton
-                            key="publish-button"
-                            block
-                            size="large"
-                            book={book}
-                            icon={<FiEdit />}
-                            t={t}
-                        >
-                            {t("book.actions.publish.title")}
-                        </BookPublishButton>
-                        <BookDeleteButton
-                            key="delete-button"
-                            block
-                            size="large"
-                            libraryId={libraryId}
-                            book={book}
-                            t={t}
-                        >
-                            {t("actions.delete")}
-                        </BookDeleteButton>
-                    </Button.Group>,
-                ]}
-            />
-            <ContentsContainer>
-                <Row gutter={16}>
-                    <Col l={4} md={6} xs={24}>
-                        <BookInfo libraryId={libraryId} book={book} t={t} />
-                    </Col>
-                    <Col l={20} md={18} xs={24}>
-                        <Tabs
-                            activeKey={section}
-                            items={tabs}
-                            onChange={onChange}
-                        />
-                    </Col>
-                </Row>
-            </ContentsContainer>
-        </>
-    );
+                            </Tabs.Panel>
+
+                            <Tabs.Panel value="files">
+                                <BookFilesList libraryId={libraryId} book={book} isLoading={loadingBook} />
+                            </Tabs.Panel>
+                        </Tabs>
+                    </Card>
+                </Grid.Col>
+            </Grid>
+        </Container>
+    </Container>);
+}
+
+BookPage.propTypes = {
+    authors: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number,
+        name: PropTypes.string
+    }))
 };
 
 export default BookPage;

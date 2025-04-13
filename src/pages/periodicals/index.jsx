@@ -1,41 +1,62 @@
-import React from 'react';
-import { useParams, useSearchParams, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 
-// 3rd party libraries
-import { Button } from "antd";
-import { FaPlus } from "/src/icons";
-import { ImNewspaper } from "/src/icons";
+// UI Library Import
+import { Button, Card, Grid, rem } from "@mantine/core";
 
-// Local Imports
-import PageHeader from "/src/components/layout/pageHeader";
-import PeriodicalsList from "/src/components/periodicals/periodicalsList";
-import ContentsContainer from "/src/components/layout/contentContainer";
-//------------------------------------------------
-
-const PeriodicalsHomePage = () => {
+// Local Import
+import { SortDirection } from "@/models";
+import PeriodicalsSideBar from "@/components/periodicals/periodicalsSideBar";
+import PeriodicalsList from "@/components/periodicals/periodicalsList";
+import PageHeader from "@/components/pageHeader";
+import IconNames from '@/components/iconNames'
+import { IconAdd } from '@/components/icons'
+// -----------------------------------------
+const PeriodicalsPage = () => {
     const { t } = useTranslation();
+
     const { libraryId } = useParams();
     const [searchParams] = useSearchParams();
     const query = searchParams.get("query");
-    const pageNumber = searchParams.get("pageNumber");
-    const pageSize = searchParams.get("pageSize");
+    const category = searchParams.get("category");
+    const frequency = searchParams.get("frequency");
+    const sortBy = searchParams.get("sortBy") ?? "title";
+    const sortDirection = searchParams.get("sortDirection") ?? SortDirection.Ascending;
+    const pageNumber = searchParams.get("pageNumber") ?? 1;
+    const pageSize = searchParams.get("pageSize") ?? 12;
 
-    const addButton = (
-        <Link to={`/libraries/${libraryId}/periodicals/add`}>
-            <Button type="dashed" icon={<FaPlus />}>
-                {t("periodical.actions.add.label")}
-            </Button>
-        </Link>
-    );
-    return (
-        <>
-            <PageHeader title={t("periodicals.title")} icon={<ImNewspaper style={{ width: 36, height: 36 }} />} actions={addButton} />
-            <ContentsContainer>
-                <PeriodicalsList libraryId={libraryId} query={query} pageNumber={pageNumber} pageSize={pageSize} />
-            </ContentsContainer>
-        </>
-    );
-};
+    return (<>
+        <PageHeader
+            title={t('header.periodicals')}
+            defaultIcon={IconNames.Periodicals}
+            breadcrumbs={[
+                { title: t('header.home'), href: `/libraries/${libraryId}`, icon: IconNames.Home }
+            ]} actions={[
+                (<Button key="periodical-edit" component={Link} to={`/libraries/${libraryId}/periodicals/add`} variant='default' leftSection={<IconAdd />} >{t('periodical.actions.add.label')}</Button>)
+            ]} />
+        <Grid type="container" breakpoints={{ xs: '100px', sm: '200px', md: '300px', lg: '400px', xl: '500px' }} mx="md">
+            <Grid.Col span={{ md: 12, lg: 3, xl: 2 }} style={{ minWidth: rem(200) }}>
+                <PeriodicalsSideBar
+                    selectedCategory={category}
+                    frequency={frequency} />
+            </Grid.Col>
+            <Grid.Col span="auto">
+                <Card withBorder>
+                    <PeriodicalsList
+                        libraryId={libraryId}
+                        query={query}
+                        category={category}
+                        sortBy={sortBy}
+                        frequency={frequency}
+                        sortDirection={sortDirection}
+                        pageNumber={pageNumber}
+                        pageSize={pageSize}
+                        showSearch
+                        showTitle={false} />
+                </Card>
+            </Grid.Col>
+        </Grid>
+    </>)
+}
 
-export default PeriodicalsHomePage;
+export default PeriodicalsPage;

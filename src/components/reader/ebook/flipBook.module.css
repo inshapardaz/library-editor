@@ -1,0 +1,82 @@
+.container {
+    display: grid;
+    grid-template-columns: 50px 1fr 50px;
+    height: calc(-120px + 100vh);
+    margin-top: var(--mantine-spacing-md);
+    margin-bottom: var(--mantine-spacing-md);
+    box-sizing: content-box;
+    @media only screen and (max-width: 800px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.header {
+    font-size: 75%;
+    text-align: center;
+    border-bottom: 1px solid var(--mantine-color-default-border);
+}
+
+.footer {
+    text-align: center;
+    font-size: 75%;
+    border-top: 1px solid var(--mantine-color-default-border);
+}
+
+.navButton {
+    align-self: center; 
+    padding: 4px;
+    @media only screen and (max-width: 800px) {
+        display: none;
+    }
+}
+
+.flipBookReader {
+    overflow: hidden;
+    padding: 10px;
+    position: relative;
+    min-width: 650px;
+    margin: 0 auto;
+    padding: var(--mantine-spacing-md);
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    @media only screen and (max-width: 800px) {
+        min-width: 100%;
+    } 
+}
+
+
+.flipBookReaderSingle {
+    max-width: 650px;
+    @media only screen and (max-width: 800px) {
+        min-width: 100%;
+    } 
+}
+
+.flipBookReaderDouble {
+    max-width: 1300px;
+    @media only screen and (max-width: 800px) {
+        display: none;
+    } 
+}
+
+.readerContainer {
+    text-align: justify;
+    column-count: auto;
+    column-gap: 64px;
+    column-fill: auto;
+    position: relative;
+    line-height: 1.5;
+    height: calc(-160px + 100vh); 
+    left: 500px;
+    right: auto;
+    transition: 1s ease-in;
+}
+
+.readerContainerSingle {
+    max-width: 800px;
+    column-count: 1;
+}
+
+.readerContainerDouble {
+    max-width: 1600px;
+    column-count: 2;
+}

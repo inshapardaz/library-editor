@@ -1,46 +1,59 @@
-import React, { useCallback, useState } from "react";
+import PropTypes from 'prop-types';
+import { useCallback, useState } from "react";
 import { useEffect } from "react";
 
-// 3rd party imports
-const { App, Drawer, Tooltip, Button, Space, List, Avatar } = require("antd")
+// Ui Library imports
+import { Avatar, Button, Divider, Drawer, List, ScrollArea, Stack, Text, Tooltip } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 
 // Local imports
-import { FaFileUpload, FaHourglass, FaRegCheckCircle, FaRegTimesCircle, LoadingOutlined } from '/src/icons';
-import { ProcessStatus } from "/src/models";
-
+import { ProcessStatus } from "@/models";
+import ProcessStatusIcon from '@/components/processStatusIcon';
+import { error, success } from '@/utils/notifications';
 // -------------------------------------------
-const getIcon = (request) => {
-    switch (request.status) {
+
+const getIconColor = (status) => {
+    switch (status) {
         case ProcessStatus.Pending:
-            return <FaHourglass />;
+            return 'gray';
         case ProcessStatus.InProcess:
-            return <LoadingOutlined />;
+            return 'blue';
         case ProcessStatus.CreatingBook:
         case ProcessStatus.UploadingContents:
-            return <FaFileUpload />
+            return 'blue'
         case ProcessStatus.Completed:
-            return <FaRegCheckCircle />;
+            return 'green';
         case ProcessStatus.Failed:
-            return <FaRegTimesCircle style={{ color: 'red' }} />;
+            return 'red';
         default:
-            return null;
+            return 'gray';
     }
 }
-// -------------------------------------------
-
-const RequestList = ({ title, requests, itemTitle, itemDescription }) => {
-    return (<>
-        {title}
-        <List dataSource={requests}
-            renderItem={request => (
-                <List.Item key={request.id}>
-                    <List.Item.Meta
-                        avatar={<Avatar size={32} icon={getIcon(request)} />}
-                        title={itemTitle ? itemTitle(request.data) : request.id}
-                        description={itemDescription && itemDescription(request.data)} />
-                </List.Item>)} />
-    </>);
+const RequestList = ({ requests, itemTitleFunc, itemDescriptionFunc }) => {
+    return (
+        <List>
+            {requests.map(request => (
+                <List.Item mb="xs" h={42} key={request.id} icon={
+                    <Avatar size={32}>
+                        <ProcessStatusIcon status={request.status} style={{ color: getIconColor(request.status) }} />
+                    </Avatar>}>
+                    <Text truncate="end">{itemTitleFunc ? itemTitleFunc(request.data) : request.id}</Text>
+                    {itemDescriptionFunc && <Text>{itemDescriptionFunc(request.data)}</Text>}
+                </List.Item>))
+            }
+        </List >);
 }
+
+RequestList.propTypes = {
+    itemTitleFunc: PropTypes.func,
+    itemDescriptionFunc: PropTypes.func,
+    requests: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.number,
+            data: PropTypes.any,
+        })),
+};
+
 // -------------------------------------------
 
 const BatchActionDrawer = ({
@@ -48,25 +61,27 @@ const BatchActionDrawer = ({
     icon,
     tooltip,
     buttonType,
+    buttonSize,
     disabled,
     sliderTitle,
-    placement = 'left',
-    size = 'default',
+    position = 'right',
+    size = 'sm',
     // Called when ok button pressed. If returns false or null, it will do nothing.
     // Return payload for requests and it will call mutation with it
     // if payload is a function, this function will be called for each call to api and response from this function
     // will be sent as payload. Request data would be passed to the function
     // Do any validation on this callback if needed
-    onOk = () => { },
+    onOkFunc = () => { },
     onShow = () => { },
     onClose = () => { },
+    onSuccess = () => { },
     errorMessage,
     successMessage,
-    closable,
+    busy,
     listTitle,
     items,
-    itemTitle,
-    itemDescription,
+    itemTitleFunc,
+    itemDescriptionFunc,
     // Mutation to be called. Mutation must take parameter like following:
     //  { requests, payload, onProgress }
     // - requests : this is the list of request objects to make,
@@ -76,22 +91,21 @@ const BatchActionDrawer = ({
     // - onProgress : callback called for each item when its progress status for request is changed. Parameter is request object with updated status
     mutation,
     t,
-    children
+    children,
 }) => {
-    const { message } = App.useApp();
-    const [open, setOpen] = useState(false);
+    const [opened, { open, close }] = useDisclosure(false);
     const [requests, setRequests] = useState([]);
 
     const onShowDrawer = () => {
-        setOpen(true);
+        open(true);
         onShow();
     }
-    const onCloseDrawer = () => {
-        setOpen(false);
+    const onCloseDrawer = useCallback(() => {
+        close();
         if (onClose) {
             onClose();
         }
-    }
+    }, [close, onClose]);
 
     const onProgress = useCallback((request) => {
         let newRequests = [...requests];
@@ -104,11 +118,13 @@ const BatchActionDrawer = ({
         setRequests(newRequests);
     }, [requests]);
 
-    const onSubmit = useCallback(async (e) => {
+    const onSubmit = useCallback(async () => {
         try {
-            var payload = await onOk();
+            var payload = await onOkFunc();
 
-            if (!payload) return;
+            if (!payload) {
+                return;
+            }
 
             if (mutation) {
                 await mutation({ requests, payload, onProgress })
@@ -118,27 +134,27 @@ const BatchActionDrawer = ({
 
             if (hasFailure) {
                 if (errorMessage) {
-                    message.error(errorMessage);
+                    error({ message: errorMessage });
                 }
             } else {
                 if (successMessage) {
-                    message.success(successMessage);
+                    success({ message: successMessage })
                 }
 
                 onCloseDrawer();
+                onSuccess();
             }
         }
         catch (e) {
             console.error(e);
             if (errorMessage) {
-                message.error(errorMessage);
+                error({ message: errorMessage });
             }
         }
-    });
+    }, [errorMessage, mutation, onCloseDrawer, onOkFunc, onProgress, onSuccess, requests, successMessage]);
 
     useEffect(() => {
-        if (open) return;
-
+        if (busy) return;
         if (items) {
             let mappedRequests = items.map((item, index) => ({
                 status: ProcessStatus.Pending,
@@ -148,53 +164,74 @@ const BatchActionDrawer = ({
 
             setRequests(mappedRequests);
         }
-    }, [open, items]);
+    }, [open, items, busy]);
 
     return (
         <>
-            <Tooltip title={tooltip}>
+            <Tooltip label={tooltip}>
                 <Button
-                    type={buttonType}
+                    variant={buttonType}
+                    size={buttonSize}
                     onClick={onShowDrawer}
                     disabled={disabled}
-                    icon={icon}
+                    leftSection={title ? icon : null}
                 >
-                    {title}
+                    {title ? title : icon}
                 </Button>
             </Tooltip>
             <Drawer
                 title={sliderTitle}
-                placement={placement}
+                position={position}
+                opened={opened}
                 onClose={onCloseDrawer}
-                open={open}
                 size={size}
-                closable={closable}
-                maskClosable={closable}
-                extra={<Space>
-                    <Button
-                        onClick={onCloseDrawer}
-                        disabled={!closable}>
-                        {t('actions.cancel')}
-                    </Button>
-                    <Button type="primary" onClick={onSubmit} disabled={!closable}>
+                withCloseButton={!busy}
+                closeOnClickOutside={!busy}
+                scrollAreaComponent={ScrollArea.Autosize}>
+                <Stack style={{
+                    width: '100%',
+                }}
+                >
+                    {title}
+                    {children}
+                    <Button type="primary" onClick={onSubmit} disabled={busy}>
                         {t('actions.ok')}
                     </Button>
-                </Space>}>
-                <Space.Compact direction="vertical"
-                    style={{
-                        width: '100%',
-                    }}
-                >
-                    {children}
+                    <Divider />
                     <RequestList
                         title={listTitle}
                         requests={requests}
-                        itemTitle={itemTitle}
-                        itemDescription={itemDescription} />
-                </Space.Compact>
+                        itemTitleFunc={itemTitleFunc}
+                        itemDescription={itemDescriptionFunc} />
+                </Stack>
             </Drawer>
         </>);
 };
 
+BatchActionDrawer.propTypes = {
+    title: PropTypes.string,
+    icon: PropTypes.node,
+    tooltip: PropTypes.string,
+    buttonType: PropTypes.string,
+    buttonSize: PropTypes.string,
+    disabled: PropTypes.bool,
+    sliderTitle: PropTypes.string,
+    position: PropTypes.string,
+    size: PropTypes.string,
+    onOkFunc: PropTypes.func,
+    onShow: PropTypes.func,
+    onClose: PropTypes.func,
+    errorMessage: PropTypes.string,
+    successMessage: PropTypes.string,
+    busy: PropTypes.bool,
+    listTitle: PropTypes.string,
+    items: PropTypes.array,
+    itemTitleFunc: PropTypes.func,
+    itemDescriptionFunc: PropTypes.func,
+    mutation: PropTypes.func,
+    onSuccess: PropTypes.func,
+    t: PropTypes.any,
+    children: PropTypes.any,
+};
 
 export default BatchActionDrawer;

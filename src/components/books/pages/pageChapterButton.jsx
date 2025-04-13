@@ -1,90 +1,79 @@
-import React from "react";
+import PropTypes from 'prop-types';
 
-// Third party libraries
-import { Form, Space } from "antd";
+// UI Library Imprort
+import { useField } from '@mantine/form';
 
 // Local imports
-import { FaLayerGroup } from "/src/icons";
-import { useUpdateBookPagesMutation } from "/src/store/slices/booksSlice";
-import ChapterSelect from "/src/components/books/chapters/chapterSelect";
-import BatchActionDrawer from "/src/components/batchActionDrawer";
+import { useUpdateBookPagesMutation } from "@/store/slices/books.api";
+import { IconChapters } from "@/components/icons";
+import BatchActionDrawer from '@/components/batchActionDrawer';
+import ChapterSelect from '@/components/books/chapters/chapterSelect';
 
 // ------------------------------------------------------
 
-const PageChapterButton = ({ libraryId, book, pages, t, type, showIcon = true }) => {
-    const [form] = Form.useForm();
+const PageChapterButton = ({ libraryId, bookId, pages = [], t, type, showIcon = true, onCompleted = () => { } }) => {
     const [updateBookPages, { isLoading: isUpdating }] = useUpdateBookPagesMutation();
     const count = pages ? pages.length : 0;
 
+    const idField = useField({
+        initialValue: '',
+        validate: (value) => (value && value != '' ? null : t("page.chapter.required"))
+    });
+
     const onOk = async () => {
-        try {
-            let values = await form.validateFields();
-            return (page) => {
-                if (page && page.links && page.links.update) {
-                    return { ...page, chapterId: values.id };
-                }
-                return null;
+        await idField.validate();
+        let value = idField.getValue();
+        return (page) => {
+            if (page && page.links && page.links.update) {
+                return { ...page, chapterId: value };
             }
-        }
-        catch {
-            return false;
+            return null;
         }
     };
-    const onShow = () => {
-        form.resetFields();
-    };
 
-    let data = { chapterId: null };
+    return (<>
+        <BatchActionDrawer t={t}
+            tooltip={t('page.actions.setChapter.label')}
+            buttonType={type}
+            disabled={count === 0}
+            icon={showIcon && <IconChapters />}
+            sliderTitle={t("page.actions.setChapter.title", { count })}
+            onOkFunc={onOk}
+            busy={isUpdating}
+            listTitle={t("page.actions.setChapter.message")}
+            items={pages}
+            itemTitleFunc={page => page.sequenceNumber}
+            mutation={updateBookPages}
+            successMessage={t("page.actions.setChapter.success", { count })}
+            errorMessage={t("page.actions.setChapter.error", { count })}
+            onSuccess={onCompleted}
+            onClose={() => idField.reset()}
+        >
+            <ChapterSelect {...idField.getInputProps()}
+                t={t}
+                libraryId={libraryId}
+                bookId={bookId}
+                label={t("page.chapter.label")} />
+        </BatchActionDrawer>
+    </>);
+};
 
-    return (
-        <>
-            <BatchActionDrawer t={t}
-                tooltip={t("page.actions.setChapter.title_one")}
-                buttonType={type}
-                disabled={count === 0}
-                icon={showIcon && <FaLayerGroup />}
-                sliderTitle={t("page.actions.updateStatus.title")}
-                onOk={onOk}
-                closable={!isUpdating}
-                onShow={onShow}
-                listTitle={t("page.actions.setChapter.title", { count })}
-                items={pages}
-                itemTitle={page => page.sequenceNumber}
-                mutation={updateBookPages}
-                successMessage={t("page.actions.setChapter.success", { count })}
-                errorMessage={t("page.actions.setChapter.error", { count })}
-            >
-                <Form form={form} layout="vertical" initialValues={data}>
-                    <Space>
-                        {t("page.actions.setChapter.message", {
-                            sequenceNumber: pages
-                                ? pages.map((p) => p.sequenceNumber).join(",")
-                                : 0,
-                            })}
-                    </Space>
-                    <Form.Item
-                        name="id"
-                        label={t("page.chapter.label")}
-                        rules={[
-                            {
-                                required: true,
-                                message: t("page.chapter.required"),
-                            },
-                        ]}
-                        >
-                        <ChapterSelect
-                            libraryId={libraryId}
-                            book={book}
-                            t={t}
-                            placeholder={t("page.chapter.placeholder")}
-                            label={data.name}
-                            showAdd={true}
-                            />
-                    </Form.Item>
-                </Form>
-            </BatchActionDrawer>
-        </>
-    );
+PageChapterButton.propTypes = {
+    t: PropTypes.any,
+    libraryId: PropTypes.any,
+    bookId: PropTypes.any,
+    type: PropTypes.string,
+    showIcon: PropTypes.bool,
+    pages: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.number,
+            title: PropTypes.string,
+            links: PropTypes.shape({
+                delete: PropTypes.string,
+            }),
+        })),
+    isLoading: PropTypes.object,
+    onCompleted: PropTypes.func
 };
 
 export default PageChapterButton;

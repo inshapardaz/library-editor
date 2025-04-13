@@ -1,54 +1,68 @@
-import React, { useEffect, useState } from "react";
+import PropTypes from 'prop-types';
 
 // Local imports
-import { VscLayersActive } from "/src/icons";
-import { useUpdateBookPagesMutation } from "/src/store/slices/booksSlice";
-import BatchActionDrawer from "/src/components/batchActionDrawer";
+import { useUpdateBookPagesMutation } from "@/store/slices/books.api";
+import { IconChaptersSet } from "@/components/icons";
+import BatchActionDrawer from "@/components/batchActionDrawer";
 
 // ------------------------------------------------------
 
-const PageAutoChapterUpdate = ({ pages, t, type }) => {
+const PageAutoChapterUpdate = ({ pages, t, type, showIcon = true, onCompleted = () => { } }) => {
     const [updateBookPages, { isLoading: isUpdating }] = useUpdateBookPagesMutation();
     const count = pages ? pages.length : 0;
-    const [updatedPages, setUpdatedPags] = useState([]);
 
-    useEffect(() => {
-        let newPages = [];
-        let chapterId = null;
-        for (let i = 0; i < pages.length; i++) {
-            const page = pages[i];
+    const onOk = async () => {
+        var c = null;
+        return (page) => {
             if (page.chapterId) {
-                chapterId = page.chapterId;
-            } else if (chapterId) {
-                const newPage = { ...page, chapterId: chapterId };
-                newPages.push(newPage);
+                c = page.chapterId;
+            } else if (c) {
+                if (page && page.links && page.links.update) {
+                    return ({ ...page, chapterId: c });
+                }
             }
-        }
-
-        setUpdatedPags(newPages);
-    }, [pages]);
-
-    const onOk = async () => (page) => page;
+            return null;
+        };
+    };
 
     return (
         <>
-        <BatchActionDrawer t={t}
+            <BatchActionDrawer t={t}
                 tooltip={t("pages.actions.autoFillChapter.title", { count })}
                 buttonType={type}
-                disabled={updatedPages.length < 1}
-                icon={<VscLayersActive />}
+                disabled={pages.length < 1}
+                icon={showIcon && <IconChaptersSet />}
                 sliderTitle={t("pages.actions.autoFillChapter.title", { count })}
-                onOk={onOk}
-                closable={!isUpdating}
+                onOkFunc={onOk}
+                busy={isUpdating}
                 listTitle={t("pages.actions.autoFillChapter.message")}
-                items={updatedPages}
+                items={pages}
                 itemTitle={page => page.sequenceNumber}
                 mutation={updateBookPages}
                 successMessage={t("page.actions.setChapter.success", { count })}
                 errorMessage={t("page.actions.setChapter.error", { count })}
+                onSuccess={onCompleted}
             />
         </>
     );
+};
+
+PageAutoChapterUpdate.propTypes = {
+    t: PropTypes.any,
+    type: PropTypes.string,
+    pages: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.number,
+            title: PropTypes.string,
+            chapterId: PropTypes.number,
+            sequenceNumber: PropTypes.number,
+            links: PropTypes.shape({
+                delete: PropTypes.string,
+            }),
+        })),
+    showIcon: PropTypes.bool,
+    isLoading: PropTypes.object,
+    onCompleted: PropTypes.func
 };
 
 export default PageAutoChapterUpdate;

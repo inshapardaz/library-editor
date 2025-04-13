@@ -1,67 +1,166 @@
-import React, { useEffect, useState } from "react";
+import PropTypes from 'prop-types';
+import { useMemo, useState } from "react";
+import { useSelector } from 'react-redux';
 import { useTranslation } from "react-i18next";
-import { Link, useParams, useNavigate } from "react-router-dom";
-import { useLocalStorage } from "usehooks-ts";
-import { useHotkeys } from 'react-hotkeys-hook';
+import { useParams } from "react-router-dom";
 
-// 3rd party libraries
-import { App, Button, Card, Col, theme, Layout, List, Progress, Row, Space, Typography, Image, Tooltip, Result, Dropdown, Upload, Skeleton, Breadcrumb } from "antd";
-import { FaBook, FaChevronDown, FaFileUpload, ImBooks, MdContentCopy, MdZoomIn, MdZoomOut } from "/src/icons";
-import { TbSettingsCode, TbSettingsDown } from "react-icons/tb";
-import { FaArrowLeft, FaArrowRight, FaFilePdf, FaRegFilePdf, FaSave } from "/src/icons";
+// UI Library Imports
+import { Button, Card, Container, Divider, Grid, Group, Image, LoadingOverlay, Popover, Progress, ScrollArea, Stack, Text, Title, Tooltip, useMantineTheme } from "@mantine/core";
 
-// Local Imports
-import { useGetBookQuery, useCreateBookPageWithImageMutation } from "/src/store/slices/booksSlice";
-import { languages } from '/src/store/slices/uiSlice';
-import { downloadFile, loadPdfPage, splitImage, dataURItoBlob, readBinaryFile } from '/src/util';
-import DataContainer from "/src/components/layout/dataContainer";
-import PageImageEditor from "/src/components/books/pages/PageImageEditor";
-import { pdfjsLib } from '/src/util/pdf'
-import FileTypeIcon from "/src/components/fileTypeIcon";
-import PageHeader from "/src/components/layout/pageHeader";
-import AuthorAvatar from "/src/components/author/authorAvatar";
-import ContentsContainer from "/src/components/layout/contentContainer";
+// Local Import
+import { useGetBookQuery, useCreateBookPageWithImageMutation } from '@/store/slices/books.api';
+import {
+    IconProcessDocument,
+    IconZoomIn,
+    IconZoomOut,
+    IconLeft,
+    IconRight,
+    IconFiles,
+    IconSettingApplyAll,
+    IconSettingApplyDown,
+    IconFullScreenExit,
+    IconFullScreen,
+    IconSave,
+    IconHelp
+} from '@/components/icons';
+import IconNames from '@/components/iconNames';
+import PageHeader from "@/components/pageHeader";
+import Error from '@/components/error';
+import If from '@/components/if';
+import { downloadFile, loadPdfPage, splitImage, dataURItoBlob } from '@/utils'
+import { pdfjsLib } from '@/utils/pdf'
+import { useFullscreen, useHotkeys, useLocalStorage } from '@mantine/hooks';
+import PageImageEditor from '../../components/books/pages/pageImageEditor';
+import { selectedLanguage } from "@/store/slices/uiSlice";
+import { languages } from '@/store/slices/uiSlice';
+import { error, success } from '@/utils/notifications';
+//---------------------------
+const BusyContent = ({ processingProgress, t }) => {
+    if (processingProgress.type === 'idle') return null;
 
-// --------------------------------------
-const { Content, Sider, Header } = Layout;
-// --------------------------------------
+    return (<Card>
+        <Stack gap="md" justify="center" mih={200}>
+            <Progress size={40} striped animated value={processingProgress.value} />
+            <Text size="md" ta="center">
+                {t(`book.actions.loadFileImages.messages.${processingProgress.type}`)}
+            </Text>
+        </Stack>
+    </Card>);
+}
 
-const isPdf = (file) => file.type === 'application/pdf';
+BusyContent.propTypes = {
+    processingProgress: PropTypes.shape({
+        type: PropTypes.string,
+        value: PropTypes.number
+    }),
+    t: PropTypes.any
+}
 
-// --------------------------------------
-
+//---------------------------
+const Help = ({ t }) => {
+    return (<Popover width={200} position="bottom" withArrow shadow="md" zIndex={10001}>
+        <Popover.Target>
+            <Tooltip label={t("actions.help")}>
+                <Button variant="default" size="sm" >
+                    <IconHelp />
+                </Button>
+            </Tooltip>
+        </Popover.Target>
+        <Popover.Dropdown>
+            <Stack>
+                <Group justify="space-between" wrap="nowrap">
+                    {t("book.actions.processAndSave.title")}
+                    <Text size="xs" c="dimmed">
+                        ⌘ + Shift + Alt + S
+                    </Text>
+                </Group>
+                <Group justify="space-between" wrap="nowrap">
+                    {t("actions.previous")}
+                    <Text size="xs" c="dimmed">
+                        ⌘ + Shift + Up
+                    </Text>
+                </Group>
+                <Group justify="space-between" wrap="nowrap">
+                    {t("actions.next")}
+                    <Text size="xs" c="dimmed">
+                        ⌘ + Shift + Down
+                    </Text>
+                </Group>
+                <Divider />
+                <Group justify="space-between" wrap="nowrap">
+                    {t("book.actions.applySplitToAll.title")}
+                    <Text size="xs" c="dimmed">
+                        ⌘ + Shift + A
+                    </Text>
+                </Group>
+                <Group justify="space-between" wrap="nowrap">
+                    {t("book.actions.applySplitToAllBelow.title")}
+                    <Text size="xs" c="dimmed">
+                        ⌘ + Shift + N
+                    </Text>
+                </Group>
+                <Divider />
+                <Group justify="space-between" wrap="nowrap">
+                    {t("book.actions.split.save")}
+                    <Text size="xs" c="dimmed">
+                        ⌘ + Shift + X
+                    </Text>
+                </Group>
+                <Group justify="space-between" wrap="nowrap">
+                    {t("book.actions.split.title")}
+                    <Text size="xs" c="dimmed">
+                        ⌘ + Shift + D
+                    </Text>
+                </Group>
+                <Group justify="space-between" wrap="nowrap">
+                    {t("book.actions.split.moveLeft")}
+                    <Text size="xs" c="dimmed">
+                        ⌘ + Shift + Left
+                    </Text>
+                </Group>
+                <Group justify="space-between" wrap="nowrap">
+                    {t("book.actions.split.moveRight")}
+                    <Text size="xs" c="dimmed">
+                        ⌘ + Shift + Right
+                    </Text>
+                </Group>
+            </Stack>
+        </Popover.Dropdown>
+    </Popover>)
+}
+Help.propTypes = {
+    t: PropTypes.any,
+}
+//---------------------------
 
 const BookProcessPage = () => {
-    const { message } = App.useApp();
-    const {
-        token: { colorBgContainer, colorBorder },
-    } = theme.useToken();
     const { t } = useTranslation();
-    const navigate = useNavigate();
+    const theme = useMantineTheme();
+    const lang = useSelector(selectedLanguage);
+    const { ref, toggle, fullscreen } = useFullscreen();
 
-    const [content, setContent] = useState(null);
+    const { libraryId, bookId, fileId } = useParams();
     const [loading, setLoading] = useState(false);
     const [processingProgress, setProcessingProgress] = useState({ type: 'idle', value: 0 });
-    const [imageZoom, setImageZoom] = useLocalStorage("page-editor-zoom", 100);
     const [images, setImages] = useState([]);
     const [selectedImage, setSelectedImage] = useState(null);
-    const { libraryId, bookId, contentId } = useParams();
+    const [zoom, setZoom] = useLocalStorage({ key: "page-image-editor-zoom", defaultValue: 100 });
 
-    const { data: book, error, isFetching } = useGetBookQuery({ libraryId, bookId }, { skip: !libraryId || !bookId });
+    //-----------Data operations----------------
+    const {
+        data: book,
+        error: errorLoadingBook,
+        isFetching: loadingBook,
+        refetch
+    } = useGetBookQuery({
+        libraryId,
+        bookId
+    });
+
     const [createBookPageWithImage, { isLoading: isUploading }] = useCreateBookPageWithImageMutation();
 
-    useEffect(() => {
-        if (book && book.contents) {
-            setContent(book.contents.filter(x => `${x.id}` === contentId)[0]);
-        }
-    }, [book, contentId])
-
-    useEffect(() => {
-        if (content) {
-            console.log('content changes')
-            loadImages();
-        }
-    }, [content])
+    //-------------Editing functions---------------
+    const currentFile = useMemo(() => book?.contents?.find(x => x.id == fileId), [book?.contents, fileId]);
 
     const loadImages = async (data = null) => {
         if (loading) return;
@@ -70,7 +169,7 @@ const BookProcessPage = () => {
 
             setLoading(true);
             let file = null;
-            message.info(t("book.actions.loadFileImages.messages.loading"))
+
             if (data) {
                 file = data;
             } else {
@@ -81,7 +180,7 @@ const BookProcessPage = () => {
                     }
                 }
 
-                file = await downloadFile(content.links.download, onProgressDownload);
+                file = await downloadFile(currentFile.links.download, onProgressDownload);
             }
             const onProgressPageLoading = ({ loaded, total }) => {
                 if (total > 0) {
@@ -102,18 +201,19 @@ const BookProcessPage = () => {
                     data: img,
                     selected: false,
                     split: false,
-                    splitValue: null
+                    splitValue: null,
+                    trimValue: null
                 });
                 onProgressPageLoading({ loaded: i, total: pdf.numPages })
             }
 
             setImages((e) => [...e, ...imagesList]);
             if (imagesList.length > 0) setSelectedImage(imagesList[0]);
-            message.success(t("book.actions.loadFileImages.messages.loaded"))
+            success({ message: t("book.actions.loadFileImages.messages.loaded") })
         }
         catch (e) {
             console.error(e)
-            message.error(t("book.actions.loadFileImages.messages.failedLoading"))
+            error({ message: t("book.actions.loadFileImages.messages.failedLoading") })
         }
         finally {
             setProcessingProgress({ type: 'idle', value: 0 });
@@ -131,8 +231,6 @@ const BookProcessPage = () => {
 
         setSelectedImage(newImage);
     };
-
-    //------------------------------------------------------
 
     const applySettingsToAll = () => {
         if (selectedImage && images && images.length > 0) {
@@ -182,36 +280,23 @@ const BookProcessPage = () => {
                 await (createBookPageWithImage({ book, fileList: chunk }).unwrap())
                 setProcessingProgress({ type: 'savingPages', value: (i * 100) / files.length });
             }
-            message.success(t("pages.actions.upload.success"))
+            success({ message: t("pages.actions.upload.success") })
         }
         catch (e) {
             console.error(e)
-            message.error(t("pages.actions.upload.error"))
+            error({ message: t("pages.actions.upload.error") })
         }
         finally {
             setProcessingProgress({ type: 'idle', value: 0 });
         }
     }
 
-    //------------------------------------------------------
-    const canZoomIn = () => imageZoom < 200;
-    const canZoomOut = () => imageZoom > 10;
-    const zoomIn = () => {
-        if (canZoomIn()) {
-            setImageZoom(e => e + 10);
-        }
-    }
-    const zoomOut = () => {
-        if (canZoomOut) {
-            setImageZoom(e => e - 10);
-        }
-    }
+    //----------------Navigation-----------------------
+    const canGoNext = useMemo(() => selectedImage && selectedImage.index < images.length - 1, [images.length, selectedImage]);
+    const canGoPrevious = useMemo(() => selectedImage && selectedImage.index > 0, [selectedImage]);
 
-    //------------------------------------------------------
-    const canGoNext = () => selectedImage && selectedImage.index < images.length - 1;
-    const canGoPrevious = () => selectedImage && selectedImage.index > 0;
     const goNext = () => {
-        if (canGoNext()) {
+        if (canGoNext) {
             const currentIndex = images.findIndex(x => x.index === selectedImage.index);
             setSelectedImage(images[currentIndex + 1]);
         }
@@ -222,237 +307,171 @@ const BookProcessPage = () => {
             setSelectedImage(images[currentIndex - 1]);
         }
     }
-
-    //------------------------------------------------------
-    useHotkeys('ctrl+shift+keydown', goNext, { enabled: canGoNext() })
-    useHotkeys('ctrl+shift+keyup', goPrevious, { enabled: canGoPrevious() })
-    //------------------------------------------------------
-
-    const toolbar = (
-        <Row gutter={8}>
-            <Col>
-                <Button.Group disabled={selectedImage == null || isUploading}>
-                    <Tooltip title={t('book.actions.applySplitToAll.title')}>
-                        <Button onClick={applySettingsToAll} icon={<TbSettingsCode />} />
-                    </Tooltip>
-                    <Tooltip title={t('book.actions.applySplitToAllBelow.title')} >
-                        <Button onClick={applySettingsToAllNext} icon={<TbSettingsDown />} />
-                    </Tooltip>
-                </Button.Group>
-            </Col>
-            {images && images.length > 1 &&
-                (<><Col>
-                    <Button.Group disabled={selectedImage}>
-                        <Tooltip title={t('actions.zoonIn')}>
-                            <Button onClick={zoomIn} disabled={!canZoomIn()} icon={<MdZoomIn />} />
-                        </Tooltip>
-                        <Button disabled>{imageZoom}%</Button>
-                        <Tooltip title={t('actions.zoonOut')}>
-                            <Button onClick={zoomOut} disabled={!canZoomOut()} icon={<MdZoomOut />} />
-                        </Tooltip>
-                    </Button.Group>
-                </Col>
-                    <Col>
-                        <Button.Group disabled={selectedImage}>
-                            <Tooltip title={t('actions.next') + '(ctrl+shift+up)'}>
-                                <Button onClick={goPrevious} disabled={!canGoPrevious()} icon={<FaArrowRight />} />
-                            </Tooltip>
-                            <Button disabled>{selectedImage && t('book.actions.loadFileImages.page', { current: (selectedImage?.index ?? -1) + 1, total: images.length })}</Button>
-                            <Tooltip title={t('actions.previous') + '(ctrl+shift+down)'}>
-                                <Button onClick={goNext} disabled={!canGoNext()} icon={<FaArrowLeft />} />
-                            </Tooltip>
-                        </Button.Group>
-                    </Col></>)}
-        </Row>
-    );
-
-    const onFileSelected = async (file) => {
-        try {
-
-            if (isPdf(file)) {
-                const data = await readBinaryFile(file);
-                await loadImages(data);
-            } else {
-                message.error(t('book.actions.loadFileImages.messages.errorFileType'));
-            }
+    //---------------Zoom --------------------------
+    const canZoomIn = () => zoom < 200;
+    const canZoomOut = () => zoom > 10;
+    const resetZoom = () => {
+        setZoom(100);
+    }
+    const zoomIn = () => {
+        if (canZoomIn()) {
+            setZoom(e => e + 10);
         }
-        finally {
-            return false;
+    }
+    const zoomOut = () => {
+        if (canZoomOut) {
+            setZoom(e => e - 10);
         }
+    }
+    //------------------------------------------------------
 
-    };
-
-    const props = {
-        name: 'file',
-        disabled: isUploading,
-        showUploadList: false,
-        beforeUpload: onFileSelected
-    };
-
-    const busy = isFetching | loading | isUploading | processingProgress.type !== 'idle';
-
-    const mainToolbar = (<>
-        <Space>
-            <Tooltip title={t('book.actions.processAndSave.title')}>
-                <Button onClick={savePages}
-                    icon={<FaSave />}
-                    disabled={!images || images.length < 1 || busy} />
-            </Tooltip>
-            <Upload {...props}>
-                <Button icon={<FaFileUpload />}
-                    disabled={busy} >
-                    {t('pages.actions.upload.label')}
-                </Button>
-            </Upload>
-            {book && book.contents && book.contents.length > 0 &&
-                <Dropdown
-                    disabled={busy}
-                    menu={{
-                        selectable: true,
-                        onSelect: async ({ key }) => {
-                            navigate(`/libraries/${libraryId}/books/${book.id}/contents/${key}/process`)
-                        },
-                        defaultSelectedKeys: [contentId],
-                        items: book.contents.map(c => ({
-                            label: c.fileName,
-                            key: c.id,
-                            icon: <FileTypeIcon
-                                type={c.mimeType}
-                            />
-                        }))
-                    }}>
-                    <Button>
-                        <Space>
-                            <Typography>{content ? content.fileName : t('book.files.title')}</Typography>
-                            <FaChevronDown />
-                        </Space>
-                    </Button>
-                </Dropdown>
-            }
-        </Space>
-    </>);
-    const busyContent = () => {
-        if (processingProgress.type === 'idle') return null;
-
-        return (<Card>
-            <Space>
-                <Skeleton.Image active={true} />
-                <Skeleton.Image active={true} />
-                <Skeleton.Image active={true} />
-                <Skeleton.Image active={true} />
-                <Skeleton.Image active={true} />
-                <Skeleton.Image active={true} />
-            </Space>
-            <Progress percent={processingProgress.value} showInfo={false} />
-            <Typography>
-                {t(`book.actions.loadFileImages.messages.${processingProgress.type}`)}
-            </Typography>
-        </Card>);
+    useHotkeys([
+        ['mod+shift+ArrowUp', goPrevious],
+        ['mod+shift+ArrowDown', goNext],
+        ['mod+shift+alt+S', savePages],
+        ['mod+shift+A', applySettingsToAll],
+        ['mod+shift+N', applySettingsToAllNext]
+    ])
+    //-------------Rendering---------------------
+    if (errorLoadingBook) {
+        return (<Container fluid mt="sm">
+            <Error title={t('book.error.loading.title')}
+                detail={t('book.error.loading.detail')}
+                onRetry={refetch} />
+        </Container>)
     }
 
-    return (<>
+    const busy = loadingBook | loading | isUploading | processingProgress.type !== 'idle';
+    const hasImagesLoaded = images && images.length > 0;
+    return (<Container padding="sm" fluid>
+        <LoadingOverlay visible={loadingBook} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
         <PageHeader
-            title={book?.title}
-            subTitle={
-                <Space>
-                    {book &&
-                        book.authors.map((author) => (
-                            <AuthorAvatar
-                                key={author.id}
-                                libraryId={libraryId}
-                                author={author}
-                                t={t}
-                                showName={true}
-                            />
-                        ))}
-                </Space>
-            }
-            icon={<ImBooks style={{ width: 36, height: 36 }} />}
-            actions={mainToolbar}
-            breadcrumb={<Breadcrumb
-                items={[
-                    {
-                        title: <Link to={`/libraries/${libraryId}/books/${bookId}`}><FaBook /> {book?.title}</Link>,
-                    },
-                    {
-                        title: t('pages.actions.upload.label')
-                    }
-                ]}
-            />}
-        />
-        <ContentsContainer>
-            <DataContainer
-                busy={busy}
-                busyContent={busyContent()}
-                error={error}
-                errorTitle={t("pages.errors.loading.title")}
-                errorSubTitle={t("pages.errors.loading.subTitle")}
-                errorAction={
-                    <Button type="default" onClick={loadImages} disabled={loading}>
-                        {t("actions.retry")}
+            title={t('book.actions.loadFileImages.title')}
+            defaultIcon={IconNames.Pages}
+            breadcrumbs={[
+                { title: t('header.home'), href: `/libraries/${libraryId}`, icon: IconNames.Home },
+                { title: t('header.books'), href: `/libraries/${libraryId}/books`, icon: IconNames.Books },
+                { title: t(book?.title), href: `/libraries/${libraryId}/books/${bookId}`, icon: IconNames.Book },
+                { title: t('book.files.title'), href: `/libraries/${libraryId}/books/${bookId}?section=files`, icon: IconNames.Files },
+                {
+                    title: currentFile?.fileName ?? t('book.actions.loadFileImages.title'), icon: IconNames.Pages, items: book?.contents?.map(c => ({
+                        title: c.fileName,
+                        key: c.id,
+                        icon: IconNames.File,
+                        href: `/libraries/${libraryId}/books/${bookId}/files/${c.id}/process`
+                    }))
+                },
+            ]} />
+        <If condition={!busy && currentFile && !hasImagesLoaded}>
+            <Card withBorder >
+                <Stack my={100} mx="auto" >
+                    <IconFiles height={64} style={{ color: theme.colors.dark[3] }} />
+                    <Title order={3} m="lg">
+                        {currentFile?.fileName}
+                    </Title>
+                    <Button leftSection={<IconProcessDocument />} disabled={loading} onClick={() => loadImages()}>
+                        {t('book.actions.loadFileImages.title')}
                     </Button>
-                }
-                emptyImage={<MdContentCopy size="5em" />}
-                emptyDescription={(<Space direction="vertical">
-                    {t("pages.empty.title")}
-                </Space>)}
-                empty={images && images.length < 1}
-                bordered={false}
-                style={{ padding: "0" }}
-            >
-                <Layout
-                    style={{ padding: "0", background: colorBgContainer }}
-                >
-                    <Header style={{
-                        background: colorBgContainer,
-                        position: 'sticky',
-                        top: 0,
-                        zIndex: 1,
-                        width: '100%',
-                        display: 'flex',
-                        alignItems: 'center',
-                    }}>
-                        {toolbar}
-                    </Header>
-                    <Layout>
-                        <Sider
-                            width={200}
-                            breakpoint="lg"
-                            collapsedWidth={0}
-                            style={{
-                                background: colorBgContainer,
-                                overflow: 'auto',
-                                position: 'sticky',
-                                height: '100vh',
-                                top: 0,
-                                bottom: 0,
-                            }}
-                        >
-                            <List
-                                dataSource={images}
-                                itemLayout="vertical"
-                                size="large"
-                                bordered={true}
-                                renderItem={(image) => (
-                                    <List.Item
-                                        onClick={() => setSelectedImage(image)}
-                                        style={selectedImage?.index === image.index ? { backgroundColor: colorBorder } : null}>
-                                        <List.Item.Meta
-                                            avatar={<Image src={image.data} alt={image.index} preview={false} width={100} />}
-                                            title={image.index}
-                                        />
-                                    </List.Item>
-                                )}
-                            />
-                        </Sider>
-                        <Content>
-                            <PageImageEditor image={selectedImage} zoom={imageZoom} t={t} onUpdate={updateImage} isRtl={languages[book?.language]?.dir === 'rtl'} />
-                        </Content>
-                    </Layout>
-                </Layout>
-            </DataContainer >
-        </ContentsContainer>
-    </>);
-};
+                </Stack>
+            </Card>
+        </If>
+        <If condition={busy}>
+            <BusyContent t={t} processingProgress={processingProgress} />
+        </If>
+        <If condition={hasImagesLoaded && !busy}>
+            <Container fluid bg="var(--mantine-color-body)" ref={ref}>
+                <Group my="md">
+                    <Tooltip label={t("actions.save")}>
+                        <Button variant="default" size="sm" onClick={savePages} >
+                            <IconSave />
+                        </Button>
+                    </Tooltip>
+                    <Button.Group>
+                        <Tooltip label={t("book.actions.applySplitToAll.title")}>
+                            <Button variant="default" size="sm" onClick={applySettingsToAll} >
+                                <IconSettingApplyAll />
+                            </Button>
+                        </Tooltip>
+                        <Tooltip label={t("book.actions.applySplitToAllBelow.title")}>
+                            <Button variant="default" size="sm" onClick={applySettingsToAllNext} >
+                                <IconSettingApplyDown />
+                            </Button>
+                        </Tooltip>
+                    </Button.Group>
+                    <span style={{ flex: 1 }} />
+                    <Button.Group>
+                        <Tooltip label={t("actions.zoonIn")}>
+                            <Button variant="default" size="sm" onClick={zoomIn} >
+                                <IconZoomIn />
+                            </Button>
+                        </Tooltip>
+                        <Tooltip label={t("actions.zoonReset")}>
+                            <Button variant="default" size="sm" onClick={resetZoom} >
+                                {`${zoom}%`}
+                            </Button>
+                        </Tooltip>
+                        <Tooltip label={t("actions.zoonOut")}>
+                            <Button variant="default" size="sm" onClick={zoomOut} >
+                                <IconZoomOut />
+                            </Button>
+                        </Tooltip>
+                    </Button.Group>
+                    <Button.Group>
+                        <Tooltip label={t("actions.previous")}>
+                            <Button variant="default" size="sm" disabled={!canGoPrevious} onClick={goPrevious} >
+                                {lang.isRtl ? <IconRight /> : <IconLeft />}
+                            </Button>
+                        </Tooltip>
+                        <Button variant="default" size="sm">
+                            {selectedImage ? `${selectedImage.index + 1} / ${images.length}` : ''}
+                        </Button>
+                        <Tooltip label={t("actions.next")}>
+                            <Button variant="default" size="sm" disabled={!canGoNext} onClick={goNext} >
+                                {lang.isRtl ? <IconLeft /> : <IconRight />}
+                            </Button>
+                        </Tooltip>
+                    </Button.Group>
+                    <Help t={t} />
+                    <Tooltip key="fullscreen" label={t(fullscreen ? "actions.fullscreenExit" : "actions.fullscreen")}>
+                        <Button variant="default" size="sm" onClick={toggle} >
+                            {fullscreen ? <IconFullScreenExit /> : <IconFullScreen />}
+                        </Button>
+                    </Tooltip>
+                </Group>
+                <Card withBorder >
+                    <Grid mih={50} >
+                        <Grid.Col span="content">
+                            <ScrollArea style={{ height: `calc(100vh - ${fullscreen ? 90 : 260}px)`, position: 'relative' }}>
+                                <Stack gap="sm">
+                                    {images.map((x, index) => (
+                                        <Card withBorder key={`image-list-${index}`}
+                                            shadow={selectedImage?.index === x.index ? 'md' : null}
+                                            style={{ borderColor: selectedImage?.index === x.index ? theme.colors.blue[6] : theme.colors.gray[6] }}
+                                            onClick={() => setSelectedImage(x)} >
+                                            <Image src={x.data} w={200} />
+                                        </Card>
+                                    ))}
+                                </Stack>
+                            </ScrollArea>
+                        </Grid.Col>
+                        <Grid.Col span="auto">
+                            <Card withBorder style={{ height: `calc(100vh - ${fullscreen ? 90 : 260}px)`, position: 'relative' }}>
+                                <PageImageEditor t={t} isRtl={lang.isRtl}
+                                    zoom={zoom}
+                                    image={selectedImage}
+                                    onNext={goNext}
+                                    hasNext={canGoNext}
+                                    onPrevious={goPrevious}
+                                    canGoPrevious={canGoPrevious}
+                                    onChange={updateImage}
+                                />
+                            </Card>
+                        </Grid.Col>
+                    </Grid>
+                </Card>
+            </Container>
+        </If >
+    </Container >);
+}
 
 export default BookProcessPage;

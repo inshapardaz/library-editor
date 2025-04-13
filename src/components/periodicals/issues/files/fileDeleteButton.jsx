@@ -1,54 +1,33 @@
-import React from 'react';
-
-// Third party libraries
-import { App, Button, Modal, Tooltip } from "antd";
+import PropTypes from 'prop-types';
 
 // Local imports
-import { FaTrash, ExclamationCircleFilled } from "/src/icons";
-import { useDeleteIssueContentMutation } from "/src/store/slices/issuesSlice";
+import { useDeleteBookContentMutation } from '@/store/slices/books.api';
+import DeleteButton from "@/components/deleteButton";
 
-// ------------------------------------------------------
-const { confirm } = Modal;
-// ------------------------------------------------------
+//---------------------------------
+const FileDeleteButton = ({ content, t, onDeleted = () => { } }) => {
+    const [deleteBookContent, { isLoading: isDeleting }] = useDeleteBookContentMutation();
 
-const FileDeleteButton = ({ content, t, type }) => {
-    const { message } = App.useApp();
-    const [deleteIssueContent, { isLoading: isDeleting }] = useDeleteIssueContentMutation();
+    return (<DeleteButton
+        title={t("issue.actions.deleteFile.title")}
+        message={t("issue.actions.deleteFile.message", { title: content.fileName })}
+        tooltip={t('issue.actions.deleteFile.title', { title: content.fileName })}
+        successMessage={t("issue.actions.deleteFile.success", { title: content.fileName })}
+        errorMessage={t("issue.actions.deleteFile.error", { title: content.fileName })}
+        isDeleting={isDeleting}
+        onDelete={() => { return deleteBookContent({ content }).unwrap() }}
+        onDeleted={onDeleted}
+    />)
+}
 
-    const showConfirm = () => {
-        confirm({
-            title: t("issue.actions.deleteFile.title"),
-            icon: <ExclamationCircleFilled />,
-            content: t("issue.actions.deleteFile.message", {
-                title: content.fileName,
-            }),
-            okButtonProps: { loading: isDeleting },
-            okType: "danger",
-            cancelButtonProps: { disabled: isDeleting },
-            closable: isDeleting,
-            onOk() {
-                if (content && content.links && content.links.delete) {
-                    return deleteIssueContent({ content }).unwrap()
-                        .then(() => {
-                            message.success(t("issue.actions.deleteFile.success"))
-                        })
-                        .catch(() => {
-                            message.error(t("issues.actions.deleteFile.error"))
-                        });
-                }
-            }
-        });
-    };
-
-    return (
-        <Tooltip title={t('actions.delete')}>
-            <Button
-                type={type}
-                onClick={showConfirm}
-                icon={<FaTrash />}
-            />
-        </Tooltip>
-    );
+FileDeleteButton.propTypes = {
+    libraryId: PropTypes.string,
+    t: PropTypes.any,
+    onDeleted: PropTypes.func,
+    content: PropTypes.shape({
+        id: PropTypes.number,
+        fileName: PropTypes.string
+    })
 };
 
 export default FileDeleteButton;

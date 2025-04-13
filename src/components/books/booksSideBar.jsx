@@ -1,90 +1,123 @@
-import React from 'react';
-import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import PropTypes from 'prop-types';
+import { useMemo } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-// 3rd party imports
-import { Menu } from "antd";
+// UI library imports
+import { Badge, Card, Center, Divider, NavLink, SimpleGrid, Skeleton, useMantineTheme } from '@mantine/core';
 
-// Local Imports
-import { FaTags, FaTag, FaRegHeart, FaBookOpen, MdNewReleases } from "/src/icons";
-import { useGetCategoriesQuery } from "/src/store/slices/categoriesSlice";
-import { isLoggedIn } from "/src/store/slices/authSlice";
-
-// --------------------------------------
-
-function BooksSideBar({ libraryId, selectedCategories, sortBy, sortDirection, favorites, read }) {
+// Local imports
+import { useGetCategoriesQuery } from '@/store/slices/categories.api';
+import { IconCategory, IconFavorite, IconBook, IconBooks } from '@/components/icons';
+import { BookStatus } from '@/models';
+//----------------------------------------------
+const BooksSideBar = ({ status, selectedCategory, favorite, read }) => {
     const { t } = useTranslation();
-    const isUserLoggedIn = useSelector(isLoggedIn);
-    const { data: categories, error, isFetching } = useGetCategoriesQuery({ libraryId });
+    const { libraryId } = useParams();
+    const theme = useMantineTheme();
 
-    let catItems =
-        !error &&
-        !isFetching &&
-        categories &&
-        categories.data &&
-        categories.data.map((c) => ({
-            label: <Link to={`/libraries/${libraryId}/books?categories=${c.id}`}>{c.name}</Link>,
-            key: `side-bar-category-${c.id}`,
-            icon: <FaTag />,
-        }));
+    const isStatusTyping = useMemo(() => status === BookStatus.BeingTyped, [status]);
+    const isStatusProofRead = useMemo(() => status === BookStatus.ProofRead, [status]);
 
-    const items = [
-        {
-            key: "sidebar-bar-latest",
-            icon: <MdNewReleases />,
-            label: <Link to={`/libraries/${libraryId}/books?sortBy=DateCreated&sortDirection=descending`}>{t("books.latest.title")}</Link>,
-        },
-        {
-            type: "divider",
-        },
-        {
-            key: "side-bar-categories",
-            icon: <FaTags />,
-            label: t("categories.title"),
-            children: catItems,
-            type: "group",
-        },
-    ];
+    const { data: categories, isFetching, error }
+        = useGetCategoriesQuery({ libraryId }, { skip: libraryId == null });
 
-    if (isUserLoggedIn) {
-        items.splice(1, 0, {
-            key: "sidebar-bar-favorites",
-            icon: <FaRegHeart />,
-            label: <Link to={`/libraries/${libraryId}/books?favorites=true`}>{t("books.favorites.title")}</Link>,
-        });
-
-        items.splice(2, 0, {
-            key: "sidebar-bar-read",
-            icon: <FaBookOpen />,
-            label: <Link to={`/libraries/${libraryId}/books?read=true`}>{t("books.read.title")}</Link>,
-        });
-
-        items.splice(2, 0, {
-            key: "sidebar-bar-reviewed",
-            icon: <FaBookOpen />,
-            label: <Link to={`/libraries/${libraryId}/books?status=proofRead`}>{t("books.ProofRead.title")}</Link>,
-        });
-
-        items.splice(2, 0, {
-            key: "sidebar-bar-editing",
-            icon: <FaBookOpen />,
-            label: <Link to={`/libraries/${libraryId}/books?status=beingTyped`}>{t("books.BeingTyped.title")}</Link>,
-        });
+    if (isFetching) {
+        return (<Card withBorder>
+            <SimpleGrid
+                cols={1}
+                spacing={{ base: 10, sm: 'xl' }}
+                verticalSpacing={{ base: 'md', sm: 'xl' }}
+            >
+                {Array(12).fill(1).map((_, index) => <Skeleton key={index} height={32} />)}
+            </SimpleGrid>
+        </Card>);
     }
 
-    let selection = [];
-    if (selectedCategories) {
-        selection.push(`side-bar-category-${selectedCategories}`);
-    } else if (sortBy && sortBy.toLowerCase() === "datecreated" && sortDirection && sortDirection.toLowerCase() === `descending`) {
-        selection.push("sidebar-bar-latest");
-    } else if (favorites) {
-        selection.push("sidebar-bar-favorites");
-    } else if (read) {
-        selection.push("sidebar-bar-read");
+    if (error) {
+        return (<Card withBorder>
+            <Center maw={400} h={100} bg="var(--mantine-color-gray-light)">
+
+            </Center>
+        </Card>)
     }
 
-    return <Menu mode="inline" selectedKeys={selection} defaultOpenKeys={["side-bar-categories"]} style={{ height: "100%" }} items={items} />;
+    if (!categories || !categories.data || categories.data.length < 1) {
+        return (<Card withBorder>
+            <Center maw={400} h={100} bg="var(--mantine-color-gray-light)">
+                {t('categories.empty.title')}
+            </Center>
+        </Card>)
+    }
+
+    return (<Card withBorder>
+        <NavLink
+            key="favorites"
+            component={Link}
+            to={`/libraries/${libraryId}/books?favorite=true`}
+            active={favorite}
+            label={t('book.favorites')}
+            leftSection={<IconFavorite style={{ color: theme.colors.red[9] }} />}
+        />
+        <NavLink
+            key="read"
+            component={Link}
+            to={`/libraries/${libraryId}/books?read=true`}
+            active={read}
+            label={t('book.lastRead')}
+            leftSection={<IconBook style={{ color: theme.colors.green[9] }} />}
+        />
+        <Divider />
+        <NavLink
+            key="typing"
+            component={Link}
+            to={`/libraries/${libraryId}/books?status=BeingTyped`}
+            active={isStatusTyping}
+            label={t('book.beingTyped')}
+            leftSection={<IconBook style={{ color: theme.colors.blue[9] }} />}
+        />
+        <NavLink
+            key="proofread"
+            component={Link}
+            to={`/libraries/${libraryId}/books?status=ProofRead`}
+            active={isStatusProofRead}
+            label={t('book.beingProofRead')}
+            leftSection={<IconBook style={{ color: theme.colors.yellow[9] }} />}
+        />
+
+        <Divider />
+        <NavLink
+            key="all-books"
+            component={Link}
+            to={`/libraries/${libraryId}/books`}
+            label={t('books.allBooks')}
+            active={!selectedCategory && !favorite && !read && !isStatusProofRead && !isStatusTyping}
+            leftSection={<IconBooks style={{ color: theme.colors.blue[9] }} />}
+        />
+        <Divider />
+        {
+            categories.data.filter(c => c.bookCount > 0).map(category => (<NavLink
+                key={category.id}
+                component={Link}
+                active={selectedCategory == category.id}
+                to={`/libraries/${libraryId}/books?category=${category.id}`}
+                label={category.name}
+                rightSection={
+                    <Badge size="xs" color='gray' circle>
+                        {category.bookCount}
+                    </Badge>
+                }
+                leftSection={<IconCategory />}
+            />))
+        }
+    </Card>);
 }
+
+BooksSideBar.propTypes = {
+    status: PropTypes.string,
+    selectedCategory: PropTypes.string,
+    favorite: PropTypes.string,
+    read: PropTypes.string,
+};
 
 export default BooksSideBar;

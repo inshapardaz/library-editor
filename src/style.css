@@ -1,0 +1,41 @@
+:root {
+    --reader-theme-white-background: white;
+    --reader-theme-white-foreground: #15141a;
+    --reader-theme-dark-background: #343434;
+    --reader-theme-dark-foreground: white;
+    --reader-theme-sepia-background: #f4ecd8;
+    --reader-theme-sepia-foreground: #5b4636;
+    --reader-theme-grey-background: #d7d7db;
+    --reader-theme-grey-foreground: #15141a;
+
+    --page-background: var(--mantine-color-gray-0);
+    --page-background-dark: var(--mantine-color-gray-8);
+}
+
+.markdownReaderTheme--White {
+    background-color: var(--reader-theme-white-background);
+    color: var(--reader-theme-white-foreground);
+}
+
+.markdownReaderTheme--Dark {
+    background-color: var(--reader-theme-dark-background);
+    color: var(--reader-theme-dark-foreground);
+}
+
+.markdownReaderTheme--Sepia {
+    background-color: var(--reader-theme-sepia-background);
+    color: var(--reader-theme-sepia-foreground);
+}
+
+.markdownReaderTheme--Grey {
+    background-color: var(--reader-theme-grey-background);
+    color: var(--reader-theme-grey-foreground);
+}
+
+.pageBackgound {
+    background-color: var(--page-background);
+
+    @mixin where-dark {
+        background-color: var(--page-background-dark);
+    }
+}

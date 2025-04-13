@@ -1,0 +1,67 @@
+.captionContainer {
+  display: block;
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  right: 0;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid #fff;
+  background-color: rgba(255, 255, 255, 0.9);
+  min-width: 100px;
+  color: #000;
+  overflow: hidden;
+}
+
+.contentEditable {
+    min-height: 20px;
+    border: 0px;
+    resize: none;
+    cursor: text;
+    caret-color: rgb(5, 5, 5);
+    display: block;
+    position: relative;
+    outline: 0px;
+    padding: 10px;
+    user-select: text;
+    font-size: 12px;
+    width: calc(100% - 20px);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  
+  .placeholder {
+    font-size: 12px;
+    color: #888;
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
+    top: 10px;
+    left: 10px;
+    user-select: none;
+    white-space: nowrap;
+    display: inline-block;
+    pointer-events: none;
+  }
+
+  .imageFocused {
+    outline: 2px solid var(--mantine-color-anchor);
+    user-select: none;
+  }
+  
+  .imageDraggable {
+    cursor: grab;
+  }
+
+  
+  .imageDraggable:active {
+    cursor: grabbing;
+  }
+
+  .editorImage {
+    cursor: default;
+    display: inline-block;
+    position: relative;
+    -webkit-user-select: none;
+    user-select: none;
+  }

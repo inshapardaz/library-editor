@@ -1,20 +1,53 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 
 // 3rd party libraries
-import { Select } from 'antd';
+import { Group, Select } from '@mantine/core';
 
+// Local Imports
+import { BookStatus } from '@/models';
+import { IconAvailableForTyping, IconBeingTyped, IconReadyForProofRead, IconProofRead, IconPublished, IconTick } from '@/components/icons';
 // -------------------------------------------------
 
-const PublishStatusSelect = ({ t, value, onChange, placeholder }) => {
-    return (<Select placeholder={placeholder}
-        defaultValue={value}
-        onChange={val => onChange(val)} >
-        <Select.Option value="Published">{t('bookStatus.Published')}</Select.Option>
-        <Select.Option value="AvailableForTyping">{t('bookStatus.AvailableForTyping')}</Select.Option>
-        <Select.Option value="BeingTyped">{t('bookStatus.BeingTyped')}</Select.Option>
-        <Select.Option value="ReadyForProofRead">{t('bookStatus.ReadyForProofRead')}</Select.Option>
-        <Select.Option value="ProofRead">{t('bookStatus.ProofRead')}</Select.Option>
-    </Select>);
+const StatusIcon = {
+    AvailableForTyping: <IconAvailableForTyping />,
+    BeingTyped: <IconBeingTyped />,
+    ReadyForProofRead: <IconReadyForProofRead />,
+    ProofRead: <IconProofRead />,
+    Published: <IconPublished />,
+}
+
+const PublishStatusSelect = ({ t, defaultValue, onChange, ...props }) => {
+
+    const statuses = [
+        { value: BookStatus.AvailableForTyping, label: t('bookStatus.AvailableForTyping') },
+        { value: BookStatus.BeingTyped, label: t('bookStatus.BeingTyped') },
+        { value: BookStatus.ReadyForProofRead, label: t('bookStatus.ReadyForProofRead') },
+        { value: BookStatus.ProofRead, label: t('bookStatus.ProofRead') },
+        { value: BookStatus.Published, label: t('bookStatus.Published') },
+    ];
+
+    const renderSelectOption = ({ option, checked }) => (
+        <Group flex="1" gap="xs">
+            {StatusIcon[option.value]}
+            {option.label}
+            {checked && <IconTick style={{ marginInlineStart: 'auto' }} />}
+        </Group>
+    );
+
+    return (<Select {...props}
+        allowDeselect={false}
+        defaultValue={defaultValue}
+        data={statuses}
+        onChange={val => onChange && onChange(val)}
+        renderOption={renderSelectOption}>
+    </Select >);
 };
+
+PublishStatusSelect.propTypes = {
+    t: PropTypes.any,
+    defaultValue: PropTypes.string,
+    onChange: PropTypes.func
+};
+
 
 export default PublishStatusSelect;

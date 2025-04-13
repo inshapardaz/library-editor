@@ -1,166 +1,96 @@
-import React from 'react';
+import PropTypes from 'prop-types';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router-dom";
-import { useLocalStorage } from "usehooks-ts";
 
-// 3rd party libraries
-import { Button, List, Segmented } from "antd";
-
-// Local Imports
-import { GiNewspaper, FaPlus, FaRegListAlt, FaRegImage } from "/src/icons";
-import { useGetIssuesQuery } from "/src/store/slices/issuesSlice";
-import { buildLinkToIssuesPage } from "/src/util";
-import DataContainer from "/src/components/layout/dataContainer";
-import IssueCard from "./issueCard";
-import IssueListItem from "./issueListItem";
-// ------------------------------------------------------
-
-const grid = {
-    gutter: 4,
-    xs: 1,
-    sm: 2,
-    md: 2,
-    lg: 3,
-    xl: 3,
-    xxl: 4,
-};
-
-// ------------------------------------------------------
+// Local imports
+import { useGetIssuesQuery } from '@/store/slices/issues.api';
+import { updateLinkToIssuePage } from '@/utils';
+import { SortDirection } from "@/models";
+import DataView from '@/components/dataView';
+import IssueCard from './issueCard';
+import IssueListItem from './issueListItem';
+import SortDirectionToggle from '@/components/sortDirectionToggle';
+//------------------------------
 
 const IssuesList = ({
     libraryId,
-    periodicalId,
-    query,
-    year,
-    categories,
-    sortBy,
-    sortDirection,
-    status,
-    pageNumber,
-    pageSize,
+    periodicalId = null,
+    volumeNumber = null,
+    frequency,
+    showTitle = true
 }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const [showList, setShowList] = useLocalStorage("issues-list-view", false);
+    const location = useLocation();
+    const [searchParams] = useSearchParams();
+
+    const query = searchParams.get("query");
+    const year = searchParams.get("year") ?? "title";
+    const sortBy = searchParams.get("sortBy") ?? "issueDate";
+    const sortDirection = searchParams.get("sortDirection") ?? SortDirection.Ascending;
+    const pageNumber = searchParams.get("pageNumber") ?? 1;
+    const pageSize = searchParams.get("pageSize") ?? 12;
 
     const {
         refetch,
         data: issues,
-        error,
+        isError,
         isFetching,
     } = useGetIssuesQuery({
         libraryId,
         periodicalId,
         query,
         year,
-        categories,
+        volumeNumber,
         sortBy,
         sortDirection,
-        status,
         pageNumber,
         pageSize,
     });
 
-    const toggleView = (checked) => {
-        setShowList(checked);
-    };
-
-    const renderItem = (issue) => {
-        if (showList) {
-            return (
-                <IssueListItem
-                    key={issue.id}
-                    libraryId={libraryId}
-                    periodicalId={periodicalId}
-                    issue={issue}
-                    t={t}
-                />
-            );
-        } else {
-            return (
-                <List.Item>
-                    <IssueCard
-                        key={issue.id}
-                        libraryId={libraryId}
-                        periodicalId={periodicalId}
-                        issue={issue}
-                        t={t}
-                    />
-                </List.Item>
-            );
+    return <DataView
+        title={showTitle ? t('issues.title') : null}
+        emptyText={t('issues.empty.title')}
+        dataSource={issues}
+        isFetching={isFetching}
+        isError={isError}
+        errorTitle={t('issues.error.loading.title')}
+        errorDetail={t('issues.error.loading.detail')}
+        showViewToggle={true}
+        viewToggleKey='issues-list-view'
+        cardRender={issue => (<IssueCard libraryId={libraryId} key={issue.id} issue={issue} frequency={frequency} />)}
+        listItemRender={issue => (<IssueListItem libraryId={libraryId} key={issue.id} issue={issue} frequency={frequency} />)}
+        onReload={refetch}
+        onPageChanged={(index) => navigate(updateLinkToIssuePage(location, {
+            pageNumber: index,
+            pageSize: pageSize,
+        }))}
+        onPageSizeChanged={(size) => navigate(updateLinkToIssuePage(location, {
+            pageNumber: 1,
+            pageSize: size,
+        }))}
+        showSearch={false}
+        searchValue={query}
+        onSearchChanged={search => navigate(updateLinkToIssuePage(location, {
+            pageNumber: 1,
+            query: search,
+        }))}
+        extraFilters={
+            <SortDirectionToggle value={sortDirection} onChange={dir => navigate(updateLinkToIssuePage(location, {
+                pageNumber: 1,
+                sortDirection: dir,
+            }))} />
         }
-    };
+        cols={{ base: 1, xs: 2, sm: 2, md: 3, lg: 3, xl: 4 }}
+    />;
+}
 
-    const onPageChanged = (newPage, newPageSize) => {
-        navigate(
-            buildLinkToIssuesPage(
-                libraryId,
-                periodicalId,
-                newPage,
-                newPageSize,
-                query,
-                categories,
-                sortBy,
-                sortDirection
-            )
-        );
-    };
-
-    return (
-        <DataContainer
-            busy={isFetching}
-            error={error}
-            errorTitle={t("issues.errors.loading.title")}
-            errorSubTitle={t("issues.errors.loading.subTitle")}
-            errorAction={
-                <Button type="default" onClick={refetch}>
-                    {t("actions.retry")}
-                </Button>
-            }
-            empty={issues && issues.data && issues.data.length < 1}
-            emptyImage={<GiNewspaper size="5em" />}
-            emptyDescription={t("issues.empty.title")}
-            emptyContent={
-                <Link
-                    to={`/libraries/${libraryId}/periodicals/${periodicalId}/issues/add`}
-                >
-                    <Button type="dashed" icon={<FaPlus />}>
-                        {t("issue.actions.add.label")}
-                    </Button>
-                </Link>
-            }
-            bordered={false}
-            extra={<Segmented size="medium"
-                onChange={toggleView}
-                value={showList}
-                options={[
-                    { value: true, icon: <FaRegListAlt /> },
-                    { value: false, icon: <FaRegImage /> },
-                ]}
-            />
-            }
-        >
-            <List
-                grid={showList ? null : grid}
-                loading={isFetching}
-                size="large"
-                itemLayout={showList ? "vertical" : "horizontal"}
-                dataSource={issues ? issues.data : []}
-                pagination={{
-                    onChange: onPageChanged,
-                    pageSize: issues ? issues.pageSize : 0,
-                    current: issues ? issues.currentPageIndex : 0,
-                    total: issues ? issues.totalCount : 0,
-                    showSizeChanger: true,
-                    responsive: true,
-                    showQuickJumper: true,
-                    position: 'both',
-                    pageSizeOptions: [12, 24, 48, 96],
-                }}
-                renderItem={renderItem}
-            />
-        </DataContainer>
-    );
-};
+IssuesList.propTypes = {
+    libraryId: PropTypes.string,
+    periodicalId: PropTypes.string,
+    volumeNumber: PropTypes.string,
+    frequency: PropTypes.string,
+    showTitle: PropTypes.bool,
+}
 
 export default IssuesList;

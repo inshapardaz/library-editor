@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import PropTypes from 'prop-types';
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
-// 3rd party libraries
-
-import { Button, Col, Form, Input, Row, App, Space, Select, Spin, Upload } from "antd";
-import { ImNewspaper } from "/src/icons";
-import ImgCrop from "antd-img-crop";
+// UI Library Imports
+import { Box, Button, Card, Center, Container, Grid, Group, LoadingOverlay, rem, Skeleton, Textarea, TextInput, useMantineTheme } from "@mantine/core";
+import { useForm, isNotEmpty } from '@mantine/form';
 
 // Local imports
 import {
@@ -14,170 +13,209 @@ import {
     useAddPeriodicalMutation,
     useUpdatePeriodicalMutation,
     useUpdatePeriodicalImageMutation
-} from "/src/store/slices/periodicalsSlice";
-import { periodicalPlaceholderImage, setDefaultPeriodicalImage } from "/src/util";
-import ContentsContainer from "/src/components/layout/contentContainer";
-import PageHeader from "/src/components/layout/pageHeader";
-import LanguageSelect from "/src/components/languageSelect";
-import CategoriesSelect from "/src/components/categories/categoriesSelect";
-import Error from "/src/components/common/error";
-import Loading from "/src/components/common/loader";
+}
+    from '@/store/slices/periodicals.api';
 
-// ----------------------------------------------
-const { Dragger } = Upload;
-// ----------------------------------------------
+import PageHeader from "@/components/pageHeader";
+import Error from '@/components/error';
+import { IconPeriodical } from '@/components/icons';
+import ImageUpload from '@/components/imageUpload';
+import LanguageSelect from '@/components/languageSelect';
+import CategoriesSelect from '@/components/categories/categoriesSelect';
+import FrequencyTypeSelect from '@/components/periodicals/frequencyTypeSelect';
+import { PeriodicalFrequency } from '@/models';
+import { error, success } from '@/utils/notifications';
 
-const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 14 } };
-const buttonItemLayout = { wrapperCol: { span: 14, offset: 4 } };
+//---------------------------------
 
-const PeriodicalEditPage = () => {
-    const { message } = App.useApp();
+
+const PageLoading = () => {
+    const PRIMARY_COL_HEIGHT = rem(300);
+    const SECONDARY_COL_HEIGHT = `calc(${PRIMARY_COL_HEIGHT} / 2 - var(--mantine-spacing-md) / 2)`;
+    return (<Container fluid mt="sm">
+        <Grid mih={50}>
+            <Grid.Col span={{ base: 12, md: 4, lg: 3 }}>
+                <Skeleton height={SECONDARY_COL_HEIGHT} radius="md" />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 8, lg: 9 }}>
+                <Skeleton height={SECONDARY_COL_HEIGHT} radius="md" />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 4, lg: 3 }}>
+                <Skeleton height={SECONDARY_COL_HEIGHT} radius="md" />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 8, lg: 9 }}>
+                <Skeleton height={SECONDARY_COL_HEIGHT} radius="md" />
+            </Grid.Col>
+        </Grid>
+    </Container>);
+}
+//---------------------------------
+
+
+const PeriodicalForm = ({ libraryId, periodical = null, onSubmit, onCancel }) => {
+    const { t } = useTranslation();
+    const [loaded, setLoaded] = useState(false);
+    const form = useForm({
+        mode: 'uncontrolled',
+        initialValues: {
+            title: '',
+            description: '',
+            frequency: PeriodicalFrequency.Monthly,
+            language: '',
+            categories: []
+
+        },
+
+        validate: {
+            title: isNotEmpty(t("periodical.title.required")),
+            frequency: isNotEmpty(t("periodical.frequency.required")),
+            language: isNotEmpty(t("periodical.language.required")),
+        },
+    });
+
+    useEffect(() => {
+        if (!loaded && periodical != null) {
+            form.initialize(periodical);
+            setLoaded(true);
+        }
+    }, [periodical, form, loaded]);
+
+    return (
+        <form onSubmit={form.onSubmit((values) => onSubmit(values))}>
+            <TextInput key={form.key('title')}
+                label={t("periodical.title.label")}
+                placeholder={t("periodical.title.placeholder")}
+                {...form.getInputProps('title')}
+            />
+
+            <Textarea key={form.key('description')}
+                label={t("periodical.description.label")}
+                {...form.getInputProps('description')} />
+
+            <FrequencyTypeSelect t={t}
+                label={t("periodical.frequency.label")}
+                {...form.getInputProps('frequency')}
+            />
+
+            <CategoriesSelect t={t}
+                libraryId={libraryId}
+                label={t("periodical.categories.label")}
+                placeholder={t("periodical.categories.placeholder")}
+                {...form.getInputProps('categories')} />
+            <LanguageSelect
+                label={t("periodical.language.label")}
+                {...form.getInputProps('language')}
+            />
+
+            <Group justify="flex-end" mt="md">
+                <Button type="submit">{t('actions.save')}</Button>
+                <Button variant='light' onClick={onCancel}>{t('actions.cancel')}</Button>
+            </Group>
+        </form>
+    );
+}
+
+PeriodicalForm.propTypes = {
+    libraryId: PropTypes.string,
+    onSubmit: PropTypes.func,
+    onCancel: PropTypes.func,
+    periodical: PropTypes.shape({
+        id: PropTypes.number,
+        title: PropTypes.string,
+        description: PropTypes.string,
+        type: PropTypes.string,
+        links: PropTypes.shape({
+            image: PropTypes.string
+        })
+    })
+};
+
+//---------------------------------
+
+const EditPeriodicalPage = () => {
     const navigate = useNavigate();
+    const theme = useMantineTheme();
     const { t } = useTranslation();
     const { libraryId, periodicalId } = useParams();
+    const isEditing = useMemo(() => periodicalId != null, [periodicalId]);
+    const [image, setImage] = useState(null);
     const [addPeriodical, { isLoading: isAdding }] = useAddPeriodicalMutation();
     const [updatePeriodical, { isLoading: isUpdating }] = useUpdatePeriodicalMutation();
     const [updatePeriodicalImage, { isLoading: isUpdatingImage }] = useUpdatePeriodicalImageMutation();
-    const { data: periodical, error, isFetching } = useGetPeriodicalByIdQuery({ libraryId, periodicalId }, { skip: !libraryId || !periodicalId });
-    const [previewImage, setPreviewImage] = useState(null);
-    const [fileList, setFileList] = useState([]);
 
-    if (isFetching) return <Loading />;
-    if (error) return <Error t={t} />;
+    const { data: periodical, refetch, error: errorLoading, isFetching } = useGetPeriodicalByIdQuery({ libraryId, periodicalId }, { skip: !libraryId || !periodicalId });
+
+    useEffect(() => {
+        if (periodical && !periodical?.links?.update) {
+            navigate('/403')
+        }
+    }, [periodical, navigate]);
 
     const onSubmit = async (periodical) => {
-        if (periodicalId) {
+        if (isEditing) {
             updatePeriodical({ libraryId, periodicalId, payload: periodical })
                 .unwrap()
                 .then(() => uploadImage(periodicalId))
+                .then(() => success({ message: t("periodical.actions.edit.success") }))
                 .then(() => navigate(`/libraries/${libraryId}/periodicals/${periodicalId}`))
-                .then(() => message.success(t("periodical.actions.edit.success")))
-                .catch(() => message.error(t("periodical.actions.edit.error")));
+                .catch(() => error({ message: t("periodical.actions.edit.error") }));
         } else {
             let response = null;
             addPeriodical({ libraryId, payload: periodical })
                 .unwrap()
                 .then((r) => (response = r))
                 .then(() => uploadImage(response.id))
+                .then(() => success({ message: t("periodical.actions.add.success") }))
                 .then(() => navigate(`/libraries/${libraryId}/periodicals/${response.id}`))
-                .then(() => message.success(t("periodical.actions.add.success")))
-                .catch(() => message.error(t("periodical.actions.add.error")));
+                .catch(() => error({ message: t("periodical.actions.add.error") }));
         }
     };
 
     const uploadImage = async (newPeriodicalId) => {
-        if (fileList && fileList.length > 0) {
-            await updatePeriodicalImage({ libraryId, periodicalId: newPeriodicalId, payload: fileList[0] }).unwrap();
+        if (image) {
+            await updatePeriodicalImage({ libraryId, periodicalId: newPeriodicalId, payload: image }).unwrap();
         }
     };
 
-    const onImageChange = (file) => {
-        const isImage = ["image/png", "image/jpeg"].includes(file.type);
-        if (!isImage) {
-            message.error(t("errors.imageRequired"));
-            return;
-        }
-        setFileList([file]);
-        const fileReader = new FileReader();
-        fileReader.addEventListener("load", () => {
-            setPreviewImage(fileReader.result);
-        });
-        fileReader.readAsDataURL(file);
-        return false;
+    const icon = <Center h={450}><IconPeriodical width={250} style={{ color: theme.colors.dark[1] }} /></Center>;
+
+    const title = periodical ? periodical.title : t("periodical.actions.add.title");
+    if (isFetching) return <PageLoading />;
+    if (errorLoading) {
+        return (<Container fluid mt="sm">
+            <Error title={t('periodical.error.loading.title')} //Add these translations
+                detail={t('periodical.error.loading.detail')}
+                onRetry={refetch} />
+        </Container>)
     };
 
-    const getCoverSrc = () => {
-        if (previewImage) {
-            return previewImage;
-        } else if (periodical && periodical.links.image) {
-            return periodical.links.image;
-        }
+    return (<Container fluid mt="sm">
+        <PageHeader title={title}>
+        </PageHeader>
+        <Container size="responsive">
+            <Box pos="relative">
+                <LoadingOverlay visible={isFetching || isAdding || isUpdating || isUpdatingImage} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
+                <Grid
+                    mih={50}
+                >
+                    <Grid.Col span="content">
+                        <ImageUpload
+                            t={t}
+                            src={periodical?.links?.image}
+                            alt={periodical?.title}
+                            fallback={icon}
+                            onChange={setImage}
+                        />
+                    </Grid.Col>
+                    <Grid.Col span="auto" >
+                        <Card withBorder maw={600}>
+                            <PeriodicalForm libraryId={libraryId} periodical={periodical} onSubmit={onSubmit} onCancel={() => navigate(-1)} />
+                        </Card>
+                    </Grid.Col>
+                </Grid>
+            </Box>
+        </Container>
+    </Container >);
+}
 
-        return periodicalPlaceholderImage;
-    };
-    const title = periodical ? periodical.title : t("periodical.actions.add.label");
-
-    return (
-        <>
-            <PageHeader title={title} icon={<ImNewspaper style={{ width: 36, height: 36 }} />} />
-            <ContentsContainer>
-                <Row gutter={16}>
-                    <Col l={4} md={6} xs={24}>
-                        <ImgCrop modalTitle={t("actions.resizeImage")}>
-                            <Dragger fileList={fileList} beforeUpload={onImageChange} showUploadList={false}>
-                                <img src={getCoverSrc()} height="300" alt={periodical && periodical.title} onError={setDefaultPeriodicalImage} />
-                            </Dragger>
-                        </ImgCrop>
-                    </Col>
-                    <Col l={20} md={18} xs={24}>
-                        <Spin spinning={isFetching || isAdding || isUpdating || isUpdatingImage}>
-                            <Form name="login" onFinish={onSubmit} {...formItemLayout} layout="horizontal" initialValues={periodical}>
-                                <Form.Item
-                                    name="title"
-                                    label={t("periodical.title.label")}
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: t("periodical.title.required"),
-                                        },
-                                    ]}
-                                >
-                                    <Input placeholder={t("periodical.title.placeholder")} />
-                                </Form.Item>
-                                <Form.Item name="description" label={t("periodical.description.label")}>
-                                    <Input.TextArea rows={4} />
-                                </Form.Item>
-                                <Form.Item
-                                    name="frequency"
-                                    label={t("periodical.frequency.label")}
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: t("periodical.frequency.required"),
-                                        },
-                                    ]}
-                                >
-                                    <Select placeholder={t("periodical.frequency.placeholder")}>
-                                        <Select.Option value="Annually">{t("periodical.frequency.annually")}</Select.Option>
-                                        <Select.Option value="Quarterly">{t("periodical.frequency.quarterly")}</Select.Option>
-                                        <Select.Option value="Monthly">{t("periodical.frequency.monthly")}</Select.Option>
-                                        <Select.Option value="Fortnightly">{t("periodical.frequency.fortnightly")}</Select.Option>
-                                        <Select.Option value="Weekly">{t("periodical.frequency.weekly")}</Select.Option>
-                                        <Select.Option value="Daily">{t("periodical.frequency.daily")}</Select.Option>
-                                    </Select>
-                                </Form.Item>
-                                <Form.Item
-                                    name="language"
-                                    label={t("periodical.language.label")}
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: t("periodical.language.required"),
-                                        },
-                                    ]}
-                                >
-                                    <LanguageSelect placeholder={t("periodical.language.placeholder")} />
-                                </Form.Item>
-                                <Form.Item name="categories" label={t("periodical.categories.label")}>
-                                    <CategoriesSelect libraryId={libraryId} placeholder={t("periodical.categories.placeholder")} />
-                                </Form.Item>
-                                <Form.Item {...buttonItemLayout}>
-                                    <Space direction="horizontal" size="middle" style={{ width: "100%" }}>
-                                        <Button type="primary" htmlType="submit" size="large" block>
-                                            {t("actions.save")}
-                                        </Button>
-                                        <Button size="large" onClick={() => navigate(-1)} block>
-                                            {t("actions.cancel")}
-                                        </Button>
-                                    </Space>
-                                </Form.Item>
-                            </Form>
-                        </Spin>
-                    </Col>
-                </Row>
-            </ContentsContainer>
-        </>
-    );
-};
-
-export default PeriodicalEditPage;
+export default EditPeriodicalPage;

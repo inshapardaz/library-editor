@@ -1,0 +1,77 @@
+.imageCaptionButton {
+    display: block;
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    min-width: 100px;
+    width: 30%;
+    opacity: 0.5;
+    margin: 0 auto;
+}
+
+.imageCaptionButton:hover {
+    opacity: 0.75;
+}
+
+.imageResizer {
+    display: block;
+    width: 7px;
+    height: 7px;
+    position: absolute;
+    background-color: rgb(60, 132, 244);
+    border: 1px solid #fff;
+}
+
+.imageResizerWrapperResizing {
+    touch-action: none;
+}
+  
+.imageResizerN {
+    top: -6px;
+    left: 48%;
+    cursor: n-resize;
+}
+  
+.imageResizerNE {
+    top: -6px;
+    right: -6px;
+    cursor: ne-resize;
+}
+  
+.imageResizerE {
+    bottom: 48%;
+    right: -6px;
+    cursor: e-resize;
+}
+  
+.imageResizerSE {
+    bottom: -2px;
+    right: -6px;
+    cursor: nwse-resize;
+}
+  
+.imageResizerS {
+    bottom: -2px;
+    left: 48%;
+    cursor: s-resize;
+}
+  
+.imageResizerSW {
+    bottom: -2px;
+    left: -6px;
+    cursor: sw-resize;
+}
+  
+.imageResizerW {
+    bottom: 48%;
+    left: -6px;
+    cursor: w-resize;
+}
+  
+.imageResizerNW {
+    top: -6px;
+    left: -6px;
+    cursor: nw-resize;
+}
+  

@@ -1,0 +1,20 @@
+.link-editor {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  max-width: 400px;
+  width: 100%;
+  opacity: 0;
+  transition: opacity 0.5s;
+  will-change: transform;
+}
+
+.link-editor a {
+  direction: ltr;
+}
+
+.link-editor a:hover {
+  background-color: var(--mantine-color-blue-light);
+}

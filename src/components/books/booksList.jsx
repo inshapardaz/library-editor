@@ -1,65 +1,52 @@
-import React, { useState } from "react";
+import PropTypes from 'prop-types';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useLocalStorage } from "usehooks-ts";
 
-// 3rd party libraries
-import { Button, Input, List, Segmented, Space } from "antd";
+// Ui Library
+import { Button } from '@mantine/core';
 
-// Local Imports
-import { FaBook, FaCloudUploadAlt, FaPlus, FaRegImage, FaRegListAlt } from "/src/icons";
-import { updateLinkToBooksPage } from "/src/util";
-import { useGetBooksQuery } from "/src/store/slices/booksSlice";
-import DataContainer from "/src/components/layout/dataContainer";
-import BookCard from "./bookCard";
-import BookListItem from "./bookListItem";
-import BookStatusFilterButton from "./bookStatusFilterButton";
-import BookSortButton from "./bookSortButton";
-// ------------------------------------------------------
+// Local imports
+import { useGetBooksQuery } from "@/store/slices/books.api";
+import BookCard from './bookCard';
+import BookListItem from './bookListItem';
+import DataView from '@/components/dataView';
+import { updateLinkToBooksPage } from '@/utils';
+import SortMenu from '@/components/sortMenu';
+import SortDirectionToggle from '@/components/sortDirectionToggle';
+import { IconTitle, IconDateCreated, IconSeriesIndex, IconAdd } from '@/components/icons';
+import BookFilterMenu from './bookFilterMenu';
+//------------------------------
 
-const grid = {
-    gutter: 4,
-    xs: 1,
-    sm: 1,
-    md: 2,
-    lg: 2,
-    xl: 3,
-    xxl: 5,
-};
-
-// ------------------------------------------------------
-
-function BooksList({
+const BooksList = ({
     libraryId,
-    query,
-    author,
-    categories,
-    series,
-    sortBy,
-    sortDirection,
-    favorite,
-    read,
+    query = null,
+    author = null,
+    category = null,
+    series = null,
+    sortBy = null,
+    sortDirection = null,
+    favorite = null,
+    read = null,
     status,
     pageNumber,
     pageSize,
     showSearch = true,
-}) {
+    showTitle = true
+}) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
-    const [search, setSearch] = useState(query);
-    const [showList, setShowList] = useLocalStorage("books-list-view", false);
 
     const {
         refetch,
         data: books,
-        error,
+        isError,
         isFetching,
     } = useGetBooksQuery({
         libraryId,
         query,
         author,
-        categories,
+        category,
         series,
         sortBy,
         sortDirection,
@@ -70,126 +57,86 @@ function BooksList({
         pageSize,
     });
 
-    const renderItem = (book) => {
-        if (showList) {
-            return (
-                <BookListItem
-                    key={book.id}
-                    libraryId={libraryId}
-                    book={book}
-                    t={t}
-                />
-            );
-        } else {
-            return (
-                <BookCard
-                    key={book.id}
-                    libraryId={libraryId}
-                    book={book}
-                    t={t}
-                />
-            );
+    let bookSortOptions = [{
+        label: t('book.title.label'),
+        value: 'title',
+        icon: <IconTitle />
+    }, {
+        label: t('book.dateCreated'),
+        value: 'dateCreated',
+        icon: <IconDateCreated />
+    }];
+    if (series) {
+        bookSortOptions.push({
+            label: t('book.seriesIndex.label'),
+            value: 'seriesIndex',
+            icon: <IconSeriesIndex />
+        })
+    }
+
+    return <DataView
+        title={showTitle ? t('header.books') : null}
+        emptyText={t('books.empty')}
+        dataSource={books}
+        isFetching={isFetching}
+        isError={isError}
+        errorTitle={t('books.error.loading.title')}
+        errorDetail={t('books.error.loading.detail')}
+        showViewToggle={true}
+        viewToggleKey='books-list-view'
+        cardRender={book => (<BookCard libraryId={libraryId} key={book.id} book={book} />)}
+        listItemRender={book => (<BookListItem libraryId={libraryId} key={book.id} book={book} />)}
+        onReload={refetch}
+        onPageChanged={(index) => navigate(updateLinkToBooksPage(location, {
+            pageNumber: index,
+            pageSize: pageSize,
+        }))}
+        onPageSizeChanged={(size) => navigate(updateLinkToBooksPage(location, {
+            pageNumber: 1,
+            pageSize: size,
+        }))}
+        showSearch={showSearch}
+        searchValue={query}
+        onSearchChanged={search => navigate(updateLinkToBooksPage(location, {
+            pageNumber: 1,
+            query: search,
+        }))}
+        extraFilters={
+            <>
+                <Button variant='default' leftSection={<IconAdd />} component={Link} to={`/libraries/${libraryId}/books/add`}>{t('book.actions.add.label')}</Button>
+                <BookFilterMenu value={status} onChange={value => navigate(updateLinkToBooksPage(location, {
+                    status: value
+                }))} />
+                <SortMenu options={bookSortOptions} value={sortBy} onChange={value => navigate(updateLinkToBooksPage(location, {
+                    pageNumber: 1,
+                    sortBy: value,
+                }))} />
+                <SortDirectionToggle value={sortDirection} onChange={dir => navigate(updateLinkToBooksPage(location, {
+                    pageNumber: 1,
+                    sortDirection: dir,
+                }))} />
+            </>
         }
-    };
+        cols={{ base: 1, xs: 2, sm: 2, md: 3, lg: 3, xl: 4 }}
 
-    const onPageChanged = (newPage, newPageSize) => {
-        navigate(
-            updateLinkToBooksPage(location, {
-                pageNumber: newPage,
-                pageSize: newPageSize,
-            })
-        );
-    };
+    />;
+}
 
-    const onSearch = () => {
-        navigate(
-            updateLinkToBooksPage(location, {
-                pageNumber: 1,
-                query: search,
-            })
-        );
-    };
-
-    return (
-        <DataContainer
-            busy={isFetching}
-            error={error}
-            errorTitle={t("books.errors.loading.title")}
-            errorSubTitle={t("books.errors.loading.subTitle")}
-            errorAction={
-                <Button type="default" onClick={refetch}>
-                    {t("actions.retry")}
-                </Button>
-            }
-            emptyImage={<FaBook size="5em" />}
-            emptyDescription={t("books.empty.title")}
-            emptyContent={
-                <Space>
-                    <Link to={`/libraries/${libraryId}/books/add`}>
-                        <Button type="dashed" icon={<FaPlus />}>
-                            {t("book.actions.add.label")}
-                        </Button>
-                    </Link>
-                    <Link to={`/libraries/${libraryId}/books/upload`}>
-                        <Button type="dashed" icon={<FaCloudUploadAlt />}>
-                            {t("books.actions.upload.label")}
-                        </Button>
-                    </Link>
-                </Space>
-            }
-            empty={books && books.data && books.data.length < 1}
-            bordered={false}
-            extra={
-                <Space>
-                    {showSearch && (
-                        <Input.Search
-                            size="medium"
-                            value={search}
-                            allowClear
-                            onChange={(e) => setSearch(e.target.value)}
-                            onSearch={onSearch}
-                            placeholder={t("books.search.placeholder")}
-                        />
-                    )}
-                    <Button.Group>
-                        <BookStatusFilterButton t={t} status={status} />
-                        <BookSortButton
-                            sortBy={sortBy}
-                            sortDirection={sortDirection}
-                            t={t}
-                        />
-                    </Button.Group>
-                    <Segmented size="medium"
-                        onChange={(value) => setShowList(value)}
-                        value={showList}
-                        options={[
-                            { value: true, icon: <FaRegListAlt /> },
-                            { value: false, icon: <FaRegImage /> },
-                        ]}
-                    />
-                </Space>
-            }
-        >
-            <List
-                grid={showList ? null : grid}
-                loading={isFetching}
-                size="large"
-                itemLayout={showList ? "vertical" : "horizontal"}
-                dataSource={books ? books.data : []}
-                pagination={{
-                    onChange: onPageChanged,
-                    pageSize: books ? books.pageSize : 0,
-                    current: books ? books.currentPageIndex : 0,
-                    total: books ? books.totalCount : 0,
-                    showSizeChanger: true,
-                    responsive: true,
-                    showQuickJumper: true,
-                    pageSizeOptions: [12, 24, 48, 96],
-                }}
-                renderItem={renderItem}
-            />
-        </DataContainer>
-    );
+BooksList.propTypes = {
+    libraryId: PropTypes.string,
+    query: PropTypes.string,
+    author: PropTypes.number,
+    category: PropTypes.string,
+    series: PropTypes.string,
+    sortBy: PropTypes.string,
+    sortDirection: PropTypes.string,
+    favorite: PropTypes.string,
+    read: PropTypes.string,
+    status: PropTypes.string,
+    pageNumber: PropTypes.number,
+    pageSize: PropTypes.number,
+    showSearch: PropTypes.bool,
+    showTitle: PropTypes.bool,
 }
 
 export default BooksList;

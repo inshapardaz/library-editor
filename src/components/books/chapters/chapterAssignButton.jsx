@@ -1,108 +1,87 @@
-import React from "react";
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
-// Third party libraries
-import { Form, Space, Typography } from "antd";
+// UI Library Imprort
+import { useField } from '@mantine/form';
 
 // Local imports
-import { EditOutlined, FileDoneOutlined, FaUserAlt } from "/src/icons";
-import { useAssignChaptersMutation } from "/src/store/slices/booksSlice";
-import UserSelect from "/src/components/userSelect";
-import BatchActionDrawer from "/src/components/batchActionDrawer";
+import { useAssignChaptersMutation } from "@/store/slices/books.api";
+import { IconAssign } from "@/components/icons";
+import BatchActionDrawer from '@/components/batchActionDrawer';
+import UserSelect from '@/components/userSelect';
 
 // ------------------------------------------------------
 
-const ChapterAssignButton = ({ libraryId, chapters, t, type, showDetails = true, showIcon = true }) => {
-    const [form] = Form.useForm();
-    const [assignChapters, { isLoading: isAdding }] = useAssignChaptersMutation();
+const ChapterAssignButton = ({ libraryId, chapters = [], t, type, buttonSize, showIcon = true, onCompleted = () => { } }) => {
+    const user = useSelector(state => state.auth.user)
+    const [assignChapters, { isLoading: isAssigning }] = useAssignChaptersMutation();
     const count = chapters ? chapters.length : 0;
 
-    let assignment = [];
-
-    if (chapters.length === 1) {
-        if (chapters[0].reviewerAccountId) {
-            assignment.push(
-                <Space.Compact>
-                    <FileDoneOutlined />
-                    <Typography>{chapters[0].reviewerAccountName}</Typography>
-                </Space.Compact>
-            );
-        }
-        if (chapters[0].writerAccountId) {
-            assignment.push(
-                <Space.Compact>
-                    <EditOutlined />
-                    <Typography>{chapters[0].writerAccountName}</Typography>
-                </Space.Compact>
-            );
-        }
-    }
+    const idField = useField({
+        initialValue: '',
+        validate: (value) => (value && value != '' ? null : t("chapter.user.required"))
+    });
 
     const onOk = async () => {
-        try {
-
-            let values = await form.validateFields();
-            return values.id === "none" ? {
+        await idField.validate();
+        let value = idField.getValue();
+        if (value && value != '') {
+            return value === "none" ? {
                 unassign: true
             } :
                 {
-                    accountId: values.id === "me" ? null : values.id,
+                    accountId: value === "me" ? user.id : value,
                 };
         }
-        catch {
-            return false;
-        }
+
+        return false;
     };
 
-    const onShow = () => {
-        form.resetFields();
-    };
+    return (<>
+        <BatchActionDrawer t={t}
+            tooltip={t('chapter.actions.assign.label')}
+            buttonType={type}
+            buttonSize={buttonSize}
+            variant="default" size="xs"
+            disabled={count === 0}
+            icon={showIcon && <IconAssign />}
+            sliderTitle={t("chapter.actions.assign.title", { count })}
+            onOkFunc={onOk}
+            busy={isAssigning}
+            listTitle={t("chapter.actions.assign.message")}
+            items={chapters}
+            itemTitleFunc={chapter => chapter.title}
+            mutation={assignChapters}
+            successMessage={t("chapter.actions.assign.success", { count })}
+            errorMessage={t("chapter.actions.assign.error", { count })}
+            onSuccess={onCompleted}
+            onClose={() => idField.reset()}
+        >
+            <UserSelect {...idField.getInputProps()}
+                t={t}
+                libraryId={libraryId}
+                addMeOption
+                label={t("chapter.user.label")} />
+        </BatchActionDrawer>
+    </>);
+};
 
-    let data = {
-        id: "",
-        name: "",
-    };
-
-    return (
-        <>
-            <BatchActionDrawer t={t}
-                tooltip={t('chapter.actions.assign.label')}
-                buttonType={type}
-                disabled={count === 0}
-                title={showDetails && assignment.length > 0 ? assignment : null}
-                icon={showIcon && <FaUserAlt />}
-                sliderTitle={t("chapter.actions.assign.label")}
-                onOk={onOk}
-                closable={!isAdding}
-                onShow={onShow}
-                listTitle={t("chapters.title")}
-                items={chapters}
-                itemTitle={chapter => chapter.title}
-                mutation={assignChapters}
-                successMessage={t("chapter.actions.assign.success", { count })}
-                errorMessage={t("chapter.actions.assign.error", { count })}
-            >
-                <Form form={form} layout="vertical" initialValues={data}>
-                    <Form.Item
-                        name="id"
-                        label={t("chapter.user.label")}
-                        rules={[
-                            {
-                                required: true,
-                                message: t("chapter.user.required"),
-                            },
-                        ]}
-                    >
-                        <UserSelect
-                            libraryId={libraryId}
-                            t={t}
-                            placeholder={t("chapter.user.placeholder")}
-                            label={data.name}
-                            addMeOption />
-                    </Form.Item>
-                </Form>
-            </BatchActionDrawer >
-        </>
-    );
+ChapterAssignButton.propTypes = {
+    t: PropTypes.any,
+    libraryId: PropTypes.string,
+    type: PropTypes.string,
+    buttonSize: PropTypes.string,
+    showIcon: PropTypes.bool,
+    chapters: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.number,
+            title: PropTypes.string,
+            links: PropTypes.shape({
+                delete: PropTypes.string,
+            }),
+        })),
+    isLoading: PropTypes.object,
+    onCompleted: PropTypes.func
 };
 
 export default ChapterAssignButton;

@@ -1,55 +1,48 @@
-import React from 'react';
-import { useParams, useSearchParams, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 
-// 3rd party libraries
-import { Button } from "antd";
-import { FaFeatherAlt, FaPlus } from "/src/icons";
+// Local Import
+import { SortDirection } from "@/models";
+import AuthorsList from "@/components/authors/authorsList";
+import PageHeader from "@/components/pageHeader";
+import { IconAdd } from '@/components/icons';
+import IconNames from '@/components/iconNames';
+import { Button, Card } from "@mantine/core";
 
-// Local Imports
-import PageHeader from "/src/components/layout/pageHeader";
-import AuthorsList from "/src/components/author/authorsList";
-import ContentsContainer from "/src/components/layout/contentContainer";
-
-// ---------------------------------------------------
-
-const AuthorsHomePage = () => {
+// -----------------------------------------
+const AuthorsPage = () => {
     const { t } = useTranslation();
     const { libraryId } = useParams();
     const [searchParams] = useSearchParams();
     const query = searchParams.get("query");
+    const sortBy = searchParams.get("sortBy") ?? "name";
     const authorType = searchParams.get("authorType");
-    const pageNumber = searchParams.get("pageNumber");
-    const pageSize = searchParams.get("pageSize");
-    const sortBy = searchParams.get("sortBy");
-    const sortDirection = searchParams.get("sortDirection");
+    const sortDirection = searchParams.get("sortDirection") ?? SortDirection.Ascending;
+    const pageNumber = parseInt(searchParams.get("pageNumber") ?? "1");
+    const pageSize = parseInt(searchParams.get("pageSize") ?? "12");
 
-    const addButton = (
-        <Link to={`/libraries/${libraryId}/authors/add`}>
-            <Button type="dashed" icon={<FaPlus />}>
-                {t("author.actions.add.label")}
-            </Button>
-        </Link>
-    );
-    return (
-        <>
-            <PageHeader
-                title={t("authors.title")}
-                icon={<FaFeatherAlt style={{ width: 36, height: 36 }} />}
-                actions={addButton}
-            />
-            <ContentsContainer>
-                <AuthorsList
-                    libraryId={libraryId}
-                    query={query}
-                    authorType={authorType}
-                    pageNumber={pageNumber}
-                    pageSize={pageSize}
-                    sortBy={sortBy}
-                    sortDirection={sortDirection}
-                />
-            </ContentsContainer>
-        </>
-    );
+    return (<>
+        <PageHeader
+            title={t('header.authors')}
+            defaultIcon={IconNames.Authors}
+            breadcrumbs={[
+                { title: t('header.home'), href: `/libraries/${libraryId}`, icon: IconNames.Home }
+            ]}
+            actions={[
+                (<Button key="book-edit" component={Link} to={`/libraries/${libraryId}/authors/add`} variant='default' leftSection={<IconAdd />} >{t('author.actions.add.label')}</Button>)
+            ]} />
+        <Card withBorder mx="md">
+            <AuthorsList
+                libraryId={libraryId}
+                query={query}
+                authorType={authorType}
+                sortBy={sortBy}
+                sortDirection={sortDirection}
+                pageNumber={pageNumber}
+                pageSize={pageSize}
+                showSearch />
+        </Card>
+    </>)
 }
-export default AuthorsHomePage;
+
+export default AuthorsPage;

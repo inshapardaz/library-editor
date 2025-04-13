@@ -1,35 +1,24 @@
-import React, { useState } from "react";
+import PropTypes from 'prop-types';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useLocalStorage } from "usehooks-ts";
 
-// 3rd party libraries
-import { Button, Input, List, Segmented, Space } from "antd";
-
-// Local Imports
-import { FaPlus, FaRegImage, FaRegListAlt, ImBooks } from "/src/icons";
-import { useGetSeriesQuery } from "/src/store/slices/seriesSlice";
-import { updateLinkToSeriesPage } from "/src/util";
-import DataContainer from "/src/components/layout/dataContainer";
-import SeriesCard from "./seriesCard";
-import SeriesListItem from "./seriesListItem";
-// ------------------------------------------------------
-
-const grid = {
-    gutter: 4,
-    xs: 1,
-    sm: 2,
-    md: 3,
-    lg: 3,
-    xl: 4,
-    xxl: 5,
-};
-
-// ------------------------------------------------------
+// Local imports
+import { useGetSeriesQuery } from "@/store/slices/series.api";
+import SeriesCard from './seriesCard';
+import SeriesListItem from './seriesListItem';
+import DataView from '@/components/dataView';
+import { updateLinkToSeriesPage } from '@/utils';
+import SortMenu from '@/components/sortMenu';
+import SortDirectionToggle from '@/components/sortDirectionToggle';
+import { IconTitle, IconDateCreated } from '@/components/icons';
+//------------------------------
 
 const SeriesList = ({
     libraryId,
-    query,
+    query = null,
+    sortBy = null,
+    sortDirection = null,
+    status,
     pageNumber,
     pageSize,
     showSearch = true,
@@ -37,126 +26,84 @@ const SeriesList = ({
     const { t } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
-    const [search, setSearch] = useState(query);
-    const [showList, setShowList] = useLocalStorage("series-list-view", false);
 
     const {
         refetch,
         data: series,
-        error,
+        isError,
         isFetching,
-    } = useGetSeriesQuery({ libraryId, query, pageNumber, pageSize });
+    } = useGetSeriesQuery({
+        libraryId,
+        query,
+        sortBy,
+        sortDirection,
+        status,
+        pageNumber,
+        pageSize,
+    });
 
-    const toggleView = (checked) => {
-        setShowList(checked);
-    };
+    let seriesSortOptions = [{
+        label: t('series.name.label'),
+        value: 'title',
+        icon: <IconTitle />
+    }, {
+        label: t('series.noOfBooks'),
+        value: 'bookCount',
+        icon: <IconDateCreated />
+    }];
 
-    const renderItem = (s) => {
-        if (showList) {
-            return (
-                <SeriesListItem
-                    key={s.id}
-                    libraryId={libraryId}
-                    series={s}
-                    t={t}
-                />
-            );
-        } else {
-            return (
-                <List.Item>
-                    <SeriesCard
-                        key={s.id}
-                        libraryId={libraryId}
-                        series={s}
-                        t={t}
-                    />
-                </List.Item>
-            );
+    return <DataView
+        emptyText={t('series.empty')}
+        dataSource={series}
+        isFetching={isFetching}
+        isError={isError}
+        errorTitle={t('series.error.loading.title')}
+        errorDetail={t('series.error.loading.detail')}
+        showViewToggle={true}
+        viewToggleKey='series-list-view'
+        cardRender={series => (<SeriesCard libraryId={libraryId} key={series.id} series={series} />)}
+        listItemRender={series => (<SeriesListItem libraryId={libraryId} key={series.id} series={series} />)}
+        onReload={refetch}
+        onPageChanged={(index) => navigate(updateLinkToSeriesPage(location, {
+            pageNumber: index,
+            pageSize: pageSize,
+        }))}
+        onPageSizeChanged={(size) => navigate(updateLinkToSeriesPage(location, {
+            pageNumber: 1,
+            pageSize: size,
+        }))}
+        showSearch={showSearch}
+        searchValue={query}
+        onSearchChanged={search => navigate(updateLinkToSeriesPage(location, {
+            pageNumber: 1,
+            query: search,
+        }))}
+        extraFilters={
+            <>
+                <SortMenu options={seriesSortOptions} value={sortBy} onChange={value => navigate(updateLinkToSeriesPage(location, {
+                    pageNumber: 1,
+                    sortBy: value,
+                }))} />
+                <SortDirectionToggle value={sortDirection} onChange={dir => navigate(updateLinkToSeriesPage(location, {
+                    pageNumber: 1,
+                    sortDirection: dir,
+                }))} />
+            </>
         }
-    };
+        cols={{ base: 1, xs: 2, sm: 3, md: 4, lg: 4, xl: 6 }}
+    />;
+}
 
-    const onPageChanged = (newPage, newPageSize) => {
-        navigate(
-            updateLinkToSeriesPage(location, {
-                pageNumber: newPage,
-                pageSize: newPageSize,
-                query,
-            })
-        );
-    };
+SeriesList.propTypes = {
 
-    const onSearch = () => {
-        navigate(
-            updateLinkToSeriesPage(location, {
-                pageNumber: 1,
-                query: search,
-            })
-        );
-    };
-    return (
-        <DataContainer
-            busy={isFetching}
-            error={error}
-            errorTitle={t("series.errors.loading.title")}
-            errorSubTitle={t("series.errors.loading.subTitle")}
-            errorAction={
-                <Button type="default" onClick={refetch}>
-                    {t("actions.retry")}
-                </Button>
-            }
-            emptyImage={<ImBooks size="5em" />}
-            emptyDescription={t("series.empty.title")}
-            emptyContent={
-                <Link to={`/libraries/${libraryId}/series/add`}>
-                    <Button type="dashed" icon={<FaPlus />}>
-                        {t("series.actions.add.label")}
-                    </Button>
-                </Link>
-            }
-            empty={series && series.data && series.data.length < 1}
-            extra={
-                <Space>
-                    {showSearch && (
-                        <Input.Search
-                            size="medium"
-                            value={search}
-                            allowClear
-                            onChange={(e) => setSearch(e.target.value)}
-                            onSearch={onSearch}
-                            placeholder={t("authors.search.placeholder")}
-                        />
-                    )}
-                    <Segmented size="medium"
-                        onChange={toggleView}
-                        value={showList}
-                        options={[
-                            { value: true, icon: <FaRegListAlt /> },
-                            { value: false, icon: <FaRegImage /> },
-                        ]}
-                    />
-                </Space>
-            }
-        >
-            <List
-                grid={showList ? null : grid}
-                loading={isFetching}
-                size="large"
-                itemLayout={showList ? "vertical" : "horizontal"}
-                dataSource={series ? series.data : []}
-                pagination={{
-                    onChange: onPageChanged,
-                    pageSize: series ? series.pageSize : 0,
-                    current: series ? series.currentPageIndex : 0,
-                    total: series ? series.totalCount : 0,
-                    showSizeChanger: true,
-                    responsive: true,
-                    showQuickJumper: true,
-                    pageSizeOptions: [12, 24, 48, 96],
-                }}
-                renderItem={renderItem}
-            />
-        </DataContainer>
-    );
-};
+    libraryId: PropTypes.string,
+    query: PropTypes.string,
+    sortBy: PropTypes.string,
+    sortDirection: PropTypes.string,
+    status: PropTypes.string,
+    pageNumber: PropTypes.number,
+    pageSize: PropTypes.number,
+    showSearch: PropTypes.bool,
+}
 
 export default SeriesList;

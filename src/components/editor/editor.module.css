@@ -1,0 +1,115 @@
+.ltr {
+  text-align: left;
+}
+
+.rtl {
+  text-align: right;
+}
+
+.editorInput {
+  resize: none;
+  font-size: 15px;
+  caret-color: rgb(5, 5, 5);
+  position: relative;
+  tab-size: 1;
+  outline: 0;
+  padding: 15px 10px;
+  caret-color: #444;
+  align-self: stretch;
+}
+
+.editorPlaceholder {
+  font-size: 15px;
+  color: #999;
+  overflow: hidden;
+  position: absolute;
+  text-overflow: ellipsis;
+  top: 8px;
+  left: 28px;
+  right: 28px;
+  user-select: none;
+  white-space: nowrap;
+  display: inline-block;
+  pointer-events: none;
+}
+
+.rtl .editorPlaceholder {
+  left: auto;
+}
+
+.editorShell {
+  color: var(--mantine-color-text);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--mantine-color-body);
+}
+
+.editorShell .editor-container {
+  background: var(--mantine-color-body);;
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  overflow: hidden;
+  border-bottom-left-radius: var(--mantine-radius-md);
+  border-bottom-right-radius: var(--mantine-radius-md);
+}
+
+.editorShell .editor-container.tree-view {
+  border-radius: 0;
+}
+
+.editorShell .editor-container.plain-text {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.editorScroller {
+  flex-grow: 1;
+  display: flex;
+  outline: 0;
+  overflow: scroll;
+  margin: var(--mantine-spacing-xs);
+  margin-top: 0;
+  resize: vertical;
+  border: 1px solid var(--mantine-color-default-border);
+  border-top: none;
+  border-radius: var(--mantine-radius-xs);
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  position: relative;
+  resize: none;
+}
+
+.editor {
+  flex: auto;
+  resize: vertical;
+  position: relative;
+  padding-left: var(--mantine-spacing-xs);
+  padding-right: var(--mantine-spacing-xs);
+}
+
+.contentEditable {
+  border: 0;
+  font-size: 15px;
+  display: block;
+  position: relative;
+  outline: 0;
+  padding: var(--mantine-spacing-sm);
+  min-height: 100%;
+  cursor: text;
+}
+
+.contentEditableRoot {
+  border: 0;
+  font-size: 15px;
+  position: relative;
+  outline: none;
+  padding:  var(--mantine-spacing-sm);
+}

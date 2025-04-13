@@ -1,41 +1,33 @@
-import React from 'react';
-import { useNavigate } from "react-router-dom";
-
-// Third party libraries
-import { App, Button, Modal } from "antd";
+import PropTypes from 'prop-types';
 
 // Local imports
-import { FaTrash, ExclamationCircleFilled } from '/src/icons';
-import { useDeleteSeriesMutation } from "/src/store/slices/seriesSlice";
-// ------------------------------------------------------
-const { confirm } = Modal;
-// ------------------------------------------------------
+import { useDeleteSeriesMutation } from '@/store/slices/series.api';
+import DeleteButton from "@/components/deleteButton";
+//---------------------------------
 
-const SeriesDeleteButton = ({ children, libraryId, series, t, type, onDeleted = () => { }, danger = false, block = false, size }) => {
-    const { message } = App.useApp();
-    const navigate = useNavigate();
+const SeriesDeleteButton = ({ libraryId, series, t, onDeleted }) => {
+
     const [deleteSeries, { isLoading: isDeleting }] = useDeleteSeriesMutation();
+    return (<DeleteButton
+        title={t("series.actions.delete.title")}
+        message={t("series.actions.delete.message", { name: series.name })}
+        tooltip={t('series.actions.delete.label', { name: series.name })}
+        successMessage={t("series.actions.delete.success", { name: series.name })}
+        errorMessage={t("book.actions.delete.error", { name: series.name })}
+        isDeleting={isDeleting}
+        onDelete={() => { return deleteSeries({ libraryId, seriesId: series.id }).unwrap() }}
+        onDeleted={onDeleted}
+    />)
+}
 
-    const showConfirm = () => {
-        confirm({
-            title: t("series.actions.delete.title"),
-            icon: <ExclamationCircleFilled />,
-            content: t("series.actions.delete.message", { name: series.name }),
-            okButtonProps: { disabled: isDeleting },
-            cancelButtonProps: { disabled: isDeleting },
-            closable: isDeleting,
-            onOk() {
-                return deleteSeries({ libraryId, seriesId: series.id })
-                    .unwrap()
-                    .then(() => onDeleted())
-                    .then(() => navigate(`/libraries/${libraryId}/series`))
-                    .then(() => { message.success(t("series.actions.delete.success")) })
-                    .catch(() => { message.error(t("series.actions.delete.error")) });
-            }
-        });
-    };
-
-    return (<Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash />}>{children}</Button>);
+SeriesDeleteButton.propTypes = {
+    libraryId: PropTypes.string,
+    t: PropTypes.any,
+    onDeleted: PropTypes.func,
+    series: PropTypes.shape({
+        id: PropTypes.number,
+        name: PropTypes.string,
+    })
 };
 
 export default SeriesDeleteButton;

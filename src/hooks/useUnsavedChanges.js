@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import unsavedChangedRepository from "/src/domain/unsavedChangesRepository";
+import unsavedChangedRepository from "@/domain/unsavedChangesRepository";
 
 export default function useUnsavedChanges(contentKey) {
     let unsavedContents = contentKey

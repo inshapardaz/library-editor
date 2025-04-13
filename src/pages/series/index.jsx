@@ -1,52 +1,47 @@
-import React from 'react';
-import { useParams, useSearchParams, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 
-// 3rd party libraries
-import { Button } from "antd";
-import { FaPlus } from "/src/icons";
-import { ImBooks } from "/src/icons";
+// UI Library Imports
+import { Button, Card } from "@mantine/core";
 
-// Local Imports
-import PageHeader from "/src/components/layout/pageHeader";
-import SeriesList from "/src/components/series/seriesList";
-import ContentsContainer from "/src/components/layout/contentContainer";
+// Local Import
+import { SortDirection } from "@/models";
+import SeriesList from "@/components/series/seriesList";
+import PageHeader from "@/components/pageHeader";
+import IconNames from '@/components/iconNames';
+import { IconAdd } from '@/components/icons';
 
-// ========================================================
-
-const SeriesHomePage = () => {
+// -----------------------------------------
+const SeriesListPage = () => {
     const { t } = useTranslation();
     const { libraryId } = useParams();
     const [searchParams] = useSearchParams();
     const query = searchParams.get("query");
-    const pageNumber = searchParams.get("pageNumber");
-    const pageSize = searchParams.get("pageSize") ?? 12;
+    const sortBy = searchParams.get("sortBy") ?? "name";
+    const sortDirection = searchParams.get("sortDirection") ?? SortDirection.Ascending;
+    const pageNumber = parseInt(searchParams.get("pageNumber") ?? "1");
+    const pageSize = parseInt(searchParams.get("pageSize") ?? "12");
 
-    const addButton = (
-        <Link to={`/libraries/${libraryId}/series/add`}>
-            <Button type="dashed" icon={<FaPlus />}>
-                {t("series.actions.add.label")}
-            </Button>
-        </Link>
-    );
+    return (<>
+        <PageHeader
+            title={t('header.series')}
+            defaultIcon={IconNames.Series}
+            breadcrumbs={[
+                { title: t('header.home'), href: `/libraries/${libraryId}`, icon: IconNames.Home }
+            ]} actions={[
+                (<Button key="book-edit" component={Link} to={`/libraries/${libraryId}/series/add`} variant='default' leftSection={<IconAdd />} >{t('series.actions.add.label')}</Button>)
+            ]} />
+        <Card withBorder mx="md">
+            <SeriesList
+                libraryId={libraryId}
+                query={query}
+                sortBy={sortBy}
+                sortDirection={sortDirection}
+                pageNumber={pageNumber}
+                pageSize={pageSize}
+                showSearch />
+        </Card>
+    </>)
+}
 
-    return (
-        <>
-            <PageHeader
-                title={t("series.title")}
-                icon={<ImBooks style={{ width: 36, height: 36 }} />}
-                actions={addButton}
-            />
-            <ContentsContainer>
-                <SeriesList
-                    libraryId={libraryId}
-                    query={query}
-                    pageNumber={pageNumber}
-                    pageSize={pageSize}
-                />
-            </ContentsContainer>
-        </>
-    );
-};
-
-export default SeriesHomePage;
+export default SeriesListPage;

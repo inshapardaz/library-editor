@@ -1,47 +1,55 @@
-import React from 'react';
+import { useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-// 3rd party libraries
-import { Button, Spin } from "antd";
-import { ImLibrary } from "/src/icons";
-import { FaPencilAlt } from "/src/icons";
+// UI library import
+import { Button, Container, Stack } from "@mantine/core";
 
-// Local Imports
-import { useGetLibraryQuery } from '/src/store/slices/librariesSlice'
-import ContentsContainer from '/src/components/layout/contentContainer';
-import LatestBooks from "/src/components/books/latestBooks";
-import EditingBooks from "/src/components/books/editingBooks";
-import PageHeader from "/src/components/layout/pageHeader";
+// Local imports
+import { LibraryContext } from '@/contexts'
+import PageHeader from "@/components/pageHeader";
+import BooksCarousel from "@/components/books/booksCarousel";
+import IconNames from '@/components/iconNames';
+import { IconEdit } from '@/components/icons';
+//---------------------------------------------
 
-// -------------------------------------------------------
+const LibraryPage = () => {
+        const { t } = useTranslation();
+        const { libraryId } = useParams();
+        const { library } = useContext(LibraryContext);
 
-const LibraryHome = () => {
-    const { t } = useTranslation();
-    const { libraryId } = useParams()
-    const { data: library, isFetching } = useGetLibraryQuery({ libraryId }, { skip: libraryId === null })
+        return (<Container fluid mt="sm">
+                <PageHeader
+                        title={library?.name}
+                        imageLink={library?.links.image}
+                        defaultIcon={IconNames.Library}
+                        actions={[
+                                <Button key="edit-library"
+                                        variant='default'
+                                        component={Link}
+                                        to={`/libraries/${libraryId}/edit`}
+                                        leftSection={<IconEdit />}>
+                                        {t('actions.edit')
+                                        }</Button>
+                        ]}
+                        breadcrumbs={[
+                                { title: t('header.home'), href: `/libraries/${libraryId}`, icon: IconNames.Home },
+                                { title: t('header.libraries'), icon: IconNames.Library },
+                        ]}
+                />
+                <Stack align="stretch"
+                        justify="center"
+                        m="md"
+                        gap="md" >
+                        <Stack align="stretch"
+                                justify="center"
+                                gap="md">
+                                <BooksCarousel libraryId={libraryId} status="ProofRead" />
+                                <BooksCarousel libraryId={libraryId} status="BeingTyped" />
+                        </Stack>
+                </Stack>
+        </Container>);
 
-    if (isFetching) {
-        return <Spin />
-    }
-
-    const editButton = library && library.links.update && (
-        <Link to={`/libraries/${libraryId}/edit`}>
-            <Button type="dashed" icon={<FaPencilAlt />}>
-                {t("actions.edit")}
-            </Button>
-        </Link>
-    );
-
-    return (<>
-        <div style={{ marginTop: 50 }} />
-        <PageHeader title={library?.name} icon={<ImLibrary size={48} />} actions={editButton} />
-        <ContentsContainer>
-            <EditingBooks status="BeingTyped" />
-            <EditingBooks status="ProofRead" />
-            <LatestBooks />
-        </ContentsContainer>
-    </>);
 }
 
-export default LibraryHome;
+export default LibraryPage;

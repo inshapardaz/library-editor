@@ -1,32 +1,52 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 
-// Local import
+// Local imports
 import {
-    FaCheck, FaFile,
-    FaFileAlt,
-    FaFileSignature, FaGlasses,
-    FaStarOfLife
-} from "/src/icons";
-import BookStatus from "/src/models/bookStatus";
-//--------------------------------------------
+    IconPublished,
+    IconAvailableForTyping,
+    IconBeingTyped,
+    IconReadyForProofRead,
+    IconProofRead,
+    IconAll
+} from "@/components/icons";
+import BookStatus from '@/models/bookStatus';
 
-const BookStatusIcon = ({ status, render = true }) => {
+//-----------------------------------------
+
+export const getBookStatusText = ({ status, t }) => {
     switch (status) {
-        case BookStatus.All:
-            return render ? <FaStarOfLife /> : FaStarOfLife;
         case BookStatus.AvailableForTyping:
-            return render ? <FaFile /> : FaFile;
+            return (t(`book.statuses.${BookStatus.AvailableForTyping}`));
         case BookStatus.BeingTyped:
-            return render ? <FaFileSignature /> : FaFileSignature;
-        case BookStatus.ProofRead:
-            return render ? <FaGlasses /> : FaGlasses;
-        case BookStatus.Published:
-            return render ? <FaCheck /> : FaCheck;
+            return (t(`book.statuses.${BookStatus.BeingTyped}`));
         case BookStatus.ReadyForProofRead:
-            return render ? <FaFileAlt /> : FaFileAlt;
-        default:
-            return null;
+            return (t(`book.statuses.${BookStatus.ReadyForProofRead}`))
+        case BookStatus.ProofRead:
+            return (t(`book.statuses.${BookStatus.ProofRead}`))
+        case BookStatus.Published:
+            return (t(`book.statuses.${BookStatus.Published}`))
+        case BookStatus.All:
+            return (t(`book.statuses.${BookStatus.All}`))
+    }
+}
+
+export const BookStatusIcon = ({ status, ...props }) => {
+    switch (status) {
+        case BookStatus.AvailableForTyping:
+            return <IconAvailableForTyping {...props} />;
+        case BookStatus.BeingTyped:
+            return <IconBeingTyped {...props} />;
+        case BookStatus.ReadyForProofRead:
+            return <IconReadyForProofRead {...props} />;
+        case BookStatus.ProofRead:
+            return <IconProofRead {...props} />;
+        case BookStatus.Published:
+            return <IconPublished {...props} />;
+        case BookStatus.All:
+            return <IconAll {...props} />;
     }
 };
 
-export default BookStatusIcon;
+BookStatusIcon.propTypes = {
+    status: PropTypes.string
+};

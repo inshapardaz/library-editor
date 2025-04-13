@@ -1,0 +1,39 @@
+.card {
+    position: relative;
+    height: rem(280px);
+    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+  
+    @mixin hover {
+      & .image {
+        transform: scale(1.03);
+      }
+    }
+  }
+  
+  .image {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    transition: transform 500ms ease;
+  }
+
+  .content {
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    z-index: 1;
+  }
+  
+  .title {
+    margin-bottom: rem(5px);
+  }
+  
+  .bodyText {
+    margin-left: rem(7px);
+  }
+  
+  .author {
+    color: var(--mantine-color-dark-2);
+  }

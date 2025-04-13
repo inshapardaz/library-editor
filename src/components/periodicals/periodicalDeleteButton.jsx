@@ -1,51 +1,34 @@
-import React from 'react';
-import { useNavigate } from "react-router-dom";
-
-// Third party libraries
-import { App, Button, Modal } from "antd";
+import PropTypes from 'prop-types';
 
 // Local imports
-import { FaTrash, ExclamationCircleFilled } from '/src/icons';
-import { useDeletePeriodicalMutation } from "/src/store/slices/periodicalsSlice";
-// ------------------------------------------------------
-const { confirm } = Modal;
-// ------------------------------------------------------
+import { useDeletePeriodicalMutation } from '@/store/slices/periodicals.api';
+import DeleteButton from "@/components/deleteButton";
+//---------------------------------
 
-const PeriodicalDeleteButton = ({
-    children,
-    libraryId,
-    periodical,
-    t,
-    type,
-    onDeleted = () => { },
-    danger = false,
-    block = false,
-    size = "middle"
-}) => {
-    const { message } = App.useApp();
-    const navigate = useNavigate();
+const PeriodicalDeleteButton = ({ libraryId, periodical, t, onDeleted }) => {
+
     const [deletePeriodical, { isLoading: isDeleting }] = useDeletePeriodicalMutation();
 
-    const showConfirm = () => {
-        confirm({
-            title: t("periodical.actions.delete.title"),
-            icon: <ExclamationCircleFilled />,
-            content: t("periodical.actions.delete.message", { name: periodical.name }),
-            okButtonProps: { disabled: isDeleting },
-            cancelButtonProps: { disabled: isDeleting },
-            closable: isDeleting,
-            onOk() {
-                return deletePeriodical({ libraryId, periodicalId: periodical.id })
-                    .unwrap()
-                    .then(() => onDeleted())
-                    .then(() => { message.success(t("periodical.actions.delete.success")) })
-                    .then(() => navigate(`/libraries/${libraryId}/periodicals`))
-                    .catch(() => { message.error(t("periodical.actions.delete.error")) });
-            }
-        });
-    };
+    return (<DeleteButton
+        title={t("periodical.actions.delete.title")}
+        message={t("periodical.actions.delete.message", { title: periodical.title })}
+        tooltip={t('periodical.actions.delete.label', { title: periodical.title })}
+        successMessage={t("periodical.actions.delete.success", { title: periodical.title })}
+        errorMessage={t("periodical.actions.delete.error", { title: periodical.title })}
+        isDeleting={isDeleting}
+        onDelete={() => { return deletePeriodical({ libraryId, periodicalId: periodical.id }).unwrap() }}
+        onDeleted={onDeleted}
+    />)
+}
 
-    return (<Button danger={danger} block={block} size={size} type={type} onClick={showConfirm} icon={<FaTrash />}>{children}</Button>);
+PeriodicalDeleteButton.propTypes = {
+    libraryId: PropTypes.string,
+    t: PropTypes.any,
+    onDeleted: PropTypes.func,
+    periodical: PropTypes.shape({
+        id: PropTypes.number,
+        title: PropTypes.string,
+    })
 };
 
 export default PeriodicalDeleteButton;

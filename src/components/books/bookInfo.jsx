@@ -1,65 +1,135 @@
-import React from 'react';
+import PropTypes from 'prop-types';
+import { useTranslation } from "react-i18next";
+import { Link, useNavigate } from 'react-router-dom';
 
-// 3rd party imports
-import { Divider, Progress, Space, Typography } from "antd";
+// UI Library Imports
+import { useMantineTheme, Stack, Button, Divider, Progress, Group, Text, Tooltip } from "@mantine/core";
 
-// Local imports
-import "./styles.scss";
-import { FiLayers, AiOutlineCopy } from "/src/icons";
-import { setDefaultBookImage, bookPlaceholderImage } from "/src/util";
-import IconText from "/src/components/common/iconText";
-import EditingStatusIcon from "/src/components/editingStatusIcon";
-import BookCategory from "./bookCategory";
-import BookSeriesInfo from "./bookSeriesInfo";
-import BookStatusIcon from './bookStatusIcon';
-// -----------------------------------------
-const { Paragraph } = Typography;
-// ---------------------------------------------
+// Local Imports
+import {
+    IconPublisher,
+    IconLanguage,
+    IconWorld,
+    IconPages,
+    IconCopyright,
+    IconCalendar,
+    IconReaderText,
+    IconReaderImage,
+    IconEdit
+} from '@/components/icons';
 
-const BookInfo = ({ libraryId, book, t }) => {
-    const cover = book.links.image ? (
-        <img
-            className="book__image--thumbnail"
-            src={book.links.image}
-            onError={setDefaultBookImage}
-            alt={book.title}
-        />
-    ) : (
-        <img
-            className="book__image--thumbnail"
-            src={bookPlaceholderImage}
-            alt={book.title}
-        />
-    );
+import IconText from '@/components/iconText';
+import If from '@/components/if';
+import PublishButton from './publishButton';
+import { getBookStatusText, BookStatusIcon } from './bookStatusIcon';
+import { getStatusColor } from '@/models/editingStatus';
+import EditingStatusIcon from '@/components/editingStatusIcon';
+import BookDeleteButton from './bookDeleteButton';
 
-    return (
-        <>
-            <Space direction="vertical" style={{ width: "100%" }}>
-                {cover}
-                <Paragraph ellipsis={{ rows: 4, tooltip: book.description }}>
-                    {book.description}
-                </Paragraph>
-                {book.yearPublished &&
-                    t("book.publishLabel", { year: book.yearPublished })}
-                <BookCategory libraryId={libraryId} book={book} />
-                <BookSeriesInfo book={book} t={t} />
-                <IconText icon={FiLayers} text={t("book.chapterCount", { count: book.chapterCount })} />
-                <IconText icon={AiOutlineCopy} text={t("book.pageCount", { count: book.pageCount })} />
-                <IconText icon={BookStatusIcon({ status: book.status, render: false })} text={t(`bookStatus.${book.status}`)} />
-                {book?.pageStatus && <Divider />}
-                {book?.pageStatus?.map(s => (
-                    <Space direction="vertical" key={`status-${s.status}`} style={{ width: "100%" }}>
-                        <IconText
-                            icon={EditingStatusIcon({ status: s.status, render: false })}
-                            text={t(`editingStatus.${s.status}`)}
-                            secondaryText={s.count} 
-                            href={`/libraries/${libraryId}/books/${book?.id}?section=pages&status=${s.status}`}/>
-                        <Progress percent={s.percentage} size="small" />
-                    </Space>
-                ))}
-            </Space>
-        </>
-    );
+//------------------------------------------------------
+
+const BookInfo = ({ libraryId, book }) => {
+    const { t } = useTranslation();
+    const navigate = useNavigate();
+
+    const theme = useMantineTheme();
+
+    if (!book) {
+        return null;
+    }
+
+    return (<Stack>
+        <IconText size="sm" icon={<BookStatusIcon status={book.status} height={24} style={{ color: theme.colors.dark[2] }} />} text={getBookStatusText({ status: book.status, t })} />
+
+        <If condition={book.yearPublished != null}>
+            <IconText size="sm" icon={<IconCalendar height={24} style={{ color: theme.colors.dark[2] }} />} text={book.yearPublished} />
+        </If>
+        <If condition={book.publisher != null}>
+            <IconText size="sm" icon={<IconPublisher height={24} style={{ color: theme.colors.dark[2] }} />} text={book.publisher} />
+        </If>
+        <If condition={book.language != null}>
+            <IconText size="sm" icon={<IconLanguage height={24} style={{ color: theme.colors.dark[2] }} />} text={t(`languages.${book.language}`)} />
+        </If>
+        <If condition={book.isPublic != null}>
+            <IconText size="sm" icon={<IconWorld height={24} style={{ color: theme.colors.dark[2] }} />} text={t("book.isPublic")} />
+        </If>
+        <If condition={book.copyrights != null}>
+            <IconText size="sm" icon={<IconCopyright height={24} style={{ color: theme.colors.dark[2] }} />} text={t(`copyrights.${book.copyrights}`)} />
+        </If>
+        <If condition={book.pageCount != null}>
+            <IconText size="sm" icon={<IconPages height={24} style={{ color: theme.colors.dark[2] }} />} text={t("book.pageCount", { count: book.pageCount })} />
+        </If>
+
+        <If condition={book.chapterCount > 0}>
+            <Button fullWidth leftSection={<IconReaderText />} component={Link} to={`/libraries/${libraryId}/books/${book.id}/ebook`}>{t('book.actions.read.title')}</Button>
+        </If>
+
+        <If condition={book.pageCount > 0}>
+            <Button fullWidth variant='outline' leftSection={<IconReaderImage />} component={Link} to={`/libraries/${libraryId}/books/${book.id}/read`}>{t('book.actions.read.title')}</Button>
+        </If>
+
+        <Divider />
+        <If condition={book.links.update}>
+            <Button fullWidth variant='outline' leftSection={<IconEdit />} component={Link} to={`/libraries/${libraryId}/books/${book.id}/edit`}>{t('actions.edit')}</Button>
+        </If>
+
+        <If condition={book.pageCount > 0}>
+            <PublishButton fullWidth variant='outline' color="green" libraryId={libraryId} book={book} />
+        </If>
+
+        <If condition={book.links.delete}>
+            <BookDeleteButton type="button" fullWidth variant='outline' color="red" t={t} book={book} onDeleted={() => navigate(`/libraries/${libraryId}/books/`)} />
+        </If>
+
+
+        <If condition={book && book.pageStatus && book.pageStatus.length > 0}>
+            <Divider />
+            <Text>{t('book.pagesStatus')}</Text>
+            <Stack gap="sm">
+                {book.pageStatus?.map(s =>
+                (<Group key={s.status} component={Link} to={`/libraries/${libraryId}/books/${book.id}/?section=pages&status=${s.status}`}>
+                    <EditingStatusIcon editingStatus={s.status} t={t} style={{ color: theme.colors.dark[2] }} />
+                    <Tooltip label={`${t(`editingStatus.${s.status}`)} : ${s.count}`}>
+                        <Progress size="lg" value={s.percentage} color={getStatusColor(s.status)} style={{ flex: 1 }} />
+                    </Tooltip>
+                </Group>
+                )
+                )}
+            </Stack>
+        </If>
+    </Stack>);
+};
+
+BookInfo.propTypes = {
+    libraryId: PropTypes.string,
+    book: PropTypes.shape({
+        id: PropTypes.number,
+        publisher: PropTypes.string,
+        yearPublished: PropTypes.number,
+        language: PropTypes.string,
+        isPublic: PropTypes.bool,
+        copyrights: PropTypes.string,
+        status: PropTypes.string,
+        pageCount: PropTypes.number,
+        chapterCount: PropTypes.number,
+        contents: PropTypes.arrayOf(PropTypes.shape({
+            id: PropTypes.number,
+            bookId: PropTypes.number,
+            fileName: PropTypes.string,
+            mimeType: PropTypes.string,
+            language: PropTypes.string,
+        })),
+        links: PropTypes.shape({
+            update: PropTypes.string,
+            delete: PropTypes.string,
+        }),
+        pageStatus: PropTypes.arrayOf(PropTypes.shape({
+            status: PropTypes.string,
+            count: PropTypes.number,
+            percentage: PropTypes.number,
+
+        }))
+    })
 };
 
 export default BookInfo;
