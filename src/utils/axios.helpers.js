@@ -28,29 +28,44 @@ axiosPrivate.interceptors.request.use(
 );
 
 
+let refreshTokenPromise = null; // Shared promise for refresh token requests
+
 axiosPrivate.interceptors.response.use(
     response => response, // Directly return successful responses.
     async error => {
         const originalRequest = error.config;
+
         if (error.response.status === 401 && !originalRequest._retry) {
-            await mutex.waitForUnlock();
-            const release = await mutex.acquire();
-            try {
-                originalRequest._retry = true;
-                await axiosPublic.post(
-                    "/accounts/refresh-token",
-                    {}
-                );
-            } catch (refreshError) {
-                console.error(refreshError)
-                window.location.href = `${MAIN_SITE}/account/login?returnUrl=${window.location.href}`;
-                return Promise.reject(refreshError);
-            } finally {
-                release();
+            await mutex.waitForUnlock(); // Ensure no other request is modifying the token
+
+            if (!refreshTokenPromise) {
+                // If no refresh token request is in progress, create one
+                const release = await mutex.acquire();
+
+                refreshTokenPromise = axiosPublic.post("/accounts/refresh-token", {})
+                    .then(() => {
+                        refreshTokenPromise = null; // Reset the promise after success
+                    })
+                    .catch(refreshError => {
+                        console.error(refreshError);
+                        refreshTokenPromise = null; // Reset the promise after failure
+                        window.location.href = `${MAIN_SITE}/account/login?returnUrl=${window.location.href}`;
+                        return Promise.reject(refreshError);
+                    })
+                    .finally(() => {
+                        release();
+                    });
             }
 
-            return axiosPrivate(originalRequest); // Retry the original request with the new access token.
+            try {
+                await refreshTokenPromise; // Wait for the refresh token request to complete
+                originalRequest._retry = true;
+                return axiosPrivate(originalRequest); // Retry the original request
+            } catch (refreshError) {
+                return Promise.reject(refreshError); // Propagate the error if refresh fails
+            }
         }
+
         return Promise.reject(error);
     }
 );
