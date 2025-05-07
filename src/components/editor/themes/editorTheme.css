@@ -5,7 +5,7 @@
   text-align: right;
 }
 .editorTheme__paragraph {
-  margin: 0;
+  margin: 0 0 var(--mantine-spacing-sm) 0;
   position: relative;
 }
 .editorTheme__quote {
