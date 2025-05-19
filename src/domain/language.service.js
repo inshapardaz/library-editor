@@ -28,12 +28,6 @@ class LanguageService {
 
         // Create a regex map
         this.regexMap = this.autoCorrectList.map(({ incorrectText, correctText, completeWord }) => {
-            // return {
-            //     regex: new RegExp(completeWord
-            //         ? `@"(?<!\\S)${incorrectText}(?!\\S)|(?<=[""“”،؟۔])${incorrectText}|(?=\\s|[""“”،؟۔])${incorrectText}"`
-            //         : incorrectText, "giu"),
-            //     replacement: completeWord ? `$1${correctText}$2` : correctText
-            // };
             return { regex: new RegExp(completeWord ? `(\\s|^|[""“”،؟۔])${incorrectText}(\\s|[""“”،؟۔]|$)` : incorrectText, "giu"), replacement: completeWord ? `$1${correctText}$2` : correctText };
         });
 
