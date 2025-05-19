@@ -1,12 +1,3 @@
-// const getReplaceAllRegex = (corrections) => {
-//     let retVal = '';
-//     corrections.forEach((c) => {
-//         retVal += `(${c.incorrectText.trim()})|`;
-//     });
-
-//     return new RegExp(`\\b${retVal.slice(0, -1)}\\b`, 'giu');
-// };
-
 class LanguageService {
     LATENCY = 200;
     MIN_SEARCH_LENGTH = 2;
@@ -17,12 +8,6 @@ class LanguageService {
         this.autoCorrectList = autoCorrectList;
         this.punctuationList = punctuationList;
     }
-
-    // Old way
-    // this.correctionRegex = getReplaceAllRegex(this.autoCorrectList);
-    // return text.replaceAll(this.correctionRegex, (matched) => {
-    //     return this.autoCorrectList.find((o) => o.incorrectText === matched)?.correctText.trim();
-    // });
 
     autoCorrect = (text) => {
         if (!this.autoCorrectList) {
@@ -43,10 +28,16 @@ class LanguageService {
 
         // Create a regex map
         this.regexMap = this.autoCorrectList.map(({ incorrectText, correctText, completeWord }) => {
-            return { regex: new RegExp(completeWord ? `(\\s)${incorrectText}(\\s)` : incorrectText, "giu"), replacement: completeWord ? `$1${correctText}$2` : correctText };
+            // return {
+            //     regex: new RegExp(completeWord
+            //         ? `@"(?<!\\S)${incorrectText}(?!\\S)|(?<=[""“”،؟۔])${incorrectText}|(?=\\s|[""“”،؟۔])${incorrectText}"`
+            //         : incorrectText, "giu"),
+            //     replacement: completeWord ? `$1${correctText}$2` : correctText
+            // };
+            return { regex: new RegExp(completeWord ? `(\\s|^|[""“”،؟۔])${incorrectText}(\\s|[""“”،؟۔]|$)` : incorrectText, "giu"), replacement: completeWord ? `$1${correctText}$2` : correctText };
         });
 
-        this.regexMap.map(({ regex, replacement }) => {
+        this.regexMap.forEach(({ regex, replacement }) => {
             text = text.replace(regex, replacement);
         });
 
@@ -55,7 +46,7 @@ class LanguageService {
 
     correctPunctuations = (text) => {
         if (this.punctuationList) {
-            text = text.replace(/  +/g, ' ');
+            text = text.replace(/ {2,}/g, ' ');
             this.punctuationList.forEach((c) => {
                 text = text.replaceAll(c.completeWord ? `${c.incorrectText}\\b` : c.incorrectText, c.correctText);
             });
