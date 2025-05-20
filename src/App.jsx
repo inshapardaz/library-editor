@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 // UI libraries
-import { DirectionProvider, Loader, MantineProvider } from '@mantine/core';
+import { createTheme, DirectionProvider, Loader, MantineProvider } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
 import { DatesProvider } from '@mantine/dates';
@@ -24,39 +24,44 @@ import If from '@/components/if';
 // ------------------------------------------------------------------
 
 function App() {
-  const { t } = useTranslation();
-  const lang = useSelector(selectedLanguage);
-  const userLoadStatus = useSelector((state) => state?.auth?.loadUserStatus)
-  const dispatch = useDispatch();
+    const { t } = useTranslation();
+    const lang = useSelector(selectedLanguage);
+    const userLoadStatus = useSelector((state) => state?.auth?.loadUserStatus)
+    const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (userLoadStatus === 'idle')
-      dispatch(init());
-  }, [dispatch, userLoadStatus]);
+    const theme = createTheme({
+        // fontFamily: 'MehrNastaleeq, Segoe UI, sans-serif',
+        // scale: 0.8
+    });
 
-  const currentLocal = lang ? lang.locale : 'en';
-  return (
-    <>
-      {/* <HelmetProvider>
+    useEffect(() => {
+        if (userLoadStatus === 'idle')
+            dispatch(init());
+    }, [dispatch, userLoadStatus]);
+
+    const currentLocal = lang ? lang.locale : 'en';
+    return (
+        <>
+            {/* <HelmetProvider>
         <Helmet htmlAttributes={{ lang: currentLocal }}>
           <title>{t('app')}</title>
         </Helmet> */}
-      <DirectionProvider >
-        <MantineProvider>
-          <DatesProvider settings={{ locale: currentLocal }}>
-            <Notifications limit={5} position="bottom-right" />
-            <ModalsProvider labels={{ confirm: t('actions.yes'), cancel: t('actions.no') }}>
-              <If condition={userLoadStatus === 'loading'}
-                elseChildren={<Router />}>
-                <div style={{ position: 'fixed', top: '50%', left: '50%' }}><Loader /></div>
-              </If>
-            </ModalsProvider>
-          </DatesProvider>
-        </MantineProvider>
-      </DirectionProvider>
-      {/* </HelmetProvider> */}
-    </>
-  )
+            <DirectionProvider >
+                <MantineProvider theme={theme}>
+                    <DatesProvider settings={{ locale: currentLocal }}>
+                        <Notifications limit={5} position="bottom-right" />
+                        <ModalsProvider labels={{ confirm: t('actions.yes'), cancel: t('actions.no') }}>
+                            <If condition={userLoadStatus === 'loading'}
+                                elseChildren={<Router />}>
+                                <div style={{ position: 'fixed', top: '50%', left: '50%' }}><Loader /></div>
+                            </If>
+                        </ModalsProvider>
+                    </DatesProvider>
+                </MantineProvider>
+            </DirectionProvider>
+            {/* </HelmetProvider> */}
+        </>
+    )
 }
 
 export default App

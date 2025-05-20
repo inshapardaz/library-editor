@@ -14,8 +14,8 @@ import {
     Card,
     Anchor,
     SimpleGrid,
-    HoverCard,
-    Divider
+    Divider,
+    Popover
 }
     from '@mantine/core';
 
@@ -55,14 +55,14 @@ const LibrarySwitcher = ({ className, library, onClick = () => { }, children }) 
 
     return (
         <>
-            <HoverCard width={600} position="bottom" radius="md" shadow="md" mx="md" disabled={isFetching} withinPortal visibleFrom="sm" >
-                <HoverCard.Target>
+            <Popover width={600} position="bottom" radius="md" shadow="md" mx="md" disabled={isFetching} withinPortal visibleFrom="sm" >
+                <Popover.Target>
                     <Center className={className}>
                         {children}
                     </Center>
-                </HoverCard.Target>
+                </Popover.Target>
 
-                <HoverCard.Dropdown style={{ overflow: 'hidden' }}>
+                <Popover.Dropdown style={{ overflow: 'hidden' }}>
                     <Card radius="md" className={classes.card}>
                         <Group justify="space-between">
                             <Text visibleFrom="lg" fw={500} component={Link} to={`/libraries/${library?.id}`} className={classes.title}>
@@ -77,8 +77,8 @@ const LibrarySwitcher = ({ className, library, onClick = () => { }, children }) 
                             {links}
                         </SimpleGrid>
                     </Card>
-                </HoverCard.Dropdown>
-            </HoverCard>
+                </Popover.Dropdown>
+            </Popover>
             <UnstyledButton className={classes.link} onClick={toggleLinks} hiddenFrom="sm">
                 {children}
             </UnstyledButton>

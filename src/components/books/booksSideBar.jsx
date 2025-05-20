@@ -4,11 +4,12 @@ import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // UI library imports
-import { Badge, Card, Center, Divider, NavLink, SimpleGrid, Skeleton, useMantineTheme } from '@mantine/core';
+import { ActionIcon, Badge, Button, Card, Center, Divider, NavLink, SimpleGrid, Skeleton, useMantineTheme } from '@mantine/core';
 
 // Local imports
 import { useGetCategoriesQuery } from '@/store/slices/categories.api';
-import { IconCategory, IconFavorite, IconBook, IconBooks } from '@/components/icons';
+import CategoryDeleteButton from '@/components/categories/categoryDeleteButton';
+import { IconCategory, IconFavorite, IconBook, IconBooks, IconAdd, IconEdit } from '@/components/icons';
 import { BookStatus } from '@/models';
 //----------------------------------------------
 const BooksSideBar = ({ status, selectedCategory, favorite, read }) => {
@@ -46,6 +47,8 @@ const BooksSideBar = ({ status, selectedCategory, favorite, read }) => {
         return (<Card withBorder>
             <Center maw={400} h={100} bg="var(--mantine-color-gray-light)">
                 {t('categories.empty.title')}
+                <Button component={Link} to={`/libraries/${libraryId}/categories/add`}
+                    variant="default">{t('category.actions.add.title')}</Button>
             </Center>
         </Card>)
     }
@@ -96,20 +99,40 @@ const BooksSideBar = ({ status, selectedCategory, favorite, read }) => {
         />
         <Divider />
         {
-            categories.data.filter(c => c.bookCount > 0).map(category => (<NavLink
+            categories.data.map(category => (<NavLink
                 key={category.id}
                 component={Link}
                 active={selectedCategory == category.id}
                 to={`/libraries/${libraryId}/books?category=${category.id}`}
                 label={category.name}
                 rightSection={
-                    <Badge size="xs" color='gray' circle>
+                    <><Badge size="xs" color='gray' circle>
                         {category.bookCount}
                     </Badge>
+                        <ActionIcon
+                            variant="transparent" color="gray" size="sm" a
+                            component={Link}
+                            to={`/libraries/${libraryId}/categories/${category.id}/edit`}>
+                            <IconEdit />
+                        </ActionIcon>
+                        <CategoryDeleteButton
+                            libraryId={libraryId}
+                            category={category}
+                            t={t}
+                        />
+                    </>
                 }
                 leftSection={<IconCategory />}
             />))
         }
+        <Divider />
+        <NavLink
+            key="add-category"
+            component={Link}
+            to={`/libraries/${libraryId}/categories/add`}
+            label={t('category.actions.add.title')}
+            leftSection={<IconAdd style={{ color: theme.colors.blue[9] }} />}
+        />
     </Card>);
 }
 

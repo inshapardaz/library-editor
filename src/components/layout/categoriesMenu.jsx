@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 // ui library imports
 import {
-    HoverCard,
+    Popover,
     Group,
     UnstyledButton,
     Text,
@@ -73,8 +73,8 @@ const CategoriesMenu = ({ library, title, icon, className, target, allLabel, ext
 
     return (
         <>
-            <HoverCard openDelay={200} closeDelay={400} width={600} position="bottom" radius="md" shadow="md" disabled={isFetching} withinPortal visibleFrom="sm" className={className}>
-                <HoverCard.Target>
+            <Popover width={600} position="bottom" radius="md" shadow="md" disabled={isFetching} withinPortal visibleFrom="sm" className={className}>
+                <Popover.Target>
                     <UnstyledButton className={classes.link}>
                         {icon}
                         <Space w="md" />
@@ -83,9 +83,9 @@ const CategoriesMenu = ({ library, title, icon, className, target, allLabel, ext
                         </Text>
                         <IconChevronDown />
                     </UnstyledButton >
-                </HoverCard.Target>
+                </Popover.Target>
 
-                <HoverCard.Dropdown style={{ overflow: 'hidden' }}>
+                <Popover.Dropdown style={{ overflow: 'hidden' }}>
                     <If condition={error}>
                         <>
                             <Text c="dimmed">{t('categories.errors.loading.subTitle')}</Text>
@@ -119,8 +119,8 @@ const CategoriesMenu = ({ library, title, icon, className, target, allLabel, ext
                             </If>
                         </>
                     </If>
-                </HoverCard.Dropdown>
-            </HoverCard>
+                </Popover.Dropdown>
+            </Popover>
             <UnstyledButton className={classes.link} onClick={toggleLinks} hiddenFrom="sm" px="md">
                 <>
                     {icon}

@@ -339,6 +339,38 @@ const en = {
             title: "No Categories",
         },
     },
+    category: {
+        name: {
+            label: "Name",
+            placeholder: "Please provide name",
+            required: "Name is required"
+        },
+        actions: {
+            add: {
+                title: "Create Category",
+                success: "Category created successfully.",
+                error: "Error creating category."
+            },
+            edit: {
+                title: "Edit Category",
+                success: "Category updated successfully.",
+                error: "Error saving category."
+            },
+            delete: {
+                title: "Delete Category",
+                message: "Are you sure you want to remove this category?",
+                label: "Delete Category",
+                success: "Category deleted successfully.",
+                error: "Error deleting category."
+            }
+        },
+        errors: {
+            loading: {
+                title: "Error",
+                detail: "Unable to load category",
+            },
+        },
+    },
     books: {
         empty: "No books found.",
         title: "Books",
