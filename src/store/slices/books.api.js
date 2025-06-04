@@ -184,9 +184,10 @@ export const booksApi = createApi({
             invalidatesTags: ["Books", "Book"],
         }),
         publishBook: builder.mutation({
-            query: ({ book }) => ({
+            query: ({ book, payload }) => ({
                 url: book.links.publish,
                 method: "POST",
+                data: payload
             }),
             invalidatesTags: ["Books", "Book"],
         }),

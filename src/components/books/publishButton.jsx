@@ -12,6 +12,7 @@ import { usePublishBookMutation, useUpdateBookMutation } from '@/store/slices/bo
 import If from '@/components/if';
 import { BookStatus } from '@/models';
 import { success, error } from '@/utils/notifications';
+import PublishOutputSelect from '@/components/publishOutputSelect';
 
 //---------------------------------------
 
@@ -19,6 +20,8 @@ const PublishButton = ({ libraryId, book, onPublished = () => { }, ...props }) =
     const { t } = useTranslation();
     const [opened, { open, close }] = useDisclosure(false);
     const [updateStatus, setUpdateStatus] = useState(false);
+    const [publishFilesOnly, setPublishFilesOnly] = useState(false);
+    const [outputType, setOutputType] = useState('None');
 
     const [publishBook, { isLoading: isPublishing }] = usePublishBookMutation();
     const [updateBook, { isLoading: isUpdating }] = useUpdateBookMutation();
@@ -27,7 +30,12 @@ const PublishButton = ({ libraryId, book, onPublished = () => { }, ...props }) =
     const onPublish = async () => {
         try {
 
-            await publishBook({ book })
+            await publishBook({
+                book, payload: {
+                    outputType: outputType,
+                    onlyPublishFile: publishFilesOnly
+                }
+            })
                 .unwrap();
 
             if (updateStatus) {
@@ -55,6 +63,10 @@ const PublishButton = ({ libraryId, book, onPublished = () => { }, ...props }) =
                         checked={updateStatus}
                         onChange={(event) => setUpdateStatus(event.currentTarget.checked)} />
                 </If>
+                <Switch label={t('book.actions.publish.publishFilesOnly')}
+                    checked={publishFilesOnly}
+                    onChange={(event) => setPublishFilesOnly(event.currentTarget.checked)} />
+                <PublishOutputSelect t={t} defaultValue={outputType} onChange={setOutputType} />
                 <Divider />
                 <Group justify='space-between'>
                     <Button onClick={onPublish} loading={isBusy}>{t('actions.yes')}</Button>

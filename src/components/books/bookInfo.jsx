@@ -73,7 +73,7 @@ const BookInfo = ({ libraryId, book }) => {
             <Button fullWidth variant='outline' leftSection={<IconEdit />} component={Link} to={`/libraries/${libraryId}/books/${book.id}/edit`}>{t('actions.edit')}</Button>
         </If>
 
-        <If condition={book.pageCount > 0}>
+        <If condition={book.chapterCount > 0 || book.pageCount > 0}>
             <PublishButton fullWidth variant='outline' color="green" libraryId={libraryId} book={book} />
         </If>
 

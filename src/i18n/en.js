@@ -569,6 +569,12 @@ const en = {
                 title: "Publish Book",
                 message:
                     "Are you sure you want to publish book '{{title}}'? It will merge text in all pages and save into chapters. It will overwrite all chapter contents.",
+                publishFilesOnly: "Publish files only",
+                publishTypes: {
+                    None: "No files",
+                    Word: "Word Document",
+                    Epub: "Ebook (EPub)",
+                },
                 busyMessage: "Publishing book....",
                 updateBookStatus: "Mark book as published?",
                 success: "Book published successfully.",
