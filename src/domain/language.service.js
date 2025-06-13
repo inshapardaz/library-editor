@@ -28,7 +28,7 @@ class LanguageService {
 
         // Create a regex map
         this.regexMap = this.autoCorrectList.map(({ incorrectText, correctText, completeWord }) => {
-            return { regex: new RegExp(completeWord ? `(\\s|^|[""“”،؟۔])${incorrectText}(\\s|[""“”،؟۔]|$)` : incorrectText, "giu"), replacement: completeWord ? `$1${correctText}$2` : correctText };
+            return { regex: new RegExp(completeWord ? `(\\s|^|[""“”،؟۔])${incorrectText}(\\s|[""“”،؟۔]|$)` : incorrectText, "gium"), replacement: completeWord ? `$1${correctText}$2` : correctText };
         });
 
         this.regexMap.forEach(({ regex, replacement }) => {
@@ -41,12 +41,20 @@ class LanguageService {
     correctPunctuations = (text) => {
         if (this.punctuationList) {
             text = text.replace(/ {2,}/g, ' ');
+
+            // HACK :
+
+            if (this.language === 'ur') {
+                text = text.replace(/(^")/gium, '”');  // Remove leading double quotes
+            }
+
             this.punctuationList.forEach((c) => {
                 text = text.replaceAll(c.completeWord ? `${c.incorrectText}\\b` : c.incorrectText, c.correctText);
             });
         }
 
         return text;
+
     }
 
     checkSpell = (text) => {

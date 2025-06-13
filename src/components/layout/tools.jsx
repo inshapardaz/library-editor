@@ -43,7 +43,7 @@ const ToolsMenu = () => {
             <Menu.Dropdown>
                 <Menu.Item
                     component={Link}
-                    to='/tools/language/punctuations'
+                    to='/tools/language/punctuation'
                     leftSection={
                         <IconPunctuation size={16} stroke={1.5} />
                     }
