@@ -91,7 +91,7 @@ const BookForm = ({ libraryId,
                     {...form.getInputProps('isPublic', { type: 'checkbox' })}
                 />
 
-                <AuthorsSelect t={t} libraryId={libraryId}
+                <AuthorsSelect t={t} libraryId={libraryId} showAdd
                     label={t("book.authors.label")}
                     placeholder={t("book.authors.placeholder")}
                     {...form.getInputProps('authors')} />
