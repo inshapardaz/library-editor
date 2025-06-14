@@ -231,7 +231,8 @@ const ur = {
         header: "تلاش",
         title: "تلاش۔۔۔",
         placeholder: "تلاش برائے عنوان، مصنّف، زمرہ",
-        empty: "تلاش بے نتیجہ رہی۔"
+        empty: "تلاش بے نتیجہ رہی۔",
+        searchMore: "مزید تلاش کریں۔۔۔",
     },
     libraries: {
         title: "کتب خانے",
@@ -1217,9 +1218,7 @@ const ur = {
             placeholder: "سلسلے کا نام",
             required: "سلسلے کے لیے نام ضروری ہے",
         },
-        description: {
-            label: "تفصیل",
-        },
+        description: "کتابوں کے سلسلے",
         error: {
             loading: {
                 title: "سلسلہ حاصل نہیں ہو سکیں",
@@ -1268,6 +1267,7 @@ const ur = {
     },
     periodicals: {
         title: "جرائد",
+        description: "جرائد کی دنیا سے انتخاب",
         all: "تمام جرائد",
         errors: {
             loading: {

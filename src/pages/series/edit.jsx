@@ -77,7 +77,7 @@ const SeriesForm = ({ series = null, onSubmit, onCancel }) => {
             />
 
             <Textarea key={form.key('description')}
-                label={t("series.description.label")}
+                label={t("series.description")}
                 {...form.getInputProps('description')} />
 
             <Group justify="flex-end" mt="md">

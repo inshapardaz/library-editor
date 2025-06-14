@@ -141,9 +141,12 @@ const PageHeader = ({ title, subTitle, details, imageLink, defaultIcon, breadcru
                         {actions}
                     </Group>
                 </If>
+                <Breadcrumbs>
+                    {renderBreadcrumb()}
+                </Breadcrumbs>
             </Stack>
         </Flex>
-        <If condition={breadcrumbs || details}>
+        <If condition={details}>
             <Divider />
             <Flex
                 gap="sm"
@@ -155,9 +158,6 @@ const PageHeader = ({ title, subTitle, details, imageLink, defaultIcon, breadcru
                 <Spoiler showLabel={t('actions.showMore')} hideLabel={t('actions.hide')} >
                     <Text c="dimmed">{details}</Text>
                 </Spoiler>
-                <Breadcrumbs>
-                    {renderBreadcrumb()}
-                </Breadcrumbs>
             </Flex>
         </If>
     </Flex>

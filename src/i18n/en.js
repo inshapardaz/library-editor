@@ -229,6 +229,7 @@ const en = {
         title: "Search...",
         placeholder: "Search by title, author, keyword",
         empty: "No result found.",
+        searchMore: "Search more...",
     },
     libraries: {
         title: "Libraries",
@@ -1203,9 +1204,7 @@ const en = {
             placeholder: "Name of the series",
             required: "Name is required for series",
         },
-        description: {
-            label: "Description",
-        },
+        description: "Collection of series of books",
         actions: {
             add: {
                 label: "Add new series",
@@ -1247,6 +1246,7 @@ const en = {
     },
     periodicals: {
         title: "Periodical",
+        description: "Explore exquisite collection of periodicals",
         all: "All Periodicals",
         errors: {
             loading: {

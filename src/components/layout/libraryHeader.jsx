@@ -27,7 +27,7 @@ import LanguageSwitch from './languageSwitch';
 import DarkModeToggle from './darkModeToggle';
 import LibrarySwitcher from './librarySwitcher';
 import Profile from './profile';
-import SearchBox from './searchBox';
+import SearchBox from '@/components/search';
 import CategoriesMenu from './categoriesMenu';
 import ToolsMenu from './tools';
 
@@ -55,9 +55,6 @@ const LibraryHeader = ({ library }) => {
                                 />
                             </NavLink >
                         </LibrarySwitcher>
-                    </Group>
-                    <Group hiddenFrom="sm" >
-                        <SearchBox />
                     </Group>
 
                     <Group h="100%" gap={0} visibleFrom="sm" wrap="nowrap">

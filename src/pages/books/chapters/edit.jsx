@@ -241,7 +241,7 @@ const ChapterEditorPage = () => {
         </If>
         <Box style={{ height: '100%', overflow: 'auto' }} >
             <LoadingOverlay visible={isBusy || isUpdatingChapter} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
-            <div style={{ height: `calc(100vh - ${fullscreen ? '160px' : '220px'})`, position: 'relative' }}>
+            <div style={{ height: `calc(100vh - ${fullscreen ? '120px' : '170px'})`, position: 'relative' }}>
                 <Editor defaultValue={contents}
                     configuration={{
                         ...DefaultConfiguration,

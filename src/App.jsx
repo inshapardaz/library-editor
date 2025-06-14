@@ -31,7 +31,7 @@ function App() {
 
     const theme = createTheme({
         // fontFamily: 'MehrNastaleeq, Segoe UI, sans-serif',
-        // scale: 0.8
+        scale: 0.9
     });
 
     useEffect(() => {
