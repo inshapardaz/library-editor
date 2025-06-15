@@ -15,6 +15,7 @@ import LanguageSelect from '@/components/languageSelect';
 import PublishStatusSelect from '@/components/publishStatusSelect';
 import SeriesSelect from '@/components/series/seriesSelect';
 import If from '@/components/if';
+import PublisherAutocomplete from './publisherSelect';
 
 //---------------------------------
 
@@ -114,7 +115,8 @@ const BookForm = ({ libraryId,
                     placeholder={t("book.yearPublished.placeholder")}
                     {...form.getInputProps('yearPublished')}
                 />
-                <TextInput key={form.key('publisher')}
+                <PublisherAutocomplete key={form.key('publisher')}
+                    libraryId={libraryId}
                     label={t("book.publisher.label")}
                     placeholder={t("book.publisher.placeholder")}
                     {...form.getInputProps('publisher')}

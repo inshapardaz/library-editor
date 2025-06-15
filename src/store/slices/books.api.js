@@ -502,6 +502,21 @@ export const booksApi = createApi({
             }),
             invalidatesTags: ["Book"],
         }),
+        getPublishers: builder.query({
+            query: ({
+                libraryId,
+                query = null,
+                pageNumber = 1,
+                pageSize = 12,
+            }) => {
+                let queryVal = query ? `&query=${query}` : "";
+                return {
+                    url: `/libraries/${libraryId}/publishers?pageNumber=${pageNumber}&pageSize=${pageSize}${queryVal}`,
+                    method: "get",
+                };
+            },
+            transformResponse: (response) => parseResponse(response)
+        }),
     }),
 });
 
@@ -545,4 +560,6 @@ export const {
     useAddBookContentMutation,
     useUpdateBookContentMutation,
     useDeleteBookContentMutation,
+    //Publishers
+    useGetPublishersQuery
 } = booksApi;
