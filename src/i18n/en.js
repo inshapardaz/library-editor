@@ -523,6 +523,12 @@ const en = {
             downloadFile: {
                 title: "Download file",
             },
+            setCover: {
+                title: "Set cover image",
+                message: "Are you sure you want to set cover image for the book?",
+                success: "Book cover image set successfully.",
+                error: "Error setting book cover image.",
+            },
             loadFileImages: {
                 title: "Load File Images",
                 progress: "Loading pages {{completed}} of {{total}}",

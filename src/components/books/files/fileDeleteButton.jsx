@@ -21,7 +21,6 @@ const FileDeleteButton = ({ content, t, onDeleted = () => { } }) => {
 }
 
 FileDeleteButton.propTypes = {
-    libraryId: PropTypes.string,
     t: PropTypes.any,
     onDeleted: PropTypes.func,
     content: PropTypes.shape({

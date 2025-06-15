@@ -35,7 +35,7 @@ import {
     ImageNode,
 } from '../../nodes/imageNode/imageNode';
 import { error } from '@/utils/notifications';
-import { IconUplaodDocument, IconUploadAccept, IconUploadReject } from '@/components/icons';
+import { IconUploadDocument, IconUploadAccept, IconUploadReject } from '@/components/icons';
 import If from '@/components/if'
 //----------------------------------------
 
@@ -138,7 +138,7 @@ export function InsertImageUploadedDialogBody({ opened, onClick, onClose }) {
                                 />
                             </Dropzone.Reject>
                             <Dropzone.Idle>
-                                <IconUplaodDocument width={rem(52)} height={rem(52)}
+                                <IconUploadDocument width={rem(52)} height={rem(52)}
                                     style={{ color: 'var(--mantine-color-dimmed)' }}
                                     stroke={1.5}
                                 />

@@ -164,7 +164,8 @@ const iconTheme = {
         help: "help",
         insert: 'plus',
         horizontalRule: 'page-break',
-        words: 'alphabet-latin'
+        words: 'alphabet-latin',
+        setImage: 'photo-check'
     }
 };
 //-------------------------------------
@@ -286,11 +287,12 @@ export const IconAssignMe = (props) => getIcon(IconNames.AssignMe, props)
 export const IconAssignAssigned = (props) => getIcon(IconNames.AssignAssigned, props)
 export const IconAssignUnassigned = (props) => getIcon(IconNames.AssignUnassigned, props)
 export const IconDownloadDocument = (props) => getIcon(IconNames.DownloadDocument, props)
-export const IconUplaodDocument = (props) => getIcon(IconNames.UplaodDocument, props)
+export const IconUploadDocument = (props) => getIcon(IconNames.UplaodDocument, props)
 export const IconUploadAccept = (props) => getIcon(IconNames.UploadAccept, props)
 export const IconUploadReject = (props) => getIcon(IconNames.UploadReject, props)
 export const IconProcessDocument = (props) => getIcon(IconNames.ProcessDocument, props)
 export const IconOcrDocument = (props) => getIcon(IconNames.OcrDocument, props)
+export const IconSetImage = (props) => getIcon(IconNames.SetImage, props)
 
 //Editor
 export const IconSave = (props) => getIcon(IconNames.Save, props)

@@ -159,7 +159,8 @@ const IconNames = {
     Help: "help",
     Insert: "insert",
     HorizontalRule: "horizontalRule",
-    Words: 'words'
+    Words: 'words',
+    SetImage: `setImage`
 };
 
 export default IconNames;

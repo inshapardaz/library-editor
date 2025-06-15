@@ -13,12 +13,11 @@ import { LibraryContext } from '@/contexts'
 import { useAddBookContentMutation, useAddBookMutation, useUpdateBookImageMutation } from '@/store/slices/books.api';
 import PageHeader from "@/components/pageHeader";
 import IconNames from '@/components/iconNames';
-import { IconLink, IconSave, IconDelete, IconChevronDown, IconUplaodDocument, IconUploadAccept, IconUploadReject } from '@/components/icons';
+import { IconLink, IconSave, IconDelete, IconChevronDown, IconUploadDocument, IconUploadAccept, IconUploadReject } from '@/components/icons';
 import ProcessStatusIcon from '@/components/processStatusIcon';
 import If from '@/components/if';
 import { ProcessStatus } from "@/models";
-import { pdfjsLib } from '@/utils/pdf'
-import { readBinaryFile, loadPdfPage, dataURItoBlob } from '@/utils';
+import { dataURItoBlob, getTitlePage } from '@/utils';
 
 import AuthorsSelect from '@/components/authors/authorsSelect';
 import CategoriesSelect from '@/components/categories/categoriesSelect';
@@ -39,12 +38,6 @@ const removeFileExtension = (filename) => {
     return filename.slice(0, lastDotIndex);
 }
 
-
-const getTitlePage = async (file) => {
-    const pdfFile = await readBinaryFile(file)
-    const pdf = await pdfjsLib.getDocument({ data: pdfFile }).promise;
-    return await loadPdfPage(pdf, 1);
-}
 //-----------------------------------
 const BookUploadPage = () => {
     const { t } = useTranslation();
@@ -53,7 +46,7 @@ const BookUploadPage = () => {
     const [isSaving, setIsSaving] = useState(false);
     const [opened, { toggle, close }] = useDisclosure(false);
 
-    // Data operations 
+    // Data operations
     const [addBook] = useAddBookMutation();
     const [addBookContent] = useAddBookContentMutation();
     const [updateBookImage] = useUpdateBookImageMutation();
@@ -428,7 +421,7 @@ const BookUploadPage = () => {
                             />
                         </Dropzone.Reject>
                         <Dropzone.Idle>
-                            <IconUplaodDocument width={rem(52)} height={rem(52)}
+                            <IconUploadDocument width={rem(52)} height={rem(52)}
                                 style={{ color: 'var(--mantine-color-dimmed)' }}
                                 stroke={1.5}
                             />

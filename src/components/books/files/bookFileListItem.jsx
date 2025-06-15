@@ -21,8 +21,9 @@ import FileImage from '@/components/fileImage';
 import If from '@/components/if';
 import FileDeleteButton from './fileDeleteButton';
 import IconText from '@/components/iconText';
-import { IconDownloadDocument, IconUplaodDocument, IconProcessDocument } from '@/components/icons';
+import { IconDownloadDocument, IconUploadDocument, IconProcessDocument } from '@/components/icons';
 import { error, success } from '@/utils/notifications';
+import SetCoverButton from './setCoverButton';
 //------ ---------------------------------------
 const BookFileListItem = ({ t, libraryId, book, content }) => {
     const theme = useMantineTheme();
@@ -58,7 +59,7 @@ const BookFileListItem = ({ t, libraryId, book, content }) => {
                     <FileButton onChange={uploadFile}
                         accept={[IMAGE_MIME_TYPE, PDF_MIME_TYPE, MS_WORD_MIME_TYPE]}>
                         {(props) => <ActionIcon {...props} disabled={isUpdating} variant='subtle' color='gray' >
-                            <IconUplaodDocument />
+                            <IconUploadDocument />
                         </ActionIcon>}
                     </FileButton>
                 </Tooltip>
@@ -69,6 +70,10 @@ const BookFileListItem = ({ t, libraryId, book, content }) => {
                     icon={<IconDownloadDocument height={16} style={{ color: theme.colors.dark[2] }} />}
                     tooltip={t('book.actions.downloadFile.title')}
                     link={content.links.download} target="_blank" rel="noreferrer" />
+            </If>
+            <If condition={book.links.update && content.mimeType === "application/pdf"}>
+                <Divider orientation='vertical' />
+                <SetCoverButton libraryId={libraryId} bookId={book.id} file={content} t={t} variant='subtle' color='gray' />
             </If>
             <If condition={book && content.links.update}>
                 <Divider orientation='vertical' />
@@ -93,6 +98,9 @@ BookFileListItem.propTypes = {
     t: PropTypes.any,
     book: PropTypes.shape({
         id: PropTypes.number,
+        links: PropTypes.shape({
+            update: PropTypes.string,
+        }),
     }),
     index: PropTypes.number,
     content: PropTypes.shape({

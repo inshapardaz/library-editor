@@ -9,7 +9,7 @@ import { Dropzone, IMAGE_MIME_TYPE, PDF_MIME_TYPE, MS_WORD_MIME_TYPE } from '@ma
 import { useAddIssueContentMutation } from '@/store/slices/issues.api';
 import DataView from '@/components/dataView';
 import IssueFileListItem from './issueFileListItem';
-import { IconUplaodDocument, IconUploadAccept, IconUploadReject } from '@/components/icons';
+import { IconUploadDocument, IconUploadAccept, IconUploadReject } from '@/components/icons';
 import { error, success } from '@/utils/notifications';
 //------------------------------------------------------
 
@@ -75,7 +75,7 @@ const IssueFilesList = ({ libraryId, issue, isLoading }) => {
                     />
                 </Dropzone.Reject>
                 <Dropzone.Idle>
-                    <IconUplaodDocument width={rem(52)} height={rem(52)}
+                    <IconUploadDocument width={rem(52)} height={rem(52)}
                         style={{ color: 'var(--mantine-color-dimmed)' }}
                         stroke={1.5}
                     />

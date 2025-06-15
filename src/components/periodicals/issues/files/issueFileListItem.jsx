@@ -21,7 +21,7 @@ import FileImage from '@/components/fileImage';
 import If from '@/components/if';
 import FileDeleteButton from './fileDeleteButton';
 import IconText from '@/components/iconText';
-import { IconDownloadDocument, IconUplaodDocument, IconProcessDocument } from '@/components/icons';
+import { IconDownloadDocument, IconUploadDocument, IconProcessDocument } from '@/components/icons';
 import { error, success } from '@/utils/notifications';
 //------ ---------------------------------------
 const IssueFileListItem = ({ t, libraryId, issue, content }) => {
@@ -58,7 +58,7 @@ const IssueFileListItem = ({ t, libraryId, issue, content }) => {
                     <FileButton onChange={uploadFile}
                         accept={[IMAGE_MIME_TYPE, PDF_MIME_TYPE, MS_WORD_MIME_TYPE]}>
                         {(props) => <ActionIcon {...props} disabled={isUpdating} variant='subtle' color='gray' >
-                            <IconUplaodDocument />
+                            <IconUploadDocument />
                         </ActionIcon>}
                     </FileButton>
                 </Tooltip>

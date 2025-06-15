@@ -2,7 +2,8 @@ import { removeLinks } from "./parseResponse";
 import { API_URL } from "@/config";
 import { ProcessStatus } from "@/models";
 import { axiosPrivate, axiosPublic } from "./axios.helpers";
-
+import { pdfjsLib } from '@/utils/pdf'
+``
 // --------------------------------------------------------------
 export const isJsonString = (str) => {
     try {
@@ -459,7 +460,6 @@ export const readBinaryFile = (file) => {
     });
 };
 
-
 export const loadPdfPage = async (pdf, index) => {
     const canvas = document.createElement("canvas");
     canvas.setAttribute("className", "canv");
@@ -493,6 +493,75 @@ export const dataURItoBlob = (dataURI) => {
 
     return new Blob([ia], { type: mimeString });
 };
+
+export const getTitlePage = async (file) => {
+    const pdfFile = await readBinaryFile(file)
+    const pdf = await pdfjsLib.getDocument({ data: pdfFile }).promise;
+    return await loadPdfPage(pdf, 1);
+}
+
+export const downloadPdf = async (url, onProgress = () => { }) => {
+    const response = url.startsWith(API_URL)
+        ? await axiosPrivate({
+            url: url,
+            method: "GET",
+            responseType: "blob",
+        })
+        : await axiosPublic({
+            url: url,
+            method: "GET",
+            responseType: "blob",
+        });
+
+    return new Promise((resolve, reject) => {
+        let reader = new FileReader();
+        reader.onload = (e) => {
+            const byteString = atob(e.target.result.replace(/.*base64,/, ""));
+            var ia = new Uint8Array(byteString.length);
+            for (var i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            resolve(new Blob([ia], { type: response.data.type }));
+        };
+        reader.onprogress = ({ loaded, total }) =>
+            onProgress({ loaded, total });
+        reader.onerror = () => {
+            reader.abort();
+            reject(new DOMException("Problem parsing input file."));
+        };
+        reader.readAsDataURL(response.data);
+    });
+};
+
+export const downloadFile = async (url, onProgress = () => { }) => {
+    const response = url.startsWith(API_URL)
+        ? await axiosPrivate({
+            url: url,
+            method: "GET",
+            responseType: "blob",
+        })
+        : await axiosPublic({
+            url: url,
+            method: "GET",
+            responseType: "blob",
+        });
+
+    return new Promise((resolve, reject) => {
+        let reader = new FileReader();
+        reader.onload = (e) => {
+            const data = atob(e.target.result.replace(/.*base64,/, ""));
+            resolve(data);
+        };
+        reader.onprogress = ({ loaded, total }) =>
+            onProgress({ loaded, total });
+        reader.onerror = () => {
+            reader.abort();
+            reject(new DOMException("Problem parsing input file."));
+        };
+        reader.readAsDataURL(response.data);
+    });
+};
+
 
 // ------------------  batch work --------------------------------------
 export const processMultipleRequests = async ({
@@ -768,36 +837,6 @@ export const buildLinkToIssuesPage = (
 
 // ------------------  File functions --------------------------------------
 
-export const downloadFile = async (url, onProgress = () => { }) => {
-    const response = url.startsWith(API_URL)
-        ? await axiosPrivate({
-            url: url,
-            method: "GET",
-            responseType: "blob",
-        })
-        : await axiosPublic({
-            url: url,
-            method: "GET",
-            responseType: "blob",
-        });
-
-    return new Promise((resolve, reject) => {
-        let reader = new FileReader();
-        reader.onload = (e) => {
-            const data = atob(e.target.result.replace(/.*base64,/, ""));
-            resolve(data);
-        };
-        reader.onprogress = ({ loaded, total }) =>
-            onProgress({ loaded, total });
-        reader.onerror = () => {
-            reader.abort();
-            reject(new DOMException("Problem parsing input file."));
-        };
-        reader.readAsDataURL(response.data);
-    });
-};
-
-
 export const splitImage = ({ URI, splitPercentage, rtl = false }) => {
     if (splitPercentage === 0 || splitPercentage === 100) {
         return Promise.resolve(dataURItoBlob(URI));
@@ -875,6 +914,8 @@ export const readBlob = (file) => {
         reader.readAsArrayBuffer(file);
     });
 };
+
+
 // ------------------  REMOVE FOLLOWING --------------------------------------
 
 const helpers = {
