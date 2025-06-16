@@ -267,7 +267,7 @@ const BookPageEditPage = () => {
             ]}
             actions={actions}
         />
-        <Box style={{ height: `calc(100vh - ${fullscreen ? '160px' : '220px'})`, overflow: 'auto', position: 'relative' }} bg="var(--mantine-color-body)" >
+        <Box style={{ height: `calc(100vh - ${fullscreen ? '100px' : '160px'})`, overflow: 'auto', position: 'relative' }} bg="var(--mantine-color-body)" >
             <div className={classes.split}>
                 <div className={showImge ? classes.left : classes.full}>
                     <Editor defaultValue={contents}

@@ -38,7 +38,7 @@ const BreadcrumbsMenu = ({ index, item }) => {
                     <If condition={item.icon}>
                         <Icon name={item.icon} height={16} />
                     </If>
-                    {item.title}
+                    <Text size='xs'>{item.title}</Text>
                     <IconChevronUp style={{
                         transform: opened ? "rotate(0)" : "rotate(180deg)",
                         transitionDuration: "250ms"
@@ -53,7 +53,7 @@ const BreadcrumbsMenu = ({ index, item }) => {
                     disabled={v.selected}
                     leftSection={<Icon name={v.icon} l height={16} />}
                     rightSection={v.selected ? <IconTick height={16} /> : null}>
-                    {v.title}
+                    <Text size='xs'>{v.title}</Text>
                 </Menu.Item>))}
         </Menu.Dropdown>
     </Menu>
@@ -88,7 +88,7 @@ const PageHeader = ({ title, subTitle, details, imageLink, defaultIcon, breadcru
                             <If condition={item.icon}>
                                 <Icon name={item.icon} height={16} />
                             </If>
-                            <Text size='sm'>{item.title}</Text>
+                            <Text size='xs'>{item.title}</Text>
                         </Group>
                     </Anchor>
                 );
@@ -98,7 +98,7 @@ const PageHeader = ({ title, subTitle, details, imageLink, defaultIcon, breadcru
                         <If condition={item.icon}>
                             <Icon name={item.icon} height={16} />
                         </If>
-                        <Text size='sm'>{item.title}</Text>
+                        <Text size='xs'>{item.title}</Text>
                     </Group>
                 );
             }
@@ -106,7 +106,6 @@ const PageHeader = ({ title, subTitle, details, imageLink, defaultIcon, breadcru
     }
     return (<Flex m="md" direction="column" gap="sm">
         <Flex
-            mih={50}
             gap="sm"
             justify="flex-start"
             align="center"
@@ -116,7 +115,7 @@ const PageHeader = ({ title, subTitle, details, imageLink, defaultIcon, breadcru
             <Box visibleFrom='sm'>
                 <Img
                     src={imageLink}
-                    h={96}
+                    h={32}
                     w="auto"
                     radius="md"
                     alt={title}
@@ -126,14 +125,17 @@ const PageHeader = ({ title, subTitle, details, imageLink, defaultIcon, breadcru
             </Box>
             <Stack justify="center">
                 <Group>
-                    <Title order={2}>{title}</Title>
+                    <Title order={3}>{title}</Title>
+                    <If condition={subTitle}>
+                        <Stack style={{ alignSelf: 'flex-end' }}>
+                            <Title order={4}>{subTitle}</Title>
+                        </Stack>
+                    </If>
+                    <Breadcrumbs separatorMargin="xs" mt="xs">
+                        {renderBreadcrumb()}
+                    </Breadcrumbs>
                 </Group>
             </Stack>
-            <If condition={subTitle}>
-                <Stack style={{ alignSelf: 'flex-end' }}>
-                    <Title order={4}>{subTitle}</Title>
-                </Stack>
-            </If>
             <span style={{ flex: '1' }} />
             <Stack>
                 <If condition={actions}>
@@ -141,9 +143,6 @@ const PageHeader = ({ title, subTitle, details, imageLink, defaultIcon, breadcru
                         {actions}
                     </Group>
                 </If>
-                <Breadcrumbs>
-                    {renderBreadcrumb()}
-                </Breadcrumbs>
             </Stack>
         </Flex>
         <If condition={details}>

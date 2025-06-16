@@ -211,7 +211,7 @@ const IssueArticleContentEditPage = () => {
         </If>
         <Box style={{ height: '100%', overflow: 'auto' }} >
             <LoadingOverlay visible={isLoadingPeriodical || isLoadingIssue || isLoadingArticle || isLoadingContent || isUpdating || isSaving} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
-            <div style={{ height: `calc(100vh - ${fullscreen ? '160px' : '220px'})`, position: 'relative' }}>
+            <div style={{ height: `calc(100vh - ${fullscreen ? '100px' : '160px'})`, position: 'relative' }}>
                 <Editor defaultValue={contents}
                     configuration={{
                         ...DefaultConfiguration,

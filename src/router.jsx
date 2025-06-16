@@ -33,7 +33,6 @@ const Router = () => {
                         <Route path="/libraries/:libraryId/books" element={<Pages.BooksPage />} />
                         <Route path="/libraries/:libraryId/periodicals/:periodicalId/issues/add" element={<Pages.EditIssuePage />} />
                         <Route path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber/issues/:issueNumber/edit" element={<Pages.EditIssuePage />} />
-                        <Route path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber/issues/:issueNumber/articles/:articleNumber/contents/edit" element={<Pages.IssueArticleContentEditPage />} />
                         <Route path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber/issues/:issueNumber/articles/:articleNumber" element={<Pages.IssueArticlePage />} />
                         <Route path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber/issues/:issueNumber" element={<Pages.IssuePage />} />
                         <Route path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber" element={<Pages.PeriodicalPage />} />
@@ -66,6 +65,7 @@ const Router = () => {
                     <Route path="/libraries/:libraryId/books/:bookId/pages/:pageNumber/contents/edit" element={<Pages.BookPageEditPage />} />
                     <Route path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber/issues/:issueNumber/pages/:pageNumber/contents/edit" element={<Pages.IssuePageEditPage />} />
                     <Route path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber/issues/:issueNumber/files/:fileId/process" element={<Pages.IssueProcessPage />} />
+                    <Route path="/libraries/:libraryId/periodicals/:periodicalId/volumes/:volumeNumber/issues/:issueNumber/articles/:articleNumber/contents/edit" element={<Pages.IssueArticleContentEditPage />} />
                 </Route>
             </Routes>
         </BrowserRouter>
