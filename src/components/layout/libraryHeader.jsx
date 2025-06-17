@@ -46,7 +46,7 @@ const LibraryHeader = ({ library }) => {
                             <NavLink to={`/libraries/${library.id}`} className={classes.link}>
                                 <Logo />
                                 <Space w="md" />
-                                <Text visibleFrom="lg" size="sm">
+                                <Text visibleFrom="lg" size="sm" truncate="end">
                                     {library.name}
                                 </Text>
                                 <Space w="lg" />
@@ -64,7 +64,7 @@ const LibraryHeader = ({ library }) => {
                             allLabel={t('books.allBooks')}
                             countFunc={i => i.bookCount}
                             title={t('header.books')}
-                            icon={<IconBooks height="24px" />}
+                            icon={<IconBooks height="24" />}
                             extraLink={(<><div>
                                 <Text fw={500} fz="sm">
                                     {t('bookUpload.title')}

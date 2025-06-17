@@ -33,63 +33,61 @@ const Profile = () => {
     });
 
     if (user) {
-        return (<>
-            <Menu
-                width={260}
-                position="bottom-end"
-                transitionProps={{ transition: 'pop-top-right' }}
-                onClose={() => setUserMenuOpened(false)}
-                onOpen={() => setUserMenuOpened(true)}
-                withinPortal
-            >
-                <Menu.Target>
-                    <UnstyledButton
-                        className={cx(classes.user, { [classes.userActive]: userMenuOpened })}
-                    >
-                        <Group gap={7} wrap="nowrap">
-                            <Avatar src={user?.links?.image} alt={user?.name} radius="xl" size={24} />
-                            <Text fw={500} size="sm" lh={1} mr={3}>
-                                {user?.name}
-                            </Text>
-                            <IconChevronDown
-                                size={16}
-                                stroke={1.5}
-                                style={{
-                                    transform: !userMenuOpened ? "rotate(0)" : "rotate(180deg)",
-                                    transitionDuration: "250ms"
-                                }}
-                            />
-                        </Group>
-                    </UnstyledButton>
-                </Menu.Target>
-                <Menu.Dropdown>
-                    <Menu.Item
-                        leftSection={
-                            <IconSettings size={16} stroke={1.5} />
-                        }
-                    >
-                        {t('profile.title')}
-                    </Menu.Item>
-                    <Menu.Item
-                        leftSection={
-                            <IconChangePassword size={16} stroke={1.5} />
-                        }
-                        component={Link}
-                        to={`${MAIN_SITE}/account/change-password?returnUrl=${window.location.href}`}
-                    >
-                        {t('changePassword.title')}
-                    </Menu.Item>
-                    <Menu.Divider />
-                    <Menu.Item onClick={logoutClicked}
-                        leftSection={
-                            <IconLogout size={16} stroke={1.5} />
-                        }
-                    >
-                        {t('logout.title')}
-                    </Menu.Item>
-                </Menu.Dropdown>
-            </Menu>
-        </>)
+        return (<Menu
+            width={260}
+            position="bottom-end"
+            transitionProps={{ transition: 'pop-top-right' }}
+            onClose={() => setUserMenuOpened(false)}
+            onOpen={() => setUserMenuOpened(true)}
+            withinPortal
+        >
+            <Menu.Target>
+                <UnstyledButton
+                    className={cx(classes.user, { [classes.userActive]: userMenuOpened })}
+                >
+                    <Group gap={7} wrap="nowrap">
+                        <Avatar src={user?.links?.image} alt={user?.name} radius="xl" size={24} />
+                        <Text fw={500} size="sm" lh={1} mr={3} Profile>
+                            {user?.name}
+                        </Text>
+                        <IconChevronDown
+                            size={16}
+                            stroke={1.5}
+                            style={{
+                                transform: !userMenuOpened ? "rotate(0)" : "rotate(180deg)",
+                                transitionDuration: "250ms"
+                            }}
+                        />
+                    </Group>
+                </UnstyledButton>
+            </Menu.Target>
+            <Menu.Dropdown>
+                <Menu.Item
+                    leftSection={
+                        <IconSettings size={16} stroke={1.5} />
+                    }
+                >
+                    {t('profile.title')}
+                </Menu.Item>
+                <Menu.Item
+                    leftSection={
+                        <IconChangePassword size={16} stroke={1.5} />
+                    }
+                    component={Link}
+                    to={`${MAIN_SITE}/account/change-password?returnUrl=${window.location.href}`}
+                >
+                    {t('changePassword.title')}
+                </Menu.Item>
+                <Menu.Divider />
+                <Menu.Item onClick={logoutClicked}
+                    leftSection={
+                        <IconLogout size={16} stroke={1.5} />
+                    }
+                >
+                    {t('logout.title')}
+                </Menu.Item>
+            </Menu.Dropdown>
+        </Menu>)
     }
     return (<>
         <Button variant="default"
