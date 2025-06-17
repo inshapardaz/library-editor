@@ -18,6 +18,7 @@ import {
     Popover
 }
     from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 
 // Local Imports
 import { useGetLibrariesQuery } from '@/store/slices/libraries.api'
@@ -26,7 +27,6 @@ import {
     IconRefreshAlert,
     IconLibrary,
 } from '../icons';
-import { useDisclosure } from '@mantine/hooks';
 //------------------------------------
 
 const LibrarySwitcher = ({ className, library, onClick = () => { }, children }) => {
