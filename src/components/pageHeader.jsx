@@ -73,7 +73,7 @@ BreadcrumbsMenu.propTypes = {
     }),
 }
 //----------------------------------
-const PageHeader = ({ title, subTitle, details, imageLink, defaultIcon, breadcrumbs = [], actions = [] }) => {
+const PageHeader = ({ title, subTitle, leftActions, details, imageLink, defaultIcon, breadcrumbs = [], actions = [] }) => {
     const { t } = useTranslation();
     const theme = useMantineTheme();
 
@@ -112,17 +112,20 @@ const PageHeader = ({ title, subTitle, details, imageLink, defaultIcon, breadcru
             direction="row"
             wrap="wrap"
         >
-            <Box visibleFrom='sm'>
-                <Img
-                    src={imageLink}
-                    h={32}
-                    w="auto"
-                    radius="md"
-                    alt={title}
-                    fit="contain"
-                    fallback={<Icon name={defaultIcon} height={64} style={{ color: theme.colors.dark[1] }} />}
-                />
-            </Box>
+            <If condition={imageLink || defaultIcon}>
+
+                <Box visibleFrom='sm'>
+                    <Img
+                        src={imageLink}
+                        h={32}
+                        w="auto"
+                        radius="md"
+                        alt={title}
+                        fit="contain"
+                        fallback={<Icon name={defaultIcon} height={64} style={{ color: theme.colors.dark[1] }} />}
+                    />
+                </Box>
+            </If>
             <Stack justify="center">
                 <Group>
                     <Title order={3}>{title}</Title>
@@ -130,6 +133,9 @@ const PageHeader = ({ title, subTitle, details, imageLink, defaultIcon, breadcru
                         <Stack style={{ alignSelf: 'flex-end' }}>
                             <Title order={4}>{subTitle}</Title>
                         </Stack>
+                    </If>
+                    <If condition={leftActions}>
+                        {leftActions}
                     </If>
                     <Breadcrumbs separatorMargin="xs" mt="xs">
                         {renderBreadcrumb()}
@@ -167,6 +173,7 @@ PageHeader.propTypes = {
     title: PropTypes.node,
     subTitle: PropTypes.node,
     details: PropTypes.node,
+    leftActions: PropTypes.any,
     imageLink: PropTypes.string,
     defaultIcon: PropTypes.string,
     breadcrumbs: PropTypes.arrayOf(PropTypes.shape({

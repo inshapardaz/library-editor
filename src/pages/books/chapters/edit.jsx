@@ -24,7 +24,6 @@ import { EditingStatus } from '@/models';
 import Editor, { EditorFormat, DefaultConfiguration } from "@/components/editor";
 import ChapterAssignButton from '@/components/books/chapters/chapterAssignButton';
 import ChapterStatusButton from '@/components/books/chapters/chapterStatusButton';
-import EditingStatusIcon from "@/components/editingStatusIcon";
 import { error, success } from '@/utils/notifications';
 //----------------------------------------
 
@@ -211,15 +210,9 @@ const ChapterEditorPage = () => {
                 }} />
         </Container>)
     }
-    const title = chapter ? chapter.title : t('chapter.actions.add.title');
 
     return (<Container fluid mt="sm" bg="var(--mantine-color-body)" ref={ref}>
-        <PageHeader title={title} defaultIcon={IconNames.Chapters}
-            subTitle={
-                <Group visibleFrom='md'>
-                    <EditingStatusIcon editingStatus={chapter.status} showText t={t} />
-                </Group>
-            }
+        <PageHeader
             breadcrumbs={[
                 { title: t('header.home'), href: `/libraries/${libraryId}`, icon: IconNames.Home },
                 { title: t('header.books'), href: `/libraries/${libraryId}/books`, icon: IconNames.Books },

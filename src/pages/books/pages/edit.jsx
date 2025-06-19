@@ -20,7 +20,6 @@ import { EditingStatus } from '@/models';
 import Error from '@/components/error';
 import If from '@/components/if';
 import PageHeader from "@/components/pageHeader";
-import EditingStatusIcon from "@/components/editingStatusIcon";
 import IconNames from '@/components/iconNames';
 import { IconLeft, IconRight, IconDone, IconFullScreenExit, IconFullScreen, IconImage, IconNoImage } from "@/components/icons";
 import Editor, { EditorFormat, DefaultConfiguration } from "@/components/editor";
@@ -252,12 +251,7 @@ const BookPageEditPage = () => {
 
     return (<Container fluid mt="sm" ref={ref} bg="var(--mantine-color-body)" >
         <LoadingOverlay visible={isBusy || isAddingPage || isUpdatingPage || isUpdatingImage} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
-        <PageHeader title={title} defaultIcon={IconNames.Pages}
-            subTitle={
-                <Group visibleFrom='md'>
-                    <EditingStatusIcon editingStatus={page.status} showText t={t} />
-                </Group>
-            }
+        <PageHeader
             breadcrumbs={[
                 { title: t('header.home'), href: `/libraries/${libraryId}`, icon: IconNames.Home },
                 { title: t('header.books'), href: `/libraries/${libraryId}/books`, icon: IconNames.Books },
@@ -267,7 +261,7 @@ const BookPageEditPage = () => {
             ]}
             actions={actions}
         />
-        <Box style={{ height: `calc(100vh - ${fullscreen ? '100px' : '160px'})`, overflow: 'auto', position: 'relative' }} bg="var(--mantine-color-body)" >
+        <Box style={{ height: `calc(100vh - ${fullscreen ? '80px' : '140px'})`, overflow: 'auto', position: 'relative' }} bg="var(--mantine-color-body)" >
             <div className={classes.split}>
                 <div className={showImge ? classes.left : classes.full}>
                     <Editor defaultValue={contents}
