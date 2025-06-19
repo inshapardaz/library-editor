@@ -22,7 +22,7 @@ import classes from './appHeader.module.css';
 import Logo from '../logo';
 import LanguageSwitch from './languageSwitch';
 import DarkModeToggle from './darkModeToggle';
-import Profile from './profile';
+import ProfileDropDown from './profileDropDown';
 import LibrarySwitcher from './librarySwitcher';
 import { IconHome, IconLibrary, IconLibraryEditor, IconDictionary, IconFont, IconTools, IconChevronDown } from '@/components/icons';
 import ToolsMenu from './tools';
@@ -85,7 +85,7 @@ const AppHeader = () => {
                     <Group visibleFrom="sm" wrap="nowrap">
                         <LanguageSwitch />
                         <DarkModeToggle />
-                        <Profile />
+                        <ProfileDropDown />
                     </Group>
 
                     <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
@@ -153,7 +153,7 @@ const AppHeader = () => {
                     <Divider my="sm" />
 
                     <Group justify="center" grow pb="xl" px="md">
-                        <Profile />
+                        <ProfileDropDown />
                     </Group>
                 </ScrollArea>
             </Drawer>

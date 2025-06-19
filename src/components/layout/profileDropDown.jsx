@@ -14,7 +14,7 @@ import { IconLogout, IconSettings, IconChangePassword, IconChevronDown } from ".
 import { MAIN_SITE } from '@/config';
 //-----------------------------------
 
-const Profile = () => {
+const ProfileDropDown = () => {
     const { t } = useTranslation();
     const user = useSelector(state => state.auth.user)
     const [userMenuOpened, setUserMenuOpened] = useState(false);
@@ -47,7 +47,7 @@ const Profile = () => {
                 >
                     <Group gap={7} wrap="nowrap">
                         <Avatar src={user?.links?.image} alt={user?.name} radius="xl" size={24} />
-                        <Text fw={500} size="sm" lh={1} mr={3} Profile>
+                        <Text fw={500} size="sm" lh={1} mr={3}>
                             {user?.name}
                         </Text>
                         <IconChevronDown
@@ -101,4 +101,4 @@ const Profile = () => {
         </Button></>)
 };
 
-export default Profile;
+export default ProfileDropDown;

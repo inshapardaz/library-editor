@@ -26,7 +26,7 @@ import Logo from '@/components/logo';
 import LanguageSwitch from './languageSwitch';
 import DarkModeToggle from './darkModeToggle';
 import LibrarySwitcher from './librarySwitcher';
-import Profile from './profile';
+import ProfileDropDown from './profileDropDown';
 import SearchBox from '@/components/search';
 import CategoriesMenu from './categoriesMenu';
 import ToolsMenu from './tools';
@@ -126,7 +126,7 @@ const LibraryHeader = ({ library }) => {
                     <Group visibleFrom="sm" wrap="nowrap">
                         <LanguageSwitch />
                         <DarkModeToggle />
-                        <Profile />
+                        <ProfileDropDown />
                     </Group>
 
                     <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
@@ -214,7 +214,7 @@ const LibraryHeader = ({ library }) => {
                     <Divider my="sm" />
 
                     <Group justify="center" grow pb="xl" px="md">
-                        <Profile />
+                        <ProfileDropDown />
                     </Group>
                 </ScrollArea>
             </Drawer>
