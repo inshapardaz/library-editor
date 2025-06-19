@@ -22,6 +22,7 @@ import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import EditorTheme from "./themes/editorTheme";
 import ToolbarPlugin from './plugins/toolbarPlugin';
 import SavePlugin from "./plugins/savePlugin";
+import JoinLinesPlugin from "./plugins/joinLinesPlugin";
 import AutoLinkPlugin from "./plugins/autoLink.Plugin";
 import LinkPlugin from "./plugins/link.Plugin";
 import ImagesPlugin from "./plugins/imagesPlugin";
@@ -219,6 +220,7 @@ const Editor = ({ language, defaultValue, onSave = () => { }, onChange = () => {
                     configuration.spellchecker.language || configuration.language
                 } />}
                 <SavePlugin onSave={onSave} format={configuration.format} />
+                <JoinLinesPlugin />
                 <SelectionAlwaysOnDisplay />
                 <ControlledValuePlugin
                     value={defaultValue}

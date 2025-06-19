@@ -156,6 +156,7 @@ const iconTheme = {
         spellCheck: "text-spellcheck",
         autoCorrect: "file-text-ai",
         punctuation: "message-language",
+        joinLines: "arrows-join",
         completeWord: "alphabet-latin",
         ocrDocument: "eye-cog",
         settingApplyDown: "settings-down",
@@ -330,6 +331,7 @@ export const IconSpellCheck = (props) => getIcon(IconNames.SpellCheck, props)
 export const IconAutoCorrect = (props) => getIcon(IconNames.AutoCorrect, props)
 export const IconPunctuation = (props) => getIcon(IconNames.Punctuation, props)
 export const IconCompleteWord = (props) => getIcon(IconNames.CompleteWord, props)
+export const IconJoinLines = (props) => getIcon(IconNames.JoinLines, props)
 
 export const IconSettingApplyDown = (props) => getIcon(IconNames.SettingApplyDown, props)
 export const IconSettingApplyAll = (props) => getIcon(IconNames.SettingApplyAll, props)

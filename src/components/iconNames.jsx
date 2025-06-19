@@ -152,6 +152,7 @@ const IconNames = {
     AutoCorrect: "autoCorrect",
     Punctuation: "punctuation",
     CompleteWord: "completeWord",
+    JoinLines: "joinLines",
     OcrDocument: "ocrDocument",
     SettingApplyDown: "settingApplyDown",
     SettingApplyAll: "settingApplyAll",

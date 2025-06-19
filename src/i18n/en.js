@@ -1674,6 +1674,7 @@ const en = {
         spellcheck: "Spellcheck",
         punctuation: "Punctuation",
         autoCorrect: "Auto Correct",
+        joinLines: "Join Lines",
         tools: "Tools",
         insertImageLink: {
             title: "Insert Image URL"

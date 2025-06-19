@@ -1765,6 +1765,7 @@ const ur = {
         spellcheck: "تصحیح",
         punctuation: "املا",
         autoCorrect: "خودکار تصحیح",
+        joinLines: "سطر جوڑیں",
         tools: "آلات",
         insertImageLink: {
             title: "تصویر کا ربط شامل کریں"
