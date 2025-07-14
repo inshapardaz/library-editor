@@ -2,10 +2,7 @@ import { useEffect, useCallback } from "react";
 
 // Lexical Imports
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { $getSelection, $isRangeSelection, COMMAND_PRIORITY_LOW } from "lexical";
-
-// UI Library Imports
-import { useHotkeys } from '@mantine/hooks';
+import { $getSelection, $isRangeSelection, COMMAND_PRIORITY_LOW, COMMAND_PRIORITY_NORMAL, KEY_DOWN_COMMAND } from "lexical";
 
 // Editor Imports
 import { JOIN_LINES_COMMAND } from "../commands/joinLinesCommand";
@@ -25,13 +22,23 @@ function JoinLinesPlugin() {
     }, [editor]);
 
     useEffect(() => {
-        editor.registerCommand(JOIN_LINES_COMMAND, joinLinesCallback, COMMAND_PRIORITY_LOW);
+        return editor.registerCommand(JOIN_LINES_COMMAND, joinLinesCallback, COMMAND_PRIORITY_LOW);
     }, [editor, joinLinesCallback]);
 
-    useHotkeys([
-        ['mod+J', () => editor.dispatchCommand(JOIN_LINES_COMMAND, { preventDefault: true })],
-    ]);
-
+    useEffect(() => {
+        return editor.registerCommand(
+            KEY_DOWN_COMMAND,
+            (event) => {
+                if ((event.ctrlKey || event.metaKey) && event.key === 'm') {
+                    editor.dispatchCommand(JOIN_LINES_COMMAND);
+                    event.preventDefault();
+                    return true;
+                }
+                return false;
+            },
+            COMMAND_PRIORITY_NORMAL,
+        );
+    }, [editor]);
     return null;
 }
 
