@@ -142,3 +142,4 @@ node_modules
 public/build/
 !public/build/.keep
 .idea
+playwright-report/*

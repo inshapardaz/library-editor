@@ -33,6 +33,8 @@ These are not optional — they affect every user in production today.
 | 3 | [TASK-018](tasks/TASK-018-fix-securepage-redirect.md) | Fix SecurePage auth redirect (unused variable, brittle guard) | S |
 | 4 | [TASK-013](tasks/TASK-013-add-react-error-boundary.md) | Add React Error Boundary (blank screen on runtime error) | S |
 | 5 | [TASK-026](tasks/TASK-026-fix-dark-mode-state-divergence.md) | Fix dark mode state divergence on page reload | S |
+| 6 | [TASK-032](tasks/TASK-032-fix-corrections-page-language-param.md) | Fix corrections page language URL param bug (`year` → `language`) | XS |
+| 7 | [TASK-033](tasks/TASK-033-nginx-security-headers.md) | Add HTTP security headers to nginx (CSP, X-Frame-Options, etc.) | S |
 
 ### Success Criteria
 - Multi-language chapter content is fetched with the correct `Accept-Language` header.
@@ -40,6 +42,8 @@ These are not optional — they affect every user in production today.
 - Unauthenticated users are reliably redirected to login exactly once.
 - A runtime render error shows a fallback UI instead of a blank white screen.
 - Dark mode preference is correctly restored after a page reload.
+- The corrections page language filter is reflected in and restored from the URL.
+- All HTTP responses include security headers; the app passes an OWASP top-10 headers check.
 
 ---
 
@@ -58,12 +62,16 @@ These are not optional — they affect every user in production today.
 | 5 | [TASK-004](tasks/TASK-004-upgrade-dockerfile-node-version.md) | Upgrade Dockerfile from Node 18 (EOL) to Node 22 LTS | XS |
 | 6 | [TASK-019](tasks/TASK-019-add-docker-compose.md) | Add `docker-compose.yml` for local development | S |
 | 7 | [TASK-003](tasks/TASK-003-update-eslint-react-version.md) | Update ESLint React version setting to `detect` | XS |
+| 8 | [TASK-030](tasks/TASK-030-add-vitest-unit-testing.md) | Add Vitest unit testing framework and seed first unit tests | M |
+| 9 | [TASK-034](tasks/TASK-034-contributing-guide.md) | Create CONTRIBUTING.md developer onboarding guide | S |
 
 ### Success Criteria
 - Every pull request automatically runs lint, tests, and a Docker build before merge.
 - A developer can spin up the full stack locally with a single `docker compose up`.
 - The test suite covers the critical happy-path flows (login redirect, books list, chapter edit).
 - All test runs are stable (no port or configuration errors).
+- Unit tests run in < 5 seconds and cover all utility functions and hooks.
+- A new developer can clone and have the app running by following `CONTRIBUTING.md` alone.
 
 ---
 
@@ -105,12 +113,16 @@ These are not optional — they affect every user in production today.
 | 1 | [TASK-027](tasks/TASK-027-add-route-level-code-splitting.md) | Route-level code splitting with `React.lazy` (defer `pdfjs`, Lexical) | M |
 | 2 | [TASK-008](tasks/TASK-008-nginx-gzip-compression.md) | Enable gzip compression in nginx (60–80% JS/CSS size reduction) | XS |
 | 3 | [TASK-007](tasks/TASK-007-enable-helmet-page-titles.md) | Dynamic page titles via `react-helmet-async` (SEO + usability) | S |
+| 4 | [TASK-031](tasks/TASK-031-lighthouse-performance-baseline.md) | Establish Lighthouse performance baseline and CI budget | M |
+| 5 | [TASK-035](tasks/TASK-035-bundle-size-visualizer.md) | Add bundle size visualizer (`rollup-plugin-visualizer`) | XS |
 
 ### Success Criteria
 - Initial JS bundle does not include `pdfjs-dist` or Lexical source.
 - JS and CSS assets are served gzip-compressed from the nginx container.
 - Browser tab title changes when navigating between major sections.
-- Lighthouse performance score improves measurably vs. baseline.
+- Lighthouse performance score improves measurably vs. baseline captured in TASK-031.
+- Bundle treemap confirms `pdfjs-dist` and Lexical are absent from the main chunk.
+- Gzip encoding is confirmed via `curl -I` response headers.
 
 ---
 
@@ -161,12 +173,17 @@ Tasks that are valid but not yet scheduled. Reassess at each milestone review.
 The following ordering constraints must be respected:
 
 ```
-TASK-001 (fix port)      ──► TASK-015 (expand tests)
-TASK-001 (fix port)      ──► TASK-014 (CI pipeline)
-TASK-020 (split utils)   ──► TASK-021 (retire URL builders)
-TASK-028 (query helper)  ──► TASK-021 (retire URL builders)
-TASK-021 (URL builders)  ──► TASK-029 (useListPageParams hook)
-TASK-026 (dark mode fix) ──  resolves TASK-012 (implement dark mode)
+TASK-001 (fix port)        ──► TASK-015 (expand tests)
+TASK-001 (fix port)        ──► TASK-014 (CI pipeline)
+TASK-001 (fix port)        ──► TASK-031 (lighthouse baseline)
+TASK-014 (CI pipeline)     ──► TASK-030 (vitest, add unit step to CI)
+TASK-014 (CI pipeline)     ──► TASK-031 (lighthouse CI budget)
+TASK-020 (split utils)     ──► TASK-021 (retire URL builders)
+TASK-028 (query helper)    ──► TASK-021 (retire URL builders)
+TASK-021 (URL builders)    ──► TASK-029 (useListPageParams hook)
+TASK-026 (dark mode fix)   ──  resolves TASK-012 (implement dark mode)
+TASK-030 (vitest)          ──► TASK-032 (unit test the URL bug fix)
+TASK-027 (code splitting)  ──► TASK-035 (verify with bundle visualizer)
 ```
 
 ---
@@ -176,6 +193,7 @@ TASK-026 (dark mode fix) ──  resolves TASK-012 (implement dark mode)
 | Risk | Likelihood | Impact | Mitigation |
 |---|---|---|---|
 | TASK-025 (RTK Query migration) causes regression in chapter editor | Medium | High | Feature-flag the new mutations; keep old service until tests pass |
-| TASK-027 (code splitting) breaks Vite chunk configuration | Low | Medium | Verify build output with `npx vite-bundle-visualizer` before shipping |
+| TASK-027 (code splitting) breaks Vite chunk configuration | Low | Medium | Verify with TASK-035 (bundle visualizer) before shipping |
+| TASK-033 (CSP headers) breaks third-party fonts or API calls | Medium | Medium | Test in staging first; start with `report-only` mode, then enforce |
 | Milestone 3 scope creep (architecture work expands) | High | Medium | Time-box each architecture task; defer any discovered sub-tasks to next milestone |
 | Node 22 Dockerfile (TASK-004) reveals npm peer conflicts | Low | Low | Pin to Node 20 LTS as fallback |
