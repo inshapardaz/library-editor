@@ -2,7 +2,8 @@ import axios from "axios";
 import { Mutex } from "async-mutex";
 
 // Local import
-import { API_URL, MAIN_SITE } from '@/config';
+import { API_URL } from '@/config';
+import { accountUrl } from '@/utils/returnUrl';
 
 //------------------------------------------
 
@@ -49,7 +50,7 @@ axiosPrivate.interceptors.response.use(
                     .catch(refreshError => {
                         console.error(refreshError);
                         refreshTokenPromise = null; // Reset the promise after failure
-                        window.location.href = `${MAIN_SITE}/account/login?returnUrl=${window.location.href}`;
+                        window.location.href = accountUrl('/account/login');
                         return Promise.reject(refreshError);
                     })
                     .finally(() => {

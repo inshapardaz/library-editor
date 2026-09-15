@@ -4,6 +4,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 
 // Local Imports
 import { MAIN_SITE } from '@/config';
+import { accountUrl } from '@/utils/returnUrl';
 
 // -----------------------------------
 
@@ -14,7 +15,7 @@ const SecurePage = () => {
 
     useEffect(() => {
         if (userLoadStatus === 'succeeded' && !user && !window.location.href.includes(MAIN_SITE)) {
-            window.location.href = `${MAIN_SITE}/account/login?returnUrl=${window.location.href}`
+            window.location.href = accountUrl('/account/login')
         }
     }, [user, navigate, userLoadStatus])
 

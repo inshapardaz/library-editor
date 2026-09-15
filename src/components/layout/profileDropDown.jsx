@@ -12,6 +12,7 @@ import { modals } from '@mantine/modals';
 import classes from './profile.module.css';
 import { IconLogout, IconSettings, IconChangePassword, IconChevronDown } from "../icons";
 import { MAIN_SITE } from '@/config';
+import { accountUrl } from '@/utils/returnUrl';
 //-----------------------------------
 
 const ProfileDropDown = () => {
@@ -28,7 +29,7 @@ const ProfileDropDown = () => {
         ),
         labels: { confirm: t('actions.yes'), cancel: t('actions.no') },
         onConfirm: () => {
-            window.location.href = `${MAIN_SITE}/account/logout?returnUrl=${window.location.href}`
+            window.location.href = accountUrl('/account/logout')
         },
     });
 
@@ -74,7 +75,7 @@ const ProfileDropDown = () => {
                         <IconChangePassword size={16} stroke={1.5} />
                     }
                     component={Link}
-                    to={`${MAIN_SITE}/account/change-password?returnUrl=${window.location.href}`}
+                    to={accountUrl('/account/change-password')}
                 >
                     {t('changePassword.title')}
                 </Menu.Item>
@@ -92,7 +93,7 @@ const ProfileDropDown = () => {
     return (<>
         <Button variant="default"
             component={Link}
-            to={`${MAIN_SITE}/account/login?returnUrl=${window.location.href}`}>
+            to={accountUrl('/account/login')}>
             {t('login.title')}</Button>
         <Button
             component={Link}
