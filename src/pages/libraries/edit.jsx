@@ -28,7 +28,7 @@ const LibraryEditPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const theme = useMantineTheme();
-    const [loaded, setLoaded] = useState(false);
+    const [initializedLibraryId, setInitializedLibraryId] = useState(null);
     const [image, setImage] = useState(null);
     const isEditing = useMemo(() => libraryId != null, [libraryId]);
 
@@ -64,16 +64,22 @@ const LibraryEditPage = () => {
     //----------------------------------------------------------------------
 
     useEffect(() => {
-
-        if (!loaded && library != null) {
+        // Keyed on libraryId (not a one-shot flag) so navigating from editing
+        // one library straight to another's edit page re-initializes the form
+        // instead of leaving the previous library's values -- including
+        // fileStoreSource -- in place to be silently resubmitted onto the
+        // wrong library. Still only re-initializes once per libraryId, so a
+        // background refetch of the same library doesn't clobber in-progress
+        // edits.
+        if (library != null && initializedLibraryId !== libraryId) {
             if (!library?.links?.update) {
                 navigate('/403')
             } else {
                 form.initialize(library);
-                setLoaded(true);
+                setInitializedLibraryId(libraryId);
             }
         }
-    }, [form, library, loaded, navigate]);
+    }, [form, library, libraryId, initializedLibraryId, navigate]);
 
     const onSubmit = async (_library) => {
         if (isEditing) {
