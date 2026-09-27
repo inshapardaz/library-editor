@@ -37,9 +37,12 @@ export const loadUser = createAsyncThunk(
     "auth/user",
     async () => {
         try {
-            // Uses axiosPublic (not axiosPrivate): this runs on every app load,
-            // including for anonymous visitors, and axiosPrivate's 401 handler
-            // would otherwise redirect them straight to the login page.
+            // Uses axiosPublic (not axiosPrivate) deliberately: this call runs on
+            // every app load to silently probe the session cookie, which lives on
+            // the API/main-site origin and can't be inspected from this app's own
+            // document.cookie. axiosPrivate's 401 handler tries a token refresh and
+            // then hard-redirects to the login page on failure, which would bounce
+            // every anonymous visitor to login just for loading the header.
             const response = await axiosPublic.get("/accounts/user");
             return response.data;
         } catch (e) {
