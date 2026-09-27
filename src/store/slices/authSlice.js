@@ -1,8 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import Cookies from 'js-cookie'
 
 // local Imports
-import { axiosPublic, axiosPrivate } from '@/utils/axios.helpers';
+import { axiosPublic } from '@/utils/axios.helpers';
 // ----------------------------------------------------------
 
 const initialState = {
@@ -38,7 +37,10 @@ export const loadUser = createAsyncThunk(
     "auth/user",
     async () => {
         try {
-            const response = await axiosPrivate.get("/accounts/user");
+            // Uses axiosPublic (not axiosPrivate): this runs on every app load,
+            // including for anonymous visitors, and axiosPrivate's 401 handler
+            // would otherwise redirect them straight to the login page.
+            const response = await axiosPublic.get("/accounts/user");
             return response.data;
         } catch (e) {
             return Promise.reject(e);
@@ -48,9 +50,10 @@ export const loadUser = createAsyncThunk(
 
 
 export const init = createAsyncThunk("auth/init", async (_, { dispatch }) => {
-    if (Cookies.get('refreshToken')) {
-        dispatch(loadUser())
-    }
+    // The refresh token cookie is httpOnly and cannot be read from JS, so we
+    // can't gate this on its presence. Always attempt to load the user; the
+    // request will simply fail (401) if there's no valid session.
+    dispatch(loadUser())
 });
 
 export const authSlice = createSlice({
