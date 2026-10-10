@@ -4,7 +4,7 @@ import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
 
 // UI library import
 import { ActionIcon, Breadcrumbs, Button, Center, Container, Drawer, Group, Image, rem, Skeleton, Stack, useMantineTheme } from "@mantine/core";
-import { useDisclosure, useFullscreen } from '@mantine/hooks';
+import { useDisclosure } from '@mantine/hooks';
 
 // Local imports
 import { languages } from '@/i18n';
@@ -17,6 +17,7 @@ import ReadModeToggle from "@/components/reader/readModeToggle";
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
 import ZoomControl from "@/components/reader/zoomControl";
 import classes from './reader.module.css'
+import useFullscreen from '@/hooks/useFullscreen';
 //------------------------------------------------------
 
 const BookReaderPage = () => {

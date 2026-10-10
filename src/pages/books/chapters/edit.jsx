@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 
 // UI Library Import
 import { Alert, Box, Button, Container, Grid, Group, LoadingOverlay, rem, Skeleton, Tooltip } from "@mantine/core";
-import { useFullscreen } from "@mantine/hooks";
 
 // Local Imports
 import { useGetBookQuery, useGetBookChaptersQuery, useGetChapterQuery, useUpdateChapterMutation, useGetChapterContentsQuery } from '@/store/slices/books.api';
@@ -21,10 +20,11 @@ import { IconAdd, IconLeft, IconRight, IconDone, IconFullScreenExit, IconFullScr
 import Error from '@/components/error';
 import If from '@/components/if';
 import { EditingStatus } from '@/models';
-import Editor, { EditorFormat, DefaultConfiguration } from "@/components/editor";
+import Editor from "@/components/editor";
 import ChapterAssignButton from '@/components/books/chapters/chapterAssignButton';
 import ChapterStatusButton from '@/components/books/chapters/chapterStatusButton';
 import { error, success } from '@/utils/notifications';
+import useFullscreen from '@/hooks/useFullscreen';
 //----------------------------------------
 
 const PRIMARY_COL_HEIGHT = rem(300);
@@ -235,27 +235,12 @@ const ChapterEditorPage = () => {
         <Box style={{ height: '100%', overflow: 'auto' }} >
             <LoadingOverlay visible={isBusy || isUpdatingChapter} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
             <div style={{ height: `calc(100vh - ${fullscreen ? '80px' : '130px'})`, position: 'relative' }}>
-                <Editor defaultValue={contents}
-                    configuration={{
-                        ...DefaultConfiguration,
-                        richText: true,
-                        format: EditorFormat.Markdown,
-                        autocompleteEnabled: true,
-                        toolbar: {
-                            ...DefaultConfiguration.toolbar,
-                            showFontFormat: false,
-                            showSave: true,
-                            showZoom: true,
-                            showViewFont: true,
-                            showExtraFormat: false,
-                        },
-                        spellchecker: {
-                            enabled: true,
-                            language: language,
-                        },
-                    }}
+                <Editor
                     language={language}
-                    contentKey={`chapter-${libraryId}-${bookId}-${chapterNumber}`}
+                    documentId={`chapter-${libraryId}-${bookId}-${chapterNumber}`}
+                    initialContent={{ format: 'markdown', value: contents ?? '' }}
+                    featurePreset="standard"
+                    height="100%"
                     onSave={onEditorSave} />
             </div>
         </Box>

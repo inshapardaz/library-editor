@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 // UI library import
 import { Box, Button, Container, Group, Loader, LoadingOverlay, Switch, Tooltip } from "@mantine/core";
-import { useFullscreen, useLocalStorage } from "@mantine/hooks";
+import { useLocalStorage } from "@mantine/hooks";
 
 // Local imports
 import {
@@ -22,7 +22,7 @@ import If from '@/components/if';
 import PageHeader from "@/components/pageHeader";
 import IconNames from '@/components/iconNames';
 import { IconLeft, IconRight, IconDone, IconFullScreenExit, IconFullScreen, IconImage, IconNoImage } from "@/components/icons";
-import Editor, { EditorFormat, DefaultConfiguration } from "@/components/editor";
+import Editor from "@/components/editor";
 import PageImage from "@/components/books/pages/pageImage";
 import PageAssignButton from '@/components/books/pages/pageAssignButton';
 import PageStatusButton from '@/components/books/pages/pageStatusButton';
@@ -30,6 +30,7 @@ import PageChapterButton from '@/components/books/pages/pageChapterButton';
 import PageOcrButton from "@/components/books/pages/pageOcrButton";
 import { error, success } from '@/utils/notifications';
 import classes from './edit.module.css'
+import useFullscreen from '@/hooks/useFullscreen';
 //-------------------------------
 
 const BookPageEditPage = () => {
@@ -264,26 +265,12 @@ const BookPageEditPage = () => {
         <Box style={{ height: `calc(100vh - ${fullscreen ? '80px' : '140px'})`, overflow: 'auto', position: 'relative' }} bg="var(--mantine-color-body)" >
             <div className={classes.split}>
                 <div className={showImge ? classes.left : classes.full}>
-                    <Editor defaultValue={contents}
-                        configuration={{
-                            ...DefaultConfiguration,
-                            richText: true,
-                            format: EditorFormat.Markdown,
-                            toolbar: {
-                                ...DefaultConfiguration.toolbar,
-                                showFontFormat: false,
-                                showSave: true,
-                                showZoom: true,
-                                showViewFont: true,
-                                showExtraFormat: false
-                            },
-                            spellchecker: {
-                                enabled: true,
-                                language: language,
-                            },
-                        }}
+                    <Editor
                         language={language}
-                        contentKey={`page-${libraryId}-${bookId}-${pageNumber}`}
+                        documentId={`page-${libraryId}-${bookId}-${pageNumber}`}
+                        initialContent={{ format: 'markdown', value: contents ?? '' }}
+                        featurePreset="standard"
+                        height="100%"
                         onSave={onEditorSave} />
                 </div>
                 <If condition={showImge}>

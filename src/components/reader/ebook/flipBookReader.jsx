@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import Markdown from 'react-markdown'
 
 // Ui Library Imports
 import { useInViewport, useHotkeys, useViewportSize, useElementSize } from '@mantine/hooks';
@@ -12,6 +11,7 @@ import useTouchSlide from '@/hooks/useTouchSlide';
 import classes from './flipBook.module.css'
 import { IconLeft, IconRight } from '@/components/icons';
 import If from '@/components/if';
+import MarkdownContent from '@/components/markdown/markdownContent';
 //---------------------------------
 
 const FlipBookReader = ({ markdown, canGoNext, onNext, canGoPrevious, onPrevious, showNavigation = true, pagesToShow = 1, direction }) => {
@@ -103,7 +103,7 @@ const FlipBookReader = ({ markdown, canGoNext, onNext, canGoPrevious, onPrevious
                     style={{ left: `${left}px` }}
                     ref={pageRef}
                 >
-                    <Markdown>{markdown}</Markdown>
+                    <MarkdownContent markdown={markdown} />
                     <span ref={ref} />
                 </div>
             </div>

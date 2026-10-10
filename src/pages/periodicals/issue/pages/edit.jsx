@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 // UI library import
 import { Box, Button, Container, Group, Loader, LoadingOverlay, Switch, Tooltip } from "@mantine/core";
-import { useFullscreen, useLocalStorage } from "@mantine/hooks";
+import { useLocalStorage } from "@mantine/hooks";
 
 // Local imports
 import {
@@ -23,7 +23,7 @@ import PageHeader from "@/components/pageHeader";
 import EditingStatusIcon from "@/components/editingStatusIcon";
 import IconNames from '@/components/iconNames';
 import { IconLeft, IconRight, IconDone, IconFullScreenExit, IconFullScreen, IconImage, IconNoImage } from "@/components/icons";
-import Editor, { EditorFormat, DefaultConfiguration } from "@/components/editor";
+import Editor from "@/components/editor";
 import PageImage from "@/components/books/pages/pageImage";
 import IssuePageAssignButton from '@/components/periodicals/issues/pages/pageAssignButton';
 import IssuePageStatusButton from '@/components/periodicals/issues/pages/pageStatusButton';
@@ -31,6 +31,7 @@ import IssuePageOcrButton from "@/components/periodicals/issues/pages/pageOcrBut
 import { error, success } from '@/utils/notifications';
 import classes from './edit.module.css'
 import IssuePageArticleButton from "@/components/periodicals/issues/pages/pageArticleButton";
+import useFullscreen from '@/hooks/useFullscreen';
 //-------------------------------
 
 const IssuePageEditPage = () => {
@@ -276,26 +277,12 @@ const IssuePageEditPage = () => {
         <Box style={{ height: `calc(100vh - ${fullscreen ? '160px' : '220px'})`, overflow: 'auto', position: 'relative' }} bg="var(--mantine-color-body)" >
             <div className={classes.split}>
                 <div className={showImge ? classes.left : classes.full}>
-                    <Editor defaultValue={contents}
-                        configuration={{
-                            ...DefaultConfiguration,
-                            richText: true,
-                            format: EditorFormat.Markdown,
-                            toolbar: {
-                                ...DefaultConfiguration.toolbar,
-                                showFontFormat: false,
-                                showSave: true,
-                                showZoom: true,
-                                showViewFont: true,
-                                showExtraFormat: false
-                            },
-                            spellchecker: {
-                                enabled: true,
-                                language: language,
-                            },
-                        }}
+                    <Editor
                         language={language}
-                        contentKey={`page-${libraryId}-${issue.id}-${pageNumber}`}
+                        documentId={`page-${libraryId}-${issue.id}-${pageNumber}`}
+                        initialContent={{ format: 'markdown', value: contents ?? '' }}
+                        featurePreset="standard"
+                        height="100%"
                         onSave={onEditorSave} />
                 </div>
                 <If condition={showImge}>

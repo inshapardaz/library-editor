@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 // Ui Library Import
 import { ActionIcon, Breadcrumbs, Button, Container, Grid, Group, rem, Skeleton } from "@mantine/core";
-import { useDisclosure, useFullscreen } from "@mantine/hooks";
+import { useDisclosure } from "@mantine/hooks";
 
 // Local imports
 import { useGetArticleQuery, useGetArticleContentsQuery } from "@/store/slices/articles.api";
@@ -13,6 +13,7 @@ import Error from '@/components/error';
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
 import ReaderSetting from "@/components/reader/ebook/readerSettings";
 import MarkdownReader from "@/components/reader/ebook/markdownReader";
+import useFullscreen from '@/hooks/useFullscreen';
 //----------------------------------
 const getLanguage = (article, language) => {
     if (article && article.contents && article.contents[0]) {

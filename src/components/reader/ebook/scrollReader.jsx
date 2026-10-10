@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import Markdown from 'react-markdown'
 import { useSelector } from 'react-redux';
 
 // Ui Library Imports
@@ -8,6 +7,7 @@ import { ActionIcon } from '@mantine/core';
 // Local imports
 import classes from './scrollReader.module.css'
 import { IconLeft, IconRight } from '@/components/icons';
+import MarkdownContent from '@/components/markdown/markdownContent';
 
 // Local Import
 import If from '@/components/if';
@@ -30,7 +30,7 @@ const ScrollReader = ({ title, markdown, canGoNext, onNext, canGoPrevious, onPre
                     <div className={classes.header}>
                         {title}
                     </div>
-                    <Markdown>{markdown}</Markdown>
+                    <MarkdownContent markdown={markdown} />
                 </div>
             </div>
             <If condition={showNavigation}>

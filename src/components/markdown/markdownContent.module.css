@@ -1,0 +1,38 @@
+.content figure {
+    margin: 1em 0;
+    text-align: center;
+}
+
+.content figure img {
+    max-width: 100%;
+}
+
+.content figure figcaption {
+    font-size: 0.9em;
+    color: var(--mantine-color-dimmed);
+}
+
+.content hr[data-pagebreak] {
+    border: none;
+    border-top: 2px dashed var(--mantine-color-gray-5);
+    margin: 2em 0;
+}
+
+.content div[data-columns] {
+    display: grid;
+    gap: 1em;
+}
+
+.content div[data-poetry-layout="two-column"] {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.content div[data-poetry-layout="staggered"] p {
+    margin-inline-start: var(--stagger, 2em);
+}
+
+.content div[data-poetry-layout] {
+    font-style: normal;
+    white-space: pre-wrap;
+}
