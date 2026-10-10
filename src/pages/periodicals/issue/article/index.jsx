@@ -6,7 +6,7 @@ import moment from "moment";
 
 // Ui Library Imports
 import { ActionIcon, Breadcrumbs, Button, Center, Container, Drawer, Group, Image, rem, Skeleton, Text, Title, useMantineTheme } from '@mantine/core';
-import { useDisclosure, useFullscreen } from '@mantine/hooks';
+import { useDisclosure } from '@mantine/hooks';
 
 // Local Import
 import { useGetPeriodicalByIdQuery } from '@/store/slices/periodicals.api';
@@ -23,6 +23,7 @@ import { getDateFormatFromFrequency } from '@/utils';
 import ReaderSetting from "@/components/reader/ebook/readerSettings";
 import MarkdownReader from "@/components/reader/ebook/markdownReader";
 import TableOfContents from "@/components/reader/tableOfContents";
+import useFullscreen from '@/hooks/useFullscreen';
 // -----------------------------------------
 const PRIMARY_COL_HEIGHT = rem(300);
 //------------------------------------------

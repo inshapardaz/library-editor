@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 
 // UI library import
 import { ActionIcon, Button, Breadcrumbs, Container, Drawer, Group, rem, Skeleton, Stack, Center, useMantineTheme } from "@mantine/core";
-import { useDisclosure, useFullscreen } from '@mantine/hooks';
+import { useDisclosure } from '@mantine/hooks';
 
 // Local imports
 import { useGetBookQuery, useGetChapterQuery, useGetBookChaptersQuery, useGetChapterContentsQuery } from '@/store/slices/books.api';
@@ -18,6 +18,7 @@ import AuthorsAvatar from '@/components/authors/authorsAvatar';
 import ReadModeToggle from "@/components/reader/readModeToggle";
 import Img from '@/components/img';
 import classes from './ebookReader.module.css'
+import useFullscreen from '@/hooks/useFullscreen';
 //------------------------------------------------------
 
 const EBookReaderPage = () => {

@@ -29,11 +29,12 @@ import Error from '@/components/error';
 import If from '@/components/if';
 import { downloadFile, loadPdfPage, splitImage, dataURItoBlob } from '@/utils'
 import { pdfjsLib } from '@/utils/pdf'
-import { useFullscreen, useHotkeys, useLocalStorage } from '@mantine/hooks';
+import { useHotkeys, useLocalStorage } from '@mantine/hooks';
 import PageImageEditor from '../../components/books/pages/pageImageEditor';
 import { selectedLanguage } from "@/store/slices/uiSlice";
 import { languages } from '@/store/slices/uiSlice';
 import { error, success } from '@/utils/notifications';
+import useFullscreen from '@/hooks/useFullscreen';
 //---------------------------
 const BusyContent = ({ processingProgress, t }) => {
     if (processingProgress.type === 'idle') return null;

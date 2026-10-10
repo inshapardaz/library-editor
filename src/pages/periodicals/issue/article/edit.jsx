@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 
 // Ui library Imports
 import { Alert, Box, Button, Container, Divider, Group, LoadingOverlay, Tooltip } from "@mantine/core";
-import { useFullscreen } from "@mantine/hooks";
 
 // Local Imports
 import {
@@ -30,8 +29,9 @@ import If from '@/components/if';
 import { EditingStatus } from '@/models';
 import EditingStatusIcon from "@/components/editingStatusIcon";
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
-import Editor, { EditorFormat, DefaultConfiguration } from "@/components/editor";
+import Editor from "@/components/editor";
 import { error, success } from '@/utils/notifications';
+import useFullscreen from '@/hooks/useFullscreen';
 //------------------------------------------
 const getLanguage = (article, language) => {
     if (language) {
@@ -212,26 +212,12 @@ const IssueArticleContentEditPage = () => {
         <Box style={{ height: '100%', overflow: 'auto' }} >
             <LoadingOverlay visible={isLoadingPeriodical || isLoadingIssue || isLoadingArticle || isLoadingContent || isUpdating || isSaving} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
             <div style={{ height: `calc(100vh - ${fullscreen ? '100px' : '160px'})`, position: 'relative' }}>
-                <Editor defaultValue={contents}
-                    configuration={{
-                        ...DefaultConfiguration,
-                        richText: true,
-                        format: EditorFormat.Markdown,
-                        toolbar: {
-                            ...DefaultConfiguration.toolbar,
-                            showFontFormat: false,
-                            showSave: true,
-                            showZoom: true,
-                            showViewFont: true,
-                            showExtraFormat: false
-                        },
-                        spellchecker: {
-                            enabled: true,
-                            language: language,
-                        },
-                    }}
+                <Editor
                     language={language}
-                    contentKey={`article-${libraryId}-${periodicalId}-${volumeNumber}-${issueNumber}-${articleNumber}-${language}`}
+                    documentId={`article-${libraryId}-${periodicalId}-${volumeNumber}-${issueNumber}-${articleNumber}-${language}`}
+                    initialContent={{ format: 'markdown', value: contents ?? '' }}
+                    featurePreset="standard"
+                    height="100%"
                     onSave={onEditorSave} />
             </div>
         </Box>
