@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -40,7 +40,6 @@ const IssuePageEditPage = () => {
     const { libraryId, periodicalId, volumeNumber, issueNumber, pageNumber } = useParams();
     const lang = useSelector(selectedLanguage);
     const navigate = useNavigate();
-    const [contents, setContents] = useState('')
     const [isBusy, setIsBusy] = useState(false)
     const [image, setImage] = useState();
     const [showImge, setShowImage] = useLocalStorage({
@@ -83,14 +82,6 @@ const IssuePageEditPage = () => {
 
     // ----------------------------------------
     const isNewContent = useMemo(() => page && pageError?.status === 404, [page, pageError?.status]);
-
-    useEffect(() => {
-        if (page?.text) {
-            setContents(page.text);
-        } else {
-            setContents(null);
-        }
-    }, [page?.text]);
 
     const uploadImage = async (_page) => {
         if (image) {
@@ -278,9 +269,10 @@ const IssuePageEditPage = () => {
             <div className={classes.split}>
                 <div className={showImge ? classes.left : classes.full}>
                     <Editor
+                        key={`page-${libraryId}-${issue.id}-${pageNumber}`}
                         language={language}
                         documentId={`page-${libraryId}-${issue.id}-${pageNumber}`}
-                        initialContent={{ format: 'markdown', value: contents ?? '' }}
+                        initialContent={{ format: 'markdown', value: page?.text ?? '' }}
                         featurePreset="standard"
                         height="100%"
                         onSave={onEditorSave} />

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -34,7 +34,6 @@ const ChapterEditorPage = () => {
     const { ref, toggle, fullscreen } = useFullscreen();
     const { libraryId, bookId, chapterNumber } = useParams();
     const lang = useSelector(selectedLanguage)
-    const [contents, setContents] = useState('')
     const [isBusy, setIsBusy] = useState(false)
 
     // Data operations
@@ -87,14 +86,6 @@ const ChapterEditorPage = () => {
     // ----------------------------------------
 
     const isNewContent = useMemo(() => !chapterContent && chapterContentError?.status === 404, [chapterContent, chapterContentError?.status]);
-
-    useEffect(() => {
-        if (chapterContent?.text) {
-            setContents(chapterContent.text);
-        } else {
-            setContents(null);
-        }
-    }, [chapterContent, chapterContentError, loadingChapterContent]);
 
     const onEditorSave = (content) => {
         if (isNewContent) {
@@ -236,9 +227,10 @@ const ChapterEditorPage = () => {
             <LoadingOverlay visible={isBusy || isUpdatingChapter} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
             <div style={{ height: `calc(100vh - ${fullscreen ? '80px' : '130px'})`, position: 'relative' }}>
                 <Editor
+                    key={`chapter-${libraryId}-${bookId}-${chapterNumber}`}
                     language={language}
                     documentId={`chapter-${libraryId}-${bookId}-${chapterNumber}`}
-                    initialContent={{ format: 'markdown', value: contents ?? '' }}
+                    initialContent={{ format: 'markdown', value: chapterContent?.text ?? '' }}
                     featurePreset="standard"
                     height="100%"
                     onSave={onEditorSave} />

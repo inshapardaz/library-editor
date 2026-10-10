@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -57,7 +57,6 @@ const IssueArticleContentEditPage = () => {
     const langParameter = searchParams.get("language");
     const lang = useSelector(selectedLanguage)
     const [isSaving, setIsSaving] = useState(false)
-    const [contents, setContents] = useState('')
 
     const [update, { isLoading: isUpdating }] = useUpdateIssueArticleMutation();
 
@@ -106,14 +105,6 @@ const IssueArticleContentEditPage = () => {
         (article.status === EditingStatus.Typing ||
             article.status === EditingStatus.InReview);
 
-
-    useEffect(() => {
-        if (articleContent?.text) {
-            setContents(articleContent.text);
-        } else {
-            setContents(null);
-        }
-    }, [articleContent]);
 
     const onEditorSave = (content) => {
         if (isNewContent) {
@@ -212,13 +203,16 @@ const IssueArticleContentEditPage = () => {
         <Box style={{ height: '100%', overflow: 'auto' }} >
             <LoadingOverlay visible={isLoadingPeriodical || isLoadingIssue || isLoadingArticle || isLoadingContent || isUpdating || isSaving} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
             <div style={{ height: `calc(100vh - ${fullscreen ? '100px' : '160px'})`, position: 'relative' }}>
-                <Editor
-                    language={language}
-                    documentId={`article-${libraryId}-${periodicalId}-${volumeNumber}-${issueNumber}-${articleNumber}-${language}`}
-                    initialContent={{ format: 'markdown', value: contents ?? '' }}
-                    featurePreset="standard"
-                    height="100%"
-                    onSave={onEditorSave} />
+                <If condition={!isLoadingPeriodical && !isLoadingIssue && !isLoadingArticle && (!isLoadingContent || isNewContent)}>
+                    <Editor
+                        key={`article-${libraryId}-${periodicalId}-${volumeNumber}-${issueNumber}-${articleNumber}-${language}`}
+                        language={language}
+                        documentId={`article-${libraryId}-${periodicalId}-${volumeNumber}-${issueNumber}-${articleNumber}-${language}`}
+                        initialContent={{ format: 'markdown', value: articleContent?.text ?? '' }}
+                        featurePreset="standard"
+                        height="100%"
+                        onSave={onEditorSave} />
+                </If>
             </div>
         </Box>
     </Container>);

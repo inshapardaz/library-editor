@@ -50,7 +50,6 @@ const PoetryContentEditPage = () => {
     const { libraryId, articleId } = useParams();
     const [searchParams] = useSearchParams();
     const langParameter = searchParams.get("language");
-    const [contents, setContents] = useState('')
     const [layout, setLayout] = useState('normal')
 
     const [updateArticle, { isLoading: isUpdatingArticle }] = useUpdateArticleMutation();
@@ -89,13 +88,7 @@ const PoetryContentEditPage = () => {
 
 
     useEffect(() => {
-        if (articleContent?.text) {
-            setContents(articleContent.text);
-            setLayout(articleContent.layout);
-        } else {
-            setLayout('normal');
-            setContents(null);
-        }
+        setLayout(articleContent?.layout ?? 'normal');
     }, [articleContent]);
 
     const onEditorSave = (content) => {
@@ -201,13 +194,16 @@ const PoetryContentEditPage = () => {
         <Box style={{ height: '100%', overflow: 'auto' }} >
             <LoadingOverlay visible={isLoadingArticle || isLoadingContent || isUpdatingArticle || isAddingArticleContents || isUpdatingArticleContents} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
             <div style={{ height: `calc(100vh - ${fullscreen ? '160px' : '220px'})`, position: 'relative' }}>
-                <Editor
-                    language={language}
-                    documentId={`article-${libraryId}-${articleId}-${language}`}
-                    initialContent={{ format: 'markdown', value: contents ?? '' }}
-                    featurePreset="poetry"
-                    height="100%"
-                    onSave={onEditorSave} />
+                <If condition={!isLoadingArticle && (!isLoadingContent || isNewContent)}>
+                    <Editor
+                        key={`article-${libraryId}-${articleId}-${language}`}
+                        language={language}
+                        documentId={`article-${libraryId}-${articleId}-${language}`}
+                        initialContent={{ format: 'markdown', value: articleContent?.text ?? '' }}
+                        featurePreset="poetry"
+                        height="100%"
+                        onSave={onEditorSave} />
+                </If>
             </div>
         </Box>
     </Container>);
