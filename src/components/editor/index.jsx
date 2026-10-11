@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useComputedColorScheme } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 
@@ -21,6 +21,25 @@ import {
 const AUTO_CORRECT_STORES = [apiAutoCorrectStore(), localStorageAutoCorrectStore()];
 const DICTIONARY_STORES = [localStorageUserWordStore(), apiUserWordStore()];
 const COMPLETION_STORES = [apiCompletionStore()];
+
+const PER_DOCUMENT_FONT_KEY_PREFIX = 'likhari:font:';
+
+// EditorRoot's uniform-font toolbar controls always write a per-document
+// entry (likhari:font:{documentId}) on change, even when fontFamily/zoom are
+// passed as controlled props — there's no prop to suppress that internal
+// write. Since this app keeps the real setting in one global entry instead
+// (see Editor below), every per-document one is dead weight; this removes
+// them outright, including ones a previous session already wrote before the
+// global setting existed.
+const clearPerDocumentFontSettings = () => {
+    try {
+        Object.keys(localStorage)
+            .filter((key) => key.startsWith(PER_DOCUMENT_FONT_KEY_PREFIX))
+            .forEach((key) => localStorage.removeItem(key));
+    } catch {
+        // Storage unavailable: nothing to clean up.
+    }
+};
 
 // The "standard"/"poetry" presets leave these off by default (see
 // @inshapardaz/likhari-core's STANDARD_FEATURE_CONFIG); this app wants them
@@ -54,7 +73,8 @@ const EXTRA_FEATURES = {
  * app wants one global preference shared by every editor instance, so
  * fontFamily/zoom/onFontChange are passed explicitly (controlled) backed by
  * a single shared localStorage entry instead of the package's per-document
- * default.
+ * default — and the per-document entries it still writes internally on every
+ * toolbar change are swept away immediately (see clearPerDocumentFontSettings).
  */
 const Editor = ({
     documentId,
@@ -76,9 +96,19 @@ const Editor = ({
     });
 
     const handleFontChange = useCallback(
-        (change) => setUniformFont(change),
+        (change) => {
+            setUniformFont(change);
+            clearPerDocumentFontSettings();
+        },
         [setUniformFont],
     );
+
+    // One-time sweep for leftovers from before this app controlled the
+    // setting globally (or from any EditorRoot internal write this render
+    // missed, e.g. a change made right before unmount).
+    useEffect(() => {
+        clearPerDocumentFontSettings();
+    }, []);
 
     return (
         <EditorRoot
