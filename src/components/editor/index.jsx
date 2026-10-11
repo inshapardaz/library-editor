@@ -1,15 +1,13 @@
 import PropTypes from 'prop-types';
-import { useMemo } from 'react';
-import cx from 'clsx';
-import { useComputedColorScheme, Group, Select, Slider, Text } from '@mantine/core';
+import { useCallback, useEffect, useMemo } from 'react';
+import { useComputedColorScheme } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 
 // Editor package
-import { EditorRoot, DEFAULT_FONT_OPTIONS } from '@inshapardaz/likhari-react';
+import { EditorRoot } from '@inshapardaz/likhari-react';
 
 // Local imports
 import { apiAutoCorrectStore, apiUserWordStore, apiCompletionStore } from './stores';
-import classes from './editorView.module.css';
 
 // likhari-react's own localStorage-backed stores, paired with the API adapters
 // above so corrections/dictionary/completions keep working offline too.
@@ -20,11 +18,28 @@ import {
 
 //-----------------------------------------
 
-const FONT_OPTIONS = DEFAULT_FONT_OPTIONS.map(({ name, family }) => ({ value: family, label: name }));
-
 const AUTO_CORRECT_STORES = [apiAutoCorrectStore(), localStorageAutoCorrectStore()];
 const DICTIONARY_STORES = [localStorageUserWordStore(), apiUserWordStore()];
 const COMPLETION_STORES = [apiCompletionStore()];
+
+const PER_DOCUMENT_FONT_KEY_PREFIX = 'likhari:font:';
+
+// EditorRoot's uniform-font toolbar controls always write a per-document
+// entry (likhari:font:{documentId}) on change, even when fontFamily/zoom are
+// passed as controlled props — there's no prop to suppress that internal
+// write. Since this app keeps the real setting in one global entry instead
+// (see Editor below), every per-document one is dead weight; this removes
+// them outright, including ones a previous session already wrote before the
+// global setting existed.
+const clearPerDocumentFontSettings = () => {
+    try {
+        Object.keys(localStorage)
+            .filter((key) => key.startsWith(PER_DOCUMENT_FONT_KEY_PREFIX))
+            .forEach((key) => localStorage.removeItem(key));
+    } catch {
+        // Storage unavailable: nothing to clean up.
+    }
+};
 
 // The "standard"/"poetry" presets leave these off by default (see
 // @inshapardaz/likhari-core's STANDARD_FEATURE_CONFIG); this app wants them
@@ -39,15 +54,27 @@ const EXTRA_FEATURES = {
         autocorrect: true,
         textCleanup: true,
     },
-    font: { family: true, size: true, scope: 'both' },
-    blocks: { headingLevels: [1, 2, 3, 4, 5, 6] },
+    font: { family: true, size: true },
+    blocks: { headingLevels: [1, 2, 3, 4, 5, 6], pageBreak: true },
     joinLines: true,
+    footnotes: true,
+    columns: true,
 };
 
 /**
  * Thin wrapper around likhari-react's EditorRoot: fixes the stores (so every
  * call site shares the same backend-backed spellcheck/autocorrect/autocomplete
- * sources) and maps this app's language/theme state onto the editor's props.
+ * sources), maps this app's language/theme state onto the editor's props, and
+ * uses uniform font mode — one font + zoom for the whole canvas, a view
+ * preference rather than per-selection document formatting (markdown
+ * deliberately doesn't carry font/size — docs/markdown-dialect.md).
+ *
+ * EditorRoot normally remembers uniform font/zoom per `documentId`, but this
+ * app wants one global preference shared by every editor instance, so
+ * fontFamily/zoom/onFontChange are passed explicitly (controlled) backed by
+ * a single shared localStorage entry instead of the package's per-document
+ * default — and the per-document entries it still writes internally on every
+ * toolbar change are swept away immediately (see clearPerDocumentFontSettings).
  */
 const Editor = ({
     documentId,
@@ -63,75 +90,50 @@ const Editor = ({
     const colorScheme = useComputedColorScheme('light');
     const locale = useMemo(() => (language === 'ur' ? 'ur' : 'en'), [language]);
 
-    // View-only preferences: which font/zoom the canvas renders text in when
-    // there's no explicit formatting on it. Kept in this browser's
-    // localStorage (same keys the old in-house editor used), independent of
-    // the toolbar's own font-family/size controls, which apply real document
-    // formatting that markdown deliberately doesn't carry across save/reload
-    // (docs/markdown-dialect.md: "Font family and size are intentionally not
-    // supported").
-    const [viewFont, setViewFont] = useLocalStorage({ key: 'editor-view-font', defaultValue: '' });
-    const [viewZoom, setViewZoom] = useLocalStorage({ key: 'editor-text-zoom', defaultValue: 100 });
+    const [uniformFont, setUniformFont] = useLocalStorage({
+        key: 'likhari-uniform-font',
+        defaultValue: { fontFamily: undefined, zoom: 100 },
+    });
+
+    const handleFontChange = useCallback(
+        (change) => {
+            setUniformFont(change);
+            clearPerDocumentFontSettings();
+        },
+        [setUniformFont],
+    );
+
+    // One-time sweep for leftovers from before this app controlled the
+    // setting globally (or from any EditorRoot internal write this render
+    // missed, e.g. a change made right before unmount).
+    useEffect(() => {
+        clearPerDocumentFontSettings();
+    }, []);
 
     return (
-        <div
-            className={cx(classes.canvasWrapper, {
-                [classes.customFont]: Boolean(viewFont),
-                [classes.customZoom]: viewZoom !== 100,
-            })}
-            style={{
-                '--view-font': viewFont || undefined,
-                '--view-zoom': viewZoom / 100,
-                height: height ?? '100%',
-                display: 'flex',
-                flexDirection: 'column',
-            }}
-        >
-            <div className={classes.viewBar}>
-                <Select
-                    size="xs"
-                    w={200}
-                    placeholder="Default font"
-                    data={FONT_OPTIONS}
-                    value={viewFont || null}
-                    onChange={(value) => setViewFont(value ?? '')}
-                    clearable
-                />
-                <Group gap="xs" wrap="nowrap" w={180}>
-                    <Text size="xs" c="dimmed">{viewZoom}%</Text>
-                    <Slider
-                        size="xs"
-                        min={50}
-                        max={200}
-                        step={10}
-                        value={viewZoom}
-                        onChange={setViewZoom}
-                        style={{ flex: 1 }}
-                    />
-                </Group>
-            </div>
-            <div style={{ flex: 1, minHeight: 0 }}>
-                <EditorRoot
-                    documentId={documentId}
-                    initialContent={initialContent}
-                    featurePreset={featurePreset}
-                    featureConfig={{ ...EXTRA_FEATURES, ...featureConfig }}
-                    autoCorrectStores={AUTO_CORRECT_STORES}
-                    dictionaryStores={DICTIONARY_STORES}
-                    completionStores={COMPLETION_STORES}
-                    autoCompleteLanguage={locale}
-                    colorScheme={colorScheme}
-                    locale={locale}
-                    placeholder={placeholder}
-                    height="100%"
-                    autosave
-                    restoreDraft="prompt"
-                    navigationGuard="confirm"
-                    onSave={onSave}
-                    onChange={onChange}
-                />
-            </div>
-        </div>
+        <EditorRoot
+            documentId={documentId}
+            initialContent={initialContent}
+            featurePreset={featurePreset}
+            featureConfig={{ ...EXTRA_FEATURES, ...featureConfig }}
+            fontMode="uniform"
+            fontFamily={uniformFont.fontFamily}
+            zoom={uniformFont.zoom}
+            onFontChange={handleFontChange}
+            autoCorrectStores={AUTO_CORRECT_STORES}
+            dictionaryStores={DICTIONARY_STORES}
+            completionStores={COMPLETION_STORES}
+            autoCompleteLanguage={locale}
+            colorScheme={colorScheme}
+            locale={locale}
+            placeholder={placeholder}
+            height={height ?? '100%'}
+            autosave
+            restoreDraft="prompt"
+            navigationGuard="confirm"
+            onSave={onSave}
+            onChange={onChange}
+        />
     );
 };
 

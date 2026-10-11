@@ -43,9 +43,9 @@
   },
   "dependencies": {
     "@hello-pangea/dnd": "^18.0.0",
-    "@inshapardaz/likhari-converters": "^0.1.39",
-    "@inshapardaz/likhari-core": "^0.1.39",
-    "@inshapardaz/likhari-react": "^0.1.39",
+    "@inshapardaz/likhari-converters": "^0.1.43",
+    "@inshapardaz/likhari-core": "^0.1.42",
+    "@inshapardaz/likhari-react": "^0.1.43",
     "@mantine/carousel": "^9.7.1",
     "@mantine/core": "^9.7.1",
     "@mantine/dates": "^9.7.1",

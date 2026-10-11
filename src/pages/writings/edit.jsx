@@ -188,9 +188,9 @@ const WritingContentEditPage = () => {
             <div style={{ height: `calc(100vh - ${fullscreen ? '100px' : '160px'})`, position: 'relative' }}>
                 <If condition={!isLoadingArticle && (!isLoadingContent || isNewContent)}>
                     <Editor
-                        key={`article-${libraryId}-${articleId}-${language}`}
+                        key={`article-${libraryId}-${article?.id ?? articleId}`}
                         language={language}
-                        documentId={`article-${libraryId}-${articleId}-${language}`}
+                        documentId={`article-${libraryId}-${article?.id ?? articleId}`}
                         initialContent={{ format: 'markdown', value: articleContent?.text ?? '' }}
                         featurePreset="standard"
                         height="100%"

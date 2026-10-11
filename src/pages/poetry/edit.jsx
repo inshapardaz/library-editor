@@ -196,9 +196,9 @@ const PoetryContentEditPage = () => {
             <div style={{ height: `calc(100vh - ${fullscreen ? '160px' : '220px'})`, position: 'relative' }}>
                 <If condition={!isLoadingArticle && (!isLoadingContent || isNewContent)}>
                     <Editor
-                        key={`article-${libraryId}-${articleId}-${language}`}
+                        key={`poetry-${libraryId}-${article?.id ?? articleId}`}
                         language={language}
-                        documentId={`article-${libraryId}-${articleId}-${language}`}
+                        documentId={`poetry-${libraryId}-${article?.id ?? articleId}`}
                         initialContent={{ format: 'markdown', value: articleContent?.text ?? '' }}
                         featurePreset="poetry"
                         height="100%"
