@@ -205,9 +205,9 @@ const IssueArticleContentEditPage = () => {
             <div style={{ height: `calc(100vh - ${fullscreen ? '100px' : '160px'})`, position: 'relative' }}>
                 <If condition={!isLoadingPeriodical && !isLoadingIssue && !isLoadingArticle && (!isLoadingContent || isNewContent)}>
                     <Editor
-                        key={`article-${libraryId}-${periodicalId}-${volumeNumber}-${issueNumber}-${articleNumber}-${language}`}
+                        key={`issue-article-${libraryId}-${issue?.id}-${article?.id ?? articleNumber}`}
                         language={language}
-                        documentId={`article-${libraryId}-${periodicalId}-${volumeNumber}-${issueNumber}-${articleNumber}-${language}`}
+                        documentId={`issue-article-${libraryId}-${issue?.id}-${article?.id ?? articleNumber}`}
                         initialContent={{ format: 'markdown', value: articleContent?.text ?? '' }}
                         featurePreset="standard"
                         height="100%"

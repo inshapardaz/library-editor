@@ -257,9 +257,9 @@ const BookPageEditPage = () => {
             <div className={classes.split}>
                 <div className={showImge ? classes.left : classes.full}>
                     <Editor
-                        key={`page-${libraryId}-${bookId}-${pageNumber}`}
+                        key={`book-page-${libraryId}-${bookId}-${page?.id ?? pageNumber}`}
                         language={language}
-                        documentId={`page-${libraryId}-${bookId}-${pageNumber}`}
+                        documentId={`book-page-${libraryId}-${bookId}-${page?.id ?? pageNumber}`}
                         initialContent={{ format: 'markdown', value: page?.text ?? '' }}
                         featurePreset="standard"
                         height="100%"

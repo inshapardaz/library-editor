@@ -227,9 +227,9 @@ const ChapterEditorPage = () => {
             <LoadingOverlay visible={isBusy || isUpdatingChapter} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
             <div style={{ height: `calc(100vh - ${fullscreen ? '80px' : '130px'})`, position: 'relative' }}>
                 <Editor
-                    key={`chapter-${libraryId}-${bookId}-${chapterNumber}`}
+                    key={`book-chapter-${libraryId}-${bookId}-${chapter?.id}`}
                     language={language}
-                    documentId={`chapter-${libraryId}-${bookId}-${chapterNumber}`}
+                    documentId={`book-chapter-${libraryId}-${bookId}-${chapter?.id}`}
                     initialContent={{ format: 'markdown', value: chapterContent?.text ?? '' }}
                     featurePreset="standard"
                     height="100%"

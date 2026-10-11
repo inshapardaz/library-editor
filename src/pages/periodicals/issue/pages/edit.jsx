@@ -269,9 +269,9 @@ const IssuePageEditPage = () => {
             <div className={classes.split}>
                 <div className={showImge ? classes.left : classes.full}>
                     <Editor
-                        key={`page-${libraryId}-${issue.id}-${pageNumber}`}
+                        key={`issue-article-page-${libraryId}-${issue.id}-${page.articleId ?? 'unassigned'}-${page.id}`}
                         language={language}
-                        documentId={`page-${libraryId}-${issue.id}-${pageNumber}`}
+                        documentId={`issue-article-page-${libraryId}-${issue.id}-${page.articleId ?? 'unassigned'}-${page.id}`}
                         initialContent={{ format: 'markdown', value: page?.text ?? '' }}
                         featurePreset="standard"
                         height="100%"
