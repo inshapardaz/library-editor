@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useComputedColorScheme } from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
 
 // Editor package
 import { EditorRoot } from '@inshapardaz/likhari-react';
@@ -46,11 +47,14 @@ const EXTRA_FEATURES = {
  * call site shares the same backend-backed spellcheck/autocorrect/autocomplete
  * sources), maps this app's language/theme state onto the editor's props, and
  * uses uniform font mode — one font + zoom for the whole canvas, a view
- * preference EditorRoot itself remembers in localStorage (keyed by
- * documentId) rather than per-selection document formatting. Markdown
- * deliberately doesn't carry font/size (docs/markdown-dialect.md), so
- * uniform mode is the right fit here: it survives reload without needing
- * the document itself to store it.
+ * preference rather than per-selection document formatting (markdown
+ * deliberately doesn't carry font/size — docs/markdown-dialect.md).
+ *
+ * EditorRoot normally remembers uniform font/zoom per `documentId`, but this
+ * app wants one global preference shared by every editor instance, so
+ * fontFamily/zoom/onFontChange are passed explicitly (controlled) backed by
+ * a single shared localStorage entry instead of the package's per-document
+ * default.
  */
 const Editor = ({
     documentId,
@@ -66,6 +70,16 @@ const Editor = ({
     const colorScheme = useComputedColorScheme('light');
     const locale = useMemo(() => (language === 'ur' ? 'ur' : 'en'), [language]);
 
+    const [uniformFont, setUniformFont] = useLocalStorage({
+        key: 'likhari-uniform-font',
+        defaultValue: { fontFamily: undefined, zoom: 100 },
+    });
+
+    const handleFontChange = useCallback(
+        (change) => setUniformFont(change),
+        [setUniformFont],
+    );
+
     return (
         <EditorRoot
             documentId={documentId}
@@ -73,6 +87,9 @@ const Editor = ({
             featurePreset={featurePreset}
             featureConfig={{ ...EXTRA_FEATURES, ...featureConfig }}
             fontMode="uniform"
+            fontFamily={uniformFont.fontFamily}
+            zoom={uniformFont.zoom}
+            onFontChange={handleFontChange}
             autoCorrectStores={AUTO_CORRECT_STORES}
             dictionaryStores={DICTIONARY_STORES}
             completionStores={COMPLETION_STORES}
