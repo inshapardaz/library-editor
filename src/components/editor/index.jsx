@@ -35,7 +35,7 @@ const EXTRA_FEATURES = {
         textCleanup: true,
     },
     font: { family: true, size: true },
-    blocks: { headingLevels: [1, 2, 3, 4, 5, 6] },
+    blocks: { headingLevels: [1, 2, 3, 4, 5, 6], pageBreak: true },
     joinLines: true,
 };
 
