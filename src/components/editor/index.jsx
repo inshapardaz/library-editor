@@ -37,6 +37,8 @@ const EXTRA_FEATURES = {
     font: { family: true, size: true },
     blocks: { headingLevels: [1, 2, 3, 4, 5, 6], pageBreak: true },
     joinLines: true,
+    footnotes: true,
+    columns: true,
 };
 
 /**
