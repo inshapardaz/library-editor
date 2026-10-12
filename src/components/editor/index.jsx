@@ -124,6 +124,7 @@ const Editor = ({
             dictionaryStores={DICTIONARY_STORES}
             completionStores={COMPLETION_STORES}
             autoCompleteLanguage={locale}
+            spellCheckLanguage={locale}
             colorScheme={colorScheme}
             locale={locale}
             placeholder={placeholder}
