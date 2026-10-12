@@ -6,22 +6,22 @@ import { axiosPrivate } from '@/utils/axios.helpers';
 // the old in-house editor used (src/store/slices/tools.api.js), paired with
 // the package's own localStorage-backed stores for an offline fallback.
 
-// likhari-react only knows how to build a speller from a Hunspell `.aff`/`.dic`
-// pair (registerSpellDictionary), not from a flat word list — so the API's
-// word list is wrapped as a minimal Hunspell dictionary (no affix rules, one
-// word per line) rather than changing likhari-react itself. This makes the
-// API word list the spellchecker's base dictionary for a language (and gives
-// Urdu a dictionary at all, since no Hunspell files are bundled for it); words
-// added via apiUserWordStore.append below land in that same list on next load.
-['en', 'ur'].forEach((language) => {
-    registerSpellDictionary(language, async () => {
-        const { data } = await axiosPrivate.get(`/tools/${language}/words/list`);
-        const words = (data ?? []).filter(Boolean);
-        return {
-            aff: 'SET UTF-8\n',
-            dic: `${words.length}\n${words.join('\n')}\n`,
-        };
-    });
+// English already ships a comprehensive bundled Hunspell dictionary, and the
+// API word list is already folded into it as "accepted" words via
+// apiUserWordStore below (loadUserWords merges every dictionaryStore's words
+// into the set EditorRoot's speller treats as correct) — so overriding it
+// here would replace that broad dictionary with just the much smaller API
+// word list and flag most ordinary words as misspelled. Urdu has no bundled
+// dictionary at all, so for it alone the API word list is registered as a
+// Hunspell dictionary (registerSpellDictionary, wrapped as a minimal `.dic`
+// with no affix rules) so it has a speller at all.
+registerSpellDictionary('ur', async () => {
+    const { data } = await axiosPrivate.get('/tools/ur/words/list');
+    const words = (data ?? []).filter(Boolean);
+    return {
+        aff: 'SET UTF-8\n',
+        dic: `${words.length}\n${words.join('\n')}\n`,
+    };
 });
 
 export const apiAutoCorrectStore = () => ({
