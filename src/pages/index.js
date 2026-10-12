@@ -30,7 +30,7 @@ import IssuePage from "./periodicals/issue";
 import IssueArticlePage from "./periodicals/issue/article";
 import EditIssuePage from "./periodicals/issue/edit";
 import IssueArticleContentEditPage from "./periodicals/issue/article/edit";
-import CorrectionsPage from "./tools/correctionsPage";
+import CorrectionsRedirectPage from "./tools/correctionsRedirect";
 import BookPageEditPage from "./books/pages/edit";
 import BookUploadPage from "./books/upload";
 import BookProcessPage from "./books/process";
@@ -71,7 +71,7 @@ const Pages = {
     EditIssuePage,
     IssueArticlePage,
     IssueArticleContentEditPage,
-    CorrectionsPage,
+    CorrectionsRedirectPage,
     BookPageEditPage,
     BookUploadPage,
     BookProcessPage,

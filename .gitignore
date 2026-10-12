@@ -143,3 +143,6 @@ public/build/
 !public/build/.keep
 .idea
 playwright-report/*
+
+# Playwright output
+/test-results

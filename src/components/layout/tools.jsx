@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 // Ui Library Imports
 import { Divider, Group, Menu, Space, Text } from "@mantine/core";
@@ -8,11 +9,14 @@ import { Divider, Group, Menu, Space, Text } from "@mantine/core";
 // Local Imports
 import classes from './appHeader.module.css';
 import { IconAutoCorrect, IconPunctuation, IconChevronDown, IconTools, IconWords } from "@/components/icons";
+import { selectedLanguage } from '@/store/slices/uiSlice';
+import { correctionsUrl } from '@/utils/languageTools';
 //-----------------------------------
 
 const ToolsMenu = () => {
     const { t } = useTranslation();
     const [isOpen, setOpen] = useState(false);
+    const language = useSelector(selectedLanguage).key;
 
     return (<>
         <Menu
@@ -41,9 +45,10 @@ const ToolsMenu = () => {
                 </Group>
             </Menu.Target>
             <Menu.Dropdown>
+                {/* The correction lists are managed in LanguageTools. */}
                 <Menu.Item
-                    component={Link}
-                    to='/tools/language/punctuation'
+                    component="a"
+                    href={correctionsUrl('punctuation', language)}
                     leftSection={
                         <IconPunctuation size={16} stroke={1.5} />
                     }
@@ -54,8 +59,8 @@ const ToolsMenu = () => {
                     leftSection={
                         <IconAutoCorrect size={16} stroke={1.5} />
                     }
-                    component={Link}
-                    to='/tools/language/autocorrect'
+                    component="a"
+                    href={correctionsUrl('autocorrect', language)}
                 >
                     {t('editor.autoCorrect')}
                 </Menu.Item>
