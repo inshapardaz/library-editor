@@ -26,6 +26,7 @@ import ProfileDropDown from './profileDropDown';
 import LibrarySwitcher from './librarySwitcher';
 import { IconHome, IconLibrary, IconLibraryEditor, IconDictionary, IconFont, IconTools, IconChevronDown } from '@/components/icons';
 import ToolsMenu from './tools';
+import { LANGUAGE_TOOLS } from '@/config';
 //----------------------------------------------
 
 const AppHeader = () => {
@@ -66,7 +67,7 @@ const AppHeader = () => {
                                 {t('header.libraryEditor')}
                             </Text>
                         </Link>
-                        <Link to="https://dictionary.nawishta.co.uk" className={classes.link}>
+                        <Link to={LANGUAGE_TOOLS} className={classes.link}>
                             <IconDictionary height="24px" />
                             <Space w="md" />
                             <Text visibleFrom="lg">
@@ -124,7 +125,7 @@ const AppHeader = () => {
                         <Space w="md" />
                         {t('header.libraryEditor')}
                     </Link>
-                    <Link to="https://dictionary.nawishta.co.uk" className={classes.link}>
+                    <Link to={LANGUAGE_TOOLS} className={classes.link}>
                         <IconDictionary height="24px" />
                         <Space w="md" />
                         {t('header.dictionaries')}
