@@ -1,16 +1,18 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Ui Library
 import { useMantineColorScheme, useComputedColorScheme, Switch } from '@mantine/core';
 
 // Local imports
-import { setUiMode } from '../../store/slices/uiSlice';
+import { selectedTheme, setUiMode } from '../../store/slices/uiSlice';
 import { IconMoon, IconSun } from '../icons';
 
 // ----------------------------
 
 const DarkModeToggle = () => {
     const dispatch = useDispatch();
+    // The plain white/black themes fix the colour scheme, so the switch only applies to Nawishta
+    const isNawishta = useSelector(selectedTheme) === 'nawishta';
     const { setColorScheme } = useMantineColorScheme();
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
@@ -23,6 +25,7 @@ const DarkModeToggle = () => {
     return (
         <Switch
             color="gray"
+            disabled={!isNawishta}
             size="lg"
             checked={computedColorScheme === 'light'}
             onChange={onChange}

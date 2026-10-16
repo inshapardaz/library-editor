@@ -5,6 +5,7 @@ import { Container, Group } from '@mantine/core';
 import Logo from '../logo';
 import LanguageSwitch from './languageSwitch';
 import DarkModeToggle from './darkModeToggle';
+import AppearanceMenu from './appearanceMenu';
 
 import classes from './appFooter.module.css';
 //----------------------------------------------
@@ -16,7 +17,8 @@ const AppFooter = () => {
         <Logo showName={false} />
         <Group>
           <LanguageSwitch />
-          <DarkModeToggle />
+          <AppearanceMenu />
+                        <DarkModeToggle />
         </Group>
       </Container>
     </div>

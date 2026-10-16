@@ -1,7 +1,11 @@
+/* The logo is a transparent PNG, drawn straight on the surface behind it (no frame or disc). */
 .logo {
-    height: 32px;
-    width: 32px;
+    height: 34px;
+    width: 36px;
+    display: block;
+    flex-shrink: 0;
     background-image: url('@/assets/images/logo.png');
     background-size: contain;
     background-repeat: no-repeat;
+    background-position: center;
 }

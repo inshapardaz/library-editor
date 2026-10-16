@@ -2,9 +2,7 @@
   position: relative;
   padding-top: rem(180px);
   padding-bottom: rem(130px);
-  background-image: url(https://images.unsplash.com/photo-1534580250660-88e8789d3e85?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80);
-  background-size: cover;
-  background-position: center;
+  background: var(--nw-hero-bg);
 
   @media (max-width: $mantine-breakpoint-xs) {
     padding-top: rem(80px);
@@ -23,7 +21,7 @@
   letter-spacing: rem(-1px);
   padding-left: var(--mantine-spacing-md);
   padding-right: var(--mantine-spacing-md);
-  color: var(--mantine-color-white);
+  color: var(--nw-hero-fg);
   margin-bottom: var(--mantine-spacing-xs);
   text-align: center;
   font-family:
@@ -37,11 +35,11 @@
 }
 
 .highlight {
-  color: var(--mantine-color-primary-4);
+  color: var(--nw-hero-highlight);
 }
 
 .description {
-  color: var(--mantine-color-gray-0);
+  color: var(--nw-hero-fg-soft);
   text-align: center;
 
   @media (max-width: $mantine-breakpoint-xs) {
@@ -79,10 +77,12 @@
 }
 
 .secondaryControl {
-  color: var(--mantine-color-white);
-  background-color: rgba(255, 255, 255, 0.4);
+  color: var(--nw-hero-fg);
+  background-color: transparent;
+  border: rem(1px) solid var(--nw-hero-fg-soft);
 
   @mixin hover {
-    background-color: rgba(255, 255, 255, 0.45);
+    background-color: rgba(128, 128, 128, 0.15);
+    color: var(--nw-hero-highlight);
   }
 }

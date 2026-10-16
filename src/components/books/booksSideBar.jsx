@@ -37,7 +37,7 @@ const BooksSideBar = ({ status, selectedCategory, favorite, read }) => {
 
     if (error) {
         return (<Card withBorder>
-            <Center maw={400} h={100} bg="var(--mantine-color-gray-light)">
+            <Center maw={400} h={100} bg="var(--paper-deep)">
 
             </Center>
         </Card>)
@@ -45,7 +45,7 @@ const BooksSideBar = ({ status, selectedCategory, favorite, read }) => {
 
     if (!categories || !categories.data || categories.data.length < 1) {
         return (<Card withBorder>
-            <Center maw={400} h={100} bg="var(--mantine-color-gray-light)">
+            <Center maw={400} h={100} bg="var(--paper-deep)">
                 {t('categories.empty.title')}
                 <Button component={Link} to={`/libraries/${libraryId}/categories/add`}
                     variant="default">{t('category.actions.add.title')}</Button>
