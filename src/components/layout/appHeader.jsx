@@ -22,6 +22,7 @@ import classes from './appHeader.module.css';
 import Logo from '../logo';
 import LanguageSwitch from './languageSwitch';
 import DarkModeToggle from './darkModeToggle';
+import AppearanceMenu from './appearanceMenu';
 import ProfileDropDown from './profileDropDown';
 import LibrarySwitcher from './librarySwitcher';
 import { IconHome, IconLibrary, IconLibraryEditor, IconDictionary, IconFont, IconTools, IconChevronDown } from '@/components/icons';
@@ -85,6 +86,7 @@ const AppHeader = () => {
                     </Group>
                     <Group visibleFrom="sm" wrap="nowrap">
                         <LanguageSwitch />
+                        <AppearanceMenu />
                         <DarkModeToggle />
                         <ProfileDropDown />
                     </Group>
@@ -148,6 +150,7 @@ const AppHeader = () => {
 
                     <Group my="sm" >
                         <LanguageSwitch />
+                        <AppearanceMenu />
                         <DarkModeToggle />
                     </Group>
 

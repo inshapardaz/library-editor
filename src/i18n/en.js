@@ -16,6 +16,18 @@ const en = {
         series: "Series",
         periodicals: "Periodicals",
     },
+    appearance: {
+        title: "Appearance",
+        theme: "Theme",
+        themes: {
+            nawishta: "Nawishta",
+            white: "White",
+            black: "Black",
+        },
+        urduFont: "Urdu font",
+        nastaleeq: "Nastaleeq",
+        naskh: "Naskh",
+    },
     footer: {
         copyrights: "Copyrights Nawishta. All rights reserved.",
     },

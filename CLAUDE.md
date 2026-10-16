@@ -56,6 +56,10 @@ All routes are centralized in `src/router.jsx`, grouped by layout:
 
 Lexical-based editor in `src/components/editor/`, supporting RTL, Urdu Nastaleeq fonts, markdown import/export, and side-by-side OCR editing. Extend via `editor/plugins/` and `editor/nodes/`; editor commands live in `editor/commands/`.
 
+### Themes
+
+`html[data-nw-theme="nawishta|white|black"]` (set from `uiSlice`, stored in local storage as `uiTheme`) picks the palette defined in `src/styles/appearance.css`; `createAppTheme(variant)` in `src/theme` supplies the Mantine accent/type/shape. Components use the semantic variables (`--paper*`, `--ink*`, `--nw-line`, `--nw-chrome-*`, `--nw-hero-*`) instead of `light-dark(...)` greys. White/Black pin the colour scheme; Nawishta follows the light/dark toggle.
+
 ### i18n / RTL
 
 English (`en`, LTR) and Urdu (`ur`, RTL) only. Keys must be added to **both** `src/i18n/en.js` and `src/i18n/ur.js`. Direction is driven by `uiSlice`'s language selector and applied via Mantine's `DirectionProvider`. Avoid hard-coded `left`/`right` CSS — use Mantine logical properties so RTL keeps working.

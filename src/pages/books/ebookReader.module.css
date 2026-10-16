@@ -1,5 +1,5 @@
 .reader {
-    background-color:  light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
+    background-color:  var(--paper-card);
     position: fixed;
     bottom: 0;
     top: 60px;

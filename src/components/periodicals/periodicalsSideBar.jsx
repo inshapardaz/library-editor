@@ -33,7 +33,7 @@ const PeriodicalsSideBar = ({ selectedCategory, frequency }) => {
 
     if (error) {
         return (<Card withBorder m="sm">
-            <Center maw={400} h={100} bg="var(--mantine-color-gray-light)">
+            <Center maw={400} h={100} bg="var(--paper-deep)">
 
             </Center>
         </Card>)
@@ -41,7 +41,7 @@ const PeriodicalsSideBar = ({ selectedCategory, frequency }) => {
 
     if (!categories || !categories.data || categories.data.length < 1) {
         return (<Card withBorder m="sm">
-            <Center maw={400} h={100} bg="var(--mantine-color-gray-light)">
+            <Center maw={400} h={100} bg="var(--paper-deep)">
                 {t('categories.empty.title')}
             </Center>
         </Card>)
