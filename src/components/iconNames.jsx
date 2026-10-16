@@ -6,6 +6,7 @@ const IconNames = {
     LibraryEdit: "libraryEdit",
     Dictionary: "dictionary",
     Font: "font",
+    Apps: "apps",
     Tools: "tools",
     Moon: "moon",
     Sun: "sun",
