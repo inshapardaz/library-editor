@@ -26,6 +26,7 @@ import Logo from '@/components/logo';
 import LanguageSwitch from './languageSwitch';
 import DarkModeToggle from './darkModeToggle';
 import AppearanceMenu from './appearanceMenu';
+import AppSwitcher from './appSwitcher';
 import LibrarySwitcher from './librarySwitcher';
 import ProfileDropDown from './profileDropDown';
 import SearchBox from '@/components/search';
@@ -43,10 +44,9 @@ const LibraryHeader = ({ library }) => {
             <header className={classes.header}>
                 <Group justify="space-between" h="100%" wrap="nowrap">
                     <Group h="100%" gap={0}>
+                        <Logo home />
                         <LibrarySwitcher className={classes.link} library={library}>
                             <NavLink to={`/libraries/${library.id}`} className={classes.link}>
-                                <Logo />
-                                <Space w="md" />
                                 <Text visibleFrom="lg" size="sm" truncate="end">
                                     {library.name}
                                 </Text>
@@ -126,6 +126,7 @@ const LibraryHeader = ({ library }) => {
                     </Group>
                     <Group visibleFrom="sm" wrap="nowrap">
                         <LanguageSwitch />
+                        <AppSwitcher />
                         <AppearanceMenu />
                         <DarkModeToggle />
                         <ProfileDropDown />
@@ -210,6 +211,7 @@ const LibraryHeader = ({ library }) => {
 
                     <Group my="sm" >
                         <LanguageSwitch />
+                        <AppSwitcher />
                         <AppearanceMenu />
                         <DarkModeToggle />
                     </Group>

@@ -27,7 +27,8 @@ import ProfileDropDown from './profileDropDown';
 import LibrarySwitcher from './librarySwitcher';
 import { IconHome, IconLibrary, IconLibraryEditor, IconDictionary, IconFont, IconTools, IconChevronDown } from '@/components/icons';
 import ToolsMenu from './tools';
-import { LANGUAGE_TOOLS } from '@/config';
+import { LANGUAGE_TOOLS, LIBRARY_EDITOR_URL } from '@/config';
+import AppSwitcher from './appSwitcher';
 //----------------------------------------------
 
 const AppHeader = () => {
@@ -39,9 +40,8 @@ const AppHeader = () => {
             <header className={classes.header}>
                 <Group justify="space-between" h="100%" wrap="nowrap">
                     <Group h="100%" gap={0}>
+                        <Logo home />
                         <NavLink to={`/`} className={classes.link}>
-                            <Logo />
-                            <Space w="md" />
                             {t('app')}
                         </NavLink >
                     </Group>
@@ -61,7 +61,7 @@ const AppHeader = () => {
                             </Text>
                             <IconChevronDown />
                         </LibrarySwitcher>
-                        <Link to="https://editor.nawishta.co.uk" className={classes.link}>
+                        <Link to={LIBRARY_EDITOR_URL} className={classes.link}>
                             <IconLibraryEditor height="24px" />
                             <Space w="md" />
                             <Text visibleFrom="lg">
@@ -85,6 +85,7 @@ const AppHeader = () => {
                         <ToolsMenu />
                     </Group>
                     <Group visibleFrom="sm" wrap="nowrap">
+                        <AppSwitcher />
                         <LanguageSwitch />
                         <AppearanceMenu />
                         <DarkModeToggle />
@@ -122,7 +123,7 @@ const AppHeader = () => {
                             {t('header.libraries')}
                         </Group>
                     </LibrarySwitcher>
-                    <Link to="https://editor.nawishta.co.uk" className={classes.link}>
+                    <Link to={LIBRARY_EDITOR_URL} className={classes.link}>
                         <IconLibraryEditor height="24px" />
                         <Space w="md" />
                         {t('header.libraryEditor')}
@@ -149,6 +150,7 @@ const AppHeader = () => {
                     <Divider my="sm" />
 
                     <Group my="sm" >
+                        <AppSwitcher />
                         <LanguageSwitch />
                         <AppearanceMenu />
                         <DarkModeToggle />

@@ -35,6 +35,8 @@ There is no unit test runner configured — all automated tests are Playwright E
 
 `src/config.js` derives `NODE_ENV`, `API_URL`, and `MAIN_SITE` from `window.location.host` (no `.env` files) — `localhost` → local API on `:4000`, `editor.nawishta.dev` → dev API, `editor.nawishta.co.uk` → production API.
 
+Every value can be overridden at runtime (`window.__ENV__` from `/env-config.js`, written at container start by `config/docker/40-env-config.sh` from env vars of the same names) or at build/dev time (`VITE_*`, see `.env.example`). Besides `NODE_ENV`/`API_URL`/`MAIN_SITE` this covers the links to the other Nawishta apps — `LIBRARIES_URL`, `LIBRARY_EDITOR_URL` (this app), `DICTIONARY_URL` (`LANGUAGE_TOOLS` is its old name) — used by the header logo (goes to `MAIN_SITE`) and the app switcher (`components/layout/appSwitcher.jsx`).
+
 ### Data fetching — RTK Query only
 
 All server communication goes through RTK Query API slices in `src/store/slices/*.api.js` (one per domain: `books.api.js`, `authors.api.js`, `periodicals.api.js`, etc.). Do not hand-roll fetch/axios calls in components or store server data in plain Redux slices.

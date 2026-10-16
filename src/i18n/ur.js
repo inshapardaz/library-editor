@@ -25,6 +25,14 @@ export const numberMap = {
 const ur = {
     app: "نوشتہ",
     slogan: "اردو کی کتابیں اور بہت کچھ ، بہترین انداز میں",
+    apps: {
+        title: "نوشتہ ایپس",
+        logo: "نوشتہ کا صفحۂ اول",
+        home: "صفحۂ اول",
+        libraries: "کتب خانے",
+        editor: "کتب خانہ ایڈیٹر",
+        dictionary: "لغت اور اوزار",
+    },
     header: {
         home: "صفحۂ اوّل",
         libraries: "کتب خانے",
