@@ -18,6 +18,7 @@ import {
     Badge,
     Space,
     Stack,
+    Tooltip,
 } from '@mantine/core';
 
 import { useDisclosure } from '@mantine/hooks';
@@ -75,14 +76,12 @@ const CategoriesMenu = ({ library, title, icon, className, target, allLabel, ext
         <>
             <Popover width={600} position="bottom" radius="md" shadow="md" disabled={isFetching} withinPortal visibleFrom="sm" className={className}>
                 <Popover.Target>
-                    <UnstyledButton className={classes.link}>
-                        {icon}
-                        <Space w="md" />
-                        <Text visibleFrom="lg" size="sm">
-                            {title}
-                        </Text>
-                        <IconChevronDown />
-                    </UnstyledButton >
+                    <Tooltip label={title}>
+                        <UnstyledButton className={classes.link}>
+                            {icon}
+                            <IconChevronDown />
+                        </UnstyledButton >
+                    </Tooltip>
                 </Popover.Target>
 
                 <Popover.Dropdown style={{ overflow: 'hidden' }}>

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 // Ui Library Imports
-import { Divider, Group, Menu, Space, Text } from "@mantine/core";
+import { Divider, Group, Menu, Tooltip } from "@mantine/core";
 
 // Local Imports
 import classes from './appHeader.module.css';
@@ -28,21 +28,19 @@ const ToolsMenu = () => {
             withinPortal
         >
             <Menu.Target>
-                <Group wrap="nowrap" className={classes.link}>
-                    <IconTools height="24px" />
-                    <Space w="md" />
-                    <Text visibleFrom="lg" size="sm">
-                        {t('header.tools')}
-                    </Text>
-                    <IconChevronDown
-                        size={16}
-                        stroke={1.5}
-                        style={{
-                            transform: !isOpen ? "rotate(0)" : "rotate(180deg)",
-                            transitionDuration: "250ms"
-                        }}
-                    />
-                </Group>
+                <Tooltip label={t('header.tools')}>
+                    <Group wrap="nowrap" gap={0} className={classes.link}>
+                        <IconTools height="24px" />
+                        <IconChevronDown
+                            size={16}
+                            stroke={1.5}
+                            style={{
+                                transform: !isOpen ? "rotate(0)" : "rotate(180deg)",
+                                transitionDuration: "250ms"
+                            }}
+                        />
+                    </Group>
+                </Tooltip>
             </Menu.Target>
             <Menu.Dropdown>
                 {/* The correction lists are managed in LanguageTools. */}
