@@ -14,6 +14,7 @@ import {
     Space,
     Text,
     Button,
+    Tooltip,
 } from '@mantine/core';
 
 import { useDisclosure } from '@mantine/hooks';
@@ -98,20 +99,16 @@ const LibraryHeader = ({ library }) => {
                             countFunc={i => i.poetryCount}
                             title={t('header.poetry')}
                             icon={<IconPoetries height="24px" />} />
-                        <NavLink to={`/libraries/${library.id}/authors`} className={classes.link}>
-                            <IconAuthors height="24px" />
-                            <Space w="md" />
-                            <Text visibleFrom="lg" size="sm">
-                                {t('header.authors')}
-                            </Text>
-                        </NavLink >
-                        <NavLink to={`/libraries/${library.id}/series`} className={classes.link}>
-                            <IconSeries height="24px" />
-                            <Space w="md" />
-                            <Text visibleFrom="lg" size="sm">
-                                {t('header.series')}
-                            </Text>
-                        </NavLink >
+                        <Tooltip label={t('header.authors')}>
+                            <NavLink to={`/libraries/${library.id}/authors`} className={classes.link}>
+                                <IconAuthors height="24px" />
+                            </NavLink >
+                        </Tooltip>
+                        <Tooltip label={t('header.series')}>
+                            <NavLink to={`/libraries/${library.id}/series`} className={classes.link}>
+                                <IconSeries height="24px" />
+                            </NavLink >
+                        </Tooltip>
                         <CategoriesMenu library={library}
                             className={classes.link}
                             target='periodicals'

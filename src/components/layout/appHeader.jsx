@@ -11,7 +11,7 @@ import {
     ScrollArea,
     rem,
     Space,
-    Text,
+    Tooltip,
 } from '@mantine/core';
 
 import { useDisclosure } from '@mantine/hooks';
@@ -46,42 +46,34 @@ const AppHeader = () => {
                         </NavLink >
                     </Group>
                     <Group h="100%" gap={0} visibleFrom="sm" wrap="nowrap">
-                        <Link to="/" className={classes.link}>
-                            <IconHome height="24px" />
-                            <Space w="md" />
-                            <Text visibleFrom="lg">
-                                {t('header.home')}
-                            </Text>
-                        </Link>
+                        <Tooltip label={t('header.home')}>
+                            <Link to="/" className={classes.link}>
+                                <IconHome height="24px" />
+                            </Link>
+                        </Tooltip>
                         <LibrarySwitcher className={classes.link}>
-                            <IconLibrary height="24px" />
-                            <Space w="md" />
-                            <Text visibleFrom="lg">
-                                {t('header.libraries')}
-                            </Text>
-                            <IconChevronDown />
+                            <Tooltip label={t('header.libraries')}>
+                                <Group gap={0} wrap="nowrap">
+                                    <IconLibrary height="24px" />
+                                    <IconChevronDown />
+                                </Group>
+                            </Tooltip>
                         </LibrarySwitcher>
-                        <Link to={LIBRARY_EDITOR_URL} className={classes.link}>
-                            <IconLibraryEditor height="24px" />
-                            <Space w="md" />
-                            <Text visibleFrom="lg">
-                                {t('header.libraryEditor')}
-                            </Text>
-                        </Link>
-                        <Link to={LANGUAGE_TOOLS} className={classes.link}>
-                            <IconDictionary height="24px" />
-                            <Space w="md" />
-                            <Text visibleFrom="lg">
-                                {t('header.dictionaries')}
-                            </Text>
-                        </Link>
-                        <Link to="https://fonts.nawishta.co.uk" className={classes.link}>
-                            <IconFont height="24px" />
-                            <Space w="md" />
-                            <Text visibleFrom="lg">
-                                {t('header.fonts')}
-                            </Text>
-                        </Link>
+                        <Tooltip label={t('header.libraryEditor')}>
+                            <Link to={LIBRARY_EDITOR_URL} className={classes.link}>
+                                <IconLibraryEditor height="24px" />
+                            </Link>
+                        </Tooltip>
+                        <Tooltip label={t('header.dictionaries')}>
+                            <Link to={LANGUAGE_TOOLS} className={classes.link}>
+                                <IconDictionary height="24px" />
+                            </Link>
+                        </Tooltip>
+                        <Tooltip label={t('header.fonts')}>
+                            <Link to="https://fonts.nawishta.co.uk" className={classes.link}>
+                                <IconFont height="24px" />
+                            </Link>
+                        </Tooltip>
                         <ToolsMenu />
                     </Group>
                     <Group visibleFrom="sm" wrap="nowrap">
