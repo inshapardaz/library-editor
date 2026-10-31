@@ -24,7 +24,6 @@ const DarkModeToggle = () => {
 
     return (
         <Switch
-            color="gray"
             disabled={!isNawishta}
             size="lg"
             checked={computedColorScheme === 'light'}
