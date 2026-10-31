@@ -147,14 +147,14 @@
 
 /* Point Mantine's own surfaces at the theme so inputs, modals and the page match it. */
 :root[data-nw-theme] {
-    --mantine-color-body: var(--paper);
-    --mantine-color-text: var(--ink);
-    --mantine-color-dimmed: var(--ink-soft);
-    --mantine-color-default: var(--paper-card);
-    --mantine-color-default-border: var(--nw-line);
-    --mantine-color-default-hover: var(--paper-deep);
-    --mantine-color-default-color: var(--ink);
-    --mantine-color-anchor: var(--nw-accent-ink);
+    --mantine-color-body: var(--paper) !important;
+    --mantine-color-text: var(--ink) !important;
+    --mantine-color-dimmed: var(--ink-soft) !important;
+    --mantine-color-default: var(--paper-card) !important;
+    --mantine-color-default-border: var(--nw-line) !important;
+    --mantine-color-default-hover: var(--paper-deep) !important;
+    --mantine-color-default-color: var(--ink) !important;
+    --mantine-color-anchor: var(--nw-accent-ink) !important;
 }
 
 /* Text inputs, the dark-mode switch, segmented controls (sort/layout toggles), pill tags
@@ -199,6 +199,13 @@
 
 [data-combobox-option]:hover:not([data-combobox-selected]) {
     background-color: var(--paper-deep) !important;
+}
+
+/* Menu items (tools, app switcher, profile, sort, language, etc.) hover/keyboard-active with
+   Mantine's neutral grey instead of the theme. */
+.mantine-Menu-item {
+    --menu-item-hover: var(--paper-deep) !important;
+    color: var(--ink) !important;
 }
 
 body {

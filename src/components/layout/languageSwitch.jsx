@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import propTypes from 'prop-types';
 
 // UI Library
-import { ActionIcon, Avatar, Button, Menu } from "@mantine/core";
+import { Avatar, Button, Menu, Text, UnstyledButton } from "@mantine/core";
 
 // Local Import
 import { languages, selectedLanguage, setLocale } from "@/store/slices/uiSlice";
@@ -41,9 +41,9 @@ const LanguageSwitch = () => {
             </Button.Group>
             <Menu shadow="md" width={200} visibleFrom="sm">
                 <Menu.Target>
-                    <ActionIcon variant="default" size="xl" aria-label="Select Language">
-                        <LanguageAvatar language={lang} />
-                    </ActionIcon>
+                    <UnstyledButton aria-label="Select Language">
+                        <Text fw={600} size="sm">{lang ? lang.key.toUpperCase() : '-'}</Text>
+                    </UnstyledButton>
                 </Menu.Target>
 
                 <Menu.Dropdown>
