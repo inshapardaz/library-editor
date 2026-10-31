@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // Ui Library import
-import { Card, Text, Group, Divider, useMantineTheme, Center } from '@mantine/core';
+import { Card, Text, Group, Divider, Center } from '@mantine/core';
 
 // Local imports
 import { IconBooks, IconWritings, IconAuthor, IconPoetries, IconEdit } from '@/components/icons';
@@ -14,10 +14,9 @@ import AuthorDeleteButton from './authorDeleteButton';
 //---------------------------------------
 
 const AuthorCard = ({ libraryId, author }) => {
-    const theme = useMantineTheme();
     const { t } = useTranslation();
 
-    const icon = <Center h={225}><IconAuthor width={125} style={{ color: theme.colors.dark[1] }} /></Center>;
+    const icon = <Center h={225}><IconAuthor width={125} style={{ color: 'var(--ink-soft)' }} /></Center>;
 
     return (
         <Card shadow="sm" padding="lg" radius="md" withBorder>
@@ -31,23 +30,23 @@ const AuthorCard = ({ libraryId, author }) => {
 
             <Group justify="space-between" mt="md" mb="xs">
                 <IconText link={`/libraries/${libraryId}/books?author=${author.id}`}
-                    icon={<IconBooks height={16} style={{ color: theme.colors.dark[2] }} />}
+                    icon={<IconBooks height={16} style={{ color: 'var(--ink-soft)' }} />}
                     text={author.bookCount} />
                 <Divider />
                 <IconText link={`/libraries/${libraryId}/writings?author=${author.id}`}
-                    icon={<IconWritings height={16} style={{ color: theme.colors.dark[2] }} />}
+                    icon={<IconWritings height={16} style={{ color: 'var(--ink-soft)' }} />}
                     text={author.articleCount} />
                 <Divider />
                 <IconText
                     link={`/libraries/${libraryId}/poetry?author=${author.id}`}
-                    icon={<IconPoetries height={16} style={{ color: theme.colors.dark[2] }} />}
+                    icon={<IconPoetries height={16} style={{ color: 'var(--ink-soft)' }} />}
                     text={author.poetryCount} />
             </Group>
             <Group justify="space-between" mt="md" mb="xs">
                 <If condition={author.links.update} >
                     <Divider />
                     <IconText
-                        icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />}
+                        icon={<IconEdit height={16} style={{ color: 'var(--ink-soft)' }} />}
                         tooltip={t('actions.edit')}
                         link={`/libraries/${libraryId}/authors/${author.id}/edit`}
                     />

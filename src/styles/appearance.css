@@ -147,11 +147,165 @@
 
 /* Point Mantine's own surfaces at the theme so inputs, modals and the page match it. */
 :root[data-nw-theme] {
-    --mantine-color-body: var(--paper);
-    --mantine-color-text: var(--ink);
-    --mantine-color-dimmed: var(--ink-soft);
-    --mantine-color-default: var(--paper-card);
-    --mantine-color-default-border: var(--nw-line);
+    --mantine-color-body: var(--paper) !important;
+    --mantine-color-text: var(--ink) !important;
+    --mantine-color-dimmed: var(--ink-soft) !important;
+    --mantine-color-default: var(--paper-card) !important;
+    --mantine-color-default-border: var(--nw-line) !important;
+    --mantine-color-default-hover: var(--paper-deep) !important;
+    --mantine-color-default-color: var(--ink) !important;
+    --mantine-color-anchor: var(--nw-accent-ink) !important;
+    --mantine-color-placeholder: var(--ink-soft) !important;
+    --mantine-color-disabled: var(--paper-deep) !important;
+    --mantine-color-disabled-color: var(--ink-soft) !important;
+    --mantine-color-disabled-border: var(--nw-line) !important;
+}
+
+/* Plain links (e.g. Text component={Link}, used for titles across list/card items) don't go
+   through Mantine's Anchor component, so --mantine-color-anchor above doesn't reach them and
+   they fall back to the browser's default blue/visited-purple. A low-specificity tag selector
+   covers those without overriding anything that sets its own colour (classes, c=, etc) — the
+   :visited case is wrapped in :where() so it stays lower-specificity than any class-based link
+   styling (e.g. the header's .link), rather than winning over it once a link's been visited. */
+a {
+    color: var(--nw-accent-ink);
+}
+
+a:where(:visited) {
+    color: var(--nw-accent-ink);
+}
+
+/* Text inputs, the dark-mode switch, segmented controls (sort/layout toggles), pill tags
+   (multiselect/tags inputs) and combobox dropdown options (select/multiselect/tags inputs)
+   default to Mantine's neutral greys; point them at the paper/ink tones instead. */
+[data-variant='default'] {
+    --input-bg: var(--paper-card) !important;
+    --input-bd: var(--nw-line) !important;
+    --input-bd-focus: var(--nw-accent-ink) !important;
+}
+
+.mantine-Switch-track {
+    --switch-bg: var(--paper-deep) !important;
+    --switch-text-color: var(--ink-soft) !important;
+}
+
+.mantine-Switch-input:checked + .mantine-Switch-track {
+    --switch-bg: var(--switch-color) !important;
+    --switch-text-color: var(--mantine-color-white) !important;
+}
+
+.mantine-SegmentedControl-root {
+    background-color: var(--paper-deep) !important;
+}
+
+.mantine-SegmentedControl-indicator {
+    background-color: var(--paper-card) !important;
+}
+
+.mantine-SegmentedControl-label {
+    color: var(--ink-soft) !important;
+}
+
+.mantine-SegmentedControl-label[data-active] {
+    color: var(--ink) !important;
+}
+
+.mantine-Pill-root {
+    background-color: var(--paper-deep) !important;
+    color: var(--ink) !important;
+}
+
+/* Avatar placeholders (author avatars, the header profile menu's avatar) default to a solid
+   grey circle; make them transparent like the other header/sidebar icons. */
+.mantine-Avatar-placeholder {
+    background: transparent !important;
+    color: currentColor !important;
+}
+
+[data-combobox-option]:hover:not([data-combobox-selected]) {
+    background-color: var(--paper-deep) !important;
+}
+
+/* Menu items (tools, app switcher, profile, sort, language, etc.) hover/keyboard-active with
+   Mantine's neutral grey instead of the theme. */
+.mantine-Menu-item {
+    --menu-item-hover: var(--paper-deep) !important;
+    color: var(--ink) !important;
+}
+
+/* The header search (Spotlight) result list hovered with Mantine's neutral grey too. */
+.mantine-Spotlight-action:hover:not([data-selected]) {
+    background-color: var(--paper-deep) !important;
+}
+
+/* NavLink (sidebars: books/periodicals/poetry/writings category lists, etc.) only uses the
+   theme for its *active* item's hover (--nl-hover); a plain, non-active hover is hardcoded to
+   Mantine's neutral grey. */
+.mantine-NavLink-root:hover:not([data-active], [aria-current='page']) {
+    background-color: var(--paper-deep) !important;
+}
+
+/* Progress bar track defaults to Mantine's neutral grey. */
+.mantine-Progress-root {
+    background-color: var(--paper-deep) !important;
+}
+
+/* Tabs hover (list/pills variants) defaults to Mantine's neutral grey. */
+.mantine-Tabs-list {
+    --tab-hover-color: var(--paper-deep) !important;
+}
+
+/* Loading skeletons' shimmer defaults to Mantine's neutral grey (not themeable via a CSS
+   variable — it's a hardcoded background-color on the shimmer pseudo-element). */
+.mantine-Skeleton-root[data-visible]::after {
+    background-color: var(--paper-deep) !important;
+}
+
+/* The Likhari editor (src/components/editor) has its own design-token system (--editor-*,
+   injected by its EditorThemeProvider into a <style> in <head>) rather than Mantine's own
+   tokens, so the app's theming above doesn't reach it. Editor.jsx already passes accentColor
+   for --editor-accent/--editor-accent-soft; point its surface/text/border tokens at the same
+   paper/ink/line the rest of the app uses. !important beats the injected stylesheet
+   regardless of where it lands relative to this one (it's appended to <head> at runtime). */
+.likhari-theme-scope {
+    --editor-paper: var(--paper-card) !important;
+    --editor-paper-dim: var(--paper-deep) !important;
+    --editor-ink: var(--ink) !important;
+    --editor-ink-soft: var(--ink-soft) !important;
+    --editor-line: var(--nw-line) !important;
+    --editor-line-strong: var(--nw-line) !important;
+}
+
+/* The toolbar's buttons (Mantine's Toolbar.Toggle) are rendered by the editor's own NESTED
+   MantineProvider, which (like the top-level one) writes its CSS variables to :root — so it
+   shadows the app's own --mantine-color-* overrides for anything it redefines, including the
+   idle/hover/disabled greys below. Targeting the final properties on the toggle's stable class
+   sidesteps that fight entirely, rather than trying to win a --mantine-color-* variable war. */
+.mantine-Toolbar-toggle {
+    background-color: var(--editor-paper) !important;
+    color: var(--editor-ink) !important;
+    border-color: var(--editor-line) !important;
+}
+
+.mantine-Toolbar-toggle:hover:not([data-disabled], [data-active]) {
+    background-color: var(--editor-paper-dim) !important;
+}
+
+.mantine-Toolbar-toggle[data-active] {
+    background-color: var(--editor-accent-soft) !important;
+    color: var(--editor-accent) !important;
+    border-color: transparent !important;
+}
+
+.mantine-Toolbar-toggle[data-active]:hover:not([data-disabled]) {
+    background-color: var(--editor-accent-soft) !important;
+}
+
+.mantine-Toolbar-toggle[data-disabled] {
+    background-color: var(--editor-paper-dim) !important;
+    color: var(--editor-ink-soft) !important;
+    border-color: transparent !important;
+    opacity: 0.6;
 }
 
 body {

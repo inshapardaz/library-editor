@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
 // UI Library Imports
-import { Box, Button, Card, Center, Container, Grid, Group, LoadingOverlay, rem, Skeleton, Textarea, TextInput, useMantineTheme } from "@mantine/core";
+import { Box, Button, Card, Center, Container, Grid, Group, LoadingOverlay, rem, Skeleton, Textarea, TextInput } from "@mantine/core";
 import { useForm, isNotEmpty } from '@mantine/form';
 
 // Local imports
@@ -134,7 +134,6 @@ PeriodicalForm.propTypes = {
 
 const EditPeriodicalPage = () => {
     const navigate = useNavigate();
-    const theme = useMantineTheme();
     const { t } = useTranslation();
     const { libraryId, periodicalId } = useParams();
     const isEditing = useMemo(() => periodicalId != null, [periodicalId]);
@@ -177,7 +176,7 @@ const EditPeriodicalPage = () => {
         }
     };
 
-    const icon = <Center h={450}><IconPeriodical width={250} style={{ color: theme.colors.dark[1] }} /></Center>;
+    const icon = <Center h={450}><IconPeriodical width={250} style={{ color: 'var(--ink-soft)' }} /></Center>;
 
     const title = periodical ? periodical.title : t("periodical.actions.add.title");
     if (isFetching) return <PageLoading />;

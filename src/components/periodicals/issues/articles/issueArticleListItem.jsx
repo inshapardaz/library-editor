@@ -8,8 +8,7 @@ import {
     Divider,
     Group,
     Stack,
-    Text,
-    useMantineTheme
+    Text
 } from '@mantine/core';
 import { Draggable } from '@hello-pangea/dnd';
 
@@ -24,7 +23,6 @@ import IssueArticleEditForm from './issueArticleEditForm';
 
 //---------------------------------------------
 const IssueArticleListItem = ({ t, libraryId, periodicalId, issue, article, index, isSelected = false, onSelectChanged = () => { } }) => {
-    const theme = useMantineTheme();
     return (
         <Draggable key={article.id} index={index} draggableId={`${article.id}`}>
             {(provided, snapshot) => (
@@ -39,7 +37,7 @@ const IssueArticleListItem = ({ t, libraryId, periodicalId, issue, article, inde
                     <Checkbox className={classes.selection}
                         checked={isSelected}
                         onChange={(e) => onSelectChanged(e.currentTarget.checked)} />
-                    <EditingStatusIcon editingStatus={article.status} width={32} style={{ color: theme.colors.dark[2] }} />
+                    <EditingStatusIcon editingStatus={article.status} width={32} style={{ color: 'var(--ink-soft)' }} />
                     <Text pr="md" className={classes.symbol}>{article.sequenceNumber}</Text>
                     <Group mt="md" className={classes.details}>
                         <Stack gap="sm">
@@ -54,14 +52,14 @@ const IssueArticleListItem = ({ t, libraryId, periodicalId, issue, article, inde
                                     <>
                                         <Divider orientation='vertical' />
                                         <IconText text={article.writerAccountName} size="sm"
-                                            icon={<IconWriter style={{ color: theme.colors.dark[2] }} />} />
+                                            icon={<IconWriter style={{ color: 'var(--ink-soft)' }} />} />
                                     </>
                                 </If>
                                 <If condition={article.reviewerAccountId}>
                                     <>
                                         <Divider orientation='vertical' />
                                         <IconText text={article.reviewerAccountName} size="sm"
-                                            icon={<IconReviewer style={{ color: theme.colors.dark[2] }} />} />
+                                            icon={<IconReviewer style={{ color: 'var(--ink-soft)' }} />} />
                                     </>
                                 </If>
                             </Group>
@@ -69,7 +67,7 @@ const IssueArticleListItem = ({ t, libraryId, periodicalId, issue, article, inde
                         <span style={{ flex: 1 }}></span>
                         <If condition={article.links.update} >
                             <IconText
-                                icon={<IconReaderText height={16} style={{ color: theme.colors.dark[2] }} />}
+                                icon={<IconReaderText height={16} style={{ color: 'var(--ink-soft)' }} />}
                                 tooltip={t('issueArticle.actions.read.title')}
                                 link={`/libraries/${libraryId}/periodicals/${periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}/articles/${article.sequenceNumber}`}
                             />
@@ -77,7 +75,7 @@ const IssueArticleListItem = ({ t, libraryId, periodicalId, issue, article, inde
                         <If condition={article.links.update} >
                             <Divider orientation='vertical' />
                             <IssueArticleEditForm libraryId={libraryId} issue={issue} article={article} >
-                                <IconText icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />}
+                                <IconText icon={<IconEdit height={16} style={{ color: 'var(--ink-soft)' }} />}
                                     tooltip={t('actions.edit')} />
                             </IssueArticleEditForm>
                         </If>

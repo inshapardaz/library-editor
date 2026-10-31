@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useCallback, useEffect, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { useComputedColorScheme } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 
@@ -8,6 +9,8 @@ import { EditorRoot } from '@inshapardaz/likhari-react';
 
 // Local imports
 import { apiAutoCorrectStore, apiUserWordStore, apiCompletionStore } from './stores';
+import { selectedTheme } from '@/store/slices/uiSlice';
+import { DEFAULT_ACCENT, PLAIN_ACCENT } from '@/theme/accent';
 
 // likhari-react's own localStorage-backed stores, paired with the API adapters
 // above so corrections/dictionary/completions keep working offline too.
@@ -89,6 +92,8 @@ const Editor = ({
 }) => {
     const colorScheme = useComputedColorScheme('light');
     const locale = useMemo(() => (language === 'ur' ? 'ur' : 'en'), [language]);
+    const themeName = useSelector(selectedTheme);
+    const accentColor = themeName === 'nawishta' ? DEFAULT_ACCENT : PLAIN_ACCENT;
 
     const [uniformFont, setUniformFont] = useLocalStorage({
         key: 'likhari-uniform-font',
@@ -126,6 +131,7 @@ const Editor = ({
             autoCompleteLanguage={locale}
             spellCheckLanguage={locale}
             colorScheme={colorScheme}
+            accentColor={accentColor}
             locale={locale}
             placeholder={placeholder}
             height={height ?? '100%'}

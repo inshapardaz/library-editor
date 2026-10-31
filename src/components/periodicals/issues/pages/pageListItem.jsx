@@ -8,8 +8,7 @@ import {
     Divider,
     Group,
     Stack,
-    Text,
-    useMantineTheme
+    Text
 } from '@mantine/core';
 import { Draggable } from '@hello-pangea/dnd';
 
@@ -25,7 +24,6 @@ import PageEditForm from './pageEditForm';
 
 //---------------------------------------------
 const PageListItem = ({ t, libraryId, issue, page, index, isSelected = false, onSelectChanged = () => { } }) => {
-    const theme = useMantineTheme();
     return (
         <Draggable key={page.sequenceNumber} index={index} draggableId={`${page.sequenceNumber}`}>
             {(provided, snapshot) => (
@@ -39,7 +37,7 @@ const PageListItem = ({ t, libraryId, issue, page, index, isSelected = false, on
                     </div>
                     <Checkbox className={classes.selection} checked={isSelected}
                         onChange={e => onSelectChanged(e.currentTarget.checked)} />
-                    <EditingStatusIcon editingStatus={page.status} width={32} style={{ color: theme.colors.dark[2] }} />
+                    <EditingStatusIcon editingStatus={page.status} width={32} style={{ color: 'var(--ink-soft)' }} />
                     <Text pr="md" className={classes.symbol} component={Link} to={`/libraries/${libraryId}/periodicals/${issue.periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}/pages/${page.sequenceNumber}/contents/edit`}>
                         {page.sequenceNumber}
                     </Text>
@@ -56,14 +54,14 @@ const PageListItem = ({ t, libraryId, issue, page, index, isSelected = false, on
                                     <>
                                         <Divider orientation='vertical' />
                                         <IconText text={page.writerAccountName} size="sm"
-                                            icon={<IconWriter style={{ color: theme.colors.dark[2] }} />} />
+                                            icon={<IconWriter style={{ color: 'var(--ink-soft)' }} />} />
                                     </>
                                 </If>
                                 <If condition={page.reviewerAccountId}>
                                     <>
                                         <Divider orientation='vertical' />
                                         <IconText text={page.reviewerAccountName} size="sm"
-                                            icon={<IconReviewer style={{ color: theme.colors.dark[2] }} />} />
+                                            icon={<IconReviewer style={{ color: 'var(--ink-soft)' }} />} />
                                     </>
                                 </If>
                             </Group>
@@ -71,7 +69,7 @@ const PageListItem = ({ t, libraryId, issue, page, index, isSelected = false, on
                         <span style={{ flex: 1 }}></span>
                         <If condition={page.links.update}>
                             <IconText
-                                icon={<IconReaderText height={16} style={{ color: theme.colors.dark[2] }} />}
+                                icon={<IconReaderText height={16} style={{ color: 'var(--ink-soft)' }} />}
                                 tooltip={t('issueArticle.actions.read.title')}
                                 link={`/libraries/${libraryId}/periodicals/${issue.periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}/pages/${page.sequenceNumber}`} />
                         </If>
@@ -81,7 +79,7 @@ const PageListItem = ({ t, libraryId, issue, page, index, isSelected = false, on
                                 issue={issue}
                                 page={page}>
                                 <IconText
-                                    icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />}
+                                    icon={<IconEdit height={16} style={{ color: 'var(--ink-soft)' }} />}
                                     tooltip={t('actions.edit')} />
                             </PageEditForm>
                         </If>

@@ -24,9 +24,7 @@ import classes from './appHeader.module.css';
 
 import { IconBooks, IconLibrary, IconChevronDown, IconAuthors, IconSeries, IconPoetries, IconPeriodicals, IconWritings } from '@/components/icons';
 import Logo from '@/components/logo';
-import LanguageSwitch from './languageSwitch';
 import DarkModeToggle from './darkModeToggle';
-import AppearanceMenu from './appearanceMenu';
 import AppSwitcher from './appSwitcher';
 import LibrarySwitcher from './librarySwitcher';
 import ProfileDropDown from './profileDropDown';
@@ -122,9 +120,7 @@ const LibraryHeader = ({ library }) => {
                         <SearchBox />
                     </Group>
                     <Group visibleFrom="sm" wrap="nowrap">
-                        <LanguageSwitch />
                         <AppSwitcher />
-                        <AppearanceMenu />
                         <DarkModeToggle />
                         <ProfileDropDown />
                     </Group>
@@ -207,9 +203,7 @@ const LibraryHeader = ({ library }) => {
                     <Divider my="sm" />
 
                     <Group my="sm" >
-                        <LanguageSwitch />
                         <AppSwitcher />
-                        <AppearanceMenu />
                         <DarkModeToggle />
                     </Group>
 

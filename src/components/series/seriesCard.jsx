@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // Ui Library import
-import { Card, Text, Group, useMantineTheme, Center, Divider } from '@mantine/core';
+import { Card, Text, Group, Center, Divider } from '@mantine/core';
 
 // Local imports
 import { IconSeries, IconBooks, IconEdit } from '@/components/icons';
@@ -18,9 +18,8 @@ const IMAGE_WIDTH = 150;
 
 const SeriesCard = ({ libraryId, series }) => {
     const { t } = useTranslation();
-    const theme = useMantineTheme();
 
-    const icon = <Center h={IMAGE_HEIGHT}><IconSeries width={IMAGE_WIDTH} style={{ color: theme.colors.dark[1] }} /></Center>;
+    const icon = <Center h={IMAGE_HEIGHT}><IconSeries width={IMAGE_WIDTH} style={{ color: 'var(--ink-soft)' }} /></Center>;
 
     return (
         <Card shadow="sm" padding="lg" radius="md" withBorder>
@@ -35,14 +34,14 @@ const SeriesCard = ({ libraryId, series }) => {
             <Group mt="md">
                 <If condition={series.bookCount != null}>
                     <IconText
-                        icon={<IconBooks height={16} style={{ color: theme.colors.dark[2] }} />}
+                        icon={<IconBooks height={16} style={{ color: 'var(--ink-soft)' }} />}
                         text={series.bookCount}
                         tooltip={t('series.bookCount', { count: series.bookCount })} />
                 </If>
                 <If condition={series.links.update} >
                     <Divider orientation='vertical' />
                     <IconText
-                        icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />}
+                        icon={<IconEdit height={16} style={{ color: 'var(--ink-soft)' }} />}
                         tooltip={t('actions.edit')}
                         link={`/libraries/${libraryId}/series/${series.id}/edit`}
                     />

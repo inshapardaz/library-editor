@@ -1,4 +1,4 @@
-import { Badge, Card, Chip, Divider, Menu, Pagination, Paper, Popover, Skeleton, Tabs, createTheme } from '@mantine/core';
+import { Badge, Card, Chip, Divider, Menu, Pagination, Paper, Popover, Tabs, createTheme } from '@mantine/core';
 import { makeAccentPalette, DEFAULT_ACCENT, PLAIN_ACCENT } from './accent';
 
 // The site offers three looks, picked in the appearance menu and kept in local storage:
@@ -53,6 +53,5 @@ export const createAppTheme = (variant = DEFAULT_THEME) => createTheme({
         Menu: Menu.extend({ styles: { dropdown: { backgroundColor: 'var(--paper-card)', borderColor: 'var(--nw-line)' } } }),
         Popover: Popover.extend({ styles: { dropdown: { backgroundColor: 'var(--paper-card)', borderColor: 'var(--nw-line)' } } }),
         Divider: Divider.extend({ styles: { root: { borderColor: 'var(--nw-line)' } } }),
-        Skeleton: Skeleton.extend({ styles: { root: { '--skeleton-color': 'var(--paper-deep)' } } }),
     },
 });

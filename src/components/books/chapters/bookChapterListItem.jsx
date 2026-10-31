@@ -8,8 +8,7 @@ import {
     Divider,
     Group,
     Stack,
-    Text,
-    useMantineTheme
+    Text
 } from '@mantine/core';
 import { Draggable } from '@hello-pangea/dnd';
 
@@ -24,7 +23,6 @@ import EditingStatusIcon from '@/components/editingStatusIcon';
 
 //---------------------------------------------
 const BookChapterListItem = ({ t, libraryId, book, chapter, index, isSelected = false, onSelectChanged = () => { } }) => {
-    const theme = useMantineTheme();
     return (
         <Draggable key={chapter.id} index={index} draggableId={`${chapter.id}`}>
             {(provided, snapshot) => (
@@ -39,7 +37,7 @@ const BookChapterListItem = ({ t, libraryId, book, chapter, index, isSelected = 
                     <Checkbox className={classes.selection}
                         checked={isSelected}
                         onChange={(e) => onSelectChanged(e.currentTarget.checked)} />
-                    <EditingStatusIcon editingStatus={chapter.status} width={32} style={{ color: theme.colors.dark[2] }} />
+                    <EditingStatusIcon editingStatus={chapter.status} width={32} style={{ color: 'var(--ink-soft)' }} />
                     <Text pr="md" className={classes.symbol}>{chapter.chapterNumber}</Text>
                     <Group mt="md" className={classes.details}>
                         <Stack gap="sm">
@@ -54,28 +52,28 @@ const BookChapterListItem = ({ t, libraryId, book, chapter, index, isSelected = 
                                     <>
                                         <Divider orientation='vertical' />
                                         <IconText text={chapter.writerAccountName} size="sm"
-                                            icon={<IconWriter style={{ color: theme.colors.dark[2] }} />} />
+                                            icon={<IconWriter style={{ color: 'var(--ink-soft)' }} />} />
                                     </>
                                 </If>
                                 <If condition={chapter.reviewerAccountId}>
                                     <>
                                         <Divider orientation='vertical' />
                                         <IconText text={chapter.reviewerAccountName} size="sm"
-                                            icon={<IconReviewer style={{ color: theme.colors.dark[2] }} />} />
+                                            icon={<IconReviewer style={{ color: 'var(--ink-soft)' }} />} />
                                     </>
                                 </If>
                             </Group>
                         </Stack>
                         <span style={{ flex: 1 }}></span>
                         <IconText
-                            icon={<IconReaderText height={16} style={{ color: theme.colors.dark[2] }} />}
+                            icon={<IconReaderText height={16} style={{ color: 'var(--ink-soft)' }} />}
                             tooltip={t('book.actions.read.title')}
                             link={`/libraries/${libraryId}/books/${book.id}/chapters/${chapter.chapterNumber}`} />
                         <If condition={chapter.links.update}>
                             <Divider orientation='vertical' />
                             <ChapterEditForm libraryId={libraryId} bookId={book.id} chapter={chapter}>
                                 <IconText
-                                    icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />}
+                                    icon={<IconEdit height={16} style={{ color: 'var(--ink-soft)' }} />}
                                     tooltip={t('actions.edit')} />
                             </ChapterEditForm>
                         </If>

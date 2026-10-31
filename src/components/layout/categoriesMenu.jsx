@@ -34,29 +34,29 @@ import If from '@/components/if'
 
 const CategoriesMenu = ({ library, title, icon, className, target, allLabel, extraLink, countFunc = () => null, onClick = () => { } }) => {
     const { t } = useTranslation();
+    const [opened, { open: openPopover, close: closePopover, toggle: togglePopover }] = useDisclosure(false);
     const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
     const { data: categories, isFetching, error }
         = useGetCategoriesQuery({ libraryId: library.id }, { skip: library == null });
 
     const categoriesList = categories?.data?.map ? categories.data.filter(i => countFunc(i) > 0).map((item) => (
-        <UnstyledButton className={classes.subLink} key={item.name} onClick={onClick} >
-            <Group wrap="nowrap" align="flex-start">
-                <NavLink
-                    key={item.id}
-                    component={Link}
-                    to={`/libraries/${library.id}/${target}?category=${item.id}`}
-                    label={item.name}
-                    rightSection={
-                        <Badge size="xs" color='gray' circle>
-                            {countFunc(item)}
-                        </Badge>
-                    }
-                    leftSection={<ThemeIcon size={34} variant="default" radius="md">
-                        <IconCategory height={22} />
-                    </ThemeIcon>}
-                />
-            </Group>
-        </UnstyledButton>
+        <NavLink
+            key={item.id}
+            className={classes.subLink}
+            style={{ '--nl-hover': 'transparent' }}
+            component={Link}
+            to={`/libraries/${library.id}/${target}?category=${item.id}`}
+            label={item.name}
+            onClick={onClick}
+            rightSection={
+                <Badge size="xs" color="accent" circle>
+                    {countFunc(item)}
+                </Badge>
+            }
+            leftSection={<ThemeIcon size={34} variant="default" radius="md">
+                <IconCategory height={22} />
+            </ThemeIcon>}
+        />
     )) : [];
 
     if (!library) return null;
@@ -74,17 +74,18 @@ const CategoriesMenu = ({ library, title, icon, className, target, allLabel, ext
 
     return (
         <>
-            <Popover width={600} position="bottom" radius="md" shadow="md" disabled={isFetching} withinPortal visibleFrom="sm" className={className}>
-                <Popover.Target>
-                    <Tooltip label={title}>
-                        <UnstyledButton className={classes.link}>
+            <Popover width={600} position="bottom" radius="md" shadow="md" disabled={isFetching} withinPortal visibleFrom="sm"
+                className={className} opened={opened} onChange={(value) => (value ? openPopover() : closePopover())}>
+                <Tooltip label={title}>
+                    <Popover.Target>
+                        <UnstyledButton className={classes.link} onClick={togglePopover}>
                             {icon}
                             <IconChevronDown />
                         </UnstyledButton >
-                    </Tooltip>
-                </Popover.Target>
+                    </Popover.Target>
+                </Tooltip>
 
-                <Popover.Dropdown style={{ overflow: 'hidden' }}>
+                <Popover.Dropdown style={{ overflow: 'hidden' }} onClick={closePopover}>
                     <If condition={error}>
                         <>
                             <Text c="dimmed">{t('categories.errors.loading.subTitle')}</Text>
@@ -136,18 +137,18 @@ const CategoriesMenu = ({ library, title, icon, className, target, allLabel, ext
             <Collapse in={linksOpened} hiddenFrom="sm">
                 <If condition={categoriesList && categoriesList.length > 0}
                     elseChildren={emptyPlaceholder}>
-                    <UnstyledButton className={classes.subLink} key={`all-${target}`} onClick={onClick} >
-                        <Group wrap="nowrap" align="flex-start">
-                            <NavLink
-                                component={Link}
-                                to={`/libraries/${library.id}/${target}`}
-                                label={allLabel}
-                                leftSection={<ThemeIcon size={34} variant="default" radius="md">
-                                    <IconCategory height={22} />
-                                </ThemeIcon>}
-                            />
-                        </Group>
-                    </UnstyledButton>
+                    <NavLink
+                        key={`all-${target}`}
+                        className={classes.subLink}
+                        style={{ '--nl-hover': 'transparent' }}
+                        component={Link}
+                        to={`/libraries/${library.id}/${target}`}
+                        label={allLabel}
+                        onClick={onClick}
+                        leftSection={<ThemeIcon size={34} variant="default" radius="md">
+                            <IconCategory height={22} />
+                        </ThemeIcon>}
+                    />
                     {categoriesList}
                 </If>
             </Collapse>

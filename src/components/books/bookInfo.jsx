@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from 'react-router-dom';
 
 // UI Library Imports
-import { useMantineTheme, Stack, Button, Divider, Progress, Group, Text, Tooltip } from "@mantine/core";
+import { Stack, Button, Divider, Progress, Group, Text, Tooltip } from "@mantine/core";
 
 // Local Imports
 import {
@@ -32,32 +32,31 @@ const BookInfo = ({ libraryId, book }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    const theme = useMantineTheme();
 
     if (!book) {
         return null;
     }
 
     return (<Stack>
-        <IconText size="sm" icon={<BookStatusIcon status={book.status} height={24} style={{ color: theme.colors.dark[2] }} />} text={getBookStatusText({ status: book.status, t })} />
+        <IconText size="sm" icon={<BookStatusIcon status={book.status} height={24} style={{ color: 'var(--ink-soft)' }} />} text={getBookStatusText({ status: book.status, t })} />
 
         <If condition={book.yearPublished != null}>
-            <IconText size="sm" icon={<IconCalendar height={24} style={{ color: theme.colors.dark[2] }} />} text={book.yearPublished} />
+            <IconText size="sm" icon={<IconCalendar height={24} style={{ color: 'var(--ink-soft)' }} />} text={book.yearPublished} />
         </If>
         <If condition={book.publisher != null}>
-            <IconText size="sm" icon={<IconPublisher height={24} style={{ color: theme.colors.dark[2] }} />} text={book.publisher} />
+            <IconText size="sm" icon={<IconPublisher height={24} style={{ color: 'var(--ink-soft)' }} />} text={book.publisher} />
         </If>
         <If condition={book.language != null}>
-            <IconText size="sm" icon={<IconLanguage height={24} style={{ color: theme.colors.dark[2] }} />} text={t(`languages.${book.language}`)} />
+            <IconText size="sm" icon={<IconLanguage height={24} style={{ color: 'var(--ink-soft)' }} />} text={t(`languages.${book.language}`)} />
         </If>
         <If condition={book.isPublic != null}>
-            <IconText size="sm" icon={<IconWorld height={24} style={{ color: theme.colors.dark[2] }} />} text={t("book.isPublic")} />
+            <IconText size="sm" icon={<IconWorld height={24} style={{ color: 'var(--ink-soft)' }} />} text={t("book.isPublic")} />
         </If>
         <If condition={book.copyrights != null}>
-            <IconText size="sm" icon={<IconCopyright height={24} style={{ color: theme.colors.dark[2] }} />} text={t(`copyrights.${book.copyrights}`)} />
+            <IconText size="sm" icon={<IconCopyright height={24} style={{ color: 'var(--ink-soft)' }} />} text={t(`copyrights.${book.copyrights}`)} />
         </If>
         <If condition={book.pageCount != null}>
-            <IconText size="sm" icon={<IconPages height={24} style={{ color: theme.colors.dark[2] }} />} text={t("book.pageCount", { count: book.pageCount })} />
+            <IconText size="sm" icon={<IconPages height={24} style={{ color: 'var(--ink-soft)' }} />} text={t("book.pageCount", { count: book.pageCount })} />
         </If>
 
         <If condition={book.chapterCount > 0}>
@@ -88,7 +87,7 @@ const BookInfo = ({ libraryId, book }) => {
             <Stack gap="sm">
                 {book.pageStatus?.map(s =>
                 (<Group key={s.status} component={Link} to={`/libraries/${libraryId}/books/${book.id}/?section=pages&status=${s.status}`}>
-                    <EditingStatusIcon editingStatus={s.status} t={t} style={{ color: theme.colors.dark[2] }} />
+                    <EditingStatusIcon editingStatus={s.status} t={t} style={{ color: 'var(--ink-soft)' }} />
                     <Tooltip label={`${t(`editingStatus.${s.status}`)} : ${s.count}`}>
                         <Progress size="lg" value={s.percentage} color={getStatusColor(s.status)} style={{ flex: 1 }} />
                     </Tooltip>

@@ -6,8 +6,7 @@ import { useTranslation } from 'react-i18next';
 import {
     Button,
     Card,
-    Container,
-    useMantineTheme
+    Container
 } from '@mantine/core';
 
 // Local imports
@@ -25,7 +24,6 @@ import If from "@/components/if";
 const SeriesPage = () => {
     const { libraryId, seriesId } = useParams();
     const { t } = useTranslation();
-    const theme = useMantineTheme();
     const [searchParams] = useSearchParams();
     const query = searchParams.get("query");
     const sortDirection = searchParams.get("sortDirection") ?? SortDirection.Ascending;
@@ -56,7 +54,7 @@ const SeriesPage = () => {
             defaultIcon={IconNames.Series}
             subTitle={
                 <If condition={series.bookCount > 0}>
-                    <IconText icon={<IconBooks height={16} style={{ color: theme.colors.dark[2] }} />} text={t('series.bookCount', { count: series.bookCount })} />
+                    <IconText icon={<IconBooks height={16} style={{ color: 'var(--ink-soft)' }} />} text={t('series.bookCount', { count: series.bookCount })} />
                 </If>
             }
             details={series.description}

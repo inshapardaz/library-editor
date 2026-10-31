@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // Ui Library Imports
-import { Divider, Group, Stack, Text, Tooltip, useMantineTheme } from '@mantine/core';
+import { Divider, Group, Stack, Text, Tooltip } from '@mantine/core';
 
 // Local Imports
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
@@ -18,9 +18,8 @@ import Img from '@/components/img';
 
 const BookListItem = ({ libraryId, book }) => {
     const { t } = useTranslation();
-    const theme = useMantineTheme();
 
-    const icon = <IconBook width={150} style={{ color: theme.colors.dark[1] }} />;
+    const icon = <IconBook width={150} style={{ color: 'var(--ink-soft)' }} />;
     const fileCount = book?.contents?.length ?? 0;
     return (<>
         <Group gap="sm" wrap="nowrap">
@@ -46,23 +45,23 @@ const BookListItem = ({ libraryId, book }) => {
                         <Divider orientation="vertical" />
                     </If>
                     <If condition={book.pageCount != null}>
-                        <IconText size="sm" icon={<IconPages height={16} style={{ color: theme.colors.dark[2] }} />} text={t('book.pageCount', { count: book.pageCount })} />
+                        <IconText size="sm" icon={<IconPages height={16} style={{ color: 'var(--ink-soft)' }} />} text={t('book.pageCount', { count: book.pageCount })} />
                     </If>
                     <If condition={book.chapterCount != null}>
                         <>
                             <Divider orientation="vertical" />
-                            <IconText size="sm" icon={<IconChapters height={16} style={{ color: theme.colors.dark[2] }} />} text={t('book.chapterCount', { count: book.chapterCount })} />
+                            <IconText size="sm" icon={<IconChapters height={16} style={{ color: 'var(--ink-soft)' }} />} text={t('book.chapterCount', { count: book.chapterCount })} />
                         </>
                     </If>
                     <Divider orientation="vertical" />
-                    <IconText size="sm" icon={<IconFiles height={16} style={{ color: theme.colors.dark[2] }} />} text={t('book.fileCount', { count: fileCount })} />
+                    <IconText size="sm" icon={<IconFiles height={16} style={{ color: 'var(--ink-soft)' }} />} text={t('book.fileCount', { count: fileCount })} />
                     <If condition={book.links.update}>
                         <>
                             <Divider orientation="vertical" />
                             <IconText
                                 tooltip={t('actions.edit')}
                                 link={`/libraries/${libraryId}/books/${book.id}/edit`}
-                                icon={<IconEditBook height={16} style={{ color: theme.colors.dark[2] }} />} />
+                                icon={<IconEditBook height={16} style={{ color: 'var(--ink-soft)' }} />} />
                         </>
                     </If>
                     <If condition={book.links.delete != null}>

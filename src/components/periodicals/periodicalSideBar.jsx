@@ -67,7 +67,7 @@ const PeriodicalSideBar = ({ libraryId, periodicalId }) => {
                     to={`/libraries/${libraryId}/periodicals/${periodicalId}?year=${issueYear.year}`}
                     label={issueYear.year}
                     rightSection={
-                        <Badge size="xs" color='gray' circle>
+                        <Badge size="xs" color="accent" circle>
                             {issueYear.count}
                         </Badge>
                     }

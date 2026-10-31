@@ -56,7 +56,7 @@ const SearchBox = () => {
                 </If>
                 <If condition={!isAnyLoading && isAllFinished && !hasAnyData}>
                     <Center>
-                        <Text>{t('search.empty')}</Text>
+                        <Text c="dimmed">{t('search.empty')}</Text>
                     </Center>
                 </If>
                 <BooksSearchSection
@@ -112,13 +112,13 @@ const SearchBox = () => {
                 variant="outline"
                 size="sm"
                 mt="xs"
-                color="gray"
+                color="accent"
                 onClick={() => navigate(`/libraries/${libraryId}/search`)}>
                 {t('search.searchMore')}
             </Button>
         </Spotlight.Root >
         <ActionIcon onClick={spotlight.open}
-            variant="default"
+            variant="transparent"
             size="xl"
             aria-label="search"
         >

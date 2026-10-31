@@ -4,7 +4,7 @@ import cx from 'clsx';
 
 // Ui Library Imports
 import { Draggable } from "@hello-pangea/dnd";
-import { Card, Center, Checkbox, Flex, Group, Text, useMantineTheme } from "@mantine/core";
+import { Card, Center, Checkbox, Flex, Group, Text } from "@mantine/core";
 
 // Local imports
 import { IconEdit, IconReaderText, IconWriter, IconReviewer, IconGripVertical, IconImage } from '@/components/icons'
@@ -21,8 +21,7 @@ const IMAGE_HEIGHT = 450;
 const IMAGE_WIDTH = 175;
 
 const PageCard = ({ t, libraryId, issue, page, index, isSelected = false, onSelectChanged = () => { } }) => {
-    const theme = useMantineTheme();
-    const icon = <Center h={IMAGE_HEIGHT}><IconImage width={IMAGE_WIDTH} style={{ color: theme.colors.dark[1] }} /></Center>;
+    const icon = <Center h={IMAGE_HEIGHT}><IconImage width={IMAGE_WIDTH} style={{ color: 'var(--ink-soft)' }} /></Center>;
 
 
     return (
@@ -43,18 +42,18 @@ const PageCard = ({ t, libraryId, issue, page, index, isSelected = false, onSele
                                 </div>
                                 <Checkbox className={classes.selectionCard} checked={isSelected}
                                     onChange={e => onSelectChanged(e.currentTarget.checked)} />
-                                <EditingStatusIcon editingStatus={page.status} width={24} style={{ color: theme.colors.dark[2] }} />
+                                <EditingStatusIcon editingStatus={page.status} width={24} style={{ color: 'var(--ink-soft)' }} />
                             </>
                             <Text component={Link} to={`/libraries/${libraryId}/periodicals/${issue.periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}/pages/${page.sequenceNumber}/contents/edit`} fw={500}>
                                 {page.sequenceNumber}
                             </Text>
                             <If condition={page.writerAccountId}>
                                 <IconText tooltip={page.writerAccountName} size="sm"
-                                    icon={<IconWriter style={{ color: theme.colors.dark[2] }} />} />
+                                    icon={<IconWriter style={{ color: 'var(--ink-soft)' }} />} />
                             </If>
                             <If condition={page.reviewerAccountId}>
                                 <IconText tooltip={page.reviewerAccountName} size="sm"
-                                    icon={<IconReviewer style={{ color: theme.colors.dark[2] }} />} />
+                                    icon={<IconReviewer style={{ color: 'var(--ink-soft)' }} />} />
                             </If>
                         </Flex>
                     </Card.Section>
@@ -62,7 +61,7 @@ const PageCard = ({ t, libraryId, issue, page, index, isSelected = false, onSele
                         <Group mb="md" justify='flex-start'>
                             <If condition={page.links.update}>
                                 <IconText
-                                    icon={<IconReaderText height={16} style={{ color: theme.colors.dark[2] }} />}
+                                    icon={<IconReaderText height={16} style={{ color: 'var(--ink-soft)' }} />}
                                     tooltip={t('issueArticle.actions.read.title')}
                                     link={`/libraries/${libraryId}/periodicals/${issue.periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}/pages/${page.sequenceNumber}`} />
                             </If>
@@ -71,7 +70,7 @@ const PageCard = ({ t, libraryId, issue, page, index, isSelected = false, onSele
                                     issue={issue}
                                     page={page}>
                                     <IconText
-                                        icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />}
+                                        icon={<IconEdit height={16} style={{ color: 'var(--ink-soft)' }} />}
                                         tooltip={t('actions.edit')} />
                                 </PageEditForm>
                             </If>

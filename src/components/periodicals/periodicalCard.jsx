@@ -19,7 +19,7 @@ const PeriodicalCard = ({ libraryId, periodical }) => {
     const { t } = useTranslation();
     const theme = useMantineTheme();
 
-    const icon = <Center h={IMAGE_HEIGHT}><IconPeriodical width={IMAGE_WIDTH} style={{ color: theme.colors.dark[1] }} /></Center>;
+    const icon = <Center h={IMAGE_HEIGHT}><IconPeriodical width={IMAGE_WIDTH} style={{ color: 'var(--ink-soft)' }} /></Center>;
 
     return (
         <Card shadow="sm" padding="lg" radius="md" withBorder>
@@ -47,7 +47,7 @@ const PeriodicalCard = ({ libraryId, periodical }) => {
                 <If condition={periodical.issueCount != null}>
                     <>
                         <Divider orientation="vertical" />
-                        <IconText icon={<IconPeriodical height={16} style={{ color: theme.colors.dark[2] }} />}
+                        <IconText icon={<IconPeriodical height={16} style={{ color: 'var(--ink-soft)' }} />}
                             text={t('periodical.issueCount', { count: periodical.issueCount })} />
                     </>
                 </If>
@@ -56,7 +56,7 @@ const PeriodicalCard = ({ libraryId, periodical }) => {
                 <If condition={periodical.links.update} >
                     <Divider />
                     <IconText
-                        icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />}
+                        icon={<IconEdit height={16} style={{ color: 'var(--ink-soft)' }} />}
                         tooltip={t('actions.edit')}
                         link={`/libraries/${libraryId}/periodicals/${periodical.id}/edit`}
                     />

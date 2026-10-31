@@ -27,8 +27,8 @@ const ToolsMenu = () => {
             onOpen={() => setOpen(true)}
             withinPortal
         >
-            <Menu.Target>
-                <Tooltip label={t('header.tools')}>
+            <Tooltip label={t('header.tools')}>
+                <Menu.Target>
                     <Group wrap="nowrap" gap={0} className={classes.link}>
                         <IconTools height="24px" />
                         <IconChevronDown
@@ -40,8 +40,8 @@ const ToolsMenu = () => {
                             }}
                         />
                     </Group>
-                </Tooltip>
-            </Menu.Target>
+                </Menu.Target>
+            </Tooltip>
             <Menu.Dropdown>
                 {/* The correction lists are managed in LanguageTools. */}
                 <Menu.Item

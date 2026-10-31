@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 // UI library import
-import { Group, Button, Drawer, Box, Center, useMantineTheme, Stack, TextInput, Switch } from "@mantine/core";
+import { Group, Button, Drawer, Box, Center, Stack, TextInput, Switch } from "@mantine/core";
 import { useDisclosure } from '@mantine/hooks';
 import { useForm, isNotEmpty } from "@mantine/form";
 
@@ -25,7 +25,6 @@ import CategoriesSelect from '@/components/categories/categoriesSelect';
 // --------------------------------------
 const WritingEditForm = ({ libraryId, article = null, children }) => {
     const { t } = useTranslation();
-    const theme = useMantineTheme();
     const [image, setImage] = useState(null);
     const [opened, { open, close }] = useDisclosure(false);
     const [loaded, setLoaded] = useState(false);
@@ -85,7 +84,7 @@ const WritingEditForm = ({ libraryId, article = null, children }) => {
     };
 
     const title = article ? t('page.actions.edit.title', { sequenceNumber: article.sequenceNumber }) : t('page.actions.add.title')
-    const icon = <Center h={450}><IconImage width={250} style={{ color: theme.colors.dark[1] }} /></Center>;
+    const icon = <Center h={450}><IconImage width={250} style={{ color: 'var(--ink-soft)' }} /></Center>;
 
     return (<>
         <Drawer opened={opened} onClose={close} title={title} position='right'>

@@ -21,7 +21,7 @@ const PeriodicalListItem = ({ libraryId, periodical }) => {
     const theme = useMantineTheme();
 
 
-    const icon = <IconPeriodical width={IMAGE_WIDTH} style={{ color: theme.colors.dark[1] }} />;
+    const icon = <IconPeriodical width={IMAGE_WIDTH} style={{ color: 'var(--ink-soft)' }} />;
 
     return (<>
         <Group gap="sm" wrap="nowrap">
@@ -45,13 +45,13 @@ const PeriodicalListItem = ({ libraryId, periodical }) => {
                     <If condition={periodical.issueCount != null} >
                         <>
                             <Divider orientation="vertical" />
-                            <IconText icon={<IconPages height={16} style={{ color: theme.colors.dark[2] }} />} text={t('periodical.issueCount', { count: periodical.issueCount })} />
+                            <IconText icon={<IconPages height={16} style={{ color: 'var(--ink-soft)' }} />} text={t('periodical.issueCount', { count: periodical.issueCount })} />
                         </>
                     </If>
                     <If condition={periodical.links.update} >
                         <Divider />
                         <IconText
-                            icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />}
+                            icon={<IconEdit height={16} style={{ color: 'var(--ink-soft)' }} />}
                             tooltip={t('actions.edit')}
                             link={`/libraries/${libraryId}/periodicals/${periodical.id}/edit`}
                         />

@@ -11,8 +11,7 @@ import {
     SimpleGrid,
     Skeleton,
     Tabs,
-    rem,
-    useMantineTheme
+    rem
 } from '@mantine/core';
 
 // Local imports
@@ -36,7 +35,6 @@ const AuthorPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { libraryId, authorId } = useParams();
-    const theme = useMantineTheme();
     const [searchParams] = useSearchParams();
     const query = searchParams.get("query");
     const sortBy = searchParams.get("sortBy") ?? "name";
@@ -107,13 +105,13 @@ const AuthorPage = () => {
         <Card withBorder>
             <Tabs keepMounted={false} value={selectedTab} onChange={onTabChanged}>
                 <Tabs.List>
-                    <Tabs.Tab value="books" leftSection={<IconBooks height={16} style={{ color: theme.colors.dark[2] }} />}>
+                    <Tabs.Tab value="books" leftSection={<IconBooks height={16} style={{ color: 'var(--ink-soft)' }} />}>
                         {t('author.booksTabLabel', { count: author.bookCount })}
                     </Tabs.Tab>
-                    <Tabs.Tab value="writings" leftSection={<IconWritings height={16} style={{ color: theme.colors.dark[2] }} />}>
+                    <Tabs.Tab value="writings" leftSection={<IconWritings height={16} style={{ color: 'var(--ink-soft)' }} />}>
                         {t('author.writingsTabLabel', { count: author.articleCount })}
                     </Tabs.Tab>
-                    <Tabs.Tab value="poetry" leftSection={<IconPoetries height={16} style={{ color: theme.colors.dark[2] }} />}>
+                    <Tabs.Tab value="poetry" leftSection={<IconPoetries height={16} style={{ color: 'var(--ink-soft)' }} />}>
                         {t('author.poetryTabLabel', { count: author.poetryCount })}
                     </Tabs.Tab>
                 </Tabs.List>

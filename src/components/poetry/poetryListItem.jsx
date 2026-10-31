@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 // Ui Library Imports
-import { Checkbox, Divider, Group, Stack, Text, useMantineTheme } from '@mantine/core';
+import { Checkbox, Divider, Group, Stack, Text } from '@mantine/core';
 
 // Local Imports
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
@@ -17,9 +17,8 @@ import If from '@/components/if';
 import EditingStatusIcon from '@/components/editingStatusIcon';
 //-------------------------------------
 const PoetryListItem = ({ libraryId, poetry, t, isSelected = false, onSelectChanged = () => { } }) => {
-    const theme = useMantineTheme();
 
-    const icon = <IconPoetry width={150} style={{ color: theme.colors.dark[1] }} />;
+    const icon = <IconPoetry width={150} style={{ color: 'var(--ink-soft)' }} />;
 
     return (
         <>
@@ -35,7 +34,7 @@ const PoetryListItem = ({ libraryId, poetry, t, isSelected = false, onSelectChan
                         </Group>
                         <AuthorsAvatar libraryId={libraryId} authors={poetry?.authors} />
                         <Group>
-                            <EditingStatusIcon editingStatus={poetry.status} width={16} style={{ color: theme.colors.dark[2] }} />
+                            <EditingStatusIcon editingStatus={poetry.status} width={16} style={{ color: 'var(--ink-soft)' }} />
                             <Text c="dimmed" size="sm">
                                 {t(`editingStatus.${poetry.status}`)}
                             </Text>
@@ -43,14 +42,14 @@ const PoetryListItem = ({ libraryId, poetry, t, isSelected = false, onSelectChan
                                 <>
                                     <Divider orientation='vertical' />
                                     <IconText text={poetry.writerAccountName} size="sm"
-                                        icon={<IconWriter style={{ color: theme.colors.dark[2] }} />} />
+                                        icon={<IconWriter style={{ color: 'var(--ink-soft)' }} />} />
                                 </>
                             </If>
                             <If condition={poetry.reviewerAccountId}>
                                 <>
                                     <Divider orientation='vertical' />
                                     <IconText text={poetry.reviewerAccountName} size="sm"
-                                        icon={<IconReviewer style={{ color: theme.colors.dark[2] }} />} />
+                                        icon={<IconReviewer style={{ color: 'var(--ink-soft)' }} />} />
                                 </>
                             </If>
                         </Group>
@@ -58,7 +57,7 @@ const PoetryListItem = ({ libraryId, poetry, t, isSelected = false, onSelectChan
                 </Group>
                 <Group gap="sm" wrap="nowrap" style={{ alignSelf: 'end' }}>
                     <IconText
-                        icon={<IconReaderText height={16} style={{ color: theme.colors.dark[2] }} />}
+                        icon={<IconReaderText height={16} style={{ color: 'var(--ink-soft)' }} />}
                         tooltip={t('poetry.actions.read.title')}
                         link={`/libraries/${libraryId}/poetry/${poetry.id}/`} />
                     <If condition={poetry.links.update}>
@@ -70,7 +69,7 @@ const PoetryListItem = ({ libraryId, poetry, t, isSelected = false, onSelectChan
                             <PoetryEditForm libraryId={libraryId} article={poetry} >
                                 <IconText
                                     tooltip={t('actions.edit')}
-                                    icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />} />
+                                    icon={<IconEdit height={16} style={{ color: 'var(--ink-soft)' }} />} />
                             </PoetryEditForm>
                         </>
                     </If>

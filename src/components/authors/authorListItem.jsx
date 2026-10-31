@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // Ui Library Imports
-import { Divider, Group, Stack, Text, useMantineTheme } from '@mantine/core';
+import { Divider, Group, Stack, Text } from '@mantine/core';
 
 // local imports
 import { IconBooks, IconWritings, IconAuthor, IconPoetries, IconEdit } from '@/components/icons';
@@ -16,9 +16,8 @@ import AuthorDeleteButton from './authorDeleteButton';
 const IMAGE_HEIGHT = 150;
 const AuthorListItem = ({ libraryId, author }) => {
     const { t } = useTranslation();
-    const theme = useMantineTheme();
 
-    const icon = <IconAuthor height={IMAGE_HEIGHT} style={{ color: theme.colors.dark[2] }} />;
+    const icon = <IconAuthor height={IMAGE_HEIGHT} style={{ color: 'var(--ink-soft)' }} />;
     return (<>
         <Group wrap="nowrap">
             <Img w={IMAGE_HEIGHT} radius="sm" src={author?.links?.image} fallback={icon} />
@@ -27,7 +26,7 @@ const AuthorListItem = ({ libraryId, author }) => {
                 <Group mt="md">
                     <If condition={author.bookCount != null}>
                         <IconText link={`/libraries/${libraryId}/books?author=${author.id}`}
-                            icon={<IconBooks height={16} style={{ color: theme.colors.dark[2] }} />}
+                            icon={<IconBooks height={16} style={{ color: 'var(--ink-soft)' }} />}
                             text={t('author.bookCount', { count: author.bookCount })} />
                     </If>
                     <If condition={author.bookCount != null && author.articleCount != null}>
@@ -35,7 +34,7 @@ const AuthorListItem = ({ libraryId, author }) => {
                     </If>
                     <If condition={author.articleCount != null}>
                         <IconText link={`/libraries/${libraryId}/writings?author=${author.id}`}
-                            icon={<IconWritings height={16} style={{ color: theme.colors.dark[2] }} />}
+                            icon={<IconWritings height={16} style={{ color: 'var(--ink-soft)' }} />}
                             text={t('author.articleCount', { count: author.articleCount })} />
                     </If>
                     <If condition={author.articleCount != null && author.poetryCount != null}>
@@ -43,13 +42,13 @@ const AuthorListItem = ({ libraryId, author }) => {
                     </If>
                     <If condition={author.poetryCount != null}>
                         <IconText link={`/libraries/${libraryId}/poetry?author=${author.id}`}
-                            icon={<IconPoetries height={16} style={{ color: theme.colors.dark[2] }} />}
+                            icon={<IconPoetries height={16} style={{ color: 'var(--ink-soft)' }} />}
                             text={t('author.poetryCount', { count: author.poetryCount })} />
                     </If>
                     <If condition={author.links.update} >
                         <Divider />
                         <IconText
-                            icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />}
+                            icon={<IconEdit height={16} style={{ color: 'var(--ink-soft)' }} />}
                             tooltip={t('actions.edit')}
                             link={`/libraries/${libraryId}/authors/${author.id}/edit`}
                         />

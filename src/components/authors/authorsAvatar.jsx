@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 // Ui Library Import
-import { Avatar, Group, Tooltip, useMantineTheme } from "@mantine/core";
+import { Avatar, Group, Tooltip } from "@mantine/core";
 
 // Local imports
 import IconText from '@/components/iconText';
@@ -9,9 +9,8 @@ import { IconAuthor } from '@/components/icons';
 //-------------------------------
 
 const AuthorsAvatar = ({ libraryId, authors, size = "sm", showNames = false }) => {
-    const theme = useMantineTheme();
 
-    const icon = <IconAuthor height={200} style={{ color: theme.colors.dark[2] }} />;
+    const icon = <IconAuthor height={200} style={{ color: 'var(--ink-soft)' }} />;
 
     if (showNames) {
         return (<Group>

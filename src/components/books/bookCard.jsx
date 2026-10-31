@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // Ui Library import
-import { Card, Text, Group, Tooltip, useMantineTheme, Center, Divider } from '@mantine/core';
+import { Card, Text, Group, Tooltip, Center, Divider } from '@mantine/core';
 
 // Local imports
 import { IconBook, IconPages, IconChapters, IconEditBook } from '@/components/icons';
@@ -21,8 +21,7 @@ const IMAGE_WIDTH = 150;
 
 const BookCard = ({ libraryId, book }) => {
     const { t } = useTranslation();
-    const theme = useMantineTheme();
-    const icon = <Center h={IMAGE_HEIGHT}><IconBook width={IMAGE_WIDTH} style={{ color: theme.colors.dark[1] }} /></Center>;
+    const icon = <Center h={IMAGE_HEIGHT}><IconBook width={IMAGE_WIDTH} style={{ color: 'var(--ink-soft)' }} /></Center>;
 
     return (
         <Card shadow="sm" padding="lg" radius="md" withBorder>
@@ -56,14 +55,14 @@ const BookCard = ({ libraryId, book }) => {
             <Group mt="md">
                 <If condition={book.pageCount != null}>
                     <IconText
-                        icon={<IconPages height={16} style={{ color: theme.colors.dark[2] }} />}
+                        icon={<IconPages height={16} style={{ color: 'var(--ink-soft)' }} />}
                         text={book.pageCount} />
                 </If>
                 <If condition={book.chapterCount != null}>
                     <>
                         <Divider orientation="vertical" />
                         <IconText
-                            icon={<IconChapters height={16} style={{ color: theme.colors.dark[2] }} />}
+                            icon={<IconChapters height={16} style={{ color: 'var(--ink-soft)' }} />}
                             text={book.chapterCount} />
                     </>
                 </If>
@@ -72,7 +71,7 @@ const BookCard = ({ libraryId, book }) => {
                     <IconText
                         tooltip={t('actions.edit')}
                         link={`/libraries/${libraryId}/books/${book.id}/edit`}
-                        icon={<IconEditBook height={16} style={{ color: theme.colors.dark[2] }} />} />
+                        icon={<IconEditBook height={16} style={{ color: 'var(--ink-soft)' }} />} />
                 </If>
                 <If condition={book.links.delete != null}>
                     <>
