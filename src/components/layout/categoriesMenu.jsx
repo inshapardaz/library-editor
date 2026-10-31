@@ -75,14 +75,14 @@ const CategoriesMenu = ({ library, title, icon, className, target, allLabel, ext
     return (
         <>
             <Popover width={600} position="bottom" radius="md" shadow="md" disabled={isFetching} withinPortal visibleFrom="sm" className={className}>
-                <Popover.Target>
-                    <Tooltip label={title}>
+                <Tooltip label={title}>
+                    <Popover.Target>
                         <UnstyledButton className={classes.link}>
                             {icon}
                             <IconChevronDown />
                         </UnstyledButton >
-                    </Tooltip>
-                </Popover.Target>
+                    </Popover.Target>
+                </Tooltip>
 
                 <Popover.Dropdown style={{ overflow: 'hidden' }}>
                     <If condition={error}>
