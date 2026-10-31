@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 
 // Local imports
-import { useDeleteBookMutation } from '@/store/slices/books.api';
+import { useDeleteLibraryMutation } from '@/store/slices/libraries.api';
 import DeleteButton from "@/components/deleteButton";
 
 //---------------------------------
 const LibraryDeleteButton = ({ library, t, onDeleted = () => { }, ...props }) => {
-    const [deleteBook, { isLoading: isDeleting }] = useDeleteBookMutation();
+    const [deleteLibrary, { isLoading: isDeleting }] = useDeleteLibraryMutation();
 
     return (<DeleteButton {...props}
         title={t("library.actions.delete.title")}
@@ -15,7 +15,7 @@ const LibraryDeleteButton = ({ library, t, onDeleted = () => { }, ...props }) =>
         successMessage={t("library.actions.delete.success", { title: library.name })}
         errorMessage={t("library.actions.delete.error", { title: library.name })}
         isDeleting={isDeleting}
-        onDelete={() => { return deleteBook({ book: library }).unwrap() }}
+        onDelete={() => { return deleteLibrary({ library }).unwrap() }}
         onDeleted={onDeleted}
     />)
 }
