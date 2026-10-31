@@ -164,12 +164,14 @@
 /* Plain links (e.g. Text component={Link}, used for titles across list/card items) don't go
    through Mantine's Anchor component, so --mantine-color-anchor above doesn't reach them and
    they fall back to the browser's default blue/visited-purple. A low-specificity tag selector
-   covers those without overriding anything that sets its own colour (classes, c=, etc). */
+   covers those without overriding anything that sets its own colour (classes, c=, etc) — the
+   :visited case is wrapped in :where() so it stays lower-specificity than any class-based link
+   styling (e.g. the header's .link), rather than winning over it once a link's been visited. */
 a {
     color: var(--nw-accent-ink);
 }
 
-a:visited {
+a:where(:visited) {
     color: var(--nw-accent-ink);
 }
 
@@ -241,6 +243,16 @@ a:visited {
    Mantine's neutral grey. */
 .mantine-NavLink-root:hover:not([data-active], [aria-current='page']) {
     background-color: var(--paper-deep) !important;
+}
+
+/* Progress bar track defaults to Mantine's neutral grey. */
+.mantine-Progress-root {
+    background-color: var(--paper-deep) !important;
+}
+
+/* Tabs hover (list/pills variants) defaults to Mantine's neutral grey. */
+.mantine-Tabs-list {
+    --tab-hover-color: var(--paper-deep) !important;
 }
 
 body {
