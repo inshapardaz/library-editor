@@ -60,10 +60,13 @@
   border-top: rem(1px) solid var(--nw-line);
 }
 
-/* Controls sitting directly on the header bar take the bar's text colour whatever the theme */
-.header :global(.mantine-ActionIcon-root),
-.header :global(.mantine-UnstyledButton-root),
-.header :global(.mantine-Burger-root) {
+/* Controls sitting directly on the header bar take the bar's text colour whatever the theme.
+   Excludes .link elements (CategoriesMenu/ToolsMenu triggers etc.) since they already manage
+   their own colour/hover via .link above, and this rule's equal specificity + later position
+   in the file would otherwise permanently win over .link's @mixin hover, killing the hover. */
+.header :global(.mantine-ActionIcon-root):not(.link),
+.header :global(.mantine-UnstyledButton-root):not(.link),
+.header :global(.mantine-Burger-root):not(.link) {
   --ai-color: var(--nw-chrome-fg);
   --burger-color: var(--nw-chrome-fg);
   color: var(--nw-chrome-fg);

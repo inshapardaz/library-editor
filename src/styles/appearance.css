@@ -219,7 +219,7 @@ a:where(:visited) {
    grey circle; make them transparent like the other header/sidebar icons. */
 .mantine-Avatar-placeholder {
     background: transparent !important;
-    color: var(--ink-soft) !important;
+    color: currentColor !important;
 }
 
 [data-combobox-option]:hover:not([data-combobox-selected]) {
