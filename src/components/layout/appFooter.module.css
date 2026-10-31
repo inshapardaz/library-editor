@@ -16,7 +16,8 @@
 }
 
 .inner :global(.mantine-ActionIcon-root),
-.inner :global(.mantine-Button-root[data-variant='transparent']) {
+.inner :global(.mantine-Button-root[data-variant='transparent']),
+.inner :global(.mantine-UnstyledButton-root) {
   --ai-color: var(--nw-chrome-fg);
   --button-color: var(--nw-chrome-fg);
   color: var(--nw-chrome-fg);
