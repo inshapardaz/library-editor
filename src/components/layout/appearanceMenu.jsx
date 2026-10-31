@@ -14,7 +14,7 @@ const AppearanceMenu = () => {
     return (
         <Popover position="bottom-end" shadow="md" withinPortal>
             <Popover.Target>
-                <ActionIcon variant="subtle" size="lg" aria-label={t('appearance.title')}>
+                <ActionIcon variant="transparent" size="lg" aria-label={t('appearance.title')}>
                     <IconFont height={20} />
                 </ActionIcon>
             </Popover.Target>

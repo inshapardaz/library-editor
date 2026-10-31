@@ -118,7 +118,7 @@ const SearchBox = () => {
             </Button>
         </Spotlight.Root >
         <ActionIcon onClick={spotlight.open}
-            variant="default"
+            variant="transparent"
             size="xl"
             aria-label="search"
         >

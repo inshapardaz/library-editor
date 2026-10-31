@@ -3,10 +3,11 @@ import { useTranslation } from 'react-i18next'
 import propTypes from 'prop-types';
 
 // UI Library
-import { Avatar, Button, Menu, Text, UnstyledButton } from "@mantine/core";
+import { ActionIcon, Avatar, Button, Menu } from "@mantine/core";
 
 // Local Import
 import { languages, selectedLanguage, setLocale } from "@/store/slices/uiSlice";
+import { IconLanguage } from "@/components/icons";
 //----------------------------------
 const LanguageAvatar = ({ language, color = "grey" }) => (<Avatar radius="sm" color={color}>{language ? language.key : '-'}</Avatar>);
 LanguageAvatar.propTypes = {
@@ -41,9 +42,9 @@ const LanguageSwitch = () => {
             </Button.Group>
             <Menu shadow="md" width={200} visibleFrom="sm">
                 <Menu.Target>
-                    <UnstyledButton aria-label="Select Language">
-                        <Text fw={600} size="sm">{lang ? lang.key.toUpperCase() : '-'}</Text>
-                    </UnstyledButton>
+                    <ActionIcon variant="transparent" size="lg" aria-label="Select Language">
+                        <IconLanguage height={20} />
+                    </ActionIcon>
                 </Menu.Target>
 
                 <Menu.Dropdown>
