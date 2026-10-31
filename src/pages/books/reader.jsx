@@ -128,10 +128,10 @@ const BookReaderPage = () => {
     }
 
     const items = [
-        (<Button variant="transparent" color="gray" size="compact-sm" component={Link} to={`/libraries/${libraryId}/books/${book.id}`} leftSection={<IconBook />} key='book'>
+        (<Button variant="transparent" color="accent" size="compact-sm" component={Link} to={`/libraries/${libraryId}/books/${book.id}`} leftSection={<IconBook />} key='book'>
             {book.title}
         </Button>),
-        (<Button variant="transparent" color="gray" size="compact-sm" onClick={open} leftSection={<IconChapters />} key="chapter">
+        (<Button variant="transparent" color="accent" size="compact-sm" onClick={open} leftSection={<IconChapters />} key="chapter">
             {page1 ? page1.chapterTitle : t('book.chapters')}
         </Button>),
     ]

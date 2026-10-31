@@ -91,7 +91,7 @@ const WritingsSideBar = ({ selectedCategory, favorite, read }) => {
                 to={`/libraries/${libraryId}/writings?category=${category.id}`}
                 label={category.name}
                 rightSection={
-                    <Badge size="xs" color='gray' circle>
+                    <Badge size="xs" color="accent" circle>
                         {category.articleCount}
                     </Badge>
                 }

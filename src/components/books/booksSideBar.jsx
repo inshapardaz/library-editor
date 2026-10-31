@@ -106,11 +106,11 @@ const BooksSideBar = ({ status, selectedCategory, favorite, read }) => {
                 to={`/libraries/${libraryId}/books?category=${category.id}`}
                 label={category.name}
                 rightSection={
-                    <><Badge size="xs" color='gray' circle>
+                    <><Badge size="xs" color="accent" circle>
                         {category.bookCount}
                     </Badge>
                         <ActionIcon
-                            variant="transparent" color="gray" size="sm" a
+                            variant="transparent" color="accent" size="sm" a
                             component={Link}
                             to={`/libraries/${libraryId}/categories/${category.id}/edit`}>
                             <IconEdit />

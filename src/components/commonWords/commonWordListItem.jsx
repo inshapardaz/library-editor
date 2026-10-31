@@ -24,7 +24,7 @@ const CommonWordListItem = ({ word, t }) => {
             <span style={{ flex: 1 }} />
             <CommonWordEditButton t={t}
                 variant="transparent"
-                color="gray"
+                color="accent"
                 word={word}
             />
             <CommonWordDeleteButton word={word} t={t} />

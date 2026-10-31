@@ -93,10 +93,10 @@ const PoetryPage = () => {
     }
 
     const items = [
-        (<Button variant="transparent" color="gray" size="compact-sm" component={Link} to={`/libraries/${libraryId}/poetry`} leftSection={<IconPoetries />} key='poetries'>
+        (<Button variant="transparent" color="accent" size="compact-sm" component={Link} to={`/libraries/${libraryId}/poetry`} leftSection={<IconPoetries />} key='poetries'>
             {t('header.poetry')}
         </Button>),
-        (<Button variant="transparent" color="gray" size="compact-sm" onClick={open} leftSection={<IconPoetry />} key="chapter">
+        (<Button variant="transparent" color="accent" size="compact-sm" onClick={open} leftSection={<IconPoetry />} key="chapter">
             {article?.title}
         </Button>),
     ]

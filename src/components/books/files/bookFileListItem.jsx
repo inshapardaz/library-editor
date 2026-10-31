@@ -58,7 +58,7 @@ const BookFileListItem = ({ t, libraryId, book, content }) => {
                 <Tooltip title={t('book.actions.addFile.title')}>
                     <FileButton onChange={uploadFile}
                         accept={[IMAGE_MIME_TYPE, PDF_MIME_TYPE, MS_WORD_MIME_TYPE]}>
-                        {(props) => <ActionIcon {...props} disabled={isUpdating} variant='subtle' color='gray' >
+                        {(props) => <ActionIcon {...props} disabled={isUpdating} variant='subtle' color="accent" >
                             <IconUploadDocument />
                         </ActionIcon>}
                     </FileButton>
@@ -73,7 +73,7 @@ const BookFileListItem = ({ t, libraryId, book, content }) => {
             </If>
             <If condition={book.links.update && content.mimeType === "application/pdf"}>
                 <Divider orientation='vertical' />
-                <SetCoverButton libraryId={libraryId} bookId={book.id} file={content} t={t} variant='subtle' color='gray' />
+                <SetCoverButton libraryId={libraryId} bookId={book.id} file={content} t={t} variant='subtle' color="accent" />
             </If>
             <If condition={book && content.links.update}>
                 <Divider orientation='vertical' />

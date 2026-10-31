@@ -18,7 +18,7 @@ const Error = ({ title, detail, onRetry }) => {
             <IconAlert height={rem(192)} style={{ color: theme.colors.gray[4] }} />
             {title && <Title>{title}</Title>}
             {detail && <Text c="dimmed" ta="center">{detail}</Text>}
-            <Button variant='outline' color="gray.6" rightSection={<IconRefreshAlert />} onClick={onRetry}>{t('actions.retry')}</Button>
+            <Button variant='outline' color="accent" rightSection={<IconRefreshAlert />} onClick={onRetry}>{t('actions.retry')}</Button>
         </Stack>
     </Box>)
 }

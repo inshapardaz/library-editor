@@ -49,7 +49,7 @@ const CategoriesMenu = ({ library, title, icon, className, target, allLabel, ext
             label={item.name}
             onClick={onClick}
             rightSection={
-                <Badge size="xs" color='gray' circle>
+                <Badge size="xs" color="accent" circle>
                     {countFunc(item)}
                 </Badge>
             }

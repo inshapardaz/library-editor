@@ -135,11 +135,11 @@ const IssueArticlePage = () => {
     }
 
     const items = [
-        (<Button variant="transparent" color="gray" size="compact-sm" component={Link}
+        (<Button variant="transparent" color="accent" size="compact-sm" component={Link}
             to={`/libraries/${libraryId}/periodicals/${issue.periodicalId}`} leftSection={<IconPeriodical />} key='periodical'>
             {periodical.title}
         </Button>),
-        (<Button variant="transparent" color="gray" size="compact-sm" onClick={open} leftSection={<IconIssueArticle />} key="issue">
+        (<Button variant="transparent" color="accent" size="compact-sm" onClick={open} leftSection={<IconIssueArticle />} key="issue">
             sds {article ? article.title : t('issue.articles')}
         </Button>),
     ]

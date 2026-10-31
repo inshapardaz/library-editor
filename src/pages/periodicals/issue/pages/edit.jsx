@@ -193,7 +193,7 @@ const IssuePageEditPage = () => {
         )}
         <Tooltip key="previous" label={t("page.editor.showImage")}>
             <Switch size="lg"
-                color="gray"
+                color="accent"
                 checked={showImge}
                 onChange={(event) => setShowImage(event.currentTarget.checked)}
                 onLabel={<IconImage height={16} stroke={2.5} />}

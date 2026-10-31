@@ -93,10 +93,10 @@ const WritingPage = () => {
     }
 
     const items = [
-        (<Button variant="transparent" color="gray" size="compact-sm" component={Link} to={`/libraries/${libraryId}/writings`} leftSection={<IconWritings />} key='writings'>
+        (<Button variant="transparent" color="accent" size="compact-sm" component={Link} to={`/libraries/${libraryId}/writings`} leftSection={<IconWritings />} key='writings'>
             {t('header.writings')}
         </Button>),
-        (<Button variant="transparent" color="gray" size="compact-sm" onClick={open} leftSection={<IconWriting />} key="chapter">
+        (<Button variant="transparent" color="accent" size="compact-sm" onClick={open} leftSection={<IconWriting />} key="chapter">
             {article?.title}
         </Button>),
     ]

@@ -112,7 +112,7 @@ const SearchBox = () => {
                 variant="outline"
                 size="sm"
                 mt="xs"
-                color="gray"
+                color="accent"
                 onClick={() => navigate(`/libraries/${libraryId}/search`)}>
                 {t('search.searchMore')}
             </Button>

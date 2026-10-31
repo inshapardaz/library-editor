@@ -73,7 +73,7 @@ const PageImageEditor = ({ t, image, onChange = () => { }, zoom, isRtl }) => {
             </Group>
             <Box style={{ flex: 1, width: `${zoom}%`, position: 'relative' }} >
                 <If condition={checked}>
-                    <Slider min={0} max={max} marks={marks} color='gray'
+                    <Slider min={0} max={max} marks={marks} color="accent"
                         thumbChildren={<IconSplitVertical height={32} />}
                         thumbSize={32}
                         onChange={onChangeSplitValue}

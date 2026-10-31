@@ -30,7 +30,7 @@ const CommonWordPage = () => {
                 { title: t('header.home'), href: `/`, icon: IconNames.Home },
                 { title: t('commonWords.title'), icon: IconNames.SpellCheck }
             ]} actions={<>
-                <CommonWordEditButton t={t} createNew showLabel language={language} variant="default" color="gray" />
+                <CommonWordEditButton t={t} createNew showLabel language={language} variant="default" color="accent" />
             </>} />
         <Card withBorder mx="md">
             <CommonWordsList

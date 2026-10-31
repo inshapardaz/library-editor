@@ -18,7 +18,7 @@ const CategoryDeleteButton = ({ libraryId, category, t, onDeleted }) => {
         onDelete={() => { return deleteCategory({ libraryId, categoryId: category.id }).unwrap() }}
         onDeleted={onDeleted}
         type="actionIcon"
-        variant="transparent" color="gray" size="sm"
+        variant="transparent" color="accent" size="sm"
     />)
 }
 

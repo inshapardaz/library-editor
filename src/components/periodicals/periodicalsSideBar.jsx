@@ -115,7 +115,7 @@ const PeriodicalsSideBar = ({ selectedCategory, frequency }) => {
                 to={`/libraries/${libraryId}/periodicals?category=${category.id}`}
                 label={category.name}
                 rightSection={
-                    <Badge size="xs" color='gray' circle>
+                    <Badge size="xs" color="accent" circle>
                         {category.periodicalCount}
                     </Badge>
                 }

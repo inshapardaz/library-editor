@@ -57,7 +57,7 @@ const IssueFileListItem = ({ t, libraryId, issue, content }) => {
                 <Tooltip title={t('issue.actions.addFile.title')}>
                     <FileButton onChange={uploadFile}
                         accept={[IMAGE_MIME_TYPE, PDF_MIME_TYPE, MS_WORD_MIME_TYPE]}>
-                        {(props) => <ActionIcon {...props} disabled={isUpdating} variant='subtle' color='gray' >
+                        {(props) => <ActionIcon {...props} disabled={isUpdating} variant='subtle' color="accent" >
                             <IconUploadDocument />
                         </ActionIcon>}
                     </FileButton>

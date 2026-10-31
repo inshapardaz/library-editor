@@ -23,7 +23,7 @@ const getStatusCount = (statuses, status) => {
     if (statuses) {
         const item = statuses.find(x => x.status === status);
         if (item) {
-            return (<Badge size="xs" color="gray">
+            return (<Badge size="xs" color="accent">
                 {item.count}
             </Badge>)
         }
