@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -31,9 +32,15 @@ import {
 
 const LibrarySwitcher = ({ className, library, onClick = () => { }, children }) => {
     const { t } = useTranslation();
-    const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
+    const [opened, setOpened] = useState(false);
+    const [linksOpened, { toggle: toggleLinks, close: closeLinks }] = useDisclosure(false);
     const { data: libraries, isFetching, isError: errorLoadingLibraries, refetch: refetchLibraries } = useGetLibrariesQuery({})
 
+    const closeAll = () => {
+        onClick();
+        setOpened(false);
+        closeLinks();
+    };
 
     if (errorLoadingLibraries) {
         return <Button onClick={refetchLibraries}
@@ -42,7 +49,7 @@ const LibrarySwitcher = ({ className, library, onClick = () => { }, children }) 
     }
 
     const links = libraries ? libraries.data.map((item) => (
-        <UnstyledButton key={item.id} className={classes.item} onClick={onClick}
+        <UnstyledButton key={item.id} className={classes.item} onClick={closeAll}
             component={Link} to={`/libraries/${item.id}`}>
             <IconLibrary style={{
                 width: rem(22), height: rem(22)
@@ -55,9 +62,10 @@ const LibrarySwitcher = ({ className, library, onClick = () => { }, children }) 
 
     return (
         <>
-            <Popover width={600} position="bottom" radius="md" shadow="md" mx="md" disabled={isFetching} withinPortal visibleFrom="sm" >
+            <Popover width={600} position="bottom" radius="md" shadow="md" mx="md" disabled={isFetching} withinPortal
+                visibleFrom="sm" opened={opened} onChange={setOpened}>
                 <Popover.Target>
-                    <Center className={className}>
+                    <Center className={className} onClick={() => setOpened((o) => !o)}>
                         {children}
                     </Center>
                 </Popover.Target>
@@ -65,10 +73,10 @@ const LibrarySwitcher = ({ className, library, onClick = () => { }, children }) 
                 <Popover.Dropdown style={{ overflow: 'hidden' }}>
                     <Card radius="md" className={classes.card}>
                         <Group justify="space-between">
-                            <Text visibleFrom="lg" fw={500} component={Link} to={`/libraries/${library?.id}`} className={classes.title}>
+                            <Text visibleFrom="lg" fw={500} component={Link} to={`/libraries/${library?.id}`} onClick={closeAll} className={classes.title}>
                                 {library?.name}
                             </Text>
-                            <Anchor size="xs" component={Link} to={'/libraries'} c="dimmed" style={{ lineHeight: 1 }}>
+                            <Anchor size="xs" component={Link} to={'/libraries'} onClick={closeAll} c="dimmed" style={{ lineHeight: 1 }}>
                                 {t('libraries.viewAll')}
                             </Anchor>
                         </Group>
