@@ -261,6 +261,21 @@ a:where(:visited) {
     background-color: var(--paper-deep) !important;
 }
 
+/* The Likhari editor (src/components/editor) has its own design-token system (--editor-*,
+   injected by its EditorThemeProvider into a <style> in <head>) rather than Mantine's own
+   tokens, so the app's theming above doesn't reach it. Editor.jsx already passes accentColor
+   for --editor-accent/--editor-accent-soft; point its surface/text/border tokens at the same
+   paper/ink/line the rest of the app uses. !important beats the injected stylesheet
+   regardless of where it lands relative to this one (it's appended to <head> at runtime). */
+.likhari-theme-scope {
+    --editor-paper: var(--paper-card) !important;
+    --editor-paper-dim: var(--paper-deep) !important;
+    --editor-ink: var(--ink) !important;
+    --editor-ink-soft: var(--ink-soft) !important;
+    --editor-line: var(--nw-line) !important;
+    --editor-line-strong: var(--nw-line) !important;
+}
+
 body {
     background-color: var(--paper);
     color: var(--ink);
