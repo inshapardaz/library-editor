@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // Ui Library Imports
-import { Avatar, Divider, Group, Stack, Text, Tooltip, useMantineTheme } from '@mantine/core';
+import { Avatar, Divider, Group, Stack, Text, Tooltip } from '@mantine/core';
 
 // Local Imports
 import { IconWorld, IconLibrary, IconLibraryEditor } from '@/components/icons';
@@ -14,7 +14,6 @@ import LibraryDeleteButton from './libraryDeleteButton';
 
 const LibraryListItem = ({ library }) => {
     const { t } = useTranslation();
-    const theme = useMantineTheme();
 
     return (<>
         <Group gap="sm">
@@ -34,7 +33,7 @@ const LibraryListItem = ({ library }) => {
                     <IconWorld
                         height={16}
                         stroke={1.5}
-                        style={{ color: theme.colors.dark[2] }}
+                        style={{ color: 'var(--ink-soft)' }}
                     />
                     <Text size="xs" c="dimmed">
                         {t(`languages.${library.language}`)}
@@ -49,7 +48,7 @@ const LibraryListItem = ({ library }) => {
                         <IconText
                             tooltip={t('actions.edit')}
                             link={`/libraries/${library.id}/edit`}
-                            icon={<IconLibraryEditor height={16} style={{ color: theme.colors.dark[2] }} />} />
+                            icon={<IconLibraryEditor height={16} style={{ color: 'var(--ink-soft)' }} />} />
                     </>
                 </If>
                 <If condition={library.links.delete != null}>

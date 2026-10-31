@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 // UI library import
-import { ActionIcon, Breadcrumbs, Button, Center, Container, Drawer, Group, Image, rem, Skeleton, Stack, useMantineTheme } from "@mantine/core";
+import { ActionIcon, Breadcrumbs, Button, Center, Container, Drawer, Group, Image, rem, Skeleton, Stack } from "@mantine/core";
 import { useDisclosure } from '@mantine/hooks';
 
 // Local imports
@@ -22,7 +22,6 @@ import useFullscreen from '@/hooks/useFullscreen';
 
 const BookReaderPage = () => {
     const { t } = useTranslation();
-    const theme = useMantineTheme();
     const navigate = useNavigate();
     const { ref, toggle, fullscreen } = useFullscreen();
     const [opened, { open, close }] = useDisclosure(false);
@@ -135,7 +134,7 @@ const BookReaderPage = () => {
             {page1 ? page1.chapterTitle : t('book.chapters')}
         </Button>),
     ]
-    const icon = <Center h={450}><IconBook width={250} style={{ color: theme.colors.dark[1] }} /></Center>;
+    const icon = <Center h={450}><IconBook width={250} style={{ color: 'var(--ink-soft)' }} /></Center>;
 
 
     return (<Container fluid ref={ref} className={classes.reader}>

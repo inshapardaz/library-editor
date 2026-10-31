@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
 // UI Library Imports
-import { Box, Card, Center, Container, Grid, LoadingOverlay, rem, Skeleton, useMantineTheme } from "@mantine/core";
+import { Box, Card, Center, Container, Grid, LoadingOverlay, rem, Skeleton } from "@mantine/core";
 
 // Local imports
 import { useGetBookQuery, useAddBookMutation, useUpdateBookMutation, useUpdateBookImageMutation } from '@/store/slices/books.api';
@@ -37,7 +37,6 @@ const PageLoading = () => {
 
 const EditBookPage = () => {
     const navigate = useNavigate();
-    const theme = useMantineTheme();
     const { t } = useTranslation();
     const { libraryId, bookId } = useParams();
     const isEditing = useMemo(() => bookId != null, [bookId]);
@@ -80,7 +79,7 @@ const EditBookPage = () => {
         }
     };
 
-    const icon = <Center h={450}><IconBook width={250} style={{ color: theme.colors.dark[1] }} /></Center>;
+    const icon = <Center h={450}><IconBook width={250} style={{ color: 'var(--ink-soft)' }} /></Center>;
 
     const title = book ? book.title : t("book.actions.add.title");
     if (isFetching) return <PageLoading />;

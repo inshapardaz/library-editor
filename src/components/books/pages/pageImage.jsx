@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { useMemo } from 'react';
 
 // UI Library Import
-import { Button, Center, FileButton, Group, Stack, Switch, Tooltip, useMantineColorScheme, useMantineTheme } from '@mantine/core';
+import { Button, Center, FileButton, Group, Stack, Switch, Tooltip, useMantineColorScheme } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 
 // Local imports
@@ -16,7 +16,6 @@ const MAX_ZOOM = 200;
 const ZOOM_STEP = 10;
 
 const PageImage = ({ page, t, image, onChange = () => { } }) => {
-    const theme = useMantineTheme();
     const { colorScheme } = useMantineColorScheme();
     const [darkenImage, setDarkenImage] = useLocalStorage({
         key: "page-editor-darken-image",
@@ -27,7 +26,7 @@ const PageImage = ({ page, t, image, onChange = () => { } }) => {
         defaultValue: 100
     });
 
-    const icon = <Center h={450}><IconPage width={250} style={{ color: theme.colors.dark[1] }} /></Center>;
+    const icon = <Center h={450}><IconPage width={250} style={{ color: 'var(--ink-soft)' }} /></Center>;
 
     const getImage = () => {
         if (image) {

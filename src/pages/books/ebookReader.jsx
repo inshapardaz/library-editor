@@ -4,7 +4,7 @@ import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { useTranslation } from "react-i18next";
 
 // UI library import
-import { ActionIcon, Button, Breadcrumbs, Container, Drawer, Group, rem, Skeleton, Stack, Center, useMantineTheme } from "@mantine/core";
+import { ActionIcon, Button, Breadcrumbs, Container, Drawer, Group, rem, Skeleton, Stack, Center } from "@mantine/core";
 import { useDisclosure } from '@mantine/hooks';
 
 // Local imports
@@ -23,7 +23,6 @@ import useFullscreen from '@/hooks/useFullscreen';
 
 const EBookReaderPage = () => {
     const { t } = useTranslation();
-    const theme = useMantineTheme();
     const navigate = useNavigate();
     const readerTheme = useSelector(state => state.ui.readerTheme);
     const readerView = useSelector(state => state.ui.readerView);
@@ -130,7 +129,7 @@ const EBookReaderPage = () => {
         </Button>),
     ]
 
-    const icon = <Center h={450}><IconBook width={150} height={200} style={{ color: theme.colors.dark[1] }} /></Center>;
+    const icon = <Center h={450}><IconBook width={150} height={200} style={{ color: 'var(--ink-soft)' }} /></Center>;
 
     return (<Container fluid ref={ref} className={`${classes.reader} markdownReaderTheme--${readerTheme}`}>
         <Group justify="space-between" wrap="nowrap">

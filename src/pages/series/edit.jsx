@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
 // UI Library Imports
-import { Box, Button, Card, Center, Container, Grid, Group, LoadingOverlay, rem, Skeleton, Textarea, TextInput, useMantineTheme } from "@mantine/core";
+import { Box, Button, Card, Center, Container, Grid, Group, LoadingOverlay, rem, Skeleton, Textarea, TextInput } from "@mantine/core";
 import { useForm, isNotEmpty } from '@mantine/form';
 
 // Local imports
@@ -106,7 +106,6 @@ SeriesForm.propTypes = {
 
 const EditSeriesPage = () => {
     const navigate = useNavigate();
-    const theme = useMantineTheme();
     const { t } = useTranslation();
     const { libraryId, seriesId } = useParams();
     const isEditing = useMemo(() => seriesId != null, [seriesId]);
@@ -149,7 +148,7 @@ const EditSeriesPage = () => {
         }
     };
 
-    const icon = <Center h={450}><IconSeries width={250} style={{ color: theme.colors.dark[1] }} /></Center>;
+    const icon = <Center h={450}><IconSeries width={250} style={{ color: 'var(--ink-soft)' }} /></Center>;
 
     const title = series ? series.name : t("series.actions.add.title");
     if (isFetching) return <PageLoading />;

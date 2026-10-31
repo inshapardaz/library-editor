@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 // UI Library Imports
 import moment from 'moment/moment';
-import { Box, Button, Card, Center, Container, Grid, Group, LoadingOverlay, NumberInput, rem, Skeleton, useMantineTheme } from "@mantine/core";
+import { Box, Button, Card, Center, Container, Grid, Group, LoadingOverlay, NumberInput, rem, Skeleton } from "@mantine/core";
 import { useForm, isInRange } from '@mantine/form';
 
 // Local imports
@@ -135,7 +135,6 @@ IssueForm.propTypes = {
 
 const EditIssuePage = () => {
     const navigate = useNavigate();
-    const theme = useMantineTheme();
     const { t } = useTranslation();
     const { libraryId, periodicalId, volumeNumber, issueNumber } = useParams();
     const isEditing = useMemo(() => volumeNumber != null && issueNumber != null, [issueNumber, volumeNumber]);
@@ -184,7 +183,7 @@ const EditIssuePage = () => {
         }
     };
 
-    const icon = <Center h={450}><IconPeriodical width={250} style={{ color: theme.colors.dark[1] }} /></Center>;
+    const icon = <Center h={450}><IconPeriodical width={250} style={{ color: 'var(--ink-soft)' }} /></Center>;
 
     const title = issue ? moment(issue.issueDate).format(getDateFormatFromFrequency(issue.frequency)) : t("issue.actions.add.label");
 

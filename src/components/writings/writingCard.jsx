@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 // Ui Library import
-import { Card, Text, Group, useMantineTheme, Center, Divider, rem, Checkbox } from '@mantine/core';
+import { Card, Text, Group, Center, Divider, rem, Checkbox } from '@mantine/core';
 
 // Local imports
 import { IconWriting, IconEdit, IconReaderText } from '@/components/icons';
@@ -19,9 +19,8 @@ import EditingStatusIcon from '@/components/editingStatusIcon';
 const IMAGE_HEIGHT = 450;
 
 const WritingCard = ({ libraryId, writing, t, isSelected = false, onSelectChanged = () => { } }) => {
-    const theme = useMantineTheme();
 
-    const icon = <Center h={IMAGE_HEIGHT}><IconWriting width={rem(150)} style={{ color: theme.colors.dark[1] }} /></Center>;
+    const icon = <Center h={IMAGE_HEIGHT}><IconWriting width={rem(150)} style={{ color: 'var(--ink-soft)' }} /></Center>;
 
     return (
         <Card shadow="sm" padding="lg" radius="md" key={writing.id} withBorder>
@@ -33,7 +32,7 @@ const WritingCard = ({ libraryId, writing, t, isSelected = false, onSelectChange
                 <Group>
                     <Checkbox checked={isSelected}
                         onChange={e => onSelectChanged(e.currentTarget.checked)} />
-                    <EditingStatusIcon editingStatus={writing.status} width={24} style={{ color: theme.colors.dark[2] }} />
+                    <EditingStatusIcon editingStatus={writing.status} width={24} style={{ color: 'var(--ink-soft)' }} />
                     <Text component={Link} to={`/libraries/${libraryId}/writings/${writing.id}/contents/edit`} truncate="end" fw={500}>{writing.title}</Text>
                 </Group>
                 <FavoriteButton article={writing} readonly />
@@ -44,7 +43,7 @@ const WritingCard = ({ libraryId, writing, t, isSelected = false, onSelectChange
             </Group>
             <Group justify='center'>
                 <IconText
-                    icon={<IconReaderText height={16} style={{ color: theme.colors.dark[2] }} />}
+                    icon={<IconReaderText height={16} style={{ color: 'var(--ink-soft)' }} />}
                     tooltip={t('writing.actions.read.title')}
                     link={`/libraries/${libraryId}/writings/${writing.id}/`} />
                 <If condition={writing.links.update}>
@@ -56,7 +55,7 @@ const WritingCard = ({ libraryId, writing, t, isSelected = false, onSelectChange
                         <WritingEditForm libraryId={libraryId} article={writing} >
                             <IconText
                                 tooltip={t('actions.edit')}
-                                icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />} />
+                                icon={<IconEdit height={16} style={{ color: 'var(--ink-soft)' }} />} />
                         </WritingEditForm>
                     </>
                 </If>

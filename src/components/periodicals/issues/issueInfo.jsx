@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from 'react-router-dom';
 
 // UI Library Imports
-import { useMantineTheme, Stack, Button, Divider, Text, Group, Tooltip, Progress } from "@mantine/core";
+import { Stack, Button, Divider, Text, Group, Tooltip, Progress } from "@mantine/core";
 
 // Local Imports
 import {
@@ -28,25 +28,24 @@ const IssueInfo = ({ libraryId, periodical, issue }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    const theme = useMantineTheme();
 
     if (!periodical || !issue) {
         return null;
     }
 
     return (<Stack>
-        <IconText size="sm" icon={<BookStatusIcon status={issue.status} height={24} style={{ color: theme.colors.dark[2] }} />} text={getBookStatusText({ status: issue.status, t })} />
+        <IconText size="sm" icon={<BookStatusIcon status={issue.status} height={24} style={{ color: 'var(--ink-soft)' }} />} text={getBookStatusText({ status: issue.status, t })} />
 
-        <IconText icon={<IconVolumeNumber style={{ color: theme.colors.dark[2] }} />}
+        <IconText icon={<IconVolumeNumber style={{ color: 'var(--ink-soft)' }} />}
             text={t('issue.volumeNumber.title', { volumeNumber: issue.volumeNumber })}
             link={`/libraries/${libraryId}/periodicals/${periodical.id}/volumes/${issue.volumeNumber}`} />
 
-        <IconText icon={<IconIssueNumber style={{ color: theme.colors.dark[2] }} />}
+        <IconText icon={<IconIssueNumber style={{ color: 'var(--ink-soft)' }} />}
             text={t('issue.issueNumber.title', { issueNumber: issue.issueNumber })} />
 
-        <IconText icon={<IconPages style={{ color: theme.colors.dark[2] }} />}
+        <IconText icon={<IconPages style={{ color: 'var(--ink-soft)' }} />}
             text={t('issue.pageCount', { count: issue.pageCount })} />
-        <IconText icon={<IconIssueArticle style={{ color: theme.colors.dark[2] }} />}
+        <IconText icon={<IconIssueArticle style={{ color: 'var(--ink-soft)' }} />}
             text={t('issue.articleCount', { count: issue.articleCount })} />
 
 
@@ -73,7 +72,7 @@ const IssueInfo = ({ libraryId, periodical, issue }) => {
                 (
                     <Tooltip key={s.status} label={`${t(`editingStatus.${s.status}`)} : ${s.count}`}>
                         <Group component={Link} to={`/libraries/${libraryId}/periodicals/${periodical.id}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}?section=pages&status=${s.status}`}>
-                            <EditingStatusIcon editingStatus={s.status} t={t} style={{ color: theme.colors.dark[2] }} />
+                            <EditingStatusIcon editingStatus={s.status} t={t} style={{ color: 'var(--ink-soft)' }} />
                             <Progress size="lg" value={s.percentage} color={getStatusColor(s.status)} style={{ flex: 1 }} />
                         </Group>
                     </Tooltip>)

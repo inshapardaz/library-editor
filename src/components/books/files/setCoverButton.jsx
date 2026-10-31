@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 // Ui Library Imports
-import { ActionIcon, LoadingOverlay, Text, Tooltip, useMantineTheme } from '@mantine/core';
+import { ActionIcon, LoadingOverlay, Text, Tooltip } from '@mantine/core';
 import { modals } from '@mantine/modals';
 
 // Local imports
@@ -13,7 +13,6 @@ import { useUpdateBookImageMutation } from '@/store/slices/books.api';
 
 //---------------------------------
 const SetCoverButton = ({ libraryId, bookId, file, t, onComplete = () => { }, ...props }) => {
-    const theme = useMantineTheme();
     const [busy, setBusy] = useState(false);
     const [updateBookImage] = useUpdateBookImageMutation();
 
@@ -61,7 +60,7 @@ const SetCoverButton = ({ libraryId, bookId, file, t, onComplete = () => { }, ..
         <Tooltip label={t("book.actions.setCover.title")}>
             <ActionIcon {...props}
                 onClick={openDeleteModal}>
-                <IconSetImage height={16} style={{ color: theme.colors.dark[2] }} />
+                <IconSetImage height={16} style={{ color: 'var(--ink-soft)' }} />
             </ActionIcon>
         </Tooltip>
 

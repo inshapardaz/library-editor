@@ -380,7 +380,7 @@ const IssueProcessPage = () => {
         <If condition={!busy && currentFile && !hasImagesLoaded}>
             <Card withBorder >
                 <Stack my={100} mx="auto" >
-                    <IconFiles height={64} style={{ color: theme.colors.dark[3] }} />
+                    <IconFiles height={64} style={{ color: 'var(--ink-soft)' }} />
                     <Title order={3} m="lg">
                         {currentFile?.fileName}
                     </Title>

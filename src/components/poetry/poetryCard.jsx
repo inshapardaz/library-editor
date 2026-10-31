@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 // Ui Library import
-import { Card, Text, Group, useMantineTheme, Center, Divider, rem, Checkbox } from '@mantine/core';
+import { Card, Text, Group, Center, Divider, rem, Checkbox } from '@mantine/core';
 
 // Local imports
 import { IconPoetry, IconEdit, IconReaderText } from '@/components/icons';
@@ -19,9 +19,8 @@ import Img from '@/components/img';
 const IMAGE_HEIGHT = 450;
 
 const PoetryCard = ({ libraryId, poetry, t, isSelected = false, onSelectChanged = () => { } }) => {
-    const theme = useMantineTheme();
 
-    const icon = <Center h={IMAGE_HEIGHT} ><IconPoetry width={rem(150)} style={{ color: theme.colors.dark[1] }} /></Center>;
+    const icon = <Center h={IMAGE_HEIGHT} ><IconPoetry width={rem(150)} style={{ color: 'var(--ink-soft)' }} /></Center>;
 
     return (
         <Card shadow="sm" padding="lg" radius="md" key={poetry.id} withBorder>
@@ -33,7 +32,7 @@ const PoetryCard = ({ libraryId, poetry, t, isSelected = false, onSelectChanged 
                 <Group>
                     <Checkbox checked={isSelected}
                         onChange={e => onSelectChanged(e.currentTarget.checked)} />
-                    <EditingStatusIcon editingStatus={poetry.status} width={24} style={{ color: theme.colors.dark[2] }} />
+                    <EditingStatusIcon editingStatus={poetry.status} width={24} style={{ color: 'var(--ink-soft)' }} />
                     <Text component={Link} to={`/libraries/${libraryId}/poetry/${poetry.id}/contents/edit`} truncate="end" fw={500}>{poetry.title}</Text>
                 </Group>
 
@@ -45,7 +44,7 @@ const PoetryCard = ({ libraryId, poetry, t, isSelected = false, onSelectChanged 
             </Group>
             <Group justify='center'>
                 <IconText
-                    icon={<IconReaderText height={16} style={{ color: theme.colors.dark[2] }} />}
+                    icon={<IconReaderText height={16} style={{ color: 'var(--ink-soft)' }} />}
                     tooltip={t('poetry.actions.read.title')}
                     link={`/libraries/${libraryId}/poetry/${poetry.id}/`} />
                 <If condition={poetry.links.update}>
@@ -56,7 +55,7 @@ const PoetryCard = ({ libraryId, poetry, t, isSelected = false, onSelectChanged 
                     <PoetryEditForm libraryId={libraryId} article={poetry} >
                         <IconText
                             tooltip={t('actions.edit')}
-                            icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />} />
+                            icon={<IconEdit height={16} style={{ color: 'var(--ink-soft)' }} />} />
                     </PoetryEditForm>
                 </If>
                 <If condition={poetry.links.delete != null}>

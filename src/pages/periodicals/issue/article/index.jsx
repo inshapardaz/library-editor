@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import moment from "moment";
 
 // Ui Library Imports
-import { ActionIcon, Breadcrumbs, Button, Center, Container, Drawer, Group, Image, rem, Skeleton, Text, Title, useMantineTheme } from '@mantine/core';
+import { ActionIcon, Breadcrumbs, Button, Center, Container, Drawer, Group, Image, rem, Skeleton, Text, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 // Local Import
@@ -44,7 +44,6 @@ const getLanguage = (article, language) => {
 
 const IssueArticlePage = () => {
     const { t } = useTranslation();
-    const theme = useMantineTheme();
     const navigate = useNavigate();
     const { libraryId, periodicalId, volumeNumber, issueNumber, articleNumber } = useParams();
     const [searchParams] = useSearchParams();
@@ -145,7 +144,7 @@ const IssueArticlePage = () => {
     ]
 
     const title = moment(issue.issueDate).format(getDateFormatFromFrequency(periodical?.frequency));
-    const icon = <Center h={200}><IconPeriodical width={250} style={{ color: theme.colors.dark[1] }} /></Center>;
+    const icon = <Center h={200}><IconPeriodical width={250} style={{ color: 'var(--ink-soft)' }} /></Center>;
 
     const articleLinks = articles?.data.map(a => (
         { key: a.sequenceNumber, label: a.title, sequenceNumber: a.sequenceNumber, order: 1, icon: (<IconIssueArticle />) }

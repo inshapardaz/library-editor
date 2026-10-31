@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // UI Library Import
-import { Button, Card, Center, Container, Grid, Group, LoadingOverlay, SimpleGrid, Switch, Textarea, TextInput, useMantineTheme } from "@mantine/core";
+import { Button, Card, Center, Container, Grid, Group, LoadingOverlay, SimpleGrid, Switch, Textarea, TextInput } from "@mantine/core";
 
 // Local Impoprt
 import PageHeader from "@/components/pageHeader";
@@ -27,7 +27,6 @@ const LibraryEditPage = () => {
     const { libraryId } = useParams();
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const theme = useMantineTheme();
     const [initializedLibraryId, setInitializedLibraryId] = useState(null);
     const [image, setImage] = useState(null);
     const isEditing = useMemo(() => libraryId != null, [libraryId]);
@@ -119,7 +118,7 @@ const LibraryEditPage = () => {
 
     //-------------------------- Render -------------------------------
 
-    const icon = <Center h={450}><IconLibrary width={250} style={{ color: theme.colors.dark[1] }} /></Center>;
+    const icon = <Center h={450}><IconLibrary width={250} style={{ color: 'var(--ink-soft)' }} /></Center>;
 
     if (errorLoading) {
         return (<Container fluid mt="sm">

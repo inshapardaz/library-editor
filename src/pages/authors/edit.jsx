@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
 // UI Library Imports
-import { Box, Button, Card, Center, Container, Grid, Group, LoadingOverlay, rem, Skeleton, Textarea, TextInput, useMantineTheme } from "@mantine/core";
+import { Box, Button, Card, Center, Container, Grid, Group, LoadingOverlay, rem, Skeleton, Textarea, TextInput } from "@mantine/core";
 import { useForm, isNotEmpty } from '@mantine/form';
 
 // Local imports
@@ -116,7 +116,6 @@ AuthorForm.propTypes = {
 
 const EditAuthorPage = () => {
     const navigate = useNavigate();
-    const theme = useMantineTheme();
     const { t } = useTranslation();
     const { libraryId, authorId } = useParams();
     const isEditing = useMemo(() => authorId != null, [authorId]);
@@ -159,7 +158,7 @@ const EditAuthorPage = () => {
         }
     };
 
-    const icon = <Center h={450}><IconAuthor width={250} style={{ color: theme.colors.dark[1] }} /></Center>;
+    const icon = <Center h={450}><IconAuthor width={250} style={{ color: 'var(--ink-soft)' }} /></Center>;
 
     const title = author ? author.name : t("author.actions.add.title");
     if (isFetching) return <PageLoading />;

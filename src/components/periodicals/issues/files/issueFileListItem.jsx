@@ -9,8 +9,7 @@ import {
     Group,
     Stack,
     Text,
-    Tooltip,
-    useMantineTheme
+    Tooltip
 } from '@mantine/core';
 import { IMAGE_MIME_TYPE, PDF_MIME_TYPE, MS_WORD_MIME_TYPE } from '@mantine/dropzone';
 
@@ -25,7 +24,6 @@ import { IconDownloadDocument, IconUploadDocument, IconProcessDocument } from '@
 import { error, success } from '@/utils/notifications';
 //------ ---------------------------------------
 const IssueFileListItem = ({ t, libraryId, issue, content }) => {
-    const theme = useMantineTheme();
     const [updateBookContent, { isLoading: isUpdating }] = useUpdateBookContentMutation();
 
     const uploadFile = (file) => {
@@ -47,7 +45,7 @@ const IssueFileListItem = ({ t, libraryId, issue, content }) => {
 
     return (<Stack>
         <Group mt="md" className={classes.details}>
-            <FileImage mimeType={content.mimeType} width={32} style={{ color: theme.colors.dark[2] }} />
+            <FileImage mimeType={content.mimeType} width={32} style={{ color: 'var(--ink-soft)' }} />
             <Text component={Link} to={content.links.download} target="_blank" rel="noreferrer">
                 {content.fileName}
             </Text>
@@ -66,14 +64,14 @@ const IssueFileListItem = ({ t, libraryId, issue, content }) => {
             <If condition={content.links.update}>
                 <Divider orientation='vertical' />
                 <IconText
-                    icon={<IconDownloadDocument height={16} style={{ color: theme.colors.dark[2] }} />}
+                    icon={<IconDownloadDocument height={16} style={{ color: 'var(--ink-soft)' }} />}
                     tooltip={t('issue.actions.downloadFile.title')}
                     link={content.links.download} target="_blank" rel="noreferrer" />
             </If>
             <If condition={issue && content.links.update}>
                 <Divider orientation='vertical' />
                 <IconText
-                    icon={<IconProcessDocument height={16} style={{ color: theme.colors.dark[2] }} />}
+                    icon={<IconProcessDocument height={16} style={{ color: 'var(--ink-soft)' }} />}
                     tooltip={t('issue.actions.processAndSave.title')}
                     link={`/libraries/${libraryId}/periodicals/${issue.periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}/files/${content.id}/process`} />
 

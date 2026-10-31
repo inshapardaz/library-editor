@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
 // UI Library Imports
-import { Box, Button, Center, Group, Slider, Stack, Switch, Tooltip, useMantineTheme } from "@mantine/core";
+import { Box, Button, Center, Group, Slider, Stack, Switch, Tooltip } from "@mantine/core";
 
 // Local imports
 import { IconSave, IconPage, IconSplitVertical } from '@/components/icons';
@@ -14,7 +14,6 @@ const max = 1000;
 const marks = [{ value: 500 }];
 //-------------------------------
 const PageImageEditor = ({ t, image, onChange = () => { }, zoom, isRtl }) => {
-    const theme = useMantineTheme();
     const [dirty, setDirty] = useState(false);
     const [checked, setChecked] = useState(false);
     const [sliderValue, setSliderValue] = useState(Number((max / 2).toFixed()));
@@ -58,7 +57,7 @@ const PageImageEditor = ({ t, image, onChange = () => { }, zoom, isRtl }) => {
 
     if (!image) return;
 
-    const icon = <Center h={450}><IconPage width={250} style={{ color: theme.colors.dark[1] }} /></Center>;
+    const icon = <Center h={450}><IconPage width={250} style={{ color: 'var(--ink-soft)' }} /></Center>;
 
     return (
         <Stack style={{ flex: 1, overflow: 'hidden' }}>

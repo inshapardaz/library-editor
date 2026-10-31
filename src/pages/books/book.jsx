@@ -15,8 +15,7 @@ import {
     Space,
     Stack,
     Tabs,
-    rem,
-    useMantineTheme
+    rem
 } from '@mantine/core';
 
 // Local imports
@@ -70,7 +69,6 @@ const BookPage = () => {
     const pageNumber = parseInt(searchParams.get("pageNumber") ?? "1");
     const pageSize = parseInt(searchParams.get("pageSize") ?? "12");
 
-    const theme = useMantineTheme();
 
     const {
         data: book,
@@ -119,7 +117,7 @@ const BookPage = () => {
         navigate(`/libraries/${libraryId}/books/${book.id}/?section=${key}`);
     };
 
-    const icon = <Center h={450}><IconBook width={250} style={{ color: theme.colors.dark[1] }} /></Center>;
+    const icon = <Center h={450}><IconBook width={250} style={{ color: 'var(--ink-soft)' }} /></Center>;
 
     return (<Container fluid mt="sm">
         <PageHeader title={book.title}
@@ -172,13 +170,13 @@ const BookPage = () => {
                     <Card withBorder>
                         <Tabs value={section} onChange={onChange}>
                             <Tabs.List>
-                                <Tabs.Tab value="chapters" leftSection={<IconChapters style={{ color: theme.colors.dark[3] }} />}>
+                                <Tabs.Tab value="chapters" leftSection={<IconChapters style={{ color: 'var(--ink-soft)' }} />}>
                                     {t('book.chapters')}
                                 </Tabs.Tab>
-                                <Tabs.Tab value="pages" leftSection={<IconPages style={{ color: theme.colors.dark[3] }} />}>
+                                <Tabs.Tab value="pages" leftSection={<IconPages style={{ color: 'var(--ink-soft)' }} />}>
                                     {t('book.pages')}
                                 </Tabs.Tab>
-                                <Tabs.Tab value="files" leftSection={<IconFiles style={{ color: theme.colors.dark[3] }} />}>
+                                <Tabs.Tab value="files" leftSection={<IconFiles style={{ color: 'var(--ink-soft)' }} />}>
                                     {t('book.files.title')}
                                 </Tabs.Tab>
                             </Tabs.List>

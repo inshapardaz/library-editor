@@ -3,7 +3,7 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import moment from "moment";
 
 // UI Library Import
-import { Card, Center, Container, Grid, rem, Skeleton, Space, Stack, Tabs, Text, useMantineTheme } from "@mantine/core";
+import { Card, Center, Container, Grid, rem, Skeleton, Space, Stack, Tabs, Text } from "@mantine/core";
 
 // Local Import
 import { useGetPeriodicalByIdQuery } from '@/store/slices/periodicals.api';
@@ -24,7 +24,6 @@ const PRIMARY_COL_HEIGHT = rem(300);
 // -----------------------------------------
 const IssuePage = () => {
     const { t } = useTranslation();
-    const theme = useMantineTheme();
 
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
@@ -75,7 +74,7 @@ const IssuePage = () => {
     }
 
     const title = moment(issue.issueDate).format(getDateFormatFromFrequency(periodical?.frequency));
-    const icon = <Center h={450}><IconIssue width={250} style={{ color: theme.colors.dark[1] }} /></Center>;
+    const icon = <Center h={450}><IconIssue width={250} style={{ color: 'var(--ink-soft)' }} /></Center>;
 
 
     return (<>
@@ -108,13 +107,13 @@ const IssuePage = () => {
                     <Card withBorder>
                         <Tabs value={section} onChange={onChange}>
                             <Tabs.List>
-                                <Tabs.Tab value="articles" leftSection={<IconIssueArticle style={{ color: theme.colors.dark[3] }} />}>
+                                <Tabs.Tab value="articles" leftSection={<IconIssueArticle style={{ color: 'var(--ink-soft)' }} />}>
                                     {t('issue.articles.title')}
                                 </Tabs.Tab>
-                                <Tabs.Tab value="pages" leftSection={<IconPages style={{ color: theme.colors.dark[3] }} />}>
+                                <Tabs.Tab value="pages" leftSection={<IconPages style={{ color: 'var(--ink-soft)' }} />}>
                                     {t('issue.pages.title')}
                                 </Tabs.Tab>
-                                <Tabs.Tab value="files" leftSection={<IconFiles style={{ color: theme.colors.dark[3] }} />}>
+                                <Tabs.Tab value="files" leftSection={<IconFiles style={{ color: 'var(--ink-soft)' }} />}>
                                     {t('issue.files.title')}
                                 </Tabs.Tab>
                             </Tabs.List>

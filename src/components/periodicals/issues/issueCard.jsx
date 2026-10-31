@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // Ui Library import
-import { Card, Text, Group, useMantineTheme, Center, Divider } from '@mantine/core';
+import { Card, Text, Group, Center, Divider } from '@mantine/core';
 import moment from "moment";
 
 // Local imports
@@ -19,9 +19,8 @@ const IMAGE_WIDTH = 200;
 
 const IssueCard = ({ libraryId, issue, frequency }) => {
     const { t } = useTranslation();
-    const theme = useMantineTheme();
 
-    const icon = <Center h={IMAGE_HEIGHT}><IconIssue width={IMAGE_WIDTH} style={{ color: theme.colors.dark[1] }} /></Center>;
+    const icon = <Center h={IMAGE_HEIGHT}><IconIssue width={IMAGE_WIDTH} style={{ color: 'var(--ink-soft)' }} /></Center>;
     const title = moment(issue.issueDate).format(getDateFormatFromFrequency(frequency));
 
     return (
@@ -43,12 +42,12 @@ const IssueCard = ({ libraryId, issue, frequency }) => {
             </Group>
             <Group mt="md">
                 <If condition={issue.pageCount != null}>
-                    <IconText icon={<IconPages style={{ color: theme.colors.dark[2] }} />} text={issue.pageCount} />
+                    <IconText icon={<IconPages style={{ color: 'var(--ink-soft)' }} />} text={issue.pageCount} />
                 </If>
                 <If condition={issue.links.update} >
                     <Divider orientation='vertical' />
                     <IconText
-                        icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />}
+                        icon={<IconEdit height={16} style={{ color: 'var(--ink-soft)' }} />}
                         tooltip={t('actions.delete')}
                         link={`/libraries/${libraryId}/periodicals/${issue.periodicalId}/volumes/${issue.volumeNumber}/issues/${issue.issueNumber}/edit`}
                     />

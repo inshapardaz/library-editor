@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 // Ui Library Imports
-import { Divider, Group, Stack, Text, useMantineTheme } from '@mantine/core';
+import { Divider, Group, Stack, Text } from '@mantine/core';
 
 // Local import
 import { IconAutoCorrect } from '@/components/icons';
@@ -12,10 +12,9 @@ import CommonWordDeleteButton from './commonWordDeleteButton';
 //-------------------------------------
 
 const CommonWordListItem = ({ word, t }) => {
-    const theme = useMantineTheme();
     return (<>
         <Group gap="sm" wrap="nowrap">
-            <IconAutoCorrect height={32} style={{ color: theme.colors.dark[2] }} />
+            <IconAutoCorrect height={32} style={{ color: 'var(--ink-soft)' }} />
             <Stack>
                 <Group gap="sm" wrap="nowrap">
                     <Text truncate="end" fw={500}>{word.word}</Text>

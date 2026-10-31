@@ -74,7 +74,7 @@ const PeriodicalPage = () => {
                     <If condition={periodical.issueCount > 0}>
                         <>
                             <Divider orientation="vertical" />
-                            <IconText icon={<IconIssues height={16} style={{ color: theme.colors.dark[2] }} />} text={t('periodical.issueCount', { count: periodical.issueCount })} />
+                            <IconText icon={<IconIssues height={16} style={{ color: 'var(--ink-soft)' }} />} text={t('periodical.issueCount', { count: periodical.issueCount })} />
                         </>
                     </If>
                 </Group>

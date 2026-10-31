@@ -9,8 +9,7 @@ import {
     Group,
     Stack,
     Text,
-    Tooltip,
-    useMantineTheme
+    Tooltip
 } from '@mantine/core';
 import { IMAGE_MIME_TYPE, PDF_MIME_TYPE, MS_WORD_MIME_TYPE } from '@mantine/dropzone';
 
@@ -26,7 +25,6 @@ import { error, success } from '@/utils/notifications';
 import SetCoverButton from './setCoverButton';
 //------ ---------------------------------------
 const BookFileListItem = ({ t, libraryId, book, content }) => {
-    const theme = useMantineTheme();
     const [updateBookContent, { isLoading: isUpdating }] = useUpdateBookContentMutation();
 
     const uploadFile = (file) => {
@@ -48,7 +46,7 @@ const BookFileListItem = ({ t, libraryId, book, content }) => {
 
     return (<Stack>
         <Group mt="md" className={classes.details}>
-            <FileImage mimeType={content.mimeType} width={32} style={{ color: theme.colors.dark[2] }} />
+            <FileImage mimeType={content.mimeType} width={32} style={{ color: 'var(--ink-soft)' }} />
             <Text component={Link} to={content.links.download} target="_blank" rel="noreferrer">
                 {content.fileName}
             </Text>
@@ -67,7 +65,7 @@ const BookFileListItem = ({ t, libraryId, book, content }) => {
             <If condition={content.links.update}>
                 <Divider orientation='vertical' />
                 <IconText
-                    icon={<IconDownloadDocument height={16} style={{ color: theme.colors.dark[2] }} />}
+                    icon={<IconDownloadDocument height={16} style={{ color: 'var(--ink-soft)' }} />}
                     tooltip={t('book.actions.downloadFile.title')}
                     link={content.links.download} target="_blank" rel="noreferrer" />
             </If>
@@ -78,7 +76,7 @@ const BookFileListItem = ({ t, libraryId, book, content }) => {
             <If condition={book && content.links.update}>
                 <Divider orientation='vertical' />
                 <IconText
-                    icon={<IconProcessDocument height={16} style={{ color: theme.colors.dark[2] }} />}
+                    icon={<IconProcessDocument height={16} style={{ color: 'var(--ink-soft)' }} />}
                     tooltip={t('book.actions.processAndSave.title')}
                     link={`/libraries/${libraryId}/books/${book.id}/files/${content.id}/process`} />
 

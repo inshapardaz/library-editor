@@ -40,7 +40,7 @@ const FavoriteButton = ({ article, size }) => {
     }
 
     if (article.links.create_favorite) {
-        icon = (<IconFavorite height={size} style={{ color: theme.colors.dark[3] }} />);
+        icon = (<IconFavorite height={size} style={{ color: 'var(--ink-soft)' }} />);
     }
 
     if (icon) {

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Link, useParams } from 'react-router-dom';
 
 // Ui Library Import
-import { Avatar, Group, Stack, Text, useSafeMantineTheme } from "@mantine/core";
+import { Avatar, Group, Stack, Text } from "@mantine/core";
 
 // Local imports
 import { IconAuthor } from '@/components/icons';
@@ -10,9 +10,8 @@ import { IconAuthor } from '@/components/icons';
 
 const BookAuthorsList = ({ authors }) => {
     const { libraryId } = useParams();
-    const theme = useSafeMantineTheme();
 
-    const icon = <IconAuthor height={200} style={{ color: theme.colors.dark[2] }} />;
+    const icon = <IconAuthor height={200} style={{ color: 'var(--ink-soft)' }} />;
     return (
         <Stack>
             {authors.map((author) => (

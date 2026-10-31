@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 // Ui Library Imports
-import { Checkbox, Divider, Group, Stack, Text, useMantineTheme } from '@mantine/core';
+import { Checkbox, Divider, Group, Stack, Text } from '@mantine/core';
 
 // Local Imports
 import AuthorsAvatar from '@/components/authors/authorsAvatar';
@@ -17,9 +17,8 @@ import WritingEditForm from './writingEditForm';
 import EditingStatusIcon from '@/components/editingStatusIcon';
 //-------------------------------------
 const WritingListItem = ({ libraryId, writing, t, isSelected = false, onSelectChanged = () => { } }) => {
-    const theme = useMantineTheme();
 
-    const icon = <IconWriting width={150} style={{ color: theme.colors.dark[1] }} />;
+    const icon = <IconWriting width={150} style={{ color: 'var(--ink-soft)' }} />;
 
     return (
         <>
@@ -35,7 +34,7 @@ const WritingListItem = ({ libraryId, writing, t, isSelected = false, onSelectCh
                         </Group>
                         <AuthorsAvatar libraryId={libraryId} authors={writing?.authors} />
                         <Group>
-                            <EditingStatusIcon editingStatus={writing.status} width={16} style={{ color: theme.colors.dark[2] }} />
+                            <EditingStatusIcon editingStatus={writing.status} width={16} style={{ color: 'var(--ink-soft)' }} />
                             <Text c="dimmed" size="sm">
                                 {t(`editingStatus.${writing.status}`)}
                             </Text>
@@ -43,14 +42,14 @@ const WritingListItem = ({ libraryId, writing, t, isSelected = false, onSelectCh
                                 <>
                                     <Divider orientation='vertical' />
                                     <IconText text={writing.writerAccountName} size="sm"
-                                        icon={<IconWriter style={{ color: theme.colors.dark[2] }} />} />
+                                        icon={<IconWriter style={{ color: 'var(--ink-soft)' }} />} />
                                 </>
                             </If>
                             <If condition={writing.reviewerAccountId}>
                                 <>
                                     <Divider orientation='vertical' />
                                     <IconText text={writing.reviewerAccountName} size="sm"
-                                        icon={<IconReviewer style={{ color: theme.colors.dark[2] }} />} />
+                                        icon={<IconReviewer style={{ color: 'var(--ink-soft)' }} />} />
                                 </>
                             </If>
                         </Group>
@@ -58,7 +57,7 @@ const WritingListItem = ({ libraryId, writing, t, isSelected = false, onSelectCh
                 </Group>
                 <Group gap="sm" wrap="nowrap" style={{ alignSelf: 'end' }}>
                     <IconText
-                        icon={<IconReaderText height={16} style={{ color: theme.colors.dark[2] }} />}
+                        icon={<IconReaderText height={16} style={{ color: 'var(--ink-soft)' }} />}
                         tooltip={t('writing.actions.read.title')}
                         link={`/libraries/${libraryId}/writings/${writing.id}/`} />
                     <If condition={writing.links.update}>
@@ -71,7 +70,7 @@ const WritingListItem = ({ libraryId, writing, t, isSelected = false, onSelectCh
                         <WritingEditForm libraryId={libraryId} article={writing} >
                             <IconText
                                 tooltip={t('actions.edit')}
-                                icon={<IconEdit height={16} style={{ color: theme.colors.dark[2] }} />} />
+                                icon={<IconEdit height={16} style={{ color: 'var(--ink-soft)' }} />} />
                         </WritingEditForm>
                     </If>
                     <If condition={writing.links.update && writing.links.delete != null}>

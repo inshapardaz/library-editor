@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 // Ui library import
-import { Anchor, Box, Breadcrumbs, Divider, Flex, Group, Menu, rem, Skeleton, Spoiler, Stack, Text, Title, useMantineTheme } from '@mantine/core';
+import { Anchor, Box, Breadcrumbs, Divider, Flex, Group, Menu, rem, Skeleton, Spoiler, Stack, Text, Title } from '@mantine/core';
 
 // Local import
 import If from '@/components/if';
@@ -75,7 +75,6 @@ BreadcrumbsMenu.propTypes = {
 //----------------------------------
 const PageHeader = ({ title, subTitle, leftActions, details, imageLink, defaultIcon, breadcrumbs = [], actions = [] }) => {
     const { t } = useTranslation();
-    const theme = useMantineTheme();
 
     const renderBreadcrumb = () => {
         return breadcrumbs.map((item, index) => {
@@ -122,7 +121,7 @@ const PageHeader = ({ title, subTitle, leftActions, details, imageLink, defaultI
                         radius="md"
                         alt={title}
                         fit="contain"
-                        fallback={<Icon name={defaultIcon} height={64} style={{ color: theme.colors.dark[1] }} />}
+                        fallback={<Icon name={defaultIcon} height={64} style={{ color: 'var(--ink-soft)' }} />}
                     />
                 </Box>
             </If>
