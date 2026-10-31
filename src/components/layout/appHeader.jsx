@@ -20,9 +20,7 @@ import { useDisclosure } from '@mantine/hooks';
 import classes from './appHeader.module.css';
 
 import Logo from '../logo';
-import LanguageSwitch from './languageSwitch';
 import DarkModeToggle from './darkModeToggle';
-import AppearanceMenu from './appearanceMenu';
 import ProfileDropDown from './profileDropDown';
 import LibrarySwitcher from './librarySwitcher';
 import { IconHome, IconLibrary, IconLibraryEditor, IconDictionary, IconFont, IconTools, IconChevronDown } from '@/components/icons';
@@ -41,24 +39,15 @@ const AppHeader = () => {
                 <Group justify="space-between" h="100%" wrap="nowrap">
                     <Group h="100%" gap={0}>
                         <Logo home />
-                        <NavLink to={`/`} className={classes.link}>
-                            {t('app')}
-                        </NavLink >
+                        <LibrarySwitcher className={classes.link}>
+                            <NavLink to={`/`} className={classes.link}>
+                                {t('app')}
+                                <Space w="md" />
+                                <IconChevronDown />
+                            </NavLink >
+                        </LibrarySwitcher>
                     </Group>
                     <Group h="100%" gap={0} visibleFrom="sm" wrap="nowrap">
-                        <Tooltip label={t('header.home')}>
-                            <Link to="/" className={classes.link}>
-                                <IconHome height="24px" />
-                            </Link>
-                        </Tooltip>
-                        <LibrarySwitcher className={classes.link}>
-                            <Tooltip label={t('header.libraries')}>
-                                <Group gap={0} wrap="nowrap">
-                                    <IconLibrary height="24px" />
-                                    <IconChevronDown />
-                                </Group>
-                            </Tooltip>
-                        </LibrarySwitcher>
                         <Tooltip label={t('header.libraryEditor')}>
                             <Link to={LIBRARY_EDITOR_URL} className={classes.link}>
                                 <IconLibraryEditor height="24px" />
@@ -78,8 +67,6 @@ const AppHeader = () => {
                     </Group>
                     <Group visibleFrom="sm" wrap="nowrap">
                         <AppSwitcher />
-                        <LanguageSwitch />
-                        <AppearanceMenu />
                         <DarkModeToggle />
                         <ProfileDropDown />
                     </Group>
@@ -143,8 +130,6 @@ const AppHeader = () => {
 
                     <Group my="sm" >
                         <AppSwitcher />
-                        <LanguageSwitch />
-                        <AppearanceMenu />
                         <DarkModeToggle />
                     </Group>
 
