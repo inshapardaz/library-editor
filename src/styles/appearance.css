@@ -255,6 +255,12 @@ a:where(:visited) {
     --tab-hover-color: var(--paper-deep) !important;
 }
 
+/* Loading skeletons' shimmer defaults to Mantine's neutral grey (not themeable via a CSS
+   variable — it's a hardcoded background-color on the shimmer pseudo-element). */
+.mantine-Skeleton-root[data-visible]::after {
+    background-color: var(--paper-deep) !important;
+}
+
 body {
     background-color: var(--paper);
     color: var(--ink);
