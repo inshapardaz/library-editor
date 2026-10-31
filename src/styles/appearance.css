@@ -152,6 +152,53 @@
     --mantine-color-dimmed: var(--ink-soft);
     --mantine-color-default: var(--paper-card);
     --mantine-color-default-border: var(--nw-line);
+    --mantine-color-default-hover: var(--paper-deep);
+    --mantine-color-default-color: var(--ink);
+    --mantine-color-anchor: var(--nw-accent-ink);
+}
+
+/* Text inputs, the dark-mode switch, segmented controls (sort/layout toggles), pill tags
+   (multiselect/tags inputs) and combobox dropdown options (select/multiselect/tags inputs)
+   default to Mantine's neutral greys; point them at the paper/ink tones instead. */
+[data-variant='default'] {
+    --input-bg: var(--paper-card) !important;
+    --input-bd: var(--nw-line) !important;
+    --input-bd-focus: var(--nw-accent-ink) !important;
+}
+
+.mantine-Switch-track {
+    --switch-bg: var(--paper-deep) !important;
+    --switch-text-color: var(--ink-soft) !important;
+}
+
+.mantine-Switch-input:checked + .mantine-Switch-track {
+    --switch-bg: var(--switch-color) !important;
+    --switch-text-color: var(--mantine-color-white) !important;
+}
+
+.mantine-SegmentedControl-root {
+    background-color: var(--paper-deep) !important;
+}
+
+.mantine-SegmentedControl-indicator {
+    background-color: var(--paper-card) !important;
+}
+
+.mantine-SegmentedControl-label {
+    color: var(--ink-soft) !important;
+}
+
+.mantine-SegmentedControl-label[data-active] {
+    color: var(--ink) !important;
+}
+
+.mantine-Pill-root {
+    background-color: var(--paper-deep) !important;
+    color: var(--ink) !important;
+}
+
+[data-combobox-option]:hover:not([data-combobox-selected]) {
+    background-color: var(--paper-deep) !important;
 }
 
 body {
