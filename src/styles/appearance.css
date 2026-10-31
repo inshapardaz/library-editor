@@ -276,6 +276,38 @@ a:where(:visited) {
     --editor-line-strong: var(--nw-line) !important;
 }
 
+/* The toolbar's buttons (Mantine's Toolbar.Toggle) are rendered by the editor's own NESTED
+   MantineProvider, which (like the top-level one) writes its CSS variables to :root — so it
+   shadows the app's own --mantine-color-* overrides for anything it redefines, including the
+   idle/hover/disabled greys below. Targeting the final properties on the toggle's stable class
+   sidesteps that fight entirely, rather than trying to win a --mantine-color-* variable war. */
+.mantine-Toolbar-toggle {
+    background-color: var(--editor-paper) !important;
+    color: var(--editor-ink) !important;
+    border-color: var(--editor-line) !important;
+}
+
+.mantine-Toolbar-toggle:hover:not([data-disabled], [data-active]) {
+    background-color: var(--editor-paper-dim) !important;
+}
+
+.mantine-Toolbar-toggle[data-active] {
+    background-color: var(--editor-accent-soft) !important;
+    color: var(--editor-accent) !important;
+    border-color: transparent !important;
+}
+
+.mantine-Toolbar-toggle[data-active]:hover:not([data-disabled]) {
+    background-color: var(--editor-accent-soft) !important;
+}
+
+.mantine-Toolbar-toggle[data-disabled] {
+    background-color: var(--editor-paper-dim) !important;
+    color: var(--editor-ink-soft) !important;
+    border-color: transparent !important;
+    opacity: 0.6;
+}
+
 body {
     background-color: var(--paper);
     color: var(--ink);
