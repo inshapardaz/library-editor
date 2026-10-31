@@ -56,7 +56,7 @@ const SearchBox = () => {
                 </If>
                 <If condition={!isAnyLoading && isAllFinished && !hasAnyData}>
                     <Center>
-                        <Text>{t('search.empty')}</Text>
+                        <Text c="dimmed">{t('search.empty')}</Text>
                     </Center>
                 </If>
                 <BooksSearchSection
