@@ -156,6 +156,21 @@
     --mantine-color-default-color: var(--ink) !important;
     --mantine-color-anchor: var(--nw-accent-ink) !important;
     --mantine-color-placeholder: var(--ink-soft) !important;
+    --mantine-color-disabled: var(--paper-deep) !important;
+    --mantine-color-disabled-color: var(--ink-soft) !important;
+    --mantine-color-disabled-border: var(--nw-line) !important;
+}
+
+/* Plain links (e.g. Text component={Link}, used for titles across list/card items) don't go
+   through Mantine's Anchor component, so --mantine-color-anchor above doesn't reach them and
+   they fall back to the browser's default blue/visited-purple. A low-specificity tag selector
+   covers those without overriding anything that sets its own colour (classes, c=, etc). */
+a {
+    color: var(--nw-accent-ink);
+}
+
+a:visited {
+    color: var(--nw-accent-ink);
 }
 
 /* Text inputs, the dark-mode switch, segmented controls (sort/layout toggles), pill tags
@@ -198,6 +213,13 @@
     color: var(--ink) !important;
 }
 
+/* Avatar placeholders (author avatars, the header profile menu's avatar) default to a solid
+   grey circle; make them transparent like the other header/sidebar icons. */
+.mantine-Avatar-placeholder {
+    background: transparent !important;
+    color: var(--ink-soft) !important;
+}
+
 [data-combobox-option]:hover:not([data-combobox-selected]) {
     background-color: var(--paper-deep) !important;
 }
@@ -211,6 +233,13 @@
 
 /* The header search (Spotlight) result list hovered with Mantine's neutral grey too. */
 .mantine-Spotlight-action:hover:not([data-selected]) {
+    background-color: var(--paper-deep) !important;
+}
+
+/* NavLink (sidebars: books/periodicals/poetry/writings category lists, etc.) only uses the
+   theme for its *active* item's hover (--nl-hover); a plain, non-active hover is hardcoded to
+   Mantine's neutral grey. */
+.mantine-NavLink-root:hover:not([data-active], [aria-current='page']) {
     background-color: var(--paper-deep) !important;
 }
 
