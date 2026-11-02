@@ -26,14 +26,19 @@ registerSpellDictionary('ur', async () => {
 
 export const apiAutoCorrectStore = () => ({
     id: 'nawishta-tools-autocorrect',
-    // The old editor's autocorrect list has no write-back endpoint.
-    readOnly: true,
     async load(language) {
         const { data } = await axiosPrivate.get(`/tools/${language}/spellchecker/autocorrect`);
         return (data ?? []).map(({ incorrectText, correctText }) => ({
             from: incorrectText,
             to: correctText,
         }));
+    },
+    async append(language, { from, to }) {
+        await axiosPrivate.post(`/tools/${language}/corrections/autocorrect`, {
+            incorrectText: from,
+            correctText: to,
+            completeWord: true,
+        });
     },
 });
 
