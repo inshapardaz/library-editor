@@ -22,7 +22,11 @@ import {
 //-----------------------------------------
 
 const AUTO_CORRECT_STORES = [apiAutoCorrectStore(), localStorageAutoCorrectStore()];
-const DICTIONARY_STORES = [localStorageUserWordStore(), apiUserWordStore()];
+// addUserWord() (likhari-react) writes to only the first store here that's
+// writable, not all of them - the API store must come first so new words
+// reach the server, not just localStorage. loadUserWords() still queries
+// every store and merges them, so reads are unaffected by order.
+const DICTIONARY_STORES = [apiUserWordStore(), localStorageUserWordStore()];
 const COMPLETION_STORES = [apiCompletionStore()];
 
 const PER_DOCUMENT_FONT_KEY_PREFIX = 'likhari:font:';
