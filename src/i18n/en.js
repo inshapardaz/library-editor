@@ -606,6 +606,9 @@ const en = {
                 updateBookStatus: "Mark book as published?",
                 success: "Book published successfully.",
                 error: "Error publishing book.",
+                conflictTitle: "Chapters already have content",
+                conflictConfirm: "Overwrite anyway",
+                warningTitle: "Some chapters were kept as is",
             },
         },
         error: {
