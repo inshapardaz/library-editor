@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useComputedColorScheme } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
@@ -104,6 +104,19 @@ const Editor = ({
         defaultValue: { fontFamily: undefined, zoom: 100 },
     });
 
+    const editorRef = useRef(null);
+
+    // EditorRoot's own onSave always hands back plain text or lexical JSON,
+    // never markdown (its format choice ignores featureConfig.formats -
+    // "plain text when that format is enabled, otherwise Lexical JSON", per
+    // its own docs) - the server stores markdown (initialContent above is
+    // loaded as 'markdown'), so content is re-read through the imperative
+    // ref in that format instead of trusting what onSave was given.
+    const handleSave = useCallback(() => {
+        const markdown = editorRef.current?.getContent('markdown') ?? '';
+        onSave?.(markdown);
+    }, [onSave]);
+
     const handleFontChange = useCallback(
         (change) => {
             setUniformFont(change);
@@ -121,6 +134,7 @@ const Editor = ({
 
     return (
         <EditorRoot
+            ref={editorRef}
             documentId={documentId}
             initialContent={initialContent}
             featurePreset={featurePreset}
@@ -142,7 +156,7 @@ const Editor = ({
             autosave
             restoreDraft="prompt"
             navigationGuard="confirm"
-            onSave={onSave}
+            onSave={onSave ? handleSave : undefined}
             onChange={onChange}
         />
     );
