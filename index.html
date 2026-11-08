@@ -6,6 +6,17 @@
     <link rel="icon" href="./src/assets/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="/env-config.js"></script>
+    <!--
+      fonts.nawishta.co.uk's noto-nastalique entry (and the matching entry
+      @inshapardaz/likhari-react injects at runtime from the urdu-web-fonts
+      GitHub repo) both still point at fonts.gstatic.com/ea/..., Google's
+      long-dead "Early Access" fonts endpoint - hence the "bad URI or
+      cross-site access not allowed" console errors for Noto Nastaliq Urdu.
+      This loads the font from Google's current, live CSS2 API first, so the
+      browser's font-matching finds a working face for it before ever trying
+      the dead one.
+    -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400..700&display=swap" />
     <link rel="stylesheet" href="https://fonts.nawishta.co.uk/stylesheet.css" />
     <title>Nawishta</title>
 </head>
