@@ -11,39 +11,71 @@ import { IconPublisher } from '@/components/icons';
 import { usePublishBookMutation, useUpdateBookMutation } from '@/store/slices/books.api';
 import If from '@/components/if';
 import { BookStatus } from '@/models';
-import { success, error } from '@/utils/notifications';
+import { success, error, warning } from '@/utils/notifications';
 import PublishOutputSelect from '@/components/publishOutputSelect';
 
 //---------------------------------------
 
 const PublishButton = ({ libraryId, book, onPublished = () => { }, ...props }) => {
     const { t } = useTranslation();
-    const [opened, { open, close }] = useDisclosure(false);
+    const [opened, { open, close: closeModal }] = useDisclosure(false);
     const [updateStatus, setUpdateStatus] = useState(false);
     const [publishFilesOnly, setPublishFilesOnly] = useState(false);
     const [outputType, setOutputType] = useState('None');
+    const [conflictMessage, setConflictMessage] = useState(null);
 
     const [publishBook, { isLoading: isPublishing }] = usePublishBookMutation();
     const [updateBook, { isLoading: isUpdating }] = useUpdateBookMutation();
 
     const isBusy = useMemo(() => isPublishing || isUpdating, [isPublishing, isUpdating]);
-    const onPublish = async () => {
-        try {
+    const close = () => {
+        setConflictMessage(null);
+        closeModal();
+    }
+    const doPublish = async (confirmOverwrite) => {
+        const result = await publishBook({
+            book, payload: {
+                outputType: outputType,
+                onlyPublishFile: publishFilesOnly,
+                confirmOverwrite
+            }
+        });
 
-            await publishBook({
-                book, payload: {
-                    outputType: outputType,
-                    onlyPublishFile: publishFilesOnly
-                }
-            })
-                .unwrap();
-
-            if (updateStatus) {
-                await updateBook({ libraryId, bookId: book.id, payload: { ...book, status: BookStatus.Published } }).unwrap();
+        if (result.error) {
+            if (result.error.status === 409) {
+                setConflictMessage(result.error.data?.message ?? t("book.actions.publish.conflictTitle"));
+                return;
             }
 
-            success({ message: t("book.actions.publish.success") });
-            onPublished();
+            throw result.error;
+        }
+
+        if (result.data?.warnings?.length) {
+            warning({ title: t("book.actions.publish.warningTitle"), message: result.data.warnings.join(' ') });
+        }
+
+        if (updateStatus) {
+            await updateBook({ libraryId, bookId: book.id, payload: { ...book, status: BookStatus.Published } }).unwrap();
+        }
+
+        success({ message: t("book.actions.publish.success") });
+        setConflictMessage(null);
+        onPublished();
+    }
+
+    const onPublish = async () => {
+        try {
+            await doPublish(false);
+        }
+        catch (e) {
+            console.error(e)
+            error({ message: t("book.actions.publish.error") })
+        };
+    }
+
+    const onConfirmOverwrite = async () => {
+        try {
+            await doPublish(true);
         }
         catch (e) {
             console.error(e)
@@ -67,6 +99,15 @@ const PublishButton = ({ libraryId, book, onPublished = () => { }, ...props }) =
                     checked={publishFilesOnly}
                     onChange={(event) => setPublishFilesOnly(event.currentTarget.checked)} />
                 <PublishOutputSelect t={t} defaultValue={outputType} onChange={setOutputType} />
+                <If condition={!!conflictMessage}>
+                    <Stack gap="xs">
+                        <Text c="red" fw={600}>{t('book.actions.publish.conflictTitle')}</Text>
+                        <Text>{conflictMessage}</Text>
+                        <Button color="red" onClick={onConfirmOverwrite} loading={isBusy}>
+                            {t('book.actions.publish.conflictConfirm')}
+                        </Button>
+                    </Stack>
+                </If>
                 <Divider />
                 <Group justify='space-between'>
                     <Button onClick={onPublish} loading={isBusy}>{t('actions.yes')}</Button>

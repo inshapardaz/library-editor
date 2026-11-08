@@ -632,6 +632,9 @@ const ur = {
                 updateBookStatus: "کتاب کی کیفیت تبدیل کریں؟",
                 success: "کتاب شائع ہو گئی ہے",
                 error: "کتاب شائع کرنے میں ناکامی",
+                conflictTitle: "کچھ ابواب میں پہلے سے متن موجود ہے",
+                conflictConfirm: "پھر بھی اوپر لکھ دیں",
+                warningTitle: "کچھ ابواب کا متن تبدیل نہیں کیا گیا",
             },
         },
         error: {
