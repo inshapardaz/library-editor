@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useComputedColorScheme } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
@@ -8,7 +8,13 @@ import { useLocalStorage } from '@mantine/hooks';
 import { EditorRoot } from '@inshapardaz/likhari-react';
 
 // Local imports
-import { apiAutoCorrectStore, apiUserWordStore, apiCompletionStore } from './stores';
+import {
+    apiAutoCorrectStore,
+    apiUserWordStore,
+    apiCompletionStore,
+    ENGLISH_LOOKUP_DICTIONARY_STORES,
+    loadNawishtaLookupDictionaryStores,
+} from './stores';
 import { selectedTheme } from '@/store/slices/uiSlice';
 import { DEFAULT_ACCENT, PLAIN_ACCENT } from '@/theme/accent';
 
@@ -104,6 +110,33 @@ const Editor = ({
         defaultValue: { fontFamily: undefined, zoom: 100 },
     });
 
+    // Right-click "Look up" dictionaries: English is available immediately,
+    // this library's own dictionaries (Urdu/Punjabi) are fetched once and
+    // added when they arrive - a failure there just leaves English as the
+    // only option rather than breaking the editor.
+    const [lookupDictionaryStores, setLookupDictionaryStores] = useState(
+        ENGLISH_LOOKUP_DICTIONARY_STORES,
+    );
+
+    useEffect(() => {
+        let cancelled = false;
+        loadNawishtaLookupDictionaryStores()
+            .then((nawishtaStores) => {
+                if (!cancelled) {
+                    setLookupDictionaryStores([
+                        ...ENGLISH_LOOKUP_DICTIONARY_STORES,
+                        ...nawishtaStores,
+                    ]);
+                }
+            })
+            .catch((error) => {
+                console.warn('Nawishta dictionaries unavailable', error);
+            });
+        return () => {
+            cancelled = true;
+        };
+    }, []);
+
     const editorRef = useRef(null);
 
     // EditorRoot's own onSave always hands back plain text or lexical JSON,
@@ -145,6 +178,7 @@ const Editor = ({
             onFontChange={handleFontChange}
             autoCorrectStores={AUTO_CORRECT_STORES}
             dictionaryStores={DICTIONARY_STORES}
+            dictionaryLookupStores={lookupDictionaryStores}
             completionStores={COMPLETION_STORES}
             autoCompleteLanguage={locale}
             spellCheckLanguage={locale}
