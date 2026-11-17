@@ -1,5 +1,10 @@
-import { registerSpellDictionary } from '@inshapardaz/likhari-react';
+import {
+    registerSpellDictionary,
+    freeDictionaryApiStore,
+    listNawishtaDictionaryStores,
+} from '@inshapardaz/likhari-react';
 import { axiosPrivate } from '@/utils/axios.helpers';
+import { API_URL } from '@/config';
 
 // Adapters implementing likhari-react's store interfaces (AutoCorrectStore,
 // UserWordStore, CompletionStore) against the same /tools/{language}/... API
@@ -60,3 +65,13 @@ export const apiCompletionStore = () => ({
         return data ?? [];
     },
 });
+
+// Right-click "Look up" dictionaries (EditorRoot's dictionaryLookupStores) -
+// the free, keyless dictionaryapi.dev service for English, plus whichever
+// dictionaries this library's own API currently lists (Urdu/Punjabi, via
+// likhari-react's nawishtaDictionaryStore against api.nawishta.*'s
+// /dictionaries endpoint - same host as this app's own API_URL).
+export const ENGLISH_LOOKUP_DICTIONARY_STORES = [freeDictionaryApiStore()];
+
+export const loadNawishtaLookupDictionaryStores = () =>
+    listNawishtaDictionaryStores({ baseUrl: API_URL });
