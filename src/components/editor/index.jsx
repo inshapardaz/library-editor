@@ -63,6 +63,7 @@ const EXTRA_FEATURES = {
     language: {
         spellCheck: true,
         thesaurus: true,
+        dictionary: true,
         autocomplete: true,
         autocorrect: true,
         textCleanup: true,
